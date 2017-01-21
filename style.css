@@ -1,3 +1,14 @@
+@keyframes bob {
+  0% {
+    top: -2%;
+  }
+  50% {
+    top: 2%;
+  }
+  100% {
+    top: -2%;
+  }
+}
 * {
   padding: 0;
   border: 0;
@@ -13,6 +24,11 @@
   left: 0;
   right: 0;
   width: 100%;
+}
+.sprite img.layer-eb {
+  animation-duration: 2s;
+  animation-name: bob;
+  animation-iteration-count: infinite;
 }
 .catalog li {
   list-style: none;

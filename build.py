@@ -2,24 +2,25 @@
 
 import json
 import os
+import subprocess
+
 
 DIRNAME = 'idols'
 IDOLS_DIR = os.path.join(os.path.dirname(__file__), DIRNAME)
+THUMBS_DIR = os.path.join(os.path.dirname(__file__), 'idol-thumbs')
 POSES = set()
 SKIN_COLOURS = set()
 HAIR_COLOURS = set()
 LAYERS = set()
 
+if not os.path.isdir(THUMBS_DIR):
+    os.mkdir(THUMBS_DIR)
 
-def part(path, bodytype, layer, colour, number, pose=None):
-    # temporary hack for poses data being wrong
-    if layer == 'bd':
-        pose = number
-        number = 1
-    # end of temporary hack
 
+def part(path, thumb_path, bodytype, layer, colour, number, pose=None):
     attrs = {
         'path': path,
+        'thumbPath': thumb_path,
         'bodytype': bodytype,
         'layer': layer,
         'number': number,
@@ -49,8 +50,21 @@ def build_idols_json():
 
         for entry in os.scandir(os.path.join(IDOLS_DIR, d.name)):
             fn = entry.name.replace('.png', '')
-            parts.append(part('/'.join([DIRNAME, d.name, entry.name]),
-                              *fn.split('_')))
+
+            basename, ext = os.path.splitext(entry.name)
+            thumb_name = '{}-thumb{}'.format(basename, ext)
+            img_path = os.path.join(IDOLS_DIR, d.name, entry.name)
+            thumb_path = os.path.join(THUMBS_DIR, thumb_name)
+
+            subprocess.check_call(
+                ['convert', img_path, '-resize', '400x400^', thumb_path])
+            subprocess.check_call(['optipng', thumb_path])
+
+            parts.append(part(
+                '/'.join([DIRNAME, d.name, entry.name]),
+                '/'.join([THUMBS_DIR, thumb_name]),
+                *fn.split('_')
+            ))
 
     return {
         pose: {

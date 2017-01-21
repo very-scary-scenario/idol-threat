@@ -17,12 +17,15 @@
     <section id="catalog">
     </section>
 
+    <section id="party">
+    </section>
+
     <script id="catalog-template" type="text/x-handlebars-template">
       <ul class="catalog">
         {{#each talent}}
           <li>
             <div class="portrait">
-              {{{spriteHTML}}}
+              {{{thumbSpriteHTML}}}
             </div>
             <div class="deets">
               <p>{{name}}</p>
@@ -35,7 +38,7 @@
     <script id="sprite-template" type="text/x-handlebars-template">
       <div class="sprite">
         {{#each parts}}
-          <img src="{{path}}"/>
+          <img class="layer-{{layer}}" src="{{#if ../thumb}}{{thumbPath}}{{else}}{{path}}{{/if}}"/>
         {{/each}}
       </div>
     </script>

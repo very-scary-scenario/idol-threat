@@ -111,8 +111,14 @@ Idol.prototype.generateName = function() {
   }
   return name;
 };
-Idol.prototype.spriteHTML = function() {
-  return spriteTemplate(this);
+Idol.prototype.spriteHTML = function(thumb) {
+  return spriteTemplate({
+    parts: this.parts,
+    thumb: thumb
+  });
+};
+Idol.prototype.thumbSpriteHTML = function() {
+  return this.spriteHTML(true);
 };
 
 function Agency() {
