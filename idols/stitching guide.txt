@@ -1,0 +1,24 @@
+bodytype_part_col_no(_pose)
+1_hb_1_1(_1)
+
+All body types should match (though thats more about head positioning, and we only have one anyway...)
+Pose needs to match for body and clothes (both parts)
+colour needs to match for body and head
+colour needs to match for hair back and hair front. Maybe also both extras and ahoge, though it'd probably be funny to mix those up...
+
+
+
+Parts Order
+hbe (Hair Back Extra - optional)
+hb (hair back)
+bd (Body)
+cb (Clothes Bottom)
+ct (Clothes Top)
+hd (Head)
+hf (hair front)
+hfe (Hair Front Extra - optional)
+ah (Ahoge - optional)
+mt (Mouth)
+ns (Nose)
+ey (Eyes)
+eb (eye brow)
