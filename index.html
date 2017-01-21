@@ -17,18 +17,41 @@
     <section id="catalog">
     </section>
 
-    <section id="party">
+    <section id="unit">
     </section>
 
     <script id="catalog-template" type="text/x-handlebars-template">
+      <h2>Select your unit…</h2>
       <ul class="catalog">
-        {{#each talent}}
-          <li>
+        {{#each catalog}}
+          <li class="{{#if isInUnit}}active{{/if}}">
             <div class="portrait">
               {{{thumbSpriteHTML}}}
             </div>
             <div class="deets">
-              <p>{{name}}</p>
+              <p class="name">{{name}}</p>
+              <dl>
+                <dt>Atk.</dt>
+                <dd>{{attack}}</dd>
+                <dt>Def.</dt>
+                <dd>{{defense}}</dd>
+                <dt>Spd.</dt>
+                <dd>{{speed}}</dd>
+                <dt>End.</dt>
+                <dd>{{endurance}}</dd>
+              </dl>
+            </div>
+          </li>
+        {{/each}}
+      </ul>
+    </script>
+
+    <script id="unit-template" type="text/x-handlebars-template">
+      <ul class="unit">
+        {{#each unit}}
+          <li>
+            <div class="portrait">
+              {{{ thumbSpriteHTML }}}
             </div>
           </li>
         {{/each}}

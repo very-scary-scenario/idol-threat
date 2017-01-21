@@ -46,6 +46,7 @@ var LAYERS = [
 var barcodeImage = document.getElementById('barcode-image');
 var spriteTemplate = Handlebars.compile(document.getElementById('sprite-template').innerHTML);
 var catalogTemplate = Handlebars.compile(document.getElementById('catalog-template').innerHTML);
+var unitTemplate = Handlebars.compile(document.getElementById('unit-template').innerHTML);
 
 function choice(list, slice) {
   var result = list[Math.floor(slice * list.length)];
@@ -67,14 +68,15 @@ function seededRandom(seed) {
 }
 
 function Idol(seed) {
+  this.seed = seed;
   this.rand = seededRandom(seed);
   this.xp = 0;
   this.level = 0;
 
-  this.endurance = this.rand(1, -1);
-  this.attack = this.rand(1, -1);
-  this.speed = this.rand(1, -1);
-  this.defense = this.rand(1, -1);
+  this.endurance = Math.floor(this.rand(-100, 100));
+  this.attack = Math.floor(this.rand(-100, 100));
+  this.speed = Math.floor(this.rand(-100, 100));
+  this.defense = Math.floor(this.rand(-100, 100));
 
   this.firstName = this.generateName();
   this.lastName = this.generateName();
@@ -120,12 +122,32 @@ Idol.prototype.spriteHTML = function(thumb) {
 Idol.prototype.thumbSpriteHTML = function() {
   return this.spriteHTML(true);
 };
+Idol.prototype.isInUnit = function() {
+  return agency.unit.indexOf(this) !== -1;
+};
+Idol.prototype.toggleUnitMembership = function() {
+  if (this.isInUnit()) {
+    agency.unit.splice(agency.unit.indexOf(this), 1);
+  } else {
+    agency.unit.push(this);
+  }
+  rerender();
+};
 
 function Agency() {
-  this.talent = [];
+  this.catalog = [];
+  this.unit = [];
 }
 Agency.prototype.renderCatalog = function() {
   document.getElementById('catalog').innerHTML = catalogTemplate(this);
+  var agency = this;
+  document.querySelectorAll('#catalog li').forEach(function(element, i) {
+    var idol = agency.catalog[i];
+    element.addEventListener('click', function() {idol.toggleUnitMembership();});
+  });
+};
+Agency.prototype.renderUnit = function() {
+  document.getElementById('unit').innerHTML = unitTemplate(this);
 };
 
 function numFromString(str) {
@@ -167,9 +189,19 @@ barcodeImage.addEventListener('change', function(e) {
 });
 
 var agency = new Agency();
-agency.talent.push(new Idol(214321100));
-agency.talent.push(new Idol(29143112));
-agency.talent.push(new Idol(112341433));
-agency.talent.push(new Idol(2));
-agency.talent.push(new Idol(19));
-agency.renderCatalog();
+
+function rerender() {
+  agency.renderCatalog();
+  agency.renderUnit();
+}
+
+agency.catalog.push(new Idol(214321100));
+agency.catalog.push(new Idol(29143112));
+agency.catalog.push(new Idol(112341433));
+agency.catalog.push(new Idol(2));
+agency.catalog.push(new Idol(19));
+agency.unit.push(agency.catalog[0]);
+agency.unit.push(agency.catalog[2]);
+agency.unit.push(agency.catalog[4]);
+
+rerender();
