@@ -1,5 +1,3 @@
-var unit = [];
-
 var KANA = [
   'a', 'i', 'u', 'e', 'o',
   'ka', 'ki', 'ku', 'ke', 'ko',
@@ -29,11 +27,29 @@ var KANA = [
 ];
 var N = 'n';
 
+var LAYERS = [
+    'hbe',
+    'hb',
+    'bd',
+    'cb',
+    'ct',
+    'hd',
+    'hf',
+    'hfe',
+    'ah',
+    'mt',
+    'ns',
+    'ey',
+    'eb'
+];
+
 var barcodeImage = document.getElementById('barcode-image');
+var spriteTemplate = Handlebars.compile(document.getElementById('sprite-template').innerHTML);
+var catalogTemplate = Handlebars.compile(document.getElementById('catalog-template').innerHTML);
 
 function choice(list, slice) {
-  i = Math.floor(slice * list.length);
-  return list[i];
+  var result = list[Math.floor(slice * list.length)];
+  return result;
 }
 
 function seededRandom(seed) {
@@ -50,11 +66,10 @@ function seededRandom(seed) {
   return rand;
 }
 
-function generateName(rand) {
-}
-
 function Idol(seed) {
   this.rand = seededRandom(seed);
+  this.xp = 0;
+  this.level = 0;
 
   this.endurance = this.rand(1, -1);
   this.attack = this.rand(1, -1);
@@ -64,6 +79,22 @@ function Idol(seed) {
   this.firstName = this.generateName();
   this.lastName = this.generateName();
   this.name = [this.firstName, this.lastName].join(' ');
+
+  var partsMissing = true;
+  while (partsMissing) {
+    this.parts = [];
+    partsMissing = false;
+    var poseParts = PARTS[choice(Object.keys(PARTS), this.rand())];
+    var skinColourParts = poseParts[choice(Object.keys(poseParts), this.rand())];
+    var hairColourParts = skinColourParts[choice(Object.keys(skinColourParts), this.rand())];
+    for(var i = 0, n = LAYERS.length; i < n; i++) {
+      var options = hairColourParts[LAYERS[i]];
+      if (options.length === 0) {
+        partsMissing = true;
+      }
+      this.parts.push(choice(options, this.rand()));
+    }
+  }
 
   console.log('generated ' + this.name);
 }
@@ -80,10 +111,16 @@ Idol.prototype.generateName = function() {
   }
   return name;
 };
+Idol.prototype.spriteHTML = function() {
+  return spriteTemplate(this);
+};
 
-unit.push(new Idol(214321100));
-unit.push(new Idol(29143112));
-unit.push(new Idol(112341433));
+function Agency() {
+  this.talent = [];
+}
+Agency.prototype.renderCatalog = function() {
+  document.getElementById('catalog').innerHTML = catalogTemplate(this);
+};
 
 function numFromString(str) {
   var total = 0;
@@ -100,15 +137,10 @@ function addIdolFromImage(data) {
     return;
   }
   idol = new Idol(numFromString(data.codeResult.code));
-  console.log(idol.name);
-  console.log(idol.attack);
-  console.log(idol.defense);
-  console.log(idol.endurance);
   return idol;
 }
 
 barcodeImage.addEventListener('change', function(e) {
-  console.log('image added');
   Quagga.decodeSingle({
     src: window.URL.createObjectURL(barcodeImage.files[0]),
     decoder: {
@@ -127,3 +159,11 @@ barcodeImage.addEventListener('change', function(e) {
     debug: true
   }, addIdolFromImage);
 });
+
+var agency = new Agency();
+agency.talent.push(new Idol(214321100));
+agency.talent.push(new Idol(29143112));
+agency.talent.push(new Idol(112341433));
+agency.talent.push(new Idol(2));
+agency.talent.push(new Idol(19));
+agency.renderCatalog();

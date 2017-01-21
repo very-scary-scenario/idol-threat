@@ -4,13 +4,45 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>barcode battler: school idol festival</title>
+    <link rel="stylesheet" href="style.css"/>
+    <script>
+      var PARTS;
+    </script>
   </head>
   <body>
     <section id="generator"> 
       <input type="file" accept="image/*" capture="camera" id="barcode-image"/>
     </section>
 
+    <section id="catalog">
+    </section>
+
+    <script id="catalog-template" type="text/x-handlebars-template">
+      <ul class="catalog">
+        {{#each talent}}
+          <li>
+            <div class="portrait">
+              {{{spriteHTML}}}
+            </div>
+            <div class="deets">
+              <p>{{name}}</p>
+            </div>
+          </li>
+        {{/each}}
+      </ul>
+    </script>
+
+    <script id="sprite-template" type="text/x-handlebars-template">
+      <div class="sprite">
+        {{#each parts}}
+          <img src="{{path}}"/>
+        {{/each}}
+      </div>
+    </script>
+
     <script src="quagga.min.js"></script>
+    <script src="handlebars.min.js"></script>
+    <script src="parts.js"></script>
     <script src="game.js"></script>
   </body>
 </html>
