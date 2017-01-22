@@ -23,6 +23,32 @@
     <section id="idol-detail">
     </section>
 
+    <section id="battle">
+      <div id="main">
+        <div id="battleArea">
+          <span id="player">P <span class="DMG" id="playerDMG"></span><span class="HEAL" id="playerHEAL"></span></span>
+          <span id="enemy">E <span class="DMG" id="enemyDMG"></span><span class="HEAL" id="enemyHEAL"></span></span>
+          <div id="playerAnimationDiv"></div>
+          <div id="enemyAnimationDiv"></div>
+        </div>
+      </div>
+      <div id="ui">
+        <div><h4>Player health: <span id="playerHealth"></span></h4></div><!-- Mana: <span id="playerMana"></span> -->
+        <div id="playerHealthbar"></div>
+        <div><h4>Enemy health: <span id="enemyHealth"></span></h4></div>
+        <div id="enemyHealthbar"></div>
+        <div>
+          <h3 id="promptText"></h3>
+          <ul class="menu" id="commandList">
+            <li class="wideLI"><button class="button" id="playerAttack1" onclick="playerAttack0()"></button></li>
+            <li class="wideLI"><button class="button" id="playerAttack2" onclick="playerAttack1()"></button></li>
+            <li class="wideLI"><button class="button" id="playerAttack3" onclick="playerAttack2()"></button></li>
+            <li class="wideLI"><button class="button" id="playerAttack4" onclick="playerAttack3()"></button></li>
+          </ul>
+        </div>
+      </div> 
+    </section>
+
     <input type="file" accept="image/*" capture="camera" id="barcode-image"/>
 
     <script id="catalog-template" type="text/x-handlebars-template">
