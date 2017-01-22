@@ -9,6 +9,20 @@
   100% {top: -2%}
 }
 
+.stats-dl() {
+  dt {
+    font-weight: bold;
+    width: 0;
+    height: 0;
+    clear: both;
+  }
+  dd {
+    width: 5em;
+    text-align: right;
+    float: left;
+  }
+}
+
 * {
   padding: 0;
   border: 0;
@@ -19,6 +33,9 @@
 body {
   background-color: @bg;
   color: @fg;
+  font-family: 'Rum Raisin', sans-serif;
+  letter-spacing: .05em;
+	font-size: 1.1em;
 }
 
 .sprite {
@@ -46,7 +63,7 @@ body {
   padding-bottom: @unit-height;
 
   li {
-    height: 8em;
+    height: 9em;
     position: relative;
     margin: 1em;
 		border-radius: 1em;
@@ -83,13 +100,7 @@ body {
       }
 
       dl {
-        dt {
-          font-weight: bold;
-          float: left;
-          width: 3em;
-          padding-right: .5em;
-          text-align: right;
-        }
+        .stats-dl();
       }
     }
 
@@ -142,7 +153,7 @@ body {
 #idol-detail {
   position: fixed;
 	top: 0;
-  overflow: scroll;
+  overflow: hidden;
   width: 100%;
   min-height: 100%;
   background-color: fade(@bg, 95%);
@@ -172,51 +183,56 @@ body {
     }
 	}
 
-  .pane {
+  .summary, .controls, .bio {
     position: absolute;
+    margin: 1em;
     z-index: 3;
     box-sizing: border-box;
+  }
+
+  .summary {
+    left: 0;
+    top: 0;
+
+    .stats, .abilities {
+      padding-top: .5em;
+    }
+
+    .stats {
+      dl {
+        .stats-dl();
+
+        dd {
+          width: 7em !important;
+        }
+      }
+    }
+
+    .abilities {
+      clear: both;
+    }
+  }
+
+  .bubble {
     padding: .5em;
     margin: .5em;
-    background-color: fade(@bg, 90%);
+    background-color: fade(@bg, 70%);
     border-radius: .5em;
+  }
 
-    &.name {
-      top: 0;
-      left: 0;
-    }
-    &.stats {
-      top: 3.5em;
-      left: 0;
-    }
-    &.bio {
-      bottom: 6em;
-      max-width: 50vw;
-      left: 0;
+  .bio {
+    width: 90vw;
+    max-width: 30em;
+    bottom: 0;
+    left: 0;
 
-      blockquote {
-        font-style: italic;
-      }
+    blockquote {
+      font-style: italic;
     }
-    &.abilities {
-      background: none;
-      padding: 0;
-      bottom: 0;
-      left: 0;
+  }
 
-      li {
-        display: inline-block;
-        width: 40vw;
-        padding: .5em;
-        margin: .5em .5em 0 0;
-        text-align: center;
-        background-color: fade(@mid, 95%);
-        border-radius: .5em;
-      }
-    }
-    &.controls {
-      top: 0;
-      right: 0;
-    }
+  .controls {
+    top: 0;
+    right: 0;
   }
 }

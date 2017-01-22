@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="https://fonts.googleapis.com/css?family=Rum+Raisin" rel="stylesheet">
     <title>barcode battler: school idol festival</title>
     <link rel="stylesheet" href="style.css"/>
     <script>
@@ -56,30 +57,30 @@
       <div class="portrait">
         {{{spriteHTML}}}
       </div>
-      <div class="pane name">
-				<h2>{{name}}</h2>
+      <div class="summary bubble">
+				<h2 class="name">{{name}}</h2>
+        <div class="stats">
+          <dl>
+            <dt>Attack</dt>
+            <dd>{{attack}}</dd>
+            <dt>Defense</dt>
+            <dd>{{defense}}</dd>
+            <dt>Speed</dt>
+            <dd>{{speed}}</dd>
+            <dt>Endurance</dt>
+            <dd>{{endurance}}</dd>
+          </dl>
+        </div>
+        <div class="abilities">
+          <ul>
+            {{#each abilities}}<li>{{name}}</li>{{/each}}
+          </ul>
+        </div>
       </div>
-      <div class="pane stats">
-        <dt>Attack</dt>
-        <dd>{{attack}}</dd>
-        <dt>Defense</dt>
-        <dd>{{defense}}</dd>
-        <dt>Speed</dt>
-        <dd>{{speed}}</dd>
-        <dt>Endurance</dt>
-        <dd>{{endurance}}</dd>
-      </div>
-      <div class="pane bio">
+      <div class="bubble bio">
         <p>{{bio}}</p>
       </div>
-      <div class="pane abilities">
-        <ul>
-          {{#each abilities}}
-            <li>{{name}}</li>
-          {{/each}}
-        </ul>
-      </div>
-      <div class="pane controls">
+      <div class="bubble controls">
         <a class="close" href="#">close</p>
       </div>
     </script>
