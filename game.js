@@ -171,7 +171,7 @@ Idol.prototype.toggleUnitMembership = function() {
   if (this.isInUnit()) {
     agency.unit.splice(agency.unit.indexOf(this), 1);
   } else {
-    agency.addToUnit(this);
+    agency.addToUnit(this, true);
   }
   rerender();
 };
@@ -221,9 +221,11 @@ Agency.prototype.addIdol = function(idol) {
   this.addToUnit(idol);
   rerender();
 };
-Agency.prototype.addToUnit = function(idol) {
+Agency.prototype.addToUnit = function(idol, interactive) {
   if (this.unit.length >= maxUnitSize) {
-    alert("Your unit is full; you'll need to remove someone before you can add " + idol.name + ".");
+    if (interactive !== undefined) {
+      alert("Your unit is full; you'll need to remove someone before you can add " + idol.name + ".");
+    }
   } else {
     this.unit.push(idol);
   }
