@@ -13,9 +13,6 @@
     </script>
   </head>
   <body>
-    <section id="generator"> 
-      <input type="file" accept="image/*" capture="camera" id="barcode-image"/>
-    </section>
 
     <section id="catalog">
     </section>
@@ -26,8 +23,9 @@
     <section id="idol-detail">
     </section>
 
+    <input type="file" accept="image/*" capture="camera" id="barcode-image"/>
+
     <script id="catalog-template" type="text/x-handlebars-template">
-      <h2>Select your unit…</h2>
       <ul class="catalog">
         {{#each catalog}}
           <li class="{{#if isInUnit}}active{{/if}}">
@@ -51,6 +49,8 @@
           </li>
         {{/each}}
       </ul>
+      
+      <p><a href="#" id="recruit">Scan a barcode to recruit a new member…</a></p>
     </script>
 
     <script id="idol-detail-template" type="text/x-handlebars-template">

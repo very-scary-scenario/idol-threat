@@ -208,6 +208,16 @@ Agency.prototype.renderCatalog = function() {
 Agency.prototype.renderUnit = function() {
   document.getElementById('unit').innerHTML = unitTemplate(this);
 };
+Agency.prototype.addIdol = function(idol) {
+  for(var i = 0, n = this.catalog.length; i < n; i++) {
+    if (this.catalog[i].seed === idol.seed) {
+      alert("You recruited this idol already; it's " + idol.name + "!");
+      return;
+    }
+  }
+  this.catalog.push(idol);
+  rerender();
+};
 
 function numFromString(str) {
   var total = 0;
@@ -224,7 +234,7 @@ function addIdolFromImage(data) {
     return;
   }
   idol = new Idol(numFromString(data.codeResult.code));
-  return idol;
+  agency.addIdol(idol);
 }
 
 barcodeImage.addEventListener('change', function(e) {
@@ -252,8 +262,15 @@ var agency = new Agency();
 function rerender() {
   agency.renderCatalog();
   agency.renderUnit();
+
+  document.getElementById('recruit').addEventListener('click', function(e) {
+    e.stopPropagation();
+    barcodeImage.click();
+    return false;
+  });
 }
 
+/*
 agency.catalog.push(new Idol(214321100));
 agency.catalog.push(new Idol(29143112));
 agency.catalog.push(new Idol(112341433));
@@ -262,5 +279,6 @@ agency.catalog.push(new Idol(19));
 agency.unit.push(agency.catalog[0]);
 agency.unit.push(agency.catalog[2]);
 agency.unit.push(agency.catalog[4]);
+*/
 
 rerender();

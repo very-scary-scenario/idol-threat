@@ -2,6 +2,7 @@
 @unit-height: 8em;
 @bg: white;
 @fg: black;
+@hl: pink;
 
 @keyframes bob {
   0% {top: -2%}
@@ -38,6 +39,17 @@ body {
 	font-size: 1.1em;
 }
 
+a {
+  text-decoration: none;
+  color: @fg;
+  text-shadow: .1em .1em 0 @bg;
+
+	&:hover, &:focus {
+		color: @bg;
+		text-shadow: .1em .1em 0 @fg;
+	}
+}
+
 .sprite {
   display: block;
   position: relative;
@@ -59,8 +71,8 @@ body {
   }
 }
 
-.catalog {
-  padding-bottom: @unit-height;
+#catalog {
+  padding-bottom: @unit-height + 1em;
 
   li {
     height: 9em;
@@ -71,7 +83,7 @@ body {
     cursor: pointer;
 
     &.active {
-      background-color: pink;
+      background-color: @hl;
     }
 
     .portrait {
@@ -125,6 +137,14 @@ body {
         opacity: 1;
       }
     }
+  }
+
+  #recruit {
+    display: inline-block;
+    margin: 1em;
+    padding: .5em 1em;
+    border-radius: .5em;
+    background-color: @hl;
   }
 }
 
@@ -235,4 +255,8 @@ body {
     top: 0;
     right: 0;
   }
+}
+
+#barcode-image {
+  display: none;
 }
