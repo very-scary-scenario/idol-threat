@@ -26,10 +26,20 @@
     <section id="battle">
       <div id="main">
         <div id="battleArea">
-          <span id="player">P <span class="DMG" id="playerDMG"></span><span class="HEAL" id="playerHEAL"></span></span>
-          <span id="enemy">E <span class="DMG" id="enemyDMG"></span><span class="HEAL" id="enemyHEAL"></span></span>
-          <div id="playerAnimationDiv"></div>
-          <div id="enemyAnimationDiv"></div>
+          <div id="player">
+            <span id="player-name"></span>
+            <span class="DMG" id="playerDMG"></span><span class="HEAL" id="playerHEAL"></span>
+            <div id="playerAnimationDiv">
+              <div id="playerPortrait" class="battle-portrait"></div>
+            </div>
+          </div>
+          <div id="enemy">
+            <span id="enemy-name"></span>
+            <span class="DMG" id="enemyDMG"></span><span class="HEAL" id="enemyHEAL"></span>
+            <div id="enemyAnimationDiv">
+              <div id="enemyPortrait" class="battle-portrait"></div>
+            </div>
+          </div>
         </div>
       </div>
       <div id="ui">

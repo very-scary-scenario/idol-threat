@@ -31,25 +31,43 @@ li {
 }
 
 #battleArea {
-	width: 50%;
-	margin: 0 auto;
-	border: 1px solid black;
+  #player, #enemy {
+    display: block;
+    position: relative;
+    text-align: center;
+
+    .battle-portrait {
+      position: absolute
+      top: 0;
+      height: 30vh;
+      width: 100vw;
+
+      .sprite, canvas {
+        margin: 0 auto;
+        width: 30vh !important;
+      }
+      
+      canvas {
+        position: absolute;
+        top: 1.5em;
+        left: 50%;
+        margin-left: -15vh;
+      }
+    }
+  }
 }
 
-#player {
-	position: relative;
-	left: 10%;
+.DMG, .HEAL {
+  display: block;
+  width: 100vw;
+  position: absolute;
+  top: 10em;
+  left: 0;
+  text-align: center;
 }
-
-#enemy {
-	position: relative;
-	left: 80%;	
-}
-
 .DMG {
 	color: red;
 }
-
 .HEAL {
 	color: green;
 }
@@ -90,12 +108,6 @@ li {
 
 #enemyHealthbar {
 	background-color: red;
-	
-}
-
-#enemyAnimationDiv {
-	position: relative;
-	left: 60%;
 	
 }
 

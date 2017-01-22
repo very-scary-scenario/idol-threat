@@ -73,7 +73,7 @@ function seededRandom(seed) {
 }
 
 function Ability(parts, animation) {
-  this.bonus = 0;
+  this.strength = 0;
   this.healing = false;
 
   var partNames = [];
@@ -81,7 +81,7 @@ function Ability(parts, animation) {
   for(var i = 0, n = parts.length; i < n; i++) {
     var part = parts[i];
     partNames.push(part.word);
-    this.bonus += part.bonus;
+    this.strength += part.bonus;
     if (part.healing) {
       this.healing = true;
     }

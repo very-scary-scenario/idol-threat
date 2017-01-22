@@ -8,7 +8,7 @@ function BattleIdol (idol) {
 
   var statModifier = 1.01;
   function modStat(stat, mod) {
-    return Math.ceil(100 * Math.pow(statModifier, stat));
+    return Math.ceil(mod * Math.pow(statModifier, stat));
   }
 
 	self.attack = modStat(idol.attack, 100);
@@ -54,6 +54,11 @@ function initBattle () {
 	document.getElementById("playerAttack3").innerText = player.abilities[2].name;
 	document.getElementById("playerAttack4").innerText = player.abilities[3].name;
 	
+  document.getElementById('playerPortrait').innerHTML = spriteTemplate(player.idol);
+  document.getElementById('enemyPortrait').innerHTML = spriteTemplate(enemy.idol);
+
+  document.getElementById('player-name').innerText = player.idol.name;
+  document.getElementById('enemy-name').innerText = enemy.idol.name;
 }
 
 function refreshHealthBars () {
@@ -243,6 +248,7 @@ function playAnimation(folderName, imagesCount, totalPlayTime, elemID) {
 
 function playAnimationCanvas(animationName, totalPlayTime, elemID) {
 	var div = document.getElementById(elemID);
+  var portraitDiv = div.querySelector('.battle-portrait');
 	
 	var currentImage = 0;
 	
@@ -262,7 +268,7 @@ function playAnimationCanvas(animationName, totalPlayTime, elemID) {
 	var ctx = animationCanvas.getContext('2d');
 	// var bg = staticCanvas.getContext('2d');
 	// div.appendChild(staticCanvas);	
-	div.appendChild(animationCanvas);
+	portraitDiv.appendChild(animationCanvas);
 	
 	// bg.canvas.width = 256;
 	// bg.canvas.height = 256;	
@@ -280,7 +286,7 @@ function playAnimationCanvas(animationName, totalPlayTime, elemID) {
 	setTimeout(function () {
 		clearInterval(animationID);
 		
-		div.innerHTML = '';
+		portraitDiv.removeChild(animationCanvas);
 	}, totalPlayTime);
 }
 
