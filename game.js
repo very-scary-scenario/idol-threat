@@ -71,7 +71,7 @@ function seededRandom(seed) {
   return rand;
 }
 
-function Ability(parts) {
+function Ability(parts, animation) {
   this.bonus = 0;
   this.healing = false;
 
@@ -87,6 +87,8 @@ function Ability(parts) {
   }
 
   this.name = partNames.join(' ');
+
+  this.animation = animation;
 }
 
 function Idol(seed) {
@@ -139,7 +141,7 @@ function Idol(seed) {
 
     abilityParts.push(choice(ABILITIES[1], this.rand()));
     abilityParts.push(choice(ABILITIES[2], this.rand()));
-    this.abilities.push(new Ability(abilityParts));
+    this.abilities.push(new Ability(abilityParts, choice(animNames, this.rand())));
   }
 }
 Idol.prototype.generateName = function() {
@@ -278,6 +280,14 @@ function rerender() {
   document.getElementById('recruit').addEventListener('click', function(e) {
     e.stopPropagation();
     barcodeImage.click();
+    return false;
+  });
+
+  document.getElementById('fight').addEventListener('click', function(e) {
+    e.stopPropagation();
+    player = new BattleIdol(agency.unit[0]);
+    enemy = new BattleIdol(new Idol(Math.random()));
+    initBattle();
     return false;
   });
 }

@@ -1,104 +1,27 @@
-document.addEventListener("DOMContentLoaded", function (){
-	
-	document.getElementById("playerBarcode").addEventListener("change", function (){
-		var barcodeImageFile = document.getElementById("playerBarcode").files[0];
-		Quagga.decodeSingle({
-			src: window.URL.createObjectURL(barcodeImageFile),
-			decoder: {
-			  readers: [
-				'code_128_reader',
-				'ean_reader',
-				'ean_8_reader',
-				'code_39_reader',
-				'code_39_vin_reader',
-				'codabar_reader',
-				'upc_reader',
-				'upc_e_reader',
-				'i2of5_reader'
-			  ]
-			},
-			debug: true
-	    }, makePlayerIdolFromImage);
-	});	
-	
-	document.getElementById("enemyBarcode").addEventListener("change", function (){
-		var barcodeImageFile = document.getElementById("enemyBarcode").files[0];
-		Quagga.decodeSingle({
-			src: window.URL.createObjectURL(barcodeImageFile),
-			decoder: {
-			  readers: [
-				'code_128_reader',
-				'ean_reader',
-				'ean_8_reader',
-				'code_39_reader',
-				'code_39_vin_reader',
-				'codabar_reader',
-				'upc_reader',
-				'upc_e_reader',
-				'i2of5_reader'
-			  ]
-			},
-			debug: true
-	    }, makeEnemyIdolFromImage);
-	});	
-});
-
-function makePlayerIdolFromImage (data) {
-	var idolData = addIdolFromImage(data);
-	//console.log(idolData);
-	player = new BattleIdol(
-		(idolData.firstName +" " +idolData.lastName), 
-		idolData.attack, 
-		idolData.defense, 
-		idolData.endurance, 
-		idolData.speed, 
-		[new Ability("Heal", 0, true, "fever"), 
-		 new Ability("Sword", 2, false, "slash"), 
-		 new Ability("Fire", 3, false, "fire"),
-		 new Ability("Water", 1, false, "tide")]
-		);
-	
-}
-
-function makeEnemyIdolFromImage (data) {
-	var idolData = addIdolFromImage(data);
-	//console.log(idolData);
-	enemy = new BattleIdol((idolData.firstName +" " +idolData.lastName), idolData.attack, idolData.defense, idolData.endurance, idolData.speed);
-	
-}
-
 var player;
 var enemy;
 
-function Ability (name, strength, healing, animation) {
+function BattleIdol (idol) {
 	var self = this;
-	self.name = name;
-	self.strength = strength;
-	self.healing = healing;
-	self.animation = animation;
 	
-}
+	self.idol = idol;
 
-function BattleIdol (name, attack, defense, endurance, speed, abilities) {
-	var self = this;
-	
-	attack = Math.abs(attack);
-	defense = Math.abs(defense);
-	endurance = Math.abs(endurance);
-	speed = Math.abs(speed);
-	
-	self.name = name;
-	self.attack = Math.ceil(attack * 400);
-	self.defense = Math.ceil(defense * 1);
-	self.endurance = Math.ceil(endurance * 10);
-	self.mana = Math.ceil(speed * 10);
-	self.maxMana = Math.ceil(speed * 10);
-	self.hp = Math.ceil(self.endurance * 10);
-	self.maxHp = Math.ceil(self.endurance * 10);
+  var statModifier = 1.01;
+  function modStat(stat, mod) {
+    return Math.ceil(100 * Math.pow(statModifier, stat));
+  }
+
+	self.attack = modStat(idol.attack, 100);
+	self.defense = modStat(idol.defense, 50);
+	self.endurance = modStat(idol.endurance, 100);
+	self.speed = modStat(idol.speed, 20);
+	self.maxMana = modStat(idol.speed, 20);
+
+	self.maxHp = self.endurance;
+	self.hp = self.maxHp;
 	
 	self.hpPercent = 100;
-	self.abilities = abilities;
-
+	self.abilities = idol.abilities;
 }
 
 //IMAGES
@@ -117,20 +40,20 @@ fire12 = new Image();
 fire13 = new Image();
 fire14 = new Image();
 
-fire1.src = "fire/1.png";
-fire2.src = "fire/2.png";
-fire3.src = "fire/3.png";
-fire4.src = "fire/4.png";
-fire5.src = "fire/5.png";
-fire6.src = "fire/6.png";
-fire7.src = "fire/7.png";
-fire8.src = "fire/8.png";
-fire9.src = "fire/9.png";
-fire10.src = "fire/10.png";
-fire11.src = "fire/11.png";
-fire12.src = "fire/12.png";
-fire13.src = "fire/13.png";
-fire14.src = "fire/14.png";
+fire1.src = "anim/fire/1.png";
+fire2.src = "anim/fire/2.png";
+fire3.src = "anim/fire/3.png";
+fire4.src = "anim/fire/4.png";
+fire5.src = "anim/fire/5.png";
+fire6.src = "anim/fire/6.png";
+fire7.src = "anim/fire/7.png";
+fire8.src = "anim/fire/8.png";
+fire9.src = "anim/fire/9.png";
+fire10.src = "anim/fire/10.png";
+fire11.src = "anim/fire/11.png";
+fire12.src = "anim/fire/12.png";
+fire13.src = "anim/fire/13.png";
+fire14.src = "anim/fire/14.png";
 
 lightning1 = new Image();
 lightning2 = new Image();
@@ -147,20 +70,20 @@ lightning12 = new Image();
 lightning13 = new Image();
 lightning14 = new Image();
 
-lightning1.src = "lightning/1.png";
-lightning2.src = "lightning/2.png";
-lightning3.src = "lightning/3.png";
-lightning4.src = "lightning/4.png";
-lightning5.src = "lightning/5.png";
-lightning6.src = "lightning/6.png";
-lightning7.src = "lightning/7.png";
-lightning8.src = "lightning/8.png";
-lightning9.src = "lightning/9.png";
-lightning10.src = "lightning/10.png";
-lightning11.src = "lightning/11.png";
-lightning12.src = "lightning/12.png";
-lightning13.src = "lightning/13.png";
-lightning14.src = "lightning/14.png";
+lightning1.src = "anim/lightning/1.png";
+lightning2.src = "anim/lightning/2.png";
+lightning3.src = "anim/lightning/3.png";
+lightning4.src = "anim/lightning/4.png";
+lightning5.src = "anim/lightning/5.png";
+lightning6.src = "anim/lightning/6.png";
+lightning7.src = "anim/lightning/7.png";
+lightning8.src = "anim/lightning/8.png";
+lightning9.src = "anim/lightning/9.png";
+lightning10.src = "anim/lightning/10.png";
+lightning11.src = "anim/lightning/11.png";
+lightning12.src = "anim/lightning/12.png";
+lightning13.src = "anim/lightning/13.png";
+lightning14.src = "anim/lightning/14.png";
 
 tide1 = new Image();
 tide2 = new Image();
@@ -177,20 +100,20 @@ tide12 = new Image();
 tide13 = new Image();
 tide14 = new Image();
 
-tide1.src = "tide/1.png";
-tide2.src = "tide/2.png";
-tide3.src = "tide/3.png";
-tide4.src = "tide/4.png";
-tide5.src = "tide/5.png";
-tide6.src = "tide/6.png";
-tide7.src = "tide/7.png";
-tide8.src = "tide/8.png";
-tide9.src = "tide/9.png";
-tide10.src = "tide/10.png";
-tide11.src = "tide/11.png";
-tide12.src = "tide/12.png";
-tide13.src = "tide/13.png";
-tide14.src = "tide/14.png";
+tide1.src = "anim/tide/1.png";
+tide2.src = "anim/tide/2.png";
+tide3.src = "anim/tide/3.png";
+tide4.src = "anim/tide/4.png";
+tide5.src = "anim/tide/5.png";
+tide6.src = "anim/tide/6.png";
+tide7.src = "anim/tide/7.png";
+tide8.src = "anim/tide/8.png";
+tide9.src = "anim/tide/9.png";
+tide10.src = "anim/tide/10.png";
+tide11.src = "anim/tide/11.png";
+tide12.src = "anim/tide/12.png";
+tide13.src = "anim/tide/13.png";
+tide14.src = "anim/tide/14.png";
 
 fan1 = new Image();
 fan2 = new Image();
@@ -207,20 +130,20 @@ fan12 = new Image();
 fan13 = new Image();
 fan14 = new Image();
 
-fan1.src = "fan/1.png";
-fan2.src = "fan/2.png";
-fan3.src = "fan/3.png";
-fan4.src = "fan/4.png";
-fan5.src = "fan/5.png";
-fan6.src = "fan/6.png";
-fan7.src = "fan/7.png";
-fan8.src = "fan/8.png";
-fan9.src = "fan/9.png";
-fan10.src = "fan/10.png";
-fan11.src = "fan/11.png";
-fan12.src = "fan/12.png";
-fan13.src = "fan/13.png";
-fan14.src = "fan/14.png";
+fan1.src = "anim/fan/1.png";
+fan2.src = "anim/fan/2.png";
+fan3.src = "anim/fan/3.png";
+fan4.src = "anim/fan/4.png";
+fan5.src = "anim/fan/5.png";
+fan6.src = "anim/fan/6.png";
+fan7.src = "anim/fan/7.png";
+fan8.src = "anim/fan/8.png";
+fan9.src = "anim/fan/9.png";
+fan10.src = "anim/fan/10.png";
+fan11.src = "anim/fan/11.png";
+fan12.src = "anim/fan/12.png";
+fan13.src = "anim/fan/13.png";
+fan14.src = "anim/fan/14.png";
 
 plants1 = new Image();
 plants2 = new Image();
@@ -237,20 +160,20 @@ plants12 = new Image();
 plants13 = new Image();
 plants14 = new Image();
 
-plants1.src = "plants/1.png";
-plants2.src = "plants/2.png";
-plants3.src = "plants/3.png";
-plants4.src = "plants/4.png";
-plants5.src = "plants/5.png";
-plants6.src = "plants/6.png";
-plants7.src = "plants/7.png";
-plants8.src = "plants/8.png";
-plants9.src = "plants/9.png";
-plants10.src = "plants/10.png";
-plants11.src = "plants/11.png";
-plants12.src = "plants/12.png";
-plants13.src = "plants/13.png";
-plants14.src = "plants/14.png";
+plants1.src = "anim/plants/1.png";
+plants2.src = "anim/plants/2.png";
+plants3.src = "anim/plants/3.png";
+plants4.src = "anim/plants/4.png";
+plants5.src = "anim/plants/5.png";
+plants6.src = "anim/plants/6.png";
+plants7.src = "anim/plants/7.png";
+plants8.src = "anim/plants/8.png";
+plants9.src = "anim/plants/9.png";
+plants10.src = "anim/plants/10.png";
+plants11.src = "anim/plants/11.png";
+plants12.src = "anim/plants/12.png";
+plants13.src = "anim/plants/13.png";
+plants14.src = "anim/plants/14.png";
 
 slash1 = new Image();
 slash2 = new Image();
@@ -267,20 +190,20 @@ slash12 = new Image();
 slash13 = new Image();
 slash14 = new Image();
 
-slash1.src = "slash/1.png";
-slash2.src = "slash/2.png";
-slash3.src = "slash/3.png";
-slash4.src = "slash/4.png";
-slash5.src = "slash/5.png";
-slash6.src = "slash/6.png";
-slash7.src = "slash/7.png";
-slash8.src = "slash/8.png";
-slash9.src = "slash/9.png";
-slash10.src = "slash/10.png";
-slash11.src = "slash/11.png";
-slash12.src = "slash/12.png";
-slash13.src = "slash/13.png";
-slash14.src = "slash/14.png";
+slash1.src = "anim/slash/1.png";
+slash2.src = "anim/slash/2.png";
+slash3.src = "anim/slash/3.png";
+slash4.src = "anim/slash/4.png";
+slash5.src = "anim/slash/5.png";
+slash6.src = "anim/slash/6.png";
+slash7.src = "anim/slash/7.png";
+slash8.src = "anim/slash/8.png";
+slash9.src = "anim/slash/9.png";
+slash10.src = "anim/slash/10.png";
+slash11.src = "anim/slash/11.png";
+slash12.src = "anim/slash/12.png";
+slash13.src = "anim/slash/13.png";
+slash14.src = "anim/slash/14.png";
 
 slice1 = new Image();
 slice2 = new Image();
@@ -297,20 +220,20 @@ slice12 = new Image();
 slice13 = new Image();
 slice14 = new Image();
 
-slice1.src = "slice/1.png";
-slice2.src = "slice/2.png";
-slice3.src = "slice/3.png";
-slice4.src = "slice/4.png";
-slice5.src = "slice/5.png";
-slice6.src = "slice/6.png";
-slice7.src = "slice/7.png";
-slice8.src = "slice/8.png";
-slice9.src = "slice/9.png";
-slice10.src = "slice/10.png";
-slice11.src = "slice/11.png";
-slice12.src = "slice/12.png";
-slice13.src = "slice/13.png";
-slice14.src = "slice/14.png";
+slice1.src = "anim/slice/1.png";
+slice2.src = "anim/slice/2.png";
+slice3.src = "anim/slice/3.png";
+slice4.src = "anim/slice/4.png";
+slice5.src = "anim/slice/5.png";
+slice6.src = "anim/slice/6.png";
+slice7.src = "anim/slice/7.png";
+slice8.src = "anim/slice/8.png";
+slice9.src = "anim/slice/9.png";
+slice10.src = "anim/slice/10.png";
+slice11.src = "anim/slice/11.png";
+slice12.src = "anim/slice/12.png";
+slice13.src = "anim/slice/13.png";
+slice14.src = "anim/slice/14.png";
 
 fever1 = new Image();
 fever2 = new Image();
@@ -327,20 +250,20 @@ fever12 = new Image();
 fever13 = new Image();
 fever14 = new Image();
 
-fever1.src = "fever/1.png";
-fever2.src = "fever/2.png";
-fever3.src = "fever/3.png";
-fever4.src = "fever/4.png";
-fever5.src = "fever/5.png";
-fever6.src = "fever/6.png";
-fever7.src = "fever/7.png";
-fever8.src = "fever/8.png";
-fever9.src = "fever/9.png";
-fever10.src = "fever/10.png";
-fever11.src = "fever/11.png";
-fever12.src = "fever/12.png";
-fever13.src = "fever/13.png";
-fever14.src = "fever/14.png";
+fever1.src = "anim/fever/1.png";
+fever2.src = "anim/fever/2.png";
+fever3.src = "anim/fever/3.png";
+fever4.src = "anim/fever/4.png";
+fever5.src = "anim/fever/5.png";
+fever6.src = "anim/fever/6.png";
+fever7.src = "anim/fever/7.png";
+fever8.src = "anim/fever/8.png";
+fever9.src = "anim/fever/9.png";
+fever10.src = "anim/fever/10.png";
+fever11.src = "anim/fever/11.png";
+fever12.src = "anim/fever/12.png";
+fever13.src = "anim/fever/13.png";
+fever14.src = "anim/fever/14.png";
 
 grenade1 = new Image();
 grenade2 = new Image();
@@ -357,20 +280,20 @@ grenade12 = new Image();
 grenade13 = new Image();
 grenade14 = new Image();
 
-grenade1.src = "grenade/1.png";
-grenade2.src = "grenade/2.png";
-grenade3.src = "grenade/3.png";
-grenade4.src = "grenade/4.png";
-grenade5.src = "grenade/5.png";
-grenade6.src = "grenade/6.png";
-grenade7.src = "grenade/7.png";
-grenade8.src = "grenade/8.png";
-grenade9.src = "grenade/9.png";
-grenade10.src = "grenade/10.png";
-grenade11.src = "grenade/11.png";
-grenade12.src = "grenade/12.png";
-grenade13.src = "grenade/13.png";
-grenade14.src = "grenade/14.png";
+grenade1.src = "anim/grenade/1.png";
+grenade2.src = "anim/grenade/2.png";
+grenade3.src = "anim/grenade/3.png";
+grenade4.src = "anim/grenade/4.png";
+grenade5.src = "anim/grenade/5.png";
+grenade6.src = "anim/grenade/6.png";
+grenade7.src = "anim/grenade/7.png";
+grenade8.src = "anim/grenade/8.png";
+grenade9.src = "anim/grenade/9.png";
+grenade10.src = "anim/grenade/10.png";
+grenade11.src = "anim/grenade/11.png";
+grenade12.src = "anim/grenade/12.png";
+grenade13.src = "anim/grenade/13.png";
+grenade14.src = "anim/grenade/14.png";
 
 ice1 = new Image();
 ice2 = new Image();
@@ -387,20 +310,20 @@ ice12 = new Image();
 ice13 = new Image();
 ice14 = new Image();
 
-ice1.src = "ice/1.png";
-ice2.src = "ice/2.png";
-ice3.src = "ice/3.png";
-ice4.src = "ice/4.png";
-ice5.src = "ice/5.png";
-ice6.src = "ice/6.png";
-ice7.src = "ice/7.png";
-ice8.src = "ice/8.png";
-ice9.src = "ice/9.png";
-ice10.src = "ice/10.png";
-ice11.src = "ice/11.png";
-ice12.src = "ice/12.png";
-ice13.src = "ice/13.png";
-ice14.src = "ice/14.png";
+ice1.src = "anim/ice/1.png";
+ice2.src = "anim/ice/2.png";
+ice3.src = "anim/ice/3.png";
+ice4.src = "anim/ice/4.png";
+ice5.src = "anim/ice/5.png";
+ice6.src = "anim/ice/6.png";
+ice7.src = "anim/ice/7.png";
+ice8.src = "anim/ice/8.png";
+ice9.src = "anim/ice/9.png";
+ice10.src = "anim/ice/10.png";
+ice11.src = "anim/ice/11.png";
+ice12.src = "anim/ice/12.png";
+ice13.src = "anim/ice/13.png";
+ice14.src = "anim/ice/14.png";
 //IMAGES END
 
 var timeoutMS = 750;
@@ -416,32 +339,11 @@ var anims = { "fire": [fire1, fire2, fire3, fire4, fire5, fire6, fire7, fire8, f
 			  "grenade": [grenade1, grenade2, grenade3, grenade4, grenade5, grenade6, grenade7, grenade8, grenade9, grenade10, grenade11, grenade12, grenade13, grenade14],
 			  "ice": [ice1, ice2, ice3, ice4, ice5, ice6, ice7, ice8, ice9, ice10, ice11, ice12, ice13, ice14] };
 
-function startBattle () {
-	//console.log(player);
-	//console.log(enemy);
-	
-	if(typeof(player) !== "undefined" && typeof(enemy) !== "undefined") { init(); }
-	else { alert("Scan barcodes!"); }
-}	
-
-function restartBattle () {
-	player.hp = player.maxHp;
-	player.mana = player.maxMana;
-	player.hpPercent = 100;
-	enemy.hp = enemy.maxHp;
-	enemy.hpPercent = 100;
-	
-	init();
-}
-
-
-function init () {
+function initBattle () {
 	
 	document.getElementById("promptText").innerText = "Player's turn";
 	refreshHealthBars();
 	showCommandList();
-	document.getElementById("startButton").style.display = "none";
-	document.getElementById("restartButton").style.display = "none";
 	
 	
 	//show attack name on buttons
@@ -465,18 +367,18 @@ function refreshHealthBars () {
 }
 
 function playerAttack0 () {
-	if(player.abilities[0].healing == false) {
+	if(player.abilities[0].healing === false) {
 		//if(player.mana < (player.abilities[0].strength)) { alert("You need " +(player.abilities[0].strength) +" mana!"); return; }
 		//else {
 			hideCommandList();
 			//player.mana -= (player.abilities[0].strength);
 			var dmg = getRandomInt((1*player.attack*player.abilities[0].strength), (2*player.attack*player.abilities[0].strength));
-			var i = getRandomInt(0, animNames.length)
+			var i = getRandomInt(0, animNames.length);
 			playAnimationCanvas(player.abilities[0].animation, timeoutMS, "enemyAnimationDiv");	
 			enemyDamaged(dmg);
 			setTimeout(function() {
 				var battleResult = checkHealth();		
-				if (battleResult == 0) { enemyTurn(); }	
+				if (battleResult === 0) { enemyTurn(); }	
 			}, timeoutMS);
 		//}
 	}
@@ -497,18 +399,18 @@ function playerAttack0 () {
 }
 
 function playerAttack1 () {
-	if(player.abilities[1].healing == false) {
+	if(player.abilities[1].healing === false) {
 		//if(player.mana < (player.abilities[1].strength)) {alert("You need " +(player.abilities[1].strength) +" mana!"); return; }
 		//else {
 			hideCommandList();
 			//player.mana -= (player.abilities[1].strength);
 			var dmg = getRandomInt((1*player.attack*player.abilities[1].strength), (2*player.attack*player.abilities[1].strength));
-			var i = getRandomInt(0, animNames.length)
+			var i = getRandomInt(0, animNames.length);
 			playAnimationCanvas(player.abilities[1].animation, timeoutMS, "enemyAnimationDiv");	
 			enemyDamaged(dmg);
 			setTimeout(function() {
 				var battleResult = checkHealth();		
-				if (battleResult == 0) { enemyTurn(); }	
+				if (battleResult === 0) { enemyTurn(); }	
 			}, timeoutMS);
 		//}
 	}
@@ -529,18 +431,18 @@ function playerAttack1 () {
 }
 
 function playerAttack2 () {
-	if(player.abilities[2].healing == false) {
+	if(player.abilities[2].healing === false) {
 		//if(player.mana < (player.abilities[2].strength)) { alert("You need " +(player.abilities[2].strength) +" mana!"); return; }
 		//else {
 			hideCommandList();
 			//player.mana -= (player.abilities[2].strength);
 			var dmg = getRandomInt((1*player.attack*player.abilities[2].strength), (2*player.attack*player.abilities[2].strength));
-			var i = getRandomInt(0, animNames.length)
+			var i = getRandomInt(0, animNames.length);
 			playAnimationCanvas(player.abilities[2].animation, timeoutMS, "enemyAnimationDiv");	
 			enemyDamaged(dmg);
 			setTimeout(function() {
 				var battleResult = checkHealth();		
-				if (battleResult == 0) { enemyTurn(); }	
+				if (battleResult === 0) { enemyTurn(); }	
 			}, timeoutMS);
 		//}
 	}
@@ -561,18 +463,18 @@ function playerAttack2 () {
 }
 
 function playerAttack3 () {
-	if(player.abilities[3].healing == false) {
+	if(player.abilities[3].healing === false) {
 		//if(player.mana < (player.abilities[3].strength)) { alert("You need " +(player.abilities[3].strength) +" mana!"); return; }
 		//else {
 			hideCommandList();
 			//player.mana -= (player.abilities[3].strength);
 			var dmg = getRandomInt((1*player.attack*player.abilities[3].strength), (2*player.attack*player.abilities[3].strength));
-			var i = getRandomInt(0, animNames.length)
+			var i = getRandomInt(0, animNames.length);
 			playAnimationCanvas(player.abilities[3].animation, timeoutMS, "enemyAnimationDiv");	
 			enemyDamaged(dmg);
 			setTimeout(function() {
 				var battleResult = checkHealth();		
-				if (battleResult == 0) { enemyTurn(); }	
+				if (battleResult === 0) { enemyTurn(); }	
 			}, timeoutMS);
 		//}
 	}
@@ -595,13 +497,13 @@ function playerAttack3 () {
 function enemyTurn () {
 	document.getElementById("promptText").innerText = "Enemy's turn";
 	refreshHealthBars();
-	var i = getRandomInt(0, animNames.length)
+	var i = getRandomInt(0, animNames.length);
 	playAnimationCanvas(animNames[i], timeoutMS, "playerAnimationDiv");
 	setTimeout(function() {
 		var dmg = getRandomInt((1*enemy.attack), (4*enemy.attack));
 		playerDamaged(dmg);
 		var battleResult = checkHealth();
-		if (battleResult == 0) { playerTurn(); }
+		if (battleResult === 0) { playerTurn(); }
 	}, timeoutMS);
 }
 
@@ -617,13 +519,11 @@ function checkHealth () {
 	if(enemy.hp <= 0) {  
 		enemy.hp = 0;
 		document.getElementById("promptText").innerText = "PLAYER WON";
-		document.getElementById("restartButton").style.display = "block";
 		return 1;
 	}
 	if(player.hp <= 0) { 
 		player.hp = 0;
 		document.getElementById("promptText").innerText = "PLAYER LOST";
-		document.getElementById("restartButton").style.display = "block";
 		return -1;
 	}
 	return 0;
