@@ -54,6 +54,7 @@ average
 -creepy
 +cuddly
 ++cute
++dancing
 --dangerous
 +daring
 ++darling
