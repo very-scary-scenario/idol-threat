@@ -5,9 +5,10 @@ import os
 import subprocess
 
 
-DIRNAME = 'idols'
-IDOLS_DIR = os.path.join(os.path.dirname(__file__), DIRNAME)
-THUMBS_DIR = os.path.join(os.path.dirname(__file__), 'idol-thumbs')
+HERE = os.path.dirname(__file__)
+IDOL_DIRNAME = 'idols'
+IDOLS_DIR = os.path.join(HERE, IDOL_DIRNAME)
+THUMBS_DIR = os.path.join(HERE, 'idol-thumbs')
 POSES = set()
 SKIN_COLOURS = set()
 HAIR_COLOURS = set()
@@ -41,7 +42,7 @@ def part(path, thumb_path, bodytype, layer, colour, number, pose=None):
     return attrs
 
 
-def build_idols_json():
+def build_idols():
     parts = []
 
     for d in os.scandir(IDOLS_DIR):
@@ -56,15 +57,18 @@ def build_idols_json():
             img_path = os.path.join(IDOLS_DIR, d.name, entry.name)
             thumb_path = os.path.join(THUMBS_DIR, thumb_name)
 
-            subprocess.check_call(
-                ['convert', img_path, '-resize', '400x400^', thumb_path])
-            subprocess.check_call(['optipng', thumb_path])
-
             parts.append(part(
-                '/'.join([DIRNAME, d.name, entry.name]),
+                '/'.join([IDOL_DIRNAME, d.name, entry.name]),
                 '/'.join([THUMBS_DIR, thumb_name]),
                 *fn.split('_')
             ))
+
+            if os.path.exists(thumb_path):
+                continue
+
+            subprocess.check_call(
+                ['convert', img_path, '-resize', '400x400^', thumb_path])
+            subprocess.check_call(['optipng', thumb_path])
 
     return {
         pose: {
@@ -83,6 +87,19 @@ def build_idols_json():
     }
 
 
+def build_bios():
+    bios = []
+
+    with open(os.path.join(HERE, 'idol bios.txt')) as f:
+        for bio in f.readlines():
+            bio = bio.strip()
+            if bio:
+                bios.append(bio)
+
+    return bios
+
+
 if __name__ == '__main__':
     with open('parts.js', 'w') as p:
-        p.write('PARTS = {};'.format(json.dumps(build_idols_json())))
+        p.write('PARTS = {};'.format(json.dumps(build_idols())))
+        p.write('BIOS = {};'.format(json.dumps(build_bios())))

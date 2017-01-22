@@ -100,7 +100,14 @@ function Idol(seed) {
     }
   }
 
-  console.log('generated ' + this.name);
+  var bioParts = [];
+  while(bioParts.length < 3) {
+    var part = choice(BIOS, this.rand());
+    if (bioParts.indexOf(part) === -1) {
+      bioParts.push(part);
+    }
+  }
+  this.bio = bioParts.join(' ');
 }
 Idol.prototype.generateName = function() {
   var name = '';
