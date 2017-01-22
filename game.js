@@ -50,6 +50,8 @@ var catalogTemplate = Handlebars.compile(document.getElementById('catalog-templa
 var unitTemplate = Handlebars.compile(document.getElementById('unit-template').innerHTML);
 var idolDetailTemplate = Handlebars.compile(document.getElementById('idol-detail-template').innerHTML);
 
+var maxUnitSize = 3;
+
 function choice(list, slice) {
   var result = list[Math.floor(slice * list.length)];
   return result;
@@ -169,7 +171,7 @@ Idol.prototype.toggleUnitMembership = function() {
   if (this.isInUnit()) {
     agency.unit.splice(agency.unit.indexOf(this), 1);
   } else {
-    agency.unit.push(this);
+    agency.addToUnit(this);
   }
   rerender();
 };
@@ -216,7 +218,15 @@ Agency.prototype.addIdol = function(idol) {
     }
   }
   this.catalog.push(idol);
+  this.addToUnit(idol);
   rerender();
+};
+Agency.prototype.addToUnit = function(idol) {
+  if (this.unit.length >= maxUnitSize) {
+    alert("Your unit is full; you'll need to remove someone before you can add " + idol.name + ".");
+  } else {
+    this.unit.push(idol);
+  }
 };
 
 function numFromString(str) {
@@ -229,8 +239,8 @@ function numFromString(str) {
 }
 
 function addIdolFromImage(data) {
-  if (!data.codeResult) {
-    alert('sorry, could not read barcode, please try a clearer photo');
+  if ((!data) || (!data.codeResult)) {
+    alert("Sorry, we couldn't read a barcode in that picture, please try a clearer photo.");
     return;
   }
   idol = new Idol(numFromString(data.codeResult.code));

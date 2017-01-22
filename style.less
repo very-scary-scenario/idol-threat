@@ -153,19 +153,31 @@ a {
   width: 100%;
   position: fixed;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8)
-}
+  background-color: fade(@fg, 90%);
+  color: @bg;
 
-.unit {
-  overflow-x: scroll;
-  white-space: nowrap;
-
-  li {
+  h2 {
     display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    padding: .3em .5em;
+    transform: rotate(270deg);
+    transform-origin: top left;
+  }
 
-    .portrait {
-      height: @unit-height;
-      width: @unit-height;
+  ul.unit {
+    overflow-x: scroll;
+    white-space: nowrap;
+    padding-left: 2em;
+
+    li {
+      display: inline-block;
+
+      .portrait {
+        height: @unit-height;
+        width: @unit-height;
+      }
     }
   }
 }
