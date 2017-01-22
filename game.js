@@ -134,6 +134,8 @@ function Idol(seed) {
   }
   this.bio = bioParts.join(' ');
 
+  this.quote = choice(QUOTES, this.rand());
+
   while (this.abilities.length < 4) {
     var abilityParts = [];
 

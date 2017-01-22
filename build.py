@@ -150,8 +150,23 @@ def build_abilities():
     return parts
 
 
+def build_quotes():
+    quotes = []
+
+    with open(
+        os.path.join(HERE, 'idol quotes.txt'), encoding='utf-16',
+    ) as f:
+        for line in f.readlines():
+            line = line.strip()
+            if line:
+                quotes.append(line)
+
+    return quotes
+
+
 if __name__ == '__main__':
     with open('parts.js', 'w') as p:
         p.write('PARTS = {};'.format(json.dumps(build_idols())))
         p.write('BIOS = {};'.format(json.dumps(build_bios())))
         p.write('ABILITIES = {};'.format(json.dumps(build_abilities())))
+        p.write('QUOTES = {};'.format(json.dumps(build_quotes())))
