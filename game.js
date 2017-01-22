@@ -45,6 +45,7 @@ var LAYERS = [
 
 var barcodeImage = document.getElementById('barcode-image');
 var detailElement = document.getElementById('idol-detail');
+var battleElement = document.getElementById('battle');
 var spriteTemplate = Handlebars.compile(document.getElementById('sprite-template').innerHTML);
 var catalogTemplate = Handlebars.compile(document.getElementById('catalog-template').innerHTML);
 var unitTemplate = Handlebars.compile(document.getElementById('unit-template').innerHTML);
@@ -285,9 +286,13 @@ function rerender() {
 
   document.getElementById('fight').addEventListener('click', function(e) {
     e.stopPropagation();
-    player = new BattleIdol(agency.unit[0]);
-    enemy = new BattleIdol(new Idol(Math.random()));
-    initBattle();
+    if (agency.unit.length > 0) {
+      player = new BattleIdol(agency.unit[0]);
+      enemy = new BattleIdol(new Idol(Math.random()));
+      initBattle();
+    } else {
+      alert('You need at least one idol in your unit to fight.');
+    }
     return false;
   });
 }

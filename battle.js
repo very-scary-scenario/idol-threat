@@ -340,6 +340,7 @@ var anims = { "fire": [fire1, fire2, fire3, fire4, fire5, fire6, fire7, fire8, f
 			  "ice": [ice1, ice2, ice3, ice4, ice5, ice6, ice7, ice8, ice9, ice10, ice11, ice12, ice13, ice14] };
 
 function initBattle () {
+  battleElement.classList.add('active');
 	
 	document.getElementById("promptText").innerText = "Player's turn";
 	refreshHealthBars();
@@ -366,15 +367,15 @@ function refreshHealthBars () {
 	document.getElementById("enemyHealthbar").innerText = (enemy.hpPercent + "%");
 }
 
-function playerAttack0 () {
-	if(player.abilities[0].healing === false) {
-		//if(player.mana < (player.abilities[0].strength)) { alert("You need " +(player.abilities[0].strength) +" mana!"); return; }
+function playerAttack(ability) {
+	if(ability.healing === false) {
+		//if(player.mana < (ability.strength)) { alert("You need " +(ability.strength) +" mana!"); return; }
 		//else {
 			hideCommandList();
-			//player.mana -= (player.abilities[0].strength);
-			var dmg = getRandomInt((1*player.attack*player.abilities[0].strength), (2*player.attack*player.abilities[0].strength));
+			//player.mana -= (ability.strength);
+			var dmg = getRandomInt((1*player.attack*ability.strength), (2*player.attack*ability.strength));
 			var i = getRandomInt(0, animNames.length);
-			playAnimationCanvas(player.abilities[0].animation, timeoutMS, "enemyAnimationDiv");	
+			playAnimationCanvas(ability.animation, timeoutMS, "enemyAnimationDiv");	
 			enemyDamaged(dmg);
 			setTimeout(function() {
 				var battleResult = checkHealth();		
@@ -390,7 +391,7 @@ function playerAttack0 () {
 			//player.mana -= (3);
 			var heal = getRandomInt((1*player.attack+player.defense), (2*player.attack+player.defense));
 			playerHealed(heal);
-			playAnimationCanvas(player.abilities[0].animation, timeoutMS, "playerAnimationDiv");
+			playAnimationCanvas(ability.animation, timeoutMS, "playerAnimationDiv");
 			setTimeout(function() {
 				enemyTurn();	
 			}, timeoutMS);
@@ -398,101 +399,10 @@ function playerAttack0 () {
 	}
 }
 
-function playerAttack1 () {
-	if(player.abilities[1].healing === false) {
-		//if(player.mana < (player.abilities[1].strength)) {alert("You need " +(player.abilities[1].strength) +" mana!"); return; }
-		//else {
-			hideCommandList();
-			//player.mana -= (player.abilities[1].strength);
-			var dmg = getRandomInt((1*player.attack*player.abilities[1].strength), (2*player.attack*player.abilities[1].strength));
-			var i = getRandomInt(0, animNames.length);
-			playAnimationCanvas(player.abilities[1].animation, timeoutMS, "enemyAnimationDiv");	
-			enemyDamaged(dmg);
-			setTimeout(function() {
-				var battleResult = checkHealth();		
-				if (battleResult === 0) { enemyTurn(); }	
-			}, timeoutMS);
-		//}
-	}
-	
-	else {
-		//if(player.mana < (3)) { alert("You need 3 mana!"); return; }
-		//else {
-			hideCommandList();
-			//player.mana -= (3);
-			var heal = getRandomInt((1*player.attack+player.defense), (2*player.attack+player.defense));
-			playerHealed(heal);
-			playAnimationCanvas(player.abilities[1].animation, timeoutMS, "playerAnimationDiv");
-			setTimeout(function() {
-				enemyTurn();	
-			}, timeoutMS);
-		//}
-	}
-}
-
-function playerAttack2 () {
-	if(player.abilities[2].healing === false) {
-		//if(player.mana < (player.abilities[2].strength)) { alert("You need " +(player.abilities[2].strength) +" mana!"); return; }
-		//else {
-			hideCommandList();
-			//player.mana -= (player.abilities[2].strength);
-			var dmg = getRandomInt((1*player.attack*player.abilities[2].strength), (2*player.attack*player.abilities[2].strength));
-			var i = getRandomInt(0, animNames.length);
-			playAnimationCanvas(player.abilities[2].animation, timeoutMS, "enemyAnimationDiv");	
-			enemyDamaged(dmg);
-			setTimeout(function() {
-				var battleResult = checkHealth();		
-				if (battleResult === 0) { enemyTurn(); }	
-			}, timeoutMS);
-		//}
-	}
-	
-	else {
-		//if(player.mana < (3)) { alert("You need 3 mana!"); return; }
-		//else {
-			hideCommandList();
-			//player.mana -= (3);
-			var heal = getRandomInt((1*player.attack+player.defense), (2*player.attack+player.defense));
-			playerHealed(heal);
-			playAnimationCanvas(player.abilities[2].animation, timeoutMS, "playerAnimationDiv");
-			setTimeout(function() {
-				enemyTurn();	
-			}, timeoutMS);
-		//}
-	}
-}
-
-function playerAttack3 () {
-	if(player.abilities[3].healing === false) {
-		//if(player.mana < (player.abilities[3].strength)) { alert("You need " +(player.abilities[3].strength) +" mana!"); return; }
-		//else {
-			hideCommandList();
-			//player.mana -= (player.abilities[3].strength);
-			var dmg = getRandomInt((1*player.attack*player.abilities[3].strength), (2*player.attack*player.abilities[3].strength));
-			var i = getRandomInt(0, animNames.length);
-			playAnimationCanvas(player.abilities[3].animation, timeoutMS, "enemyAnimationDiv");	
-			enemyDamaged(dmg);
-			setTimeout(function() {
-				var battleResult = checkHealth();		
-				if (battleResult === 0) { enemyTurn(); }	
-			}, timeoutMS);
-		//}
-	}
-	
-	else {
-		//if(player.mana < (3)) { alert("You need 3 mana!"); return; }
-		//else {
-			hideCommandList();
-			//player.mana -= (3);
-			var heal = getRandomInt((1*player.attack+player.defense), (2*player.attack+player.defense));
-			playerHealed(heal);
-			playAnimationCanvas(player.abilities[3].animation, timeoutMS, "playerAnimationDiv");
-			setTimeout(function() {
-				enemyTurn();	
-			}, timeoutMS);
-		//}
-	}
-}
+function playerAttack0 () {playerAttack(player.abilities[0]);}
+function playerAttack1 () {playerAttack(player.abilities[1]);}
+function playerAttack2 () {playerAttack(player.abilities[2]);}
+function playerAttack3 () {playerAttack(player.abilities[3]);}
 
 function enemyTurn () {
 	document.getElementById("promptText").innerText = "Enemy's turn";
@@ -518,12 +428,14 @@ function checkHealth () {
 	
 	if(enemy.hp <= 0) {  
 		enemy.hp = 0;
-		document.getElementById("promptText").innerText = "PLAYER WON";
+		alert("You win!");
+    battleElement.classList.remove('active');
 		return 1;
 	}
 	if(player.hp <= 0) { 
 		player.hp = 0;
-		document.getElementById("promptText").innerText = "PLAYER LOST";
+		alert("You lose.");
+    battleElement.classList.remove('active');
 		return -1;
 	}
 	return 0;
