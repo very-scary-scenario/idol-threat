@@ -43,7 +43,6 @@ var timeoutMS = 750;
 function initBattle () {
   battleElement.classList.add('active');
 	
-	document.getElementById("promptText").innerText = "Player's turn";
 	refreshHealthBars();
 	showCommandList();
 	
@@ -111,7 +110,6 @@ function playerAttack2 () {playerAttack(player.abilities[2]);}
 function playerAttack3 () {playerAttack(player.abilities[3]);}
 
 function enemyTurn () {
-	document.getElementById("promptText").innerText = "Enemy's turn";
 	refreshHealthBars();
 	var i = getRandomInt(0, animNames.length);
 	playAnimationCanvas(animNames[i], timeoutMS, "playerAnimationDiv");
@@ -124,7 +122,6 @@ function enemyTurn () {
 }
 
 function playerTurn () {
-	document.getElementById("promptText").innerText = "Player's turn";
 	showCommandList();
 	
 }
