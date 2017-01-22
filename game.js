@@ -173,11 +173,7 @@ Idol.prototype.isInUnit = function() {
   return agency.unit.indexOf(this) !== -1;
 };
 Idol.prototype.toggleUnitMembership = function() {
-  if (this.isInUnit()) {
-    agency.unit.splice(agency.unit.indexOf(this), 1);
-  } else {
-    agency.addToUnit(this, true);
-  }
+  agency.addToUnit(this);
   rerender();
 };
 Idol.prototype.showDetail = function() {
@@ -227,13 +223,7 @@ Agency.prototype.addIdol = function(idol) {
   rerender();
 };
 Agency.prototype.addToUnit = function(idol, interactive) {
-  if (this.unit.length >= maxUnitSize) {
-    if (interactive !== undefined) {
-      alert("Your unit is full; you'll need to remove someone before you can add " + idol.name + ".");
-    }
-  } else {
-    this.unit.push(idol);
-  }
+  this.unit = [idol];
 };
 
 function numFromString(str) {
@@ -293,7 +283,7 @@ function rerender() {
       enemy = new BattleIdol(new Idol(Math.random()));
       initBattle();
     } else {
-      alert('You need at least one idol in your unit to fight.');
+      alert('You need an idol to fight.');
     }
     return false;
   });
