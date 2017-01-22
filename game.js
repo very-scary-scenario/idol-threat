@@ -118,7 +118,7 @@ Idol.prototype.generateName = function() {
 Idol.prototype.spriteHTML = function(thumb) {
   return spriteTemplate({
     parts: this.parts,
-    thumb: thumb
+    thumb: thumb === true
   });
 };
 Idol.prototype.thumbSpriteHTML = function() {

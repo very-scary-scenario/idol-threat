@@ -52,7 +52,7 @@
 
     <script id="idol-detail-template" type="text/x-handlebars-template">
       <div class="portrait">
-        {{{ spriteHTML }}}
+        {{{spriteHTML}}}
       </div>
       <div class="pane name">
 				<h2>{{name}}</h2>
@@ -89,7 +89,7 @@
         {{#each unit}}
           <li>
             <div class="portrait">
-              {{{ thumbSpriteHTML }}}
+              {{{thumbSpriteHTML}}}
             </div>
           </li>
         {{/each}}
@@ -99,7 +99,7 @@
     <script id="sprite-template" type="text/x-handlebars-template">
       <div class="sprite">
         {{#each parts}}
-          <img class="layer-{{layer}}" src="{{#if ../thumb}}{{thumbPath}}{{else}}{{path}}{{/if}}"/>
+          <img class="layer-{{layer}}" data-thumb="{{../thumb}}" src="{{#if ../thumb}}{{thumbPath}}{{else}}{{path}}{{/if}}"/>
         {{/each}}
       </div>
     </script>
