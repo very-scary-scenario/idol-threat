@@ -77,7 +77,6 @@ function Ability(parts) {
 
   for(var i = 0, n = parts.length; i < n; i++) {
     var part = parts[i];
-    console.log(part);
     partNames.push(part.word);
     this.bonus += part.bonus;
     if (part.healing) {
