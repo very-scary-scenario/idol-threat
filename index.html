@@ -101,7 +101,7 @@
     <script id="sprite-template" type="text/x-handlebars-template">
       <div class="sprite">
         {{#each parts}}
-          <img class="layer-{{layer}}" data-thumb="{{../thumb}}" src="{{#if ../thumb}}{{thumbPath}}{{else}}{{path}}{{/if}}"/>
+          <img class="layer-{{layer}}" data-thumb="{{../thumb}}" src="{{#if ../thumb}}{{thumbPath}}{{else}}{{medPath}}{{/if}}"/>
         {{/each}}
       </div>
     </script>

@@ -18,10 +18,14 @@ if not os.path.isdir(THUMBS_DIR):
     os.mkdir(THUMBS_DIR)
 
 
-def part(path, thumb_path, bodytype, layer, colour, number, pose=None):
+def part(
+    path, thumb_path, med_path, bodytype, layer, colour, number,
+    pose=None,
+):
     attrs = {
         'path': path,
         'thumbPath': thumb_path,
+        'medPath': med_path,
         'bodytype': bodytype,
         'layer': layer,
         'number': number,
@@ -53,22 +57,30 @@ def build_idols():
             fn = entry.name.replace('.png', '')
 
             basename, ext = os.path.splitext(entry.name)
+
             thumb_name = '{}-thumb{}'.format(basename, ext)
+            med_name = '{}-med{}'.format(basename, ext)
+
             img_path = os.path.join(IDOLS_DIR, d.name, entry.name)
             thumb_path = os.path.join(THUMBS_DIR, thumb_name)
+            med_path = os.path.join(THUMBS_DIR, med_name)
 
             parts.append(part(
                 '/'.join([IDOL_DIRNAME, d.name, entry.name]),
                 '/'.join([THUMBS_DIR, thumb_name]),
+                '/'.join([THUMBS_DIR, med_name]),
                 *fn.split('_')
             ))
 
-            if os.path.exists(thumb_path):
-                continue
+            if not os.path.exists(thumb_path):
+                subprocess.check_call(
+                    ['convert', img_path, '-resize', '400x400^', thumb_path])
+                subprocess.check_call(['optipng', thumb_path])
 
-            subprocess.check_call(
-                ['convert', img_path, '-resize', '400x400^', thumb_path])
-            subprocess.check_call(['optipng', thumb_path])
+            if not os.path.exists(med_path):
+                subprocess.check_call(
+                    ['convert', img_path, '-resize', '1000x1000^', med_path])
+                subprocess.check_call(['optipng', med_path])
 
     return {
         pose: {
