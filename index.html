@@ -20,6 +20,9 @@
     <section id="unit">
     </section>
 
+    <section id="idol-detail">
+    </section>
+
     <script id="catalog-template" type="text/x-handlebars-template">
       <h2>Select your unit…</h2>
       <ul class="catalog">
@@ -41,9 +44,44 @@
                 <dd>{{endurance}}</dd>
               </dl>
             </div>
+            <div class="input {{#if isInUnit}}checked{{/if}}"/>
           </li>
         {{/each}}
       </ul>
+    </script>
+
+    <script id="idol-detail-template" type="text/x-handlebars-template">
+      <div class="portrait">
+        {{{ spriteHTML }}}
+      </div>
+      <div class="pane name">
+				<h2>{{name}}</h2>
+      </div>
+      <div class="pane stats">
+        <dt>Attack</dt>
+        <dd>{{attack}}</dd>
+        <dt>Defense</dt>
+        <dd>{{defense}}</dd>
+        <dt>Speed</dt>
+        <dd>{{speed}}</dd>
+        <dt>Endurance</dt>
+        <dd>{{endurance}}</dd>
+      </div>
+      <div class="pane bio">
+        <p>Woof woof, woof woof! Woof, woof woof.</p>
+        <blockquote>Nico nico niii~!</blockquote>
+      </div>
+      <div class="pane abilities">
+        <ul>
+          <li>Sparkling daydream</li>
+          <li>Very scary parade</li>
+          <li>Cute dance</li>
+          <li>Yell</li>
+        </ul>
+      </div>
+      <div class="pane controls">
+        <a class="close" href="#">close</p>
+      </div>
     </script>
 
     <script id="unit-template" type="text/x-handlebars-template">

@@ -44,9 +44,11 @@ var LAYERS = [
 ];
 
 var barcodeImage = document.getElementById('barcode-image');
+var detailElement = document.getElementById('idol-detail');
 var spriteTemplate = Handlebars.compile(document.getElementById('sprite-template').innerHTML);
 var catalogTemplate = Handlebars.compile(document.getElementById('catalog-template').innerHTML);
 var unitTemplate = Handlebars.compile(document.getElementById('unit-template').innerHTML);
+var idolDetailTemplate = Handlebars.compile(document.getElementById('idol-detail-template').innerHTML);
 
 function choice(list, slice) {
   var result = list[Math.floor(slice * list.length)];
@@ -133,6 +135,15 @@ Idol.prototype.toggleUnitMembership = function() {
   }
   rerender();
 };
+Idol.prototype.showDetail = function() {
+  detailElement.innerHTML = idolDetailTemplate(this);
+  detailElement.classList.add('shown');
+	detailElement.querySelector('.close').addEventListener('click', hideIdolDetail);
+};
+
+function hideIdolDetail() {
+  detailElement.classList.remove('shown');
+}
 
 function Agency() {
   this.catalog = [];
@@ -141,9 +152,19 @@ function Agency() {
 Agency.prototype.renderCatalog = function() {
   document.getElementById('catalog').innerHTML = catalogTemplate(this);
   var agency = this;
+
+  document.querySelectorAll('#catalog li .input').forEach(function(element, i) {
+    element.addEventListener('click', function(e) {
+      agency.catalog[i].toggleUnitMembership();
+      e.stopPropagation();
+      return false;
+    });
+  });
+
   document.querySelectorAll('#catalog li').forEach(function(element, i) {
-    var idol = agency.catalog[i];
-    element.addEventListener('click', function() {idol.toggleUnitMembership();});
+    element.addEventListener('click', function(e) {
+      agency.catalog[i].showDetail();
+    });
   });
 };
 Agency.prototype.renderUnit = function() {
