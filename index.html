@@ -8,6 +8,7 @@
     <script>
       var PARTS;
       var BIOS;
+      var ABILITIES;
     </script>
   </head>
   <body>
@@ -73,10 +74,9 @@
       </div>
       <div class="pane abilities">
         <ul>
-          <li>Sparkling daydream</li>
-          <li>Very scary parade</li>
-          <li>Cute dance</li>
-          <li>Yell</li>
+          {{#each abilities}}
+            <li>{{name}}</li>
+          {{/each}}
         </ul>
       </div>
       <div class="pane controls">

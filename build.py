@@ -99,7 +99,47 @@ def build_bios():
     return bios
 
 
+def build_abilities():
+    parts = []
+
+    with open(os.path.join(HERE, 'idol attack names word list.txt')) as f:
+        for line in f.readlines():
+            line = line.strip()
+
+            if line.startswith('//') or not line:
+                continue
+
+            elif line.startswith('#'):
+                subparts = []
+                parts.append(subparts)
+                continue
+
+            bonus = 0
+            healing = False
+
+            while line[0] in '+-@':
+                char = line[0]
+
+                if char == '+':
+                    bonus += 1
+                elif char == '-':
+                    bonus -= 1
+                elif char == '@':
+                    healing = True
+
+                line = line[1:]
+
+            parts[-1].append({
+                'bonus': bonus,
+                'healing': healing,
+                'word': line,
+            })
+
+    return parts
+
+
 if __name__ == '__main__':
     with open('parts.js', 'w') as p:
         p.write('PARTS = {};'.format(json.dumps(build_idols())))
         p.write('BIOS = {};'.format(json.dumps(build_bios())))
+        p.write('ABILITIES = {};'.format(json.dumps(build_abilities())))

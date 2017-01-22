@@ -69,6 +69,25 @@ function seededRandom(seed) {
   return rand;
 }
 
+function Ability(parts) {
+  this.bonus = 0;
+  this.healing = false;
+
+  var partNames = [];
+
+  for(var i = 0, n = parts.length; i < n; i++) {
+    var part = parts[i];
+    console.log(part);
+    partNames.push(part.word);
+    this.bonus += part.bonus;
+    if (part.healing) {
+      this.healing = true;
+    }
+  }
+
+  this.name = partNames.join(' ');
+}
+
 function Idol(seed) {
   this.seed = seed;
   this.rand = seededRandom(seed);
@@ -79,6 +98,8 @@ function Idol(seed) {
   this.attack = Math.floor(this.rand(-100, 100));
   this.speed = Math.floor(this.rand(-100, 100));
   this.defense = Math.floor(this.rand(-100, 100));
+
+  this.abilities = [];
 
   this.firstName = this.generateName();
   this.lastName = this.generateName();
@@ -108,6 +129,17 @@ function Idol(seed) {
     }
   }
   this.bio = bioParts.join(' ');
+
+  while (this.abilities.length < 4) {
+    var abilityParts = [];
+
+    if (this.rand() > 0.8)
+      abilityParts.push(choice(ABILITIES[0], this.rand()));
+
+    abilityParts.push(choice(ABILITIES[1], this.rand()));
+    abilityParts.push(choice(ABILITIES[2], this.rand()));
+    this.abilities.push(new Ability(abilityParts));
+  }
 }
 Idol.prototype.generateName = function() {
   var name = '';
