@@ -659,6 +659,7 @@ function playAnimationCanvas(animationName, totalPlayTime, elemID) {
 	ctx.canvas.height = 256;
 	
 	var animationID = setInterval(function () {
+		ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 		ctx.drawImage(anims[animationName][currentImage], 0, 0);
 		currentImage++;
 	}, (totalPlayTime / anims[animationName].length));
