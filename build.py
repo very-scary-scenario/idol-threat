@@ -153,9 +153,7 @@ def build_abilities():
 def build_quotes():
     quotes = []
 
-    with open(
-        os.path.join(HERE, 'idol quotes.txt'), encoding='utf-16',
-    ) as f:
+    with open(os.path.join(HERE, 'idol quotes.txt')) as f:
         for line in f.readlines():
             line = line.strip()
             if line:
