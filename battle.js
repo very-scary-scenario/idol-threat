@@ -286,4 +286,3 @@ function playAnimationCanvas(animationName, totalPlayTime, elemID) {
     portraitDiv.removeChild(animationCanvas);
   }, totalPlayTime);
 }
-
