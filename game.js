@@ -49,6 +49,20 @@ var LAYERS = [
     'eb'
 ];
 
+var cookieExpiryDate = new Date();
+cookieExpiryDate.setFullYear(cookieExpiryDate.getFullYear() + 50);
+var cookieSuffix = '; expires=' + cookieExpiryDate.toUTCString();
+
+function getStateCookie() {
+  var cookieStrings = document.cookie.split(';');
+  for(var i = 0, n = cookieStrings.length; i < n; i++) {
+    var stateString = cookieStrings[i].match(/(?:state=)(.*)/)[1];
+    if (!!stateString) {
+      return stateString;
+    }
+  }
+}
+
 var barcodeImage = document.getElementById('barcode-image');
 var detailElement = document.getElementById('idol-detail');
 var battleElement = document.getElementById('battle');
@@ -188,11 +202,11 @@ Idol.prototype.showDetail = function() {
 };
 Idol.prototype.dump = function() {
   var idolDump = {
-    i: idol.seed,
+    i: this.seed,
     s: []
   };
   for(var i = 0, n = STATS.length; i < n; i++) {
-    idolDump.s.push(idol[STATS[i]]);
+    idolDump.s.push(this[STATS[i]]);
   }
   return idolDump;
 };
@@ -301,7 +315,7 @@ barcodeImage.addEventListener('change', function(e) {
 });
 
 var agency = new Agency();
-var savedStateString = window.location.hash.replace(/^#/, '');
+var savedStateString = window.location.hash.replace(/^#/, '') || getStateCookie();
 if (!!savedStateString) {
   agency.load(JSON.parse(atob(savedStateString)));
 }
@@ -328,7 +342,9 @@ function rerender() {
     return false;
   });
 
-  window.location.hash = btoa(JSON.stringify(agency.dump()));
+  var stateString = btoa(JSON.stringify(agency.dump()));
+  // window.location.hash = stateString;
+  document.cookie = 'state=' + stateString + cookieSuffix;
 }
 
 /*
