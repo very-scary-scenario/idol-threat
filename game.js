@@ -56,7 +56,11 @@ var cookieSuffix = '; expires=' + cookieExpiryDate.toUTCString();
 function getStateCookie() {
   var cookieStrings = document.cookie.split(';');
   for(var i = 0, n = cookieStrings.length; i < n; i++) {
-    var stateString = cookieStrings[i].match(/(?:state=)(.*)/)[1];
+    var matches = cookieStrings[i].match(/(?:state=)(.*)/);
+    if (!matches) {
+      continue;
+    }
+    var stateString = matches[1];
     if (!!stateString) {
       return stateString;
     }
