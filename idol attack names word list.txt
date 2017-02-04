@@ -206,6 +206,7 @@ standard
 +tasty
 ++terrific
 +thoughtful
+totally
 +tough
 ++treasured
 +trustworthy
