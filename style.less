@@ -40,7 +40,7 @@ body {
   background-color: @bg;
   color: @fg;
   letter-spacing: .05em;
-	font-size: 1.1em;
+  font-size: 1.1em;
 }
 
 a {
@@ -48,10 +48,10 @@ a {
   color: @fg;
   text-shadow: .1em .1em 0 @bg;
 
-	&:hover, &:focus {
-		color: @bg;
-		text-shadow: .1em .1em 0 @fg;
-	}
+  &:hover, &:focus {
+    color: @bg;
+    text-shadow: .1em .1em 0 @fg;
+  }
 }
 
 .sprite {
@@ -81,7 +81,7 @@ a {
   li {
     height: 9em;
     position: relative;
-		background-color: @mid;
+    background-color: @mid;
     cursor: pointer;
     margin: 1em 0;
 
@@ -105,7 +105,7 @@ a {
       height: 100%;
       position: absolute;
       top: 0;
-			padding: 1em 0;
+      padding: 1em 0;
       left: 9em;
 
       .name {
@@ -189,22 +189,22 @@ a {
 
 #idol-detail {
   position: fixed;
-	top: 0;
+  top: 0;
   overflow: hidden;
   width: 100%;
   min-height: 100%;
   background-color: fade(@bg, 95%);
   opacity: 0;
   transition: opacity .5s;
-	pointer-events: none;
+  pointer-events: none;
 
   &.shown {
     opacity: 1;
-		pointer-events: unset;
+    pointer-events: unset;
   }
 
-	.portrait {
-		width: 100vw;
+  .portrait {
+    width: 100vw;
     height: 100vh;
     text-align: right;
     position: absolute;
@@ -218,7 +218,7 @@ a {
       left: 15vw;
       max-width: 100vh;
     }
-	}
+  }
 
   .summary, .controls, .bio {
     position: absolute;
