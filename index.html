@@ -63,6 +63,8 @@
     <input type="file" accept="image/*" capture="camera" id="barcode-image"/>
 
     <script id="catalog-template" type="text/x-handlebars-template">
+      <a href="{{hash}}" id="save-link">save</a>
+
       <ul class="catalog">
         {{#each catalog}}
           <li class="{{#if isInUnit}}active{{/if}}">

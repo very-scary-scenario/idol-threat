@@ -26,6 +26,12 @@ var KANA = [
   'ja', 'ju', 'jo'
 ];
 var N = 'n';
+var STATS = [
+  'endurance',
+  'attack',
+  'speed',
+  'defense'
+];
 
 var LAYERS = [
     'hbe',
@@ -98,10 +104,9 @@ function Idol(seed) {
   this.xp = 0;
   this.level = 0;
 
-  this.endurance = Math.floor(this.rand(-100, 100));
-  this.attack = Math.floor(this.rand(-100, 100));
-  this.speed = Math.floor(this.rand(-100, 100));
-  this.defense = Math.floor(this.rand(-100, 100));
+  for(var i = 0, n = STATS.length; i < n; i++) {
+    this[STATS[i]] = Math.floor(this.rand(-100, 100));
+  }
 
   this.abilities = [];
 
@@ -116,8 +121,8 @@ function Idol(seed) {
     var poseParts = PARTS[choice(Object.keys(PARTS), this.rand())];
     var skinColourParts = poseParts[choice(Object.keys(poseParts), this.rand())];
     var hairColourParts = skinColourParts[choice(Object.keys(skinColourParts), this.rand())];
-    for(var i = 0, n = LAYERS.length; i < n; i++) {
-      var options = hairColourParts[LAYERS[i]];
+    for(var li = 0, ln = LAYERS.length; li < ln; li++) {
+      var options = hairColourParts[LAYERS[li]];
       if (options.length === 0) {
         partsMissing = true;
       }
@@ -181,6 +186,16 @@ Idol.prototype.showDetail = function() {
   detailElement.classList.add('shown');
 	detailElement.querySelector('.close').addEventListener('click', hideIdolDetail);
 };
+Idol.prototype.dump = function() {
+  var idolDump = {
+    i: idol.seed,
+    s: []
+  };
+  for(var i = 0, n = STATS.length; i < n; i++) {
+    idolDump.s.push(idol[STATS[i]]);
+  }
+  return idolDump;
+};
 
 function hideIdolDetail() {
   detailElement.classList.remove('shown');
@@ -225,6 +240,27 @@ Agency.prototype.addIdol = function(idol) {
 Agency.prototype.addToUnit = function(idol, interactive) {
   this.unit = [idol];
 };
+Agency.prototype.dump = function() {
+  var agencyDump = {i: []};
+
+  for(var i = 0, n = this.catalog.length; i < n; i++) {
+    agencyDump.i.push(this.catalog[i].dump());
+  }
+
+  return agencyDump;
+};
+Agency.prototype.load = function(agencyDump) {
+  for(var i = 0, n = agencyDump.i.length; i < n; i++) {
+    var idolDump = agencyDump.i[i];
+    var idol = new Idol(idolDump.i);
+
+    for(var si = 0, sn = STATS.length; si < sn; si++) {
+      idol[STATS[si]] = idolDump.s[si];
+    }
+
+    this.addIdol(idol);
+  }
+};
 
 function numFromString(str) {
   var total = 0;
@@ -265,6 +301,10 @@ barcodeImage.addEventListener('change', function(e) {
 });
 
 var agency = new Agency();
+var savedStateString = window.location.hash.replace(/^#/, '');
+if (!!savedStateString) {
+  agency.load(JSON.parse(atob(savedStateString)));
+}
 
 function rerender() {
   agency.renderCatalog();
@@ -287,6 +327,8 @@ function rerender() {
     }
     return false;
   });
+
+  window.location.hash = btoa(JSON.stringify(agency.dump()));
 }
 
 /*
