@@ -319,10 +319,6 @@ barcodeImage.addEventListener('change', function(e) {
 });
 
 var agency = new Agency();
-var savedStateString = window.location.hash.replace(/^#/, '') || getStateCookie();
-if (!!savedStateString) {
-  agency.load(JSON.parse(atob(savedStateString)));
-}
 
 function rerender() {
   agency.renderCatalog();
@@ -351,15 +347,14 @@ function rerender() {
   document.cookie = 'state=' + stateString + cookieSuffix;
 }
 
-/*
-agency.catalog.push(new Idol(214321100));
-agency.catalog.push(new Idol(29143112));
-agency.catalog.push(new Idol(112341433));
-agency.catalog.push(new Idol(2));
-agency.catalog.push(new Idol(19));
-agency.unit.push(agency.catalog[0]);
-agency.unit.push(agency.catalog[2]);
-agency.unit.push(agency.catalog[4]);
-*/
+if (window.location.hash === '#icon') {
+  document.body.innerHTML = '<div class="icon-container"><div class="portrait">' + new Idol(Math.random()).spriteHTML() + '</div></div>';
+  document.body.classList.add('icon');
+} else {
+  var savedStateString = window.location.hash.replace(/^#/, '') || getStateCookie();
+  if (!!savedStateString) {
+    agency.load(JSON.parse(atob(savedStateString)));
+  }
 
-rerender();
+  rerender();
+}

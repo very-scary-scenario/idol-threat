@@ -3,9 +3,14 @@
 import json
 import os
 import subprocess
+from tempfile import mkstemp
+from time import sleep
+
+from selenium.webdriver import PhantomJS
 
 
-HERE = os.path.dirname(__file__)
+HERE = os.path.realpath(os.path.dirname(__file__))
+ICON_SIZE = 256
 IDOL_DIRNAME = 'idols'
 IDOLS_DIR = os.path.join(HERE, IDOL_DIRNAME)
 THUMBS_DIR = os.path.join(HERE, 'idol-thumbs')
@@ -162,9 +167,26 @@ def build_quotes():
     return quotes
 
 
+def build_icon():
+    driver = PhantomJS(service_log_path=mkstemp()[1])
+    driver.set_window_size(ICON_SIZE, ICON_SIZE)
+    url = 'file://{}#icon'.format(os.path.join(HERE, 'index.html'))
+    driver.get(url)
+    sleep(3)
+
+    icon_path = os.path.join(HERE, 'icon.png')
+    driver.save_screenshot(icon_path)
+    subprocess.check_call(['optipng', icon_path])
+
+
 if __name__ == '__main__':
-    with open('parts.js', 'w') as p:
-        p.write('PARTS = {};'.format(json.dumps(build_idols())))
-        p.write('BIOS = {};'.format(json.dumps(build_bios())))
-        p.write('ABILITIES = {};'.format(json.dumps(build_abilities())))
-        p.write('QUOTES = {};'.format(json.dumps(build_quotes())))
+    import sys
+
+    if '--icon-only' not in sys.argv:
+        with open('parts.js', 'w') as p:
+            p.write('PARTS = {};'.format(json.dumps(build_idols())))
+            p.write('BIOS = {};'.format(json.dumps(build_bios())))
+            p.write('ABILITIES = {};'.format(json.dumps(build_abilities())))
+            p.write('QUOTES = {};'.format(json.dumps(build_quotes())))
+
+    build_icon()

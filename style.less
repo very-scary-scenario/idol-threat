@@ -3,6 +3,7 @@
 @bg: white;
 @fg: black;
 @hl: pink;
+@icon-size: 512px;
 
 @import "battle.less";
 
@@ -296,3 +297,21 @@ a {
   }
 }
 
+body.icon {
+  .icon-container {
+    overflow: hidden;
+    width: @icon-size;
+    height: @icon-size;
+
+    .portrait {
+      width: @icon-size * 2;
+      height: @icon-size * 2;
+
+      // focus on the head
+      .sprite {
+        left: -(@icon-size / 2);
+        top: -(@icon-size / 2);
+      }
+    }
+  }
+}
