@@ -13,6 +13,7 @@ HERE = os.path.realpath(os.path.dirname(__file__))
 ICON_SIZE = 256
 IDOL_DIRNAME = 'idols'
 IDOLS_DIR = os.path.join(HERE, IDOL_DIRNAME)
+THUMBS_DIRNAME = 'idol-thumbs'
 THUMBS_DIR = os.path.join(HERE, 'idol-thumbs')
 POSES = set()
 SKIN_COLOURS = set()
@@ -72,8 +73,8 @@ def build_idols():
 
             parts.append(part(
                 '/'.join([IDOL_DIRNAME, d.name, entry.name]),
-                '/'.join([THUMBS_DIR, thumb_name]),
-                '/'.join([THUMBS_DIR, med_name]),
+                '/'.join([THUMBS_DIRNAME, thumb_name]),
+                '/'.join([THUMBS_DIRNAME, med_name]),
                 *fn.split('_')
             ))
 
