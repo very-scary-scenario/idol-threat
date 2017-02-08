@@ -70,7 +70,7 @@
     <script id="catalog-template" type="text/x-handlebars-template">
       <ul class="catalog">
         {{#each catalog}}
-          <li class="{{#if isInUnit}}active{{/if}}">
+          <li data-index="{{@index}}" class="{{#if isInUnit}}active{{/if}}">
             <div class="portrait">
               {{{thumbSpriteHTML}}}
             </div>
@@ -87,7 +87,7 @@
                 <dd>{{endurance}}</dd>
               </dl>
             </div>
-            <div class="input {{#if isInUnit}}checked{{/if}}"/>
+            <div data-index="{{@index}}" class="input {{#if isInUnit}}checked{{/if}}"/>
           </li>
         {{/each}}
       </ul>

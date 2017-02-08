@@ -227,19 +227,31 @@ Agency.prototype.renderCatalog = function() {
   document.getElementById('catalog').innerHTML = catalogTemplate(this);
   var agency = this;
 
-  document.querySelectorAll('#catalog li .input').forEach(function(element, i) {
-    element.addEventListener('click', function(e) {
-      agency.catalog[i].toggleUnitMembership();
-      e.stopPropagation();
-      return false;
-    });
-  });
+  inputs = document.querySelectorAll('#catalog li .input');
 
-  document.querySelectorAll('#catalog li').forEach(function(element, i) {
-    element.addEventListener('click', function(e) {
-      agency.catalog[i].showDetail();
-    });
-  });
+  function toggleMembership(event) {
+    i = parseInt(event.currentTarget.getAttribute('data-index'), 10);
+    agency.catalog[i].toggleUnitMembership();
+    event.stopPropagation();
+    return false;
+  }
+
+  for (var i = 0, n = inputs.length; i < n; i++) {
+    var element = inputs[i];
+    element.addEventListener('click', toggleMembership);
+  }
+
+  var lis = document.querySelectorAll('#catalog li');
+
+  function showDetail(event) {
+    i = parseInt(event.currentTarget.getAttribute('data-index'), 10);
+    agency.catalog[i].showDetail();
+  }
+
+  for (var j = 0, m = lis.length; j < m; j++) {
+    var li = lis[j];
+    li.addEventListener('click', showDetail);
+  }
 };
 Agency.prototype.renderUnit = function() {
   document.getElementById('unit').innerHTML = unitTemplate(this);
