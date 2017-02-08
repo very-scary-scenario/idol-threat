@@ -363,10 +363,14 @@ if (window.location.hash === '#icon') {
   document.body.innerHTML = '<div class="icon-container"><div class="portrait">' + new Idol(Math.random()).spriteHTML() + '</div></div>';
   document.body.classList.add('icon');
 } else {
-  var savedStateString = window.location.hash.replace(/^#/, '') || getStateCookie();
-  if (!!savedStateString) {
-    agency.load(JSON.parse(atob(savedStateString)));
-  }
+  document.addEventListener('DOMContentLoaded', function() {
+    FastClick.attach(document.body);
 
-  rerender();
+    var savedStateString = window.location.hash.replace(/^#/, '') || getStateCookie();
+    if (!!savedStateString) {
+      agency.load(JSON.parse(atob(savedStateString)));
+    }
+
+    rerender();
+  });
 }
