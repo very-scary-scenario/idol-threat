@@ -6,8 +6,6 @@ import subprocess
 from tempfile import mkstemp
 from time import sleep
 
-from selenium.webdriver import PhantomJS
-
 
 HERE = os.path.realpath(os.path.dirname(__file__))
 ICON_SIZE = 256
@@ -169,6 +167,8 @@ def build_quotes():
 
 
 def build_icon():
+    from selenium.webdriver import PhantomJS
+
     driver = PhantomJS(service_log_path=mkstemp()[1])
     driver.set_window_size(ICON_SIZE, ICON_SIZE)
     url = 'file://{}#icon'.format(os.path.join(HERE, 'index.html'))
@@ -190,4 +190,8 @@ if __name__ == '__main__':
             p.write('ABILITIES = {};'.format(json.dumps(build_abilities())))
             p.write('QUOTES = {};'.format(json.dumps(build_quotes())))
 
-    build_icon()
+        with open('style.css', 'wb') as c:
+            c.write(subprocess.check_output(['lessc', 'style.less']))
+
+    if '--no-icon' not in sys.argv:
+        build_icon()
