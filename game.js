@@ -167,7 +167,7 @@ function Idol(seed) {
 
     abilityParts.push(choice(ABILITIES[1], this.rand()));
     abilityParts.push(choice(ABILITIES[2], this.rand()));
-    this.abilities.push(new Ability(abilityParts, choice(animNames, this.rand())));
+    this.abilities.push(new Ability(abilityParts, choice(ANIMATIONS, this.rand())));
   }
 }
 Idol.prototype.generateName = function() {

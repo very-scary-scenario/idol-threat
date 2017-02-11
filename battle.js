@@ -24,18 +24,13 @@ function BattleIdol (idol) {
   self.abilities = idol.abilities;
 }
 
-var animNames = ["fire", "fan", "plants", "tide", "lightning", "fever", "slash", "slice", "grenade", "ice"];
 var anims = {};
 
-for(var i = 0; i < animNames.length; i++) {
-  var frames = [];
-  var name = animNames[i];
-  for(var f = 1; f <= 14; f++) {
-    var img = new Image();
-    img.src = 'anim/' + name + '/' + f.toString(10) + '.png';
-    frames.push(img);
-  }
-  anims[name] = frames;
+for(var i = 0; i < ANIMATIONS.length; i++) {
+  var name = ANIMATIONS[i];
+  var img = new Image();
+  img.src = 'anim/' + name;
+  anims[name] = img;
 }
 
 var timeoutMS = 750;
@@ -79,7 +74,7 @@ function playerAttack(ability) {
     hideCommandList();
     //player.mana -= (ability.strength);
     var dmg = getRandomInt((1*player.attack*ability.strength), (2*player.attack*ability.strength));
-    var i = getRandomInt(0, animNames.length);
+    var i = getRandomInt(0, ANIMATIONS.length);
     playAnimationCanvas(ability.animation, timeoutMS, "enemyAnimationDiv");	
     enemyDamaged(dmg);
     setTimeout(function() {
@@ -111,8 +106,8 @@ function playerAttack3 () {playerAttack(player.abilities[3]);}
 
 function enemyTurn () {
   refreshHealthBars();
-  var i = getRandomInt(0, animNames.length);
-  playAnimationCanvas(animNames[i], timeoutMS, "playerAnimationDiv");
+  var i = getRandomInt(0, ANIMATIONS.length);
+  playAnimationCanvas(ANIMATIONS[i], timeoutMS, "playerAnimationDiv");
   setTimeout(function() {
     var dmg = getRandomInt((1*enemy.attack), (4*enemy.attack));
     playerDamaged(dmg);
@@ -276,9 +271,9 @@ function playAnimationCanvas(animationName, totalPlayTime, elemID) {
 
   var animationID = setInterval(function () {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    ctx.drawImage(anims[animationName][currentImage], 0, 0);
+    ctx.drawImage(anims[animationName], 0, (-256 * currentImage));
     currentImage++;
-  }, (totalPlayTime / anims[animationName].length));
+  }, (totalPlayTime / 14));
 
   setTimeout(function () {
     clearInterval(animationID);

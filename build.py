@@ -166,6 +166,13 @@ def build_quotes():
     return quotes
 
 
+def build_animations():
+    return sorted([
+        f for f in os.listdir(os.path.join(HERE, 'anim'))
+        if f.endswith('.png')
+    ])
+
+
 def build_icon():
     from selenium.webdriver import PhantomJS
 
@@ -189,6 +196,7 @@ if __name__ == '__main__':
             p.write('BIOS = {};'.format(json.dumps(build_bios())))
             p.write('ABILITIES = {};'.format(json.dumps(build_abilities())))
             p.write('QUOTES = {};'.format(json.dumps(build_quotes())))
+            p.write('ANIMATIONS = {};'.format(json.dumps(build_animations())))
 
         with open('style.css', 'wb') as c:
             c.write(subprocess.check_output(['lessc', 'style.less']))
