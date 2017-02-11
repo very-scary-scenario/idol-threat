@@ -144,7 +144,7 @@ function Idol(seed) {
       if (options.length === 0) {
         partsMissing = true;
       }
-      this.parts.push(choice(options, this.rand()));
+      this.parts.push(PART_INDEX[choice(options, this.rand())]);
     }
   }
 

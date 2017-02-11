@@ -52,6 +52,7 @@ def part(
 
 def build_idols():
     parts = []
+    part_index = 0
 
     for d in os.scandir(IDOLS_DIR):
         if not d.is_dir():
@@ -78,6 +79,7 @@ def build_idols():
                 '/'.join([THUMBS_DIRNAME, med_name]),
                 *fn.split('_')
             ))
+            part_index += 1
 
             if not os.path.exists(thumb_path):
                 subprocess.check_call(
@@ -89,12 +91,12 @@ def build_idols():
                     ['convert', img_path, '-resize', '1000x1000^', med_path])
                 subprocess.check_call(['optipng', med_path])
 
-    return {
+    return ({
         pose: {
             skin_colour: {
                 hair_colour: {
                     layer: [
-                        p for p in parts if
+                        i for i, p in enumerate(parts) if
                         p['layer'] == layer and
                         p.get('hairColour') in (hair_colour, None) and
                         p.get('skinColour') in (skin_colour, None) and
@@ -103,7 +105,7 @@ def build_idols():
                 } for hair_colour in HAIR_COLOURS
             } for skin_colour in SKIN_COLOURS
         } for pose in POSES
-    }
+    }, parts)
 
 
 def build_bios():
@@ -195,7 +197,11 @@ if __name__ == '__main__':
 
     if '--icon-only' not in sys.argv:
         with open('parts.js', 'w') as p:
-            p.write('PARTS = {};'.format(json.dumps(build_idols())))
+
+            parts, part_index = build_idols()
+            p.write('PARTS = {}; PART_INDEX = {};'.format(
+                json.dumps(parts), json.dumps(part_index),
+            ))
             p.write('BIOS = {};'.format(json.dumps(build_bios())))
             p.write('ABILITIES = {};'.format(json.dumps(build_abilities())))
             p.write('QUOTES = {};'.format(json.dumps(build_quotes())))
