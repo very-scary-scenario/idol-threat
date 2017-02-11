@@ -57,7 +57,10 @@ def build_idols():
         if not d.is_dir():
             continue
 
-        for entry in os.scandir(os.path.join(IDOLS_DIR, d.name)):
+        for entry in sorted(
+            os.scandir(os.path.join(IDOLS_DIR, d.name)),
+            key=lambda de: de.name,
+        ):
             fn = entry.name.replace('.png', '')
 
             basename, ext = os.path.splitext(entry.name)
