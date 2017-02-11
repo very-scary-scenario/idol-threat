@@ -215,7 +215,9 @@ Idol.prototype.dump = function() {
   return idolDump;
 };
 
-function hideIdolDetail() {
+function hideIdolDetail(event) {
+  event.stopPropagation();
+  event.preventDefault();
   detailElement.classList.remove('shown');
 }
 
@@ -230,10 +232,10 @@ Agency.prototype.renderCatalog = function() {
   inputs = document.querySelectorAll('#catalog li .input');
 
   function toggleMembership(event) {
+    event.stopPropagation();
+    event.preventDefault();
     i = parseInt(event.currentTarget.getAttribute('data-index'), 10);
     agency.catalog[i].toggleUnitMembership();
-    event.stopPropagation();
-    return false;
   }
 
   for (var i = 0, n = inputs.length; i < n; i++) {
@@ -244,6 +246,8 @@ Agency.prototype.renderCatalog = function() {
   var lis = document.querySelectorAll('#catalog li');
 
   function showDetail(event) {
+    event.stopPropagation();
+    event.preventDefault();
     i = parseInt(event.currentTarget.getAttribute('data-index'), 10);
     agency.catalog[i].showDetail();
   }
@@ -338,12 +342,13 @@ function rerender() {
 
   document.getElementById('recruit').addEventListener('click', function(e) {
     e.stopPropagation();
+    e.preventDefault();
     barcodeImage.click();
-    return false;
   });
 
   document.getElementById('fight').addEventListener('click', function(e) {
     e.stopPropagation();
+    e.preventDefault();
     if (agency.unit.length > 0) {
       player = new BattleIdol(agency.unit[0]);
       enemy = new BattleIdol(new Idol(Math.random()));
