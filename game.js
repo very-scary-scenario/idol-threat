@@ -371,7 +371,7 @@ if (window.location.hash === '#icon') {
   document.addEventListener('DOMContentLoaded', function() {
     FastClick.attach(document.body);
 
-    var savedStateString = window.location.hash.replace(/^#/, '') || getStateCookie();
+    var savedStateString = getStateCookie();
     if (!!savedStateString) {
       agency.load(JSON.parse(atob(savedStateString)));
     }
