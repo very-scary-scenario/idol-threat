@@ -364,18 +364,23 @@ function rerender() {
   document.cookie = 'state=' + stateString + cookieSuffix;
 }
 
+function initGame() {
+  FastClick.attach(document.body);
+
+  var savedStateString = getStateCookie();
+  if (!!savedStateString) {
+    agency.load(JSON.parse(atob(savedStateString)));
+  }
+
+  document.body.removeChild(document.getElementById('title'));
+  rerender();
+}
+
 if (window.location.hash === '#icon') {
   document.body.innerHTML = '<div class="icon-container"><div class="portrait">' + new Idol(Math.random()).spriteHTML() + '</div></div>';
   document.body.classList.add('icon');
 } else {
   document.addEventListener('DOMContentLoaded', function() {
-    FastClick.attach(document.body);
-
-    var savedStateString = getStateCookie();
-    if (!!savedStateString) {
-      agency.load(JSON.parse(atob(savedStateString)));
-    }
-
-    rerender();
+    initGame();
   });
 }
