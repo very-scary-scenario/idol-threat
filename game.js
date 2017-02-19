@@ -72,7 +72,6 @@ var detailElement = document.getElementById('idol-detail');
 var catalogElement = document.getElementById('catalog');
 var unitElement = document.getElementById('unit');
 var battleElement = document.getElementById('battle');
-var abilityPromptElement = document.getElementById('ability-prompt');
 
 var spriteTemplate = Handlebars.compile(document.getElementById('sprite-template').innerHTML);
 var catalogTemplate = Handlebars.compile(document.getElementById('catalog-template').innerHTML);

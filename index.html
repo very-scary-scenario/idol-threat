@@ -43,9 +43,6 @@
     <section id="battle">
     </section>
 
-    <section id="ability-prompt">
-    </section>
-
     <input type="file" accept="image/*" capture="camera" id="barcode-image"/>
 
     <script id="catalog-template" type="text/x-handlebars-template">
@@ -132,8 +129,8 @@
     </script>
 
     <script id="battle-template" type="text/x-handlebars-template">
-      <ul class="idol-list" id="player-idols">
-        {{#each playerIdols}}
+      <ul class="idol-list" id="enemy-idols">
+        {{#each enemyIdols}}
           <li data-index="{{@index}}">
             <div class="portrait">
               {{{thumbSpriteHTML}}}
@@ -142,8 +139,11 @@
         {{/each}}
       </ul>
 
-      <ul class="idol-list" id="enemy-idols">
-        {{#each enemyIdols}}
+      <div id="ability-prompt">
+      </div>
+
+      <ul class="idol-list" id="player-idols">
+        {{#each playerIdols}}
           <li data-index="{{@index}}">
             <div class="portrait">
               {{{thumbSpriteHTML}}}
@@ -167,9 +167,9 @@
           <input type="hidden" name="move" value="{{@index}}"/>
         </ul>
 
-        <p>Pick a target from the enemy unit.</p>
+        <p>Also, pick a target from the enemy unit.</p>
 
-        <a href="#" id="submit-ability">Okay</a>
+        <button type="subit">Fight!</button>
       </form>
     </script>
 

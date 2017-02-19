@@ -63,6 +63,7 @@ Battle.prototype.determinePlayerMoves = function() {
   var i;
   var idol;
   var self = this;
+  var abilityPromptElement = document.getElementById('ability-prompt');
 
   function pickMove(e) {
     e.stopPropagation();

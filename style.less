@@ -317,15 +317,24 @@ body.in-battle {
 
       text-align: center;
       width: 100vw;
-      overflow: hidden;
 
       li {
         display: inline-block;
         margin: 0 -3vh;
+        position: relative;
         transition: transform .2s;
 
         &.focussed {
           transform: scale(1.3);
+
+          &::before {
+            content: '▼';
+            font-size: 3vh;
+            font-weight: bold;
+            position: absolute;
+            width: 100%;
+            top: -1em;
+          }
         }
 
         .portrait { 
@@ -345,14 +354,10 @@ body.in-battle {
       }
 
       background-color: fade(@fg, 90%);
-      top: 0;
     }
 
     #player-idols {
-      &::before {
-        content: 'Your unit';
-      }
-
+      background-color: @hl;
       position: fixed;
       bottom: 0;
     }
@@ -371,11 +376,18 @@ body.in-battle {
     }
   }
 
-  #ability-prompt > div {
-    position: absolute;
-    top: 30vh;
+  #ability-prompt > form {
     width: 100%;
+    text-align: center;
     z-index: 10;
+    padding-top: 1em;
+
+    ul {
+      text-align: left;
+      max-width: 15em;
+      margin: 0 auto;
+      padding: .5em;
+    }
 
     a {
       background-color: @hl;
