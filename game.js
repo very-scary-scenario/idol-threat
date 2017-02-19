@@ -69,11 +69,18 @@ function getStateCookie() {
 
 var barcodeImage = document.getElementById('barcode-image');
 var detailElement = document.getElementById('idol-detail');
+var catalogElement = document.getElementById('catalog');
+var unitElement = document.getElementById('unit');
 var battleElement = document.getElementById('battle');
+var abilityPromptElement = document.getElementById('ability-prompt');
+
 var spriteTemplate = Handlebars.compile(document.getElementById('sprite-template').innerHTML);
 var catalogTemplate = Handlebars.compile(document.getElementById('catalog-template').innerHTML);
 var unitTemplate = Handlebars.compile(document.getElementById('unit-template').innerHTML);
 var idolDetailTemplate = Handlebars.compile(document.getElementById('idol-detail-template').innerHTML);
+var battleTemplate = Handlebars.compile(document.getElementById('battle-template').innerHTML);
+var abilityPromptTemplate = Handlebars.compile(document.getElementById('ability-prompt-template').innerHTML);
+var targetPromptElement = Handlebars.compile(document.getElementById('ability-prompt-template').innerHTML);
 
 var maxUnitSize = 3;
 
@@ -196,7 +203,11 @@ Idol.prototype.isInUnit = function() {
   return agency.unit.indexOf(this) !== -1;
 };
 Idol.prototype.toggleUnitMembership = function() {
-  agency.addToUnit(this);
+  if (this.isInUnit()) {
+    agency.unit.splice(agency.unit.indexOf(this), 1);
+  } else {
+    agency.addToUnit(this, true);
+  }
   rerender();
 };
 Idol.prototype.showDetail = function() {
@@ -226,7 +237,7 @@ function Agency() {
   this.unit = [];
 }
 Agency.prototype.renderCatalog = function() {
-  document.getElementById('catalog').innerHTML = catalogTemplate(this);
+  catalogElement.innerHTML = catalogTemplate(this);
   var agency = this;
 
   inputs = document.querySelectorAll('#catalog li .input');
@@ -258,7 +269,13 @@ Agency.prototype.renderCatalog = function() {
   }
 };
 Agency.prototype.renderUnit = function() {
-  document.getElementById('unit').innerHTML = unitTemplate(this);
+  content = unitTemplate(this);
+
+  if ((this.unit.length === 0) ^ unitElement.classList.contains('empty')) {
+    unitElement.classList.toggle('empty');
+  }
+
+  unitElement.innerHTML = content;
 };
 Agency.prototype.addIdol = function(idol) {
   for(var i = 0, n = this.catalog.length; i < n; i++) {
@@ -272,7 +289,13 @@ Agency.prototype.addIdol = function(idol) {
   rerender();
 };
 Agency.prototype.addToUnit = function(idol, interactive) {
-  this.unit = [idol];
+  if (this.unit.length >= maxUnitSize) {
+    if (interactive !== undefined) {
+      alert("Your unit is full; you'll need to remove someone before you can add " + idol.name + ".");
+    }
+  } else {
+    this.unit.push(idol);
+  }
 };
 Agency.prototype.dump = function() {
   var agencyDump = {i: []};
@@ -350,9 +373,18 @@ function rerender() {
     e.stopPropagation();
     e.preventDefault();
     if (agency.unit.length > 0) {
-      player = new BattleIdol(agency.unit[0]);
-      enemy = new BattleIdol(new Idol(Math.random()));
-      initBattle();
+      var playerIdols = [];
+      for (var pi = 0; pi < agency.unit.length; pi++) {
+        playerIdols.push(new BattleIdol(agency.unit[pi], 'player'));
+      }
+
+      var enemyIdols = [];
+      for (var ei = maxUnitSize; ei > 0; ei--) {
+        enemyIdols.push(new BattleIdol(new Idol(Math.random()), 'ai'));
+      }
+
+      var battle = new Battle(playerIdols, enemyIdols);
+      battle.loop();
     } else {
       alert('You need an idol to fight.');
     }

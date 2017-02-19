@@ -1,10 +1,24 @@
-var player;
-var enemy;
+var anims = {};
 
-function BattleIdol (idol) {
+for(var i = 0; i < ANIMATIONS.length; i++) {
+  var name = ANIMATIONS[i];
+  var img = new Image();
+  img.src = 'anim/' + name;
+  anims[name] = img;
+}
+
+function BattleIdol(idol, control) {
   var self = this;
+  if (control === 'ai') {
+    this.playerControlled = false;
+  } else if (control == 'player') {
+    this.playerControlled = true;
+  } else {
+    throw 'you need to specify a control mode for a BattleIdol';
+  }
 
   self.idol = idol;
+  this.thumbSpriteHTML = idol.thumbSpriteHTML();
 
   var statModifier = 1.01;
   function modStat(stat, mod) {
@@ -15,212 +29,98 @@ function BattleIdol (idol) {
   self.defense = modStat(idol.defense, 50);
   self.endurance = modStat(idol.endurance, 100);
   self.speed = modStat(idol.speed, 20);
-  self.maxMana = modStat(idol.speed, 20);
 
   self.maxHp = self.endurance;
   self.hp = self.maxHp;
 
-  self.hpPercent = 100;
   self.abilities = idol.abilities;
 }
 
-var anims = {};
+function Battle(playerIdols, enemyIdols) {
+  this.playerIdols = playerIdols;
+  this.enemyIdols = enemyIdols;
 
-for(var i = 0; i < ANIMATIONS.length; i++) {
-  var name = ANIMATIONS[i];
-  var img = new Image();
-  img.src = 'anim/' + name;
-  anims[name] = img;
+  this.render();
+
+  document.body.classList.add('in-battle');
 }
 
-var timeoutMS = 750;
+Battle.prototype.loop = function() {
+  this.turnOrder = [];
+  Array.prototype.push.apply(this.turnOrder, this.playerIdols);
+  Array.prototype.push.apply(this.turnOrder, this.enemyIdols);
+  this.turnOrder.sort(function(a, b) {
+    return b.speed - a.speed;
+  });
 
-function initBattle () {
-  battleElement.classList.add('active');
+  this.pickedMoves = {};
+  this.pickedTargets = {};
+  this.determineMoves();
+};
 
-  refreshHealthBars();
-  showCommandList();
+Battle.prototype.determinePlayerMoves = function() {
+  // this has to be recursive because it's dependent on player activity
+  var i;
+  var idol;
+  var self = this;
 
-
-  //show attack name on buttons
-  document.getElementById("playerAttack1").innerText = player.abilities[0].name;
-  document.getElementById("playerAttack2").innerText = player.abilities[1].name;
-  document.getElementById("playerAttack3").innerText = player.abilities[2].name;
-  document.getElementById("playerAttack4").innerText = player.abilities[3].name;
-
-  document.getElementById('playerPortrait').innerHTML = spriteTemplate(player.idol);
-  document.getElementById('enemyPortrait').innerHTML = spriteTemplate(enemy.idol);
-
-  document.getElementById('player-name').innerText = player.idol.name;
-  document.getElementById('enemy-name').innerText = enemy.idol.name;
-}
-
-function refreshHealthBars () {
-  document.getElementById("playerHealth").innerText = player.hp;
-  //document.getElementById("playerMana").innerText = player.mana;
-  document.getElementById("enemyHealth").innerText = enemy.hp;
-
-
-  document.getElementById("playerHealthbar").style.width = (player.hpPercent + "%");
-  document.getElementById("playerHealthbar").innerText = (player.hpPercent + "%");
-  document.getElementById("enemyHealthbar").style.width = (enemy.hpPercent + "%");
-  document.getElementById("enemyHealthbar").innerText = (enemy.hpPercent + "%");
-}
-
-function playerAttack(ability) {
-  if(ability.healing === false) {
-    //if(player.mana < (ability.strength)) { alert("You need " +(ability.strength) +" mana!"); return; }
-    //else {
-    hideCommandList();
-    //player.mana -= (ability.strength);
-    var dmg = getRandomInt((1*player.attack*ability.strength), (2*player.attack*ability.strength));
-    var i = getRandomInt(0, ANIMATIONS.length);
-    playAnimationCanvas(ability.animation, timeoutMS, "enemyAnimationDiv");	
-    enemyDamaged(dmg);
-    setTimeout(function() {
-      var battleResult = checkHealth();		
-      if (battleResult === 0) { enemyTurn(); }	
-    }, timeoutMS);
-    //}
+  function pickMove(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    abilityIndex = parseInt(e.currentTarget.getAttribute('data-index'), 10);
+    self.pickedMoves[i] = abilityIndex;
+    abilityPromptElement.innerHTML = '';
+    idol.element.classList.remove('focussed');
+    self.determinePlayerMoves();
   }
 
-  else {
-    //if(player.mana < (3)) { alert("You need 3 mana!"); return; }
-    //else {
-    hideCommandList();
-    //player.mana -= (3);
-    var heal = getRandomInt((1*player.attack+player.defense), (2*player.attack+player.defense));
-    playerHealed(heal);
-    playAnimationCanvas(ability.animation, timeoutMS, "playerAnimationDiv");
-    setTimeout(function() {
-      enemyTurn();	
-    }, timeoutMS);
-    //}
+  for (i = 0; i < this.turnOrder.length; i++) {
+    if (!(i in this.pickedMoves)) {
+      idol = this.turnOrder[i];
+      idol.element.classList.add('focussed');
+      abilityPromptElement.innerHTML = abilityPromptTemplate(idol);
+
+      var abilityButtons = abilityPromptElement.querySelectorAll('a[data-index]');
+      for (var ai = 0; ai < abilityButtons.length; ai++) {
+        abilityButtons[ai].addEventListener('click', pickMove);
+      }
+
+      return;
+    }
   }
-}
 
-function playerAttack0 () {playerAttack(player.abilities[0]);}
-function playerAttack1 () {playerAttack(player.abilities[1]);}
-function playerAttack2 () {playerAttack(player.abilities[2]);}
-function playerAttack3 () {playerAttack(player.abilities[3]);}
+  this.executeMove(0);
+};
 
-function enemyTurn () {
-  refreshHealthBars();
-  var i = getRandomInt(0, ANIMATIONS.length);
-  playAnimationCanvas(ANIMATIONS[i], timeoutMS, "playerAnimationDiv");
-  setTimeout(function() {
-    var dmg = getRandomInt((1*enemy.attack), (4*enemy.attack));
-    playerDamaged(dmg);
-    var battleResult = checkHealth();
-    if (battleResult === 0) { playerTurn(); }
-  }, timeoutMS);
-}
-
-function playerTurn () {
-  showCommandList();
-
-}
-
-function checkHealth () {
-  refreshHealthBars();
-
-  if(enemy.hp <= 0) {  
-    enemy.hp = 0;
-    alert("You win!");
-    battleElement.classList.remove('active');
-    return 1;
+Battle.prototype.determineMoves = function() {
+  for (var i = 0; i < this.turnOrder.length; i++) {
+    var idol = this.turnOrder[i];
+    if (!idol.playerControlled) {
+      this.pickedMoves[i] = Math.floor(Math.random() * idol.abilities.length);
+      this.pickedTargets[i] = Math.floor(Math.random() * this.playerIdols.length);
+    }
   }
-  if(player.hp <= 0) { 
-    player.hp = 0;
-    alert("You lose.");
-    battleElement.classList.remove('active');
-    return -1;
+  this.determinePlayerMoves();
+};
+
+Battle.prototype.executeMove = function(index) {
+  console.log(this.turnOrder);
+  console.log(this.pickedMoves);
+};
+
+Battle.prototype.render = function() {
+  battleElement.innerHTML = battleTemplate(this);
+
+  var playerIdolElements = battleElement.querySelectorAll('#player-idols > li');
+  for (var pi = 0; pi < this.playerIdols.length; pi++) {
+    this.playerIdols[pi].element = playerIdolElements[pi];
   }
-  return 0;
-}
 
-function hideCommandList() {
-  document.getElementById("commandList").style.display = "none";
-
-}
-
-function showCommandList() {
-  document.getElementById("commandList").style.display = "block";		
-}
-
-function playerDamaged(dmg) {
-  dmg -= player.defense;	
-  if(dmg < 0) { dmg = 0; }
-
-  player.hp -= dmg;	
-  if(player.hp < 0) { player.hp = 0; player.hpPercent = 0; }
-  else { player.hpPercent = ((player.hp / player.maxHp) * 100); }
-
-  document.getElementById("playerDMG").style.display = "block";
-  document.getElementById("playerDMG").innerText = dmg;
-
-  refreshHealthBars();
-  setTimeout(function() {
-    document.getElementById("playerDMG").style.display = "none";
-    document.getElementById("playerDMG").innerText = "";
-  }, timeoutMS);
-}
-
-function playerHealed(heal) {
-  player.hp += heal;	
-  if(player.hp > player.maxHp) { player.hp = player.maxHp; player.hpPercent = 100; }
-  else { player.hpPercent = ((player.hp / player.maxHp) * 100); }
-
-  document.getElementById("playerHEAL").style.display = "block";
-  document.getElementById("playerHEAL").innerText = heal;
-
-  refreshHealthBars();
-  setTimeout(function() {
-    document.getElementById("playerHEAL").style.display = "none";
-    document.getElementById("playerHEAL").innerText = "";
-  }, timeoutMS);
-}
-
-function enemyDamaged(dmg) {
-  dmg -= enemy.defense;	
-  if(dmg < 0) { dmg = 0; }
-
-  enemy.hp -= dmg;
-  if(enemy.hp < 0) { enemy.hp = 0; enemy.hpPercent = 0;  }
-  else { enemy.hpPercent = ((enemy.hp / enemy.maxHp) * 100); }
-
-  document.getElementById("enemyDMG").style.display = "block";
-  document.getElementById("enemyDMG").innerText = dmg;
-
-  refreshHealthBars();
-  setTimeout(function() {
-    document.getElementById("enemyDMG").style.display = "none";
-    document.getElementById("enemyDMG").innerText = "";
-
-  }, timeoutMS);
-
-}
-
-function enemyHealed(heal) {
-  enemy.hp += heal;	
-  if(enemy.hp > enemy.maxHp) { enemy.hp = enemy.maxHp; enemy.hpPercent = 100; }
-  else { enemy.hpPercent = ((enemy.hp / enemy.maxHp) * 100); }
-
-  document.getElementById("enemyHEAL").style.display = "block";
-  document.getElementById("enemyHEAL").innerText = heal;
-
-  refreshHealthBars();
-  setTimeout(function() {
-    document.getElementById("enemyHEAL").style.display = "none";
-    document.getElementById("enemyHEAL").innerText = "";
-  }, timeoutMS);
-}
-
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min;
-}
+  var enemyIdolElements = battleElement.querySelectorAll('#enemy-idols > li');
+  for (var ei = 0; ei < this.enemyIdols.length; ei++) {
+    this.enemyIdols[ei].element = enemyIdolElements[ei];
+  }
+};
 
 function playAnimation(folderName, imagesCount, totalPlayTime, elemID) {
   var div = document.getElementById(elemID);
@@ -250,21 +150,8 @@ function playAnimationCanvas(animationName, totalPlayTime, elemID) {
   animationCanvas.style.left = 2;
   animationCanvas.style.zIndex = 2;
 
-  // var staticCanvas = document.createElement('Canvas');
-  // staticCanvas.style.position = "absolute";
-  // staticCanvas.style.display = "inline";
-  // staticCanvas.style.left = 2;
-  // staticCanvas.style.zIndex = 1;
-
-
   var ctx = animationCanvas.getContext('2d');
-  // var bg = staticCanvas.getContext('2d');
-  // div.appendChild(staticCanvas);	
   portraitDiv.appendChild(animationCanvas);
-
-  // bg.canvas.width = 256;
-  // bg.canvas.height = 256;	
-  // bg.drawImage(anims["grenade"][10], 0, 0);
 
   ctx.canvas.width = 256;
   ctx.canvas.height = 256;

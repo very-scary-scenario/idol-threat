@@ -41,39 +41,9 @@
     </section>
 
     <section id="battle">
-      <div id="main">
-        <div id="battleArea">
-          <div id="player">
-            <span id="player-name"></span>
-            <span class="DMG" id="playerDMG"></span><span class="HEAL" id="playerHEAL"></span>
-            <div id="playerAnimationDiv">
-              <div id="playerPortrait" class="battle-portrait"></div>
-            </div>
-          </div>
-          <div id="enemy">
-            <span id="enemy-name"></span>
-            <span class="DMG" id="enemyDMG"></span><span class="HEAL" id="enemyHEAL"></span>
-            <div id="enemyAnimationDiv">
-              <div id="enemyPortrait" class="battle-portrait"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="ui">
-        <div><h4>Player health: <span id="playerHealth"></span></h4></div><!-- Mana: <span id="playerMana"></span> -->
-        <div id="playerHealthbar"></div>
-        <div><h4>Enemy health: <span id="enemyHealth"></span></h4></div>
-        <div id="enemyHealthbar"></div>
-        <div>
-          <h3 id="promptText"></h3>
-          <ul class="menu" id="commandList">
-            <li class="wideLI"><button class="button" id="playerAttack1" onclick="playerAttack0()"></button></li>
-            <li class="wideLI"><button class="button" id="playerAttack2" onclick="playerAttack1()"></button></li>
-            <li class="wideLI"><button class="button" id="playerAttack3" onclick="playerAttack2()"></button></li>
-            <li class="wideLI"><button class="button" id="playerAttack4" onclick="playerAttack3()"></button></li>
-          </ul>
-        </div>
-      </div> 
+    </section>
+
+    <section id="ability-prompt">
     </section>
 
     <input type="file" accept="image/*" capture="camera" id="barcode-image"/>
@@ -104,7 +74,7 @@
       </ul>
       
       <p><a href="#" class="needsclick" id="recruit">Scan a barcode to recruit a new member…</a></p>
-      <p><a href="#" id="fight">Fight!</a></p>
+      <p><a href="#" id="fight">Quick battle!</a></p>
     </script>
 
     <script id="idol-detail-template" type="text/x-handlebars-template">
@@ -159,6 +129,48 @@
           <img class="layer-{{layer}}" data-thumb="{{../thumb}}" src="{{#if ../thumb}}{{thumbPath}}{{else}}{{medPath}}{{/if}}"/>
         {{/each}}
       </div>
+    </script>
+
+    <script id="battle-template" type="text/x-handlebars-template">
+      <ul class="idol-list" id="player-idols">
+        {{#each playerIdols}}
+          <li data-index="{{@index}}">
+            <div class="portrait">
+              {{{thumbSpriteHTML}}}
+            </div>
+          </li>
+        {{/each}}
+      </ul>
+
+      <ul class="idol-list" id="enemy-idols">
+        {{#each enemyIdols}}
+          <li data-index="{{@index}}">
+            <div class="portrait">
+              {{{thumbSpriteHTML}}}
+            </div>
+          </li>
+        {{/each}}
+      </ul>
+    </script>
+
+    <script id="ability-prompt-template" type="text/x-handlebars-template">
+      <form>
+        <p>What will {{idol.name}} do?</p>
+
+        <ul>
+          {{#each abilities}}
+            <li>
+              <label><input required type="radio" name="move" value="{{@index}}"/>{{name}}</label>
+            </li>
+          {{/each}}
+
+          <input type="hidden" name="move" value="{{@index}}"/>
+        </ul>
+
+        <p>Pick a target from the enemy unit.</p>
+
+        <a href="#" id="submit-ability">Okay</a>
+      </form>
     </script>
 
     <script src="fastclick.js"></script>
