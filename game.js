@@ -277,6 +277,11 @@ Agency.prototype.renderUnit = function() {
   unitElement.innerHTML = content;
 };
 Agency.prototype.addIdol = function(idol) {
+  if ((this.catalog.length === 0) && document.body.classList.contains('nothing-scanned')) {
+    document.body.removeChild(document.getElementById('title'));
+    document.body.classList.remove('nothing-scanned');
+  }
+
   for(var i = 0, n = this.catalog.length; i < n; i++) {
     if (this.catalog[i].seed === idol.seed) {
       alert("You recruited this idol already; it's " + idol.name + "!");
@@ -397,13 +402,13 @@ function rerender() {
 
 function initGame() {
   FastClick.attach(document.body);
+  document.getElementById('loading').innerText = '';
 
   var savedStateString = getStateCookie();
   if (!!savedStateString) {
     agency.load(JSON.parse(atob(savedStateString)));
   }
 
-  document.body.removeChild(document.getElementById('title'));
   rerender();
 }
 

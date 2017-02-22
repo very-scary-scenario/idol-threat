@@ -22,7 +22,7 @@
       var ANIMATIONS;
     </script>
   </head>
-  <body>
+  <body class="nothing-scanned">
     <header id="title">
       <h1>Idol Threat</h1>
       <p id="loading">You need to turn Javascript on to play</p>
@@ -71,7 +71,9 @@
       </ul>
       
       <p><a href="#" class="needsclick" id="recruit">Scan a barcode to recruit a new member…</a></p>
-      <p><a href="#" id="fight">Quick battle!</a></p>
+      {{#if catalog}}
+        <p><a href="#" id="fight">Quick battle!</a></p>
+      {{/if}}
     </script>
 
     <script id="idol-detail-template" type="text/x-handlebars-template">
