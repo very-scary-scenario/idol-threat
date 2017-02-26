@@ -16,7 +16,7 @@ THUMBS_DIR = os.path.join(HERE, 'idol-thumbs')
 POSES = set()
 SKIN_COLOURS = set()
 HAIR_COLOURS = set()
-LAYERS = set()
+LAYERS = []
 
 if not os.path.isdir(THUMBS_DIR):
     os.mkdir(THUMBS_DIR)
@@ -36,7 +36,7 @@ def part(
         'pose': pose,
     }
 
-    LAYERS.add(layer)
+    LAYERS.append(layer)
 
     if pose is not None:
         POSES.add(pose)
@@ -51,10 +51,12 @@ def part(
 
 
 def build_idols():
-    parts = []
-    part_index = 0
+    parts = {}
 
-    for d in os.scandir(IDOLS_DIR):
+    for d in sorted(
+        os.scandir(IDOLS_DIR),
+        key=lambda d: d.name,
+    ):
         if not d.is_dir():
             continue
 
@@ -73,13 +75,14 @@ def build_idols():
             thumb_path = os.path.join(THUMBS_DIR, thumb_name)
             med_path = os.path.join(THUMBS_DIR, med_name)
 
-            parts.append(part(
+            this_part = part(
                 '/'.join([IDOL_DIRNAME, d.name, entry.name]),
                 '/'.join([THUMBS_DIRNAME, thumb_name]),
                 '/'.join([THUMBS_DIRNAME, med_name]),
                 *fn.split('_')
-            ))
-            part_index += 1
+            )
+            parts_list = parts.setdefault(this_part['layer'], [])
+            parts_list.append(this_part)
 
             if not os.path.exists(thumb_path):
                 subprocess.check_call(
@@ -91,21 +94,7 @@ def build_idols():
                     ['convert', img_path, '-resize', '1000x1000^', med_path])
                 subprocess.check_call(['optipng', med_path])
 
-    return ({
-        pose: {
-            skin_colour: {
-                hair_colour: {
-                    layer: [
-                        i for i, p in enumerate(parts) if
-                        p['layer'] == layer and
-                        p.get('hairColour') in (hair_colour, None) and
-                        p.get('skinColour') in (skin_colour, None) and
-                        p.get('pose') in (pose, None)
-                    ] for layer in LAYERS
-                } for hair_colour in HAIR_COLOURS
-            } for skin_colour in SKIN_COLOURS
-        } for pose in POSES
-    }, parts)
+    return parts, sorted(POSES), sorted(SKIN_COLOURS), sorted(HAIR_COLOURS)
 
 
 def build_bios():
@@ -198,10 +187,16 @@ if __name__ == '__main__':
     if '--icon-only' not in sys.argv:
         with open('parts.js', 'w') as p:
 
-            parts, part_index = build_idols()
-            p.write('PARTS = {}; PART_INDEX = {};'.format(
-                json.dumps(parts), json.dumps(part_index),
-            ))
+            parts, poses, skin_colours, hair_colours = build_idols()
+            p.write(
+                'PARTS = {}; POSES = {}; SKIN_COLOURS = {}; HAIR_COLOURS = {};'
+                .format(
+                    json.dumps(parts),
+                    json.dumps(poses),
+                    json.dumps(skin_colours),
+                    json.dumps(hair_colours),
+                )
+            ),
             p.write('BIOS = {};'.format(json.dumps(build_bios())))
             p.write('ABILITIES = {};'.format(json.dumps(build_abilities())))
             p.write('QUOTES = {};'.format(json.dumps(build_quotes())))

@@ -48,6 +48,9 @@ var LAYERS = [
     'ey',
     'eb'
 ];
+var POSES;
+var HAIR_COLOURS;
+var SKIN_COLOURS;
 
 var cookieExpiryDate = new Date();
 cookieExpiryDate.setFullYear(cookieExpiryDate.getFullYear() + 50);
@@ -128,32 +131,46 @@ function Idol(seed) {
   this.xp = 0;
   this.level = 0;
 
+  // build stats
   for(var i = 0, n = STATS.length; i < n; i++) {
     this[STATS[i]] = Math.floor(this.rand(-100, 100));
   }
 
   this.abilities = [];
 
+  // build name
   this.firstName = this.generateName();
   this.lastName = this.generateName();
   this.name = [this.firstName, this.lastName].join(' ');
 
+  // build portrait
   var partsMissing = true;
+  var pose, skinColour, hairColour;
+  function partIsAllowed(part) {
+    if (part.pose && part.pose !== pose) return false;
+    if (part.skinColour && part.skinColour !== skinColour) return false;
+    if (part.hairColour && part.hairColour !== hairColour) return false;
+    return true;
+  }
   while (partsMissing) {
-    this.parts = [];
     partsMissing = false;
-    var poseParts = PARTS[choice(Object.keys(PARTS), this.rand())];
-    var skinColourParts = poseParts[choice(Object.keys(poseParts), this.rand())];
-    var hairColourParts = skinColourParts[choice(Object.keys(skinColourParts), this.rand())];
+    pose = choice(POSES, this.rand());
+    skinColour = choice(SKIN_COLOURS, this.rand());
+    hairColour = choice(HAIR_COLOURS, this.rand());
+
+    this.parts = [];
+
     for(var li = 0, ln = LAYERS.length; li < ln; li++) {
-      var options = hairColourParts[LAYERS[li]];
+      var options = PARTS[LAYERS[li]].filter(partIsAllowed);
       if (options.length === 0) {
         partsMissing = true;
+      } else {
+        this.parts.push(choice(options, this.rand()));
       }
-      this.parts.push(PART_INDEX[choice(options, this.rand())]);
     }
   }
 
+  // build bio
   var bioParts = [];
   while(bioParts.length < 3) {
     var part = choice(BIOS, this.rand());
@@ -162,9 +179,9 @@ function Idol(seed) {
     }
   }
   this.bio = bioParts.join(' ');
-
   this.quote = choice(QUOTES, this.rand());
 
+  // build moveset
   while (this.abilities.length < 4) {
     var abilityParts = [];
 
