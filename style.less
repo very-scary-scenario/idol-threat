@@ -397,6 +397,10 @@ body.in-battle {
 }
 
 body.icon {
+	overflow: hidden;
+	width: @icon-size;
+	height: @icon-size;
+
   .icon-container {
     overflow: hidden;
     width: @icon-size;
@@ -411,6 +415,24 @@ body.icon {
         left: -(@icon-size / 2);
         top: -(@icon-size / 2);
       }
+    }
+
+    &::before {
+      content: '❋';
+      position: absolute;
+      width: @icon-size*1.8;
+      height: @icon-size*2;
+      left: -@icon-size*0.8;
+      top: -@icon-size;
+      box-sizing: border-box;
+
+      display: block;
+      overflow: hidden;
+
+      font-family: 'Zapf Dingbats';
+      font-size: @icon-size*3;
+      z-index: -1;
+      color: @hl;
     }
   }
 }
