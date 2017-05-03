@@ -37,8 +37,31 @@ function BattleIdol(idol, control) {
   self.abilities = idol.abilities;
 }
 
-BattleIdol.prototype.animateMove = function(moveIndex, target) {
-  playAnimationCanvas(this.abilities[moveIndex].animation, target.element);
+BattleIdol.prototype.doDamage = function(damage) {
+  this.hp = this.hp - damage;
+  this.element.querySelector('.health-bar-content').style.width = this.healthPercent().toString(10) + '%';
+  this.element.querySelector('.health-bar-trail').style.width = this.healthPercent().toString(10) + '%';
+};
+
+BattleIdol.prototype.doMove = function(moveIndex, target) {
+  var self = this;
+  self.element.classList.add('fighting');
+
+  target.doDamage(50);
+
+  playAnimationCanvas(self.abilities[moveIndex].animation, target.element);
+
+  setTimeout(function() {
+    self.element.classList.remove('fighting');
+  }, animationDuration);
+};
+
+BattleIdol.prototype.healthPercent = function() {
+  return (this.hp / this.maxHp) * 100;
+};
+
+BattleIdol.prototype.healthBar = function() {
+  return healthBarTemplate(this);
 };
 
 function Battle(playerIdols, enemyIdols) {
@@ -119,16 +142,14 @@ Battle.prototype.executeMoves = function(index) {
 
   if (self.turnOrder[index] === undefined) {
     self.loop();
+    return;
   }
 
-  self.executeMove(self.turnOrder[index], self.pickedMoves[index], self.pickedTargets[index]);
+  self.turnOrder[index].doMove(self.pickedMoves[index], self.pickedTargets[index]);
+
   setTimeout(function() {
     self.executeMoves(index+1);
   }, animationDuration);
-};
-
-Battle.prototype.executeMove = function(actor, moveIndex, target) {
-  actor.animateMove(moveIndex, target);
 };
 
 Battle.prototype.render = function() {
@@ -146,7 +167,6 @@ Battle.prototype.render = function() {
 };
 
 function playAnimationCanvas(animationName, element) {
-  console.log(element);
   var portraitDiv = element.querySelector('.portrait');
 
   var currentImage = 0;

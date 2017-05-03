@@ -140,6 +140,7 @@
                 <div class="portrait">
                   {{{thumbSpriteHTML}}}
                 </div>
+                {{{healthBar}}}
               </label>
             </li>
           {{/each}}
@@ -154,10 +155,18 @@
               <div class="portrait">
                 {{{thumbSpriteHTML}}}
               </div>
+              {{{healthBar}}}
             </li>
           {{/each}}
         </ul>
       </form>
+    </script>
+
+    <script id="health-bar-template" type="text/x-handlebars-template">
+      <div class="health-bar">
+        <div class="health-bar-content" style="width: {{healthPercent}}%;"></div>
+        <div class="health-bar-trail" style="width: {{healthPercent}}%;"></div>
+      </div>
     </script>
 
     <script id="ability-prompt-template" type="text/x-handlebars-template">
