@@ -56,6 +56,22 @@ var cookieExpiryDate = new Date();
 cookieExpiryDate.setFullYear(cookieExpiryDate.getFullYear() + 50);
 var cookieSuffix = '; expires=' + cookieExpiryDate.toUTCString();
 
+var idolSorters = {
+  date: function(a, b) { return b.recruitedAt - a.recruitedAt; },
+  speed: function(a, b) { return (b.speed + b.speedBonus) - (a.speed + a.speedBonus); },
+  endurance: function(a, b) { return (b.endurance + b.enduranceBonus) - (a.endurance + a.enduranceBonus); },
+  attack: function(a, b) { return (b.attack + b.attackBonus) - (a.attack + a.attackBonus); },
+  defense: function(a, b) { return (b.defense + b.defenseBonus) - (a.defense + a.defenseBonus); }
+};
+
+var idolSortNames = {
+  date: 'Date recruited',
+  speed: 'Speed',
+  endurance: 'Endurance',
+  attack: 'Attack',
+  defense: 'Defense'
+};
+
 function getStateCookie() {
   var cookieStrings = document.cookie.split(';');
   for(var i = 0, n = cookieStrings.length; i < n; i++) {
@@ -127,6 +143,7 @@ function Ability(parts, animation) {
 }
 
 function Idol(seed) {
+  this.recruitedAt = new Date();
   this.seed = seed;
   this.rand = seededRandom(seed);
   this.xp = 0;
@@ -242,6 +259,7 @@ Idol.prototype.showDetail = function() {
 Idol.prototype.dump = function() {
   var idolDump = {
     i: this.seed,
+    a: this.recruitedAt,
     s: [],
     b: []
   };
@@ -261,9 +279,38 @@ function hideIdolDetail(event) {
 function Agency() {
   this.catalog = [];
   this.unit = [];
+  this.sortOrder = 'date';
 }
 Agency.prototype.renderCatalog = function() {
-  catalogElement.innerHTML = catalogTemplate(this);
+  var sortedCatalog = this.sortedCatalog();
+
+  sortOrders = [];
+
+  for (var key in idolSortNames) {
+    var item = [key, idolSortNames[key]];
+    if (this.sortOrder === key) item.isSelectedOrder = true;
+    sortOrders.push(item);
+  }
+
+  sortOrders.sort();
+
+  catalogElement.innerHTML = catalogTemplate({
+    'catalog': sortedCatalog,
+    'canFeed': this.canFeed(),
+    'sortOrder': this.sortOrder,
+    'sortOrders': sortOrders
+  });
+
+  function setSortOrder(event) {
+    agency.sortOrder = event.currentTarget.getAttribute('data-sort-order');
+    rerender();
+  }
+
+  for (var sortKey in idolSortNames) {
+    element = document.querySelector('#sort-orders a[data-sort-order="' + sortKey + '"]');
+    if (element) element.addEventListener('click', setSortOrder);
+  }
+
   var agency = this;
 
   inputs = document.querySelectorAll('#catalog li.idol .input');
@@ -272,7 +319,7 @@ Agency.prototype.renderCatalog = function() {
     event.stopPropagation();
     event.preventDefault();
     i = parseInt(event.currentTarget.getAttribute('data-index'), 10);
-    agency.catalog[i].toggleUnitMembership();
+    sortedCatalog[i].toggleUnitMembership();
   }
 
   for (var i = 0, n = inputs.length; i < n; i++) {
@@ -286,13 +333,21 @@ Agency.prototype.renderCatalog = function() {
     event.stopPropagation();
     event.preventDefault();
     i = parseInt(event.currentTarget.getAttribute('data-index'), 10);
-    agency.catalog[i].showDetail();
+    sortedCatalog[i].showDetail();
   }
 
   for (var j = 0, m = lis.length; j < m; j++) {
     var li = lis[j];
     li.addEventListener('click', showDetail);
   }
+};
+Agency.prototype.sortedCatalog = function() {
+  var sortedCatalog = [];
+  for (var i = 0; i < this.catalog.length; i++) {
+    sortedCatalog.push(this.catalog[i]);
+  }
+  sortedCatalog.sort(idolSorters[this.sortOrder]);
+  return sortedCatalog;
 };
 Agency.prototype.renderUnit = function() {
   content = unitTemplate(this);
@@ -332,7 +387,11 @@ Agency.prototype.canFeed = function() {
   return this.catalog.length >= 2;
 };
 Agency.prototype.dump = function() {
-  var agencyDump = {i: [], u: []};
+  var agencyDump = {
+    i: [],
+    u: [],
+    o: this.sortOrder
+  };
 
   for(var i = 0, n = this.catalog.length; i < n; i++) {
     idol = this.catalog[i];
@@ -343,9 +402,12 @@ Agency.prototype.dump = function() {
   return agencyDump;
 };
 Agency.prototype.load = function(agencyDump) {
+  if (agencyDump.o !== undefined) this.sortOrder = agencyDump.o;
+
   for(var i = 0, n = agencyDump.i.length; i < n; i++) {
     var idolDump = agencyDump.i[i];
     var idol = new Idol(idolDump.i);
+    if (idolDump.a !== undefined) idol.recruitedAt = new Date(idolDump.a);
 
     for(var si = 0, sn = STATS.length; si < sn; si++) {
       idol[STATS[si]] = idolDump.s[si];
@@ -353,6 +415,7 @@ Agency.prototype.load = function(agencyDump) {
     }
 
     this.addIdol(idol);
+
     if (agencyDump.u[i] !== idol.isInUnit()) {
       idol.toggleUnitMembership();
     }

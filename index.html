@@ -52,32 +52,29 @@
       <ul id="menu">
         <li><a href="#" class="needsclick" id="recruit">Scan a barcode to recruit a new member…</a></li>
         {{#if catalog}}
-          <li><a href="#" id="fight">Quick battle!</a></li>
+          <li><a href="#" class="needsclick" id="fight">Quick battle!</a></li>
         {{/if}}
         {{#if canFeed}}
           <li><a href="#" class="needsclick" id="feed">Feed idols to other idols…</a></li>
         {{/if}}
       </ul>
 
+      <ul id="sort-orders">
+        {{#each sortOrders}}
+          <li>
+            {{#if isSelectedOrder}}
+              {{1}} <em>(current)</em>
+            {{else}}
+              <a href="#" data-sort-order="{{0}}">{{1}}</a>
+            {{/if}}
+          </li>
+        {{/each}}
+      </ul>
+
       <ul class="catalog">
         {{#each catalog}}
           <li data-index="{{@index}}" class="idol {{#if isInUnit}}active{{/if}}">
-            <div class="portrait">
-              {{{thumbSpriteHTML}}}
-            </div>
-            <div class="deets">
-              <p class="name">{{name}}</p>
-              <dl>
-                <dt>Atk.</dt>
-                <dd>{{attack}} +{{attackBonus}}</dd>
-                <dt>Def.</dt>
-                <dd>{{defense}} +{{defenseBonus}}</dd>
-                <dt>Spd.</dt>
-                <dd>{{speed}} +{{speedBonus}}</dd>
-                <dt>End.</dt>
-                <dd>{{endurance}} +{{enduranceBonus}}</dd>
-              </dl>
-            </div>
+            <div class="portrait">{{{thumbSpriteHTML}}}</div>
             <div data-index="{{@index}}" class="input {{#if isInUnit}}checked{{/if}}"/>
           </li>
         {{/each}}

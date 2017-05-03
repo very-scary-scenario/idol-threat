@@ -97,60 +97,48 @@ a {
   }
 }
 
-#catalog {
-  padding-bottom: @unit-height + 1em;
+.catalog {
+  padding: .6em 0 @unit-height + 1em;
+  text-align: center;
 
-  li.idol {
-    height: 9em;
+  .idol {
+    height: 6em;
+    width: 6em;
     position: relative;
-    background-color: @mid;
     cursor: pointer;
-    margin: 1em 0;
+    margin: .4em .2em 0;
+    background-color: fade(@mid, 50%);
+    display: inline-block;
+    overflow: hidden;
+    border-radius: .4em;
 
     &.active {
       background-color: @hl;
     }
 
     .portrait {
-      height: 100%;
-      position: absolute;
-      top: 0;
-      left: -.5em;
+      margin-top: -3.5em;
+      margin-left: -3.5em;
+      height: 200%;
+      left: 0;
 
       .sprite {
-        width: 10em;
+        width: 12em;
         height: 100%;
       }
     }
 
-    .deets {
-      height: 100%;
-      position: absolute;
-      top: 0;
-      padding: 1em 0;
-      left: 9em;
-
-      .name {
-        font-weight: bold;
-        font-size: 1.2em;
-        padding-bottom: .2em;
-      }
-
-      dl {
-        .stats-dl();
-      }
-    }
-
     .input {
-      font-size: 1.5em;
+      font-size: .8em;
       position: absolute;
-      width: 1em;
-      height: 1em;
-      padding: .4em;
+      width: 1.5em;
+      height: 1.5em;
+      padding: .2em;
       border-radius: .2em;
-      bottom: 0.5em;
-      right: 0.5em;
+      bottom: 0.2em;
+      right: 0.2em;
       background-color: @bg;
+      border: .1em solid @fg;
       text-align: center;
 
       &::after {
