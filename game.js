@@ -61,7 +61,11 @@ var idolSorters = {
   speed: function(a, b) { return (b.speed + b.speedBonus) - (a.speed + a.speedBonus); },
   endurance: function(a, b) { return (b.endurance + b.enduranceBonus) - (a.endurance + a.enduranceBonus); },
   attack: function(a, b) { return (b.attack + b.attackBonus) - (a.attack + a.attackBonus); },
-  defense: function(a, b) { return (b.defense + b.defenseBonus) - (a.defense + a.defenseBonus); }
+  defense: function(a, b) { return (b.defense + b.defenseBonus) - (a.defense + a.defenseBonus); },
+  allStats: function(a, b) { return idolSorters.speed(a, b) +
+                                    idolSorters.endurance(a, b) +
+                                    idolSorters.attack(a, b) +
+                                    idolSorters.defense(a, b); }
 };
 
 var idolSortNames = {
@@ -69,7 +73,8 @@ var idolSortNames = {
   speed: 'Speed',
   endurance: 'Endurance',
   attack: 'Attack',
-  defense: 'Defense'
+  defense: 'Defense',
+  allStats: 'Total of all stats'
 };
 
 function getStateCookie() {
