@@ -130,12 +130,38 @@ Battle.prototype.determinePlayerMove = function(idol) {
   return;
 };
 
+Battle.prototype.stillHasLivingMembers = function(team) {
+  for (var i = 0; i < team.length; i++) {
+    if (!team[i].isDead) return true;
+  }
+
+  return false;
+};
+
+Battle.prototype.playerHasWon = function() {
+  return (!this.stillHasLivingMembers(this.enemyIdols));
+};
+
+Battle.prototype.enemyHasWon = function() {
+  return (!this.stillHasLivingMembers(this.playerIdols));
+};
+
 Battle.prototype.nextMove = function() {
   if ((this.turnIndex === undefined) || (this.turnOrder[this.turnIndex] === undefined)) {
     this.turnIndex = 0;
   }
 
   var idol = this.turnOrder[this.turnIndex];
+
+  if (this.playerHasWon()) {
+    alert('you win!');
+    document.body.classList.remove('in-battle');
+    return;
+  } else if (this.enemyHasWon()) {
+    alert('you lose :<');
+    document.body.classList.remove('in-battle');
+    return;
+  }
 
   this.turnIndex += 1;
 
