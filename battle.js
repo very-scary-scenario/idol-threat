@@ -1,3 +1,4 @@
+var animationDuration = 1000;
 var anims = {};
 
 for(var i = 0; i < ANIMATIONS.length; i++) {
@@ -35,6 +36,10 @@ function BattleIdol(idol, control) {
 
   self.abilities = idol.abilities;
 }
+
+BattleIdol.prototype.animateMove = function(moveIndex, target) {
+  playAnimationCanvas(this.abilities[moveIndex].animation, target.element);
+};
 
 function Battle(playerIdols, enemyIdols) {
   this.playerIdols = playerIdols;
@@ -74,7 +79,7 @@ Battle.prototype.determinePlayerMoves = function() {
     abilityIndex = parseInt(document.querySelector('input[name="move"]:checked').getAttribute('value'), 10);
 
     self.pickedMoves[i] = abilityIndex;
-    self.pickedTargets[i] = targetIndex;
+    self.pickedTargets[i] = self.enemyIdols[targetIndex];
     abilityPromptElement.innerHTML = '';
     idol.element.classList.remove('focussed');
     targetInput.checked = false;
@@ -95,7 +100,7 @@ Battle.prototype.determinePlayerMoves = function() {
   }
 
   abilityPromptElement.innerHTML = '';
-  this.executeMove(0);
+  this.executeMoves(0);
 };
 
 Battle.prototype.determineMoves = function() {
@@ -103,16 +108,27 @@ Battle.prototype.determineMoves = function() {
     var idol = this.turnOrder[i];
     if (!idol.playerControlled) {
       this.pickedMoves[i] = Math.floor(Math.random() * idol.abilities.length);
-      this.pickedTargets[i] = Math.floor(Math.random() * this.playerIdols.length);
+      this.pickedTargets[i] = this.playerIdols[Math.floor(Math.random() * this.playerIdols.length)];
     }
   }
   this.determinePlayerMoves();
 };
 
-Battle.prototype.executeMove = function(index) {
-  console.log(this.turnOrder);
-  console.log(this.pickedMoves);
-  console.log(this.pickedTargets);
+Battle.prototype.executeMoves = function(index) {
+  var self = this;
+
+  if (self.turnOrder[index] === undefined) {
+    self.loop();
+  }
+
+  self.executeMove(self.turnOrder[index], self.pickedMoves[index], self.pickedTargets[index]);
+  setTimeout(function() {
+    self.executeMoves(index+1);
+  }, animationDuration);
+};
+
+Battle.prototype.executeMove = function(actor, moveIndex, target) {
+  actor.animateMove(moveIndex, target);
 };
 
 Battle.prototype.render = function() {
@@ -129,25 +145,9 @@ Battle.prototype.render = function() {
   }
 };
 
-function playAnimation(folderName, imagesCount, totalPlayTime, elemID) {
-  var div = document.getElementById(elemID);
-
-  var currentImage = 1;
-  var animationID = setInterval(function () {
-    div.innerHTML = ('<img src="' +folderName +'/' +currentImage +'.png" />');
-    currentImage++;
-  }, (totalPlayTime / imagesCount));
-
-  setTimeout(function () {
-    clearInterval(animationID);
-
-    div.innerHTML = '';
-  }, totalPlayTime);
-}
-
-function playAnimationCanvas(animationName, totalPlayTime, elemID) {
-  var div = document.getElementById(elemID);
-  var portraitDiv = div.querySelector('.battle-portrait');
+function playAnimationCanvas(animationName, element) {
+  console.log(element);
+  var portraitDiv = element.querySelector('.portrait');
 
   var currentImage = 0;
 
@@ -167,11 +167,11 @@ function playAnimationCanvas(animationName, totalPlayTime, elemID) {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.drawImage(anims[animationName], 0, (-256 * currentImage));
     currentImage++;
-  }, (totalPlayTime / 14));
+  }, (animationDuration / 14));
 
   setTimeout(function () {
     clearInterval(animationID);
 
     portraitDiv.removeChild(animationCanvas);
-  }, totalPlayTime);
+  }, animationDuration);
 }
