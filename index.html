@@ -43,12 +43,25 @@
     <section id="battle">
     </section>
 
+    <section id="canteen">
+    </section>
+
     <input type="file" accept="image/*" capture="camera" id="barcode-image"/>
 
     <script id="catalog-template" type="text/x-handlebars-template">
+      <ul id="menu">
+        <li><a href="#" class="needsclick" id="recruit">Scan a barcode to recruit a new member…</a></li>
+        {{#if catalog}}
+          <li><a href="#" id="fight">Quick battle!</a></li>
+        {{/if}}
+        {{#if canFeed}}
+          <li><a href="#" class="needsclick" id="feed">Feed idols to other idols…</a></li>
+        {{/if}}
+      </ul>
+
       <ul class="catalog">
         {{#each catalog}}
-          <li data-index="{{@index}}" class="{{#if isInUnit}}active{{/if}}">
+          <li data-index="{{@index}}" class="idol {{#if isInUnit}}active{{/if}}">
             <div class="portrait">
               {{{thumbSpriteHTML}}}
             </div>
@@ -69,11 +82,6 @@
           </li>
         {{/each}}
       </ul>
-      
-      <p><a href="#" class="needsclick" id="recruit">Scan a barcode to recruit a new member…</a></p>
-      {{#if catalog}}
-        <p><a href="#" id="fight">Quick battle!</a></p>
-      {{/if}}
     </script>
 
     <script id="idol-detail-template" type="text/x-handlebars-template">
@@ -185,6 +193,9 @@
       <p>Also, pick a target from the enemy unit.</p>
 
       <button type="subit">Fight!</button>
+    </script>
+
+    <script id="canteen-template" type="text/x-handlebars-template">
     </script>
 
     <script src="fastclick.js"></script>

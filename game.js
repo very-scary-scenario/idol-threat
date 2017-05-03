@@ -266,7 +266,7 @@ Agency.prototype.renderCatalog = function() {
   catalogElement.innerHTML = catalogTemplate(this);
   var agency = this;
 
-  inputs = document.querySelectorAll('#catalog li .input');
+  inputs = document.querySelectorAll('#catalog li.idol .input');
 
   function toggleMembership(event) {
     event.stopPropagation();
@@ -280,7 +280,7 @@ Agency.prototype.renderCatalog = function() {
     element.addEventListener('click', toggleMembership);
   }
 
-  var lis = document.querySelectorAll('#catalog li');
+  var lis = document.querySelectorAll('#catalog li.idol');
 
   function showDetail(event) {
     event.stopPropagation();
@@ -327,6 +327,9 @@ Agency.prototype.addToUnit = function(idol, interactive) {
   } else {
     this.unit.push(idol);
   }
+};
+Agency.prototype.canFeed = function() {
+  return this.catalog.length >= 2;
 };
 Agency.prototype.dump = function() {
   var agencyDump = {i: [], u: []};

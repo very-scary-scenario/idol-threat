@@ -80,10 +80,27 @@ a {
   }
 }
 
+#menu {
+  li a {
+    display: block;
+    padding: 1em 1em;
+    background-color: @mid;
+    border-bottom: 1px solid fade(@fg, 30%);
+
+    &:hover, &:focus {
+      background-color: @hl;
+    }
+  }
+
+  li:last-child a {
+    border-bottom: none;
+  }
+}
+
 #catalog {
   padding-bottom: @unit-height + 1em;
 
-  li {
+  li.idol {
     height: 9em;
     position: relative;
     background-color: @mid;
@@ -145,14 +162,6 @@ a {
         opacity: 1;
       }
     }
-  }
-
-  #recruit, #fight {
-    display: inline-block;
-    margin: 1em;
-    padding: .5em 1em;
-    border-radius: .5em;
-    background-color: @hl;
   }
 }
 
