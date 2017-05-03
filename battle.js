@@ -29,10 +29,10 @@ function BattleIdol(idol, control) {
     return Math.ceil(mod * Math.pow(statModifier, stat));
   }
 
-  self.attack = modStat(idol.attack, 100);
-  self.defense = modStat(idol.defense, 50);
-  self.endurance = modStat(idol.endurance, 100);
-  self.speed = modStat(idol.speed, 20);
+  self.attack = modStat(idol.attack + idol.attackBonus, 100);
+  self.defense = modStat(idol.defense + idol.defenseBonus, 50);
+  self.endurance = modStat(idol.endurance + idol.enduranceBonus, 100);
+  self.speed = modStat(idol.speed + idol.speedBonus, 20);
 
   self.maxHp = self.endurance;
   self.hp = self.maxHp;
@@ -153,12 +153,17 @@ Battle.prototype.nextMove = function() {
 
   var idol = this.turnOrder[this.turnIndex];
 
-  if (this.playerHasWon()) {
-    alert('you win!');
-    document.body.classList.remove('in-battle');
-    return;
-  } else if (this.enemyHasWon()) {
-    alert('you lose :<');
+  if (this.playerHasWon() || this.enemyHasWon()) {
+    if (this.playerHasWon()) {
+      alert('You win! Your idols get bonuses~');
+      for (var pi = 0; pi < this.playerIdols.length; pi++) {
+        this.playerIdols[pi].idol.giveBonus(this.enemyIdols.length);
+      }
+      rerender();
+    } else if (this.enemyHasWon()) {
+      alert('You lose :<');
+    }
+
     document.body.classList.remove('in-battle');
     return;
   }
@@ -168,9 +173,14 @@ Battle.prototype.nextMove = function() {
   if (idol.isDead) {
     this.nextMove();
   } else if (!idol.playerControlled) {
+    var livingPlayerIdols = [];
+    for (var i = 0; i < this.playerIdols.length; i++) {
+      if (!this.playerIdols[i].isDead) livingPlayerIdols.push(this.playerIdols[i]);
+    }
+
     idol.doMove(
       Math.floor(Math.random() * idol.abilities.length),
-      this.playerIdols[Math.floor(Math.random() * this.playerIdols.length)]
+      livingPlayerIdols[Math.floor(Math.random() * livingPlayerIdols.length)]
     );
   } else {
     this.determinePlayerMove(idol);

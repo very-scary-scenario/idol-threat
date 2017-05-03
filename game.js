@@ -135,6 +135,7 @@ function Idol(seed) {
   // build stats
   for(var i = 0, n = STATS.length; i < n; i++) {
     this[STATS[i]] = Math.floor(this.rand(-100, 100));
+    this[STATS[i] + 'Bonus'] = 0;
   }
 
   this.abilities = [];
@@ -225,6 +226,14 @@ Idol.prototype.toggleUnitMembership = function() {
   }
   rerender();
 };
+Idol.prototype.giveBonus = function(count) {
+  if (count === undefined) count = 1;
+
+  while (count > 0) {
+    count--;
+    this[choice(STATS, Math.random()) + 'Bonus']++;
+  }
+};
 Idol.prototype.showDetail = function() {
   detailElement.innerHTML = idolDetailTemplate(this);
   detailElement.classList.add('shown');
@@ -233,10 +242,12 @@ Idol.prototype.showDetail = function() {
 Idol.prototype.dump = function() {
   var idolDump = {
     i: this.seed,
-    s: []
+    s: [],
+    b: []
   };
   for(var i = 0, n = STATS.length; i < n; i++) {
     idolDump.s.push(this[STATS[i]]);
+    idolDump.b.push(this[STATS[i] + 'Bonus']);
   }
   return idolDump;
 };
@@ -335,6 +346,7 @@ Agency.prototype.load = function(agencyDump) {
 
     for(var si = 0, sn = STATS.length; si < sn; si++) {
       idol[STATS[si]] = idolDump.s[si];
+      idol[STATS[si] + 'Bonus'] = (idolDump.b || {})[si] || 0;
     }
 
     this.addIdol(idol);
@@ -411,7 +423,7 @@ function rerender() {
       var battle = new Battle(playerIdols, enemyIdols);
       battle.loop();
     } else {
-      alert('You need an idol to fight.');
+      alert('You need an idol in your unit to fight.');
     }
     return false;
   });
