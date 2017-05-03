@@ -68,10 +68,17 @@ Battle.prototype.determinePlayerMoves = function() {
   function pickMove(e) {
     e.stopPropagation();
     e.preventDefault();
-    abilityIndex = parseInt(e.currentTarget.getAttribute('data-index'), 10);
+    document.getElementById('battle-form').removeEventListener('submit', pickMove);
+    var targetInput = document.querySelector('input[name="target"]:checked');
+    targetIndex = parseInt(targetInput.getAttribute('value'), 10);
+    abilityIndex = parseInt(document.querySelector('input[name="move"]:checked').getAttribute('value'), 10);
+
     self.pickedMoves[i] = abilityIndex;
+    self.pickedTargets[i] = targetIndex;
     abilityPromptElement.innerHTML = '';
     idol.element.classList.remove('focussed');
+    targetInput.checked = false;
+
     self.determinePlayerMoves();
   }
 
@@ -81,15 +88,13 @@ Battle.prototype.determinePlayerMoves = function() {
       idol.element.classList.add('focussed');
       abilityPromptElement.innerHTML = abilityPromptTemplate(idol);
 
-      var abilityButtons = abilityPromptElement.querySelectorAll('a[data-index]');
-      for (var ai = 0; ai < abilityButtons.length; ai++) {
-        abilityButtons[ai].addEventListener('click', pickMove);
-      }
+      document.getElementById('battle-form').addEventListener('submit', pickMove);
 
       return;
     }
   }
 
+  abilityPromptElement.innerHTML = '';
   this.executeMove(0);
 };
 
@@ -107,6 +112,7 @@ Battle.prototype.determineMoves = function() {
 Battle.prototype.executeMove = function(index) {
   console.log(this.turnOrder);
   console.log(this.pickedMoves);
+  console.log(this.pickedTargets);
 };
 
 Battle.prototype.render = function() {

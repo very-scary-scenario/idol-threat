@@ -435,5 +435,6 @@ if (window.location.hash === '#icon') {
 } else {
   document.addEventListener('DOMContentLoaded', function() {
     initGame();
+    document.getElementById('fight').click();
   });
 }

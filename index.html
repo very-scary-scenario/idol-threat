@@ -125,54 +125,57 @@
     <script id="sprite-template" type="text/x-handlebars-template">
       <div class="sprite">
         {{#each parts}}
-          <img class="layer-{{layer}}" data-thumb="{{../thumb}}" src="{{#if ../thumb}}{{thumbPath}}{{else}}{{medPath}}{{/if}}"/>
+          <img class="needsclick layer-{{layer}}" data-thumb="{{../thumb}}" src="{{#if ../thumb}}{{thumbPath}}{{else}}{{medPath}}{{/if}}"/>
         {{/each}}
       </div>
     </script>
 
     <script id="battle-template" type="text/x-handlebars-template">
-      <ul class="idol-list" id="enemy-idols">
-        {{#each enemyIdols}}
-          <li data-index="{{@index}}">
-            <div class="portrait">
-              {{{thumbSpriteHTML}}}
-            </div>
-          </li>
-        {{/each}}
-      </ul>
+      <form id="battle-form">
+        <ul class="idol-list" id="enemy-idols">
+          {{#each enemyIdols}}
+            <li data-index="{{@index}}">
+              <label>
+                <input required type="radio" name="target" value="{{@index}}"></input>
+                <div class="portrait">
+                  {{{thumbSpriteHTML}}}
+                </div>
+              </label>
+            </li>
+          {{/each}}
+        </ul>
 
-      <div id="ability-prompt">
-      </div>
+        <div id="ability-prompt">
+        </div>
 
-      <ul class="idol-list" id="player-idols">
-        {{#each playerIdols}}
-          <li data-index="{{@index}}">
-            <div class="portrait">
-              {{{thumbSpriteHTML}}}
-            </div>
-          </li>
-        {{/each}}
-      </ul>
+        <ul class="idol-list" id="player-idols">
+          {{#each playerIdols}}
+            <li data-index="{{@index}}">
+              <div class="portrait">
+                {{{thumbSpriteHTML}}}
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+      </form>
     </script>
 
     <script id="ability-prompt-template" type="text/x-handlebars-template">
-      <form>
-        <p>What will {{idol.name}} do?</p>
+      <p>What will {{idol.name}} do?</p>
 
-        <ul>
-          {{#each abilities}}
-            <li>
-              <label><input required type="radio" name="move" value="{{@index}}"/>{{name}}</label>
-            </li>
-          {{/each}}
+      <ul>
+        {{#each abilities}}
+          <li>
+            <label><input required type="radio" name="move" value="{{@index}}"/>{{name}}</label>
+          </li>
+        {{/each}}
 
-          <input type="hidden" name="move" value="{{@index}}"/>
-        </ul>
+        <input type="hidden" name="move" value="{{@index}}"/>
+      </ul>
 
-        <p>Also, pick a target from the enemy unit.</p>
+      <p>Also, pick a target from the enemy unit.</p>
 
-        <button type="subit">Fight!</button>
-      </form>
+      <button type="subit">Fight!</button>
     </script>
 
     <script src="fastclick.js"></script>

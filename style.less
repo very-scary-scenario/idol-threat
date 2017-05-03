@@ -350,6 +350,36 @@ body.in-battle {
       }
 
       background-color: fade(@fg, 90%);
+
+      li {
+        label {
+          input {
+            position: absolute;
+            width: 90%;
+            text-align: center;
+
+            &::before {
+              position: relative;
+              content: ' ';
+              border-radius: 50%;
+              height: 25vw;
+              max-height: 20vh !important;
+              width: 25vw;
+              max-width: 20vh !important;
+              box-sizing: border-box;
+              border: 1em solid red;
+              text-align: center;
+              opacity: 0;
+              display: inline-block;
+              pointer-events: none;
+            }
+
+            &:checked::before {
+              opacity: 0.8 !important;
+            }
+          }
+        }
+      }
     }
 
     #player-idols {
@@ -372,11 +402,12 @@ body.in-battle {
     }
   }
 
-  #ability-prompt > form {
-    width: 100%;
+  #ability-prompt {
+    max-width: 20em;
     text-align: center;
     z-index: 10;
-    padding-top: 1em;
+    padding: 1em;
+    margin: 0 auto;
 
     ul {
       text-align: left;
