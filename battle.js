@@ -53,6 +53,7 @@ BattleIdol.prototype.doMove = function(moveIndex, target) {
 
   setTimeout(function() {
     self.element.classList.remove('fighting');
+    self.battle.determineMove();
   }, animationDuration);
 };
 
@@ -75,21 +76,22 @@ function Battle(playerIdols, enemyIdols) {
 
 Battle.prototype.loop = function() {
   this.turnOrder = [];
+
   Array.prototype.push.apply(this.turnOrder, this.playerIdols);
   Array.prototype.push.apply(this.turnOrder, this.enemyIdols);
+
   this.turnOrder.sort(function(a, b) {
     return b.speed - a.speed;
   });
 
-  this.pickedMoves = {};
-  this.pickedTargets = {};
-  this.determineMoves();
+  for (var i = 0; i < this.turnOrder.length; i++) {
+    this.turnOrder[i].battle = this;
+  }
+
+  this.determineMove();
 };
 
-Battle.prototype.determinePlayerMoves = function() {
-  // this has to be recursive because it's dependent on player activity
-  var i;
-  var idol;
+Battle.prototype.determinePlayerMove = function(idol) {
   var self = this;
   var abilityPromptElement = document.getElementById('ability-prompt');
 
@@ -101,55 +103,38 @@ Battle.prototype.determinePlayerMoves = function() {
     targetIndex = parseInt(targetInput.getAttribute('value'), 10);
     abilityIndex = parseInt(document.querySelector('input[name="move"]:checked').getAttribute('value'), 10);
 
-    self.pickedMoves[i] = abilityIndex;
-    self.pickedTargets[i] = self.enemyIdols[targetIndex];
     abilityPromptElement.innerHTML = '';
     idol.element.classList.remove('focussed');
     targetInput.checked = false;
-
-    self.determinePlayerMoves();
+    abilityPromptElement.innerHTML = '';
+    idol.doMove(abilityIndex, self.enemyIdols[targetIndex]);
   }
 
-  for (i = 0; i < this.turnOrder.length; i++) {
-    if (!(i in this.pickedMoves)) {
-      idol = this.turnOrder[i];
-      idol.element.classList.add('focussed');
-      abilityPromptElement.innerHTML = abilityPromptTemplate(idol);
+  idol.element.classList.add('focussed');
+  abilityPromptElement.innerHTML = abilityPromptTemplate(idol);
 
-      document.getElementById('battle-form').addEventListener('submit', pickMove);
+  document.getElementById('battle-form').addEventListener('submit', pickMove);
 
-      return;
-    }
-  }
-
-  abilityPromptElement.innerHTML = '';
-  this.executeMoves(0);
+  return;
 };
 
-Battle.prototype.determineMoves = function() {
-  for (var i = 0; i < this.turnOrder.length; i++) {
-    var idol = this.turnOrder[i];
-    if (!idol.playerControlled) {
-      this.pickedMoves[i] = Math.floor(Math.random() * idol.abilities.length);
-      this.pickedTargets[i] = this.playerIdols[Math.floor(Math.random() * this.playerIdols.length)];
-    }
-  }
-  this.determinePlayerMoves();
-};
-
-Battle.prototype.executeMoves = function(index) {
-  var self = this;
-
-  if (self.turnOrder[index] === undefined) {
-    self.loop();
-    return;
+Battle.prototype.determineMove = function() {
+  if ((this.turnIndex === undefined) || (this.turnOrder[this.turnIndex] === undefined)) {
+    this.turnIndex = 0;
   }
 
-  self.turnOrder[index].doMove(self.pickedMoves[index], self.pickedTargets[index]);
+  var idol = this.turnOrder[this.turnIndex];
 
-  setTimeout(function() {
-    self.executeMoves(index+1);
-  }, animationDuration);
+  this.turnIndex += 1;
+
+  if (!idol.playerControlled) {
+    idol.doMove(
+      Math.floor(Math.random() * idol.abilities.length),
+      this.playerIdols[Math.floor(Math.random() * this.playerIdols.length)]
+    );
+  } else {
+    this.determinePlayerMove(idol);
+  }
 };
 
 Battle.prototype.render = function() {
