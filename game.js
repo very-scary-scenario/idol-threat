@@ -199,12 +199,10 @@ Idol.prototype.generateName = function() {
   var kanaCount = Math.floor(this.rand(4, 2));
   while (kanaCount > 0) {
     name += choice(KANA, this.rand());
+    if (this.rand() > 0.9) name += N;
     kanaCount--;
   }
   name = name[0].toUpperCase() + name.slice(1);
-  if (this.rand() > 0.8) {
-    name += N;
-  }
   return name;
 };
 Idol.prototype.spriteHTML = function(thumb) {
@@ -320,10 +318,12 @@ Agency.prototype.addToUnit = function(idol, interactive) {
   }
 };
 Agency.prototype.dump = function() {
-  var agencyDump = {i: []};
+  var agencyDump = {i: [], u: []};
 
   for(var i = 0, n = this.catalog.length; i < n; i++) {
-    agencyDump.i.push(this.catalog[i].dump());
+    idol = this.catalog[i];
+    agencyDump.i.push(idol.dump());
+    agencyDump.u.push(idol.isInUnit());
   }
 
   return agencyDump;
@@ -338,6 +338,9 @@ Agency.prototype.load = function(agencyDump) {
     }
 
     this.addIdol(idol);
+    if (agencyDump.u[i] !== idol.isInUnit()) {
+      idol.toggleUnitMembership();
+    }
   }
 };
 
