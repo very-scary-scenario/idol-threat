@@ -318,6 +318,7 @@ body.in-battle {
         display: inline-block;
         margin: 0 -3vh;
         position: relative;
+        transition: transform 1s;
 
         .health-bar {
           position: absolute;
@@ -373,6 +374,15 @@ body.in-battle {
             animation-duration: 2s;
             animation-name: bob;
             animation-iteration-count: infinite;
+          }
+        }
+
+        &.dead {
+          transform: rotate(90deg) scale(0.5) translateX(30%);
+          opacity: 0.5;
+
+          .health-bar {
+            display: none;
           }
         }
       }

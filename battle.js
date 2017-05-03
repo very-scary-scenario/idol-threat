@@ -10,6 +10,9 @@ for(var i = 0; i < ANIMATIONS.length; i++) {
 
 function BattleIdol(idol, control) {
   var self = this;
+
+  self.isDead = false;
+
   if (control === 'ai') {
     this.playerControlled = false;
   } else if (control == 'player') {
@@ -35,10 +38,16 @@ function BattleIdol(idol, control) {
   self.hp = self.maxHp;
 
   self.abilities = idol.abilities;
+  console.log(self);
 }
 
 BattleIdol.prototype.doDamage = function(damage) {
   this.hp = this.hp - damage;
+  if (this.hp <= 0) {
+    this.isDead = true;
+    this.hp = 0;
+    this.element.classList.add('dead');
+  }
   this.element.querySelector('.health-bar-content').style.width = this.healthPercent().toString(10) + '%';
   this.element.querySelector('.health-bar-trail').style.width = this.healthPercent().toString(10) + '%';
 };
@@ -47,13 +56,16 @@ BattleIdol.prototype.doMove = function(moveIndex, target) {
   var self = this;
   self.element.classList.add('fighting');
 
-  target.doDamage(50);
+  ability = self.abilities[moveIndex];
+
+  var baseStrength = (this.attack / target.defense) * 50;
+  target.doDamage(baseStrength + ((baseStrength/5) * ability.strength));
 
   playAnimationCanvas(self.abilities[moveIndex].animation, target.element);
 
   setTimeout(function() {
     self.element.classList.remove('fighting');
-    self.battle.determineMove();
+    self.battle.nextMove();
   }, animationDuration);
 };
 
@@ -88,7 +100,7 @@ Battle.prototype.loop = function() {
     this.turnOrder[i].battle = this;
   }
 
-  this.determineMove();
+  this.nextMove();
 };
 
 Battle.prototype.determinePlayerMove = function(idol) {
@@ -118,7 +130,7 @@ Battle.prototype.determinePlayerMove = function(idol) {
   return;
 };
 
-Battle.prototype.determineMove = function() {
+Battle.prototype.nextMove = function() {
   if ((this.turnIndex === undefined) || (this.turnOrder[this.turnIndex] === undefined)) {
     this.turnIndex = 0;
   }
@@ -127,7 +139,9 @@ Battle.prototype.determineMove = function() {
 
   this.turnIndex += 1;
 
-  if (!idol.playerControlled) {
+  if (idol.isDead) {
+    this.nextMove();
+  } else if (!idol.playerControlled) {
     idol.doMove(
       Math.floor(Math.random() * idol.abilities.length),
       this.playerIdols[Math.floor(Math.random() * this.playerIdols.length)]
