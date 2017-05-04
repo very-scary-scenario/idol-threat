@@ -228,15 +228,13 @@ Idol.prototype.generateName = function() {
   name = name[0].toUpperCase() + name.slice(1);
   return name;
 };
-Idol.prototype.spriteHTML = function(thumb) {
+Idol.prototype.spriteHTML = function(mode) {
   return spriteTemplate({
     parts: this.parts,
-    thumb: thumb === true
+    thumb: mode === 'thumb'
   });
 };
-Idol.prototype.thumbSpriteHTML = function() {
-  return this.spriteHTML(true);
-};
+Idol.prototype.thumbSpriteHTML = function() { return this.spriteHTML('thumb'); };
 Idol.prototype.isInUnit = function() {
   return agency.unit.indexOf(this) !== -1;
 };

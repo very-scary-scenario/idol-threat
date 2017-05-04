@@ -186,7 +186,6 @@ if __name__ == '__main__':
 
     if '--icon-only' not in sys.argv:
         with open('parts.js', 'w') as p:
-
             parts, poses, skin_colours, hair_colours = build_idols()
             p.write(
                 'PARTS = {}; POSES = {}; SKIN_COLOURS = {}; HAIR_COLOURS = {};'
