@@ -112,10 +112,6 @@ a {
     overflow: hidden;
     border-radius: .3em;
 
-    &.active {
-      background-color: @hl;
-    }
-
     .portrait {
       margin-top: -3.5em;
       margin-left: -3.5em;
@@ -145,8 +141,12 @@ a {
         content: '✔️';
         opacity: 0.1;
       }
+    }
 
-      &.checked::after {
+    &.active {
+      background-color: @hl;
+
+      .input::after {
         opacity: 1;
       }
     }

@@ -106,6 +106,7 @@ var abilityPromptTemplate = Handlebars.compile(document.getElementById('ability-
 var targetPromptElement = Handlebars.compile(document.getElementById('ability-prompt-template').innerHTML);
 
 var maxUnitSize = 3;
+var rerenderTimeout;
 
 function choice(list, slice) {
   var result = list[Math.floor(slice * list.length)];
@@ -299,6 +300,9 @@ Idol.prototype.renderSprite = function(mode) {
   for (var si = 0; si < subbableImages.length; si++) {
     subbableImages[si].src = this.renderedSprites[mode];
   }
+
+  if (mode === 'med') this.medImages = undefined;
+  else if (mode === 'thumb') this.thumbImages = undefined;
 };
 Idol.prototype.spriteHTML = function(mode) {
   if (mode === undefined || typeof(mode) !== 'string') mode = 'med';
@@ -309,7 +313,7 @@ Idol.prototype.spriteHTML = function(mode) {
   } else if (mode === 'thumb') {
     sprite = this.getThumbSprite();
   } else {
-    throw 'what is ' + mode
+    throw 'what is ' + mode;
   }
 
   return spriteTemplate({
@@ -325,10 +329,12 @@ Idol.prototype.isInUnit = function() {
 Idol.prototype.toggleUnitMembership = function() {
   if (this.isInUnit()) {
     agency.unit.splice(agency.unit.indexOf(this), 1);
+    this.catalogElement.classList.remove('active');
   } else {
     agency.addToUnit(this, true);
   }
-  rerender();
+
+  agency.renderUnit();
 };
 Idol.prototype.giveBonus = function(count) {
   if (count === undefined) count = 1;
@@ -425,6 +431,7 @@ Agency.prototype.renderCatalog = function() {
 
   for (var j = 0, m = lis.length; j < m; j++) {
     var li = lis[j];
+    sortedCatalog[j].catalogElement = li;
     li.addEventListener('click', showDetail);
   }
 };
@@ -459,7 +466,7 @@ Agency.prototype.addIdol = function(idol) {
   }
   this.catalog.push(idol);
   this.addToUnit(idol);
-  rerender();
+  deferRerender();
 };
 Agency.prototype.addToUnit = function(idol, interactive) {
   if (this.unit.length >= maxUnitSize) {
@@ -468,6 +475,7 @@ Agency.prototype.addToUnit = function(idol, interactive) {
     }
   } else {
     this.unit.push(idol);
+    if (idol.catalogElement !== undefined) idol.catalogElement.classList.add('active');
   }
 };
 Agency.prototype.canFeed = function() {
@@ -584,6 +592,11 @@ function rerender() {
   var stateString = btoa(JSON.stringify(agency.dump()));
   // window.location.hash = stateString;
   document.cookie = 'state=' + stateString + cookieSuffix;
+}
+
+function deferRerender() {
+  clearTimeout(rerenderTimeout);
+  rerenderTimeout = setTimeout(rerender, 50);
 }
 
 function initGame() {

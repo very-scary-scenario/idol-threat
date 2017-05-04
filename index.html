@@ -77,8 +77,8 @@
       <ul class="catalog">
         {{#each catalog}}
           <li data-index="{{@index}}" class="idol {{#if isInUnit}}active{{/if}}">
-            <div class="portrait">{{{spriteHTML}}}</div>
-            <div data-index="{{@index}}" class="input {{#if isInUnit}}checked{{/if}}"/>
+            <div class="portrait">{{{thumbSpriteHTML}}}</div>
+            <div data-index="{{@index}}" class="input"/>
           </li>
         {{/each}}
       </ul>
