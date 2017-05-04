@@ -32,7 +32,6 @@ var STATS = [
   'speed',
   'defense'
 ];
-
 var LAYERS = [
     'hbe',
     'hb',
@@ -148,8 +147,11 @@ function Ability(parts, animation) {
 }
 
 function Idol(seed) {
+  var self = this;
+
   this.recruitedAt = new Date();
   this.seed = seed;
+  this.identifier = seed.toString(10);
   this.rand = seededRandom(seed);
   this.xp = 0;
   this.level = 0;
@@ -170,12 +172,24 @@ function Idol(seed) {
   // build portrait
   var partsMissing = true;
   var pose, skinColour, hairColour;
+
   function partIsAllowed(part) {
     if (part.pose && part.pose !== pose) return false;
     if (part.skinColour && part.skinColour !== skinColour) return false;
     if (part.hairColour && part.hairColour !== hairColour) return false;
     return true;
   }
+
+  function renderMedIfLoaded() {
+    self.loadedMeds++;
+    if (self.loadedMeds === self.medImages.length) self.renderSprite('med');
+  }
+
+  function renderThumbIfLoaded() {
+    self.loadedThumbs++;
+    if (self.loadedThumbs === self.thumbImages.length) self.renderSprite('thumb');
+  }
+    
   while (partsMissing) {
     partsMissing = false;
     pose = choice(POSES, this.rand());
@@ -183,6 +197,10 @@ function Idol(seed) {
     hairColour = choice(HAIR_COLOURS, this.rand());
 
     this.parts = [];
+    this.medImages = [];
+    this.thumbImages = [];
+    this.loadedMeds = 0;
+    this.loadedThumbs = 0;
 
     for(var li = 0, ln = LAYERS.length; li < ln; li++) {
       var options = PARTS[LAYERS[li]].filter(partIsAllowed);
@@ -192,6 +210,22 @@ function Idol(seed) {
         this.parts.push(choice(options, this.rand()));
       }
     }
+  }
+
+  this.renderedSprites = {};
+
+  for (var pi = 0; pi < this.parts.length; pi++) {
+    var chosenPart = this.parts[pi];
+
+    var medImg = new Image();
+    medImg.src = chosenPart.medPath;
+    medImg.addEventListener('load', renderMedIfLoaded);
+    this.medImages.push(medImg);
+
+    var thumbImg = new Image();
+    thumbImg.src = chosenPart.thumbPath;
+    thumbImg.addEventListener('load', renderThumbIfLoaded);
+    this.thumbImages.push(thumbImg);
   }
 
   // build bio
@@ -228,10 +262,60 @@ Idol.prototype.generateName = function() {
   name = name[0].toUpperCase() + name.slice(1);
   return name;
 };
+Idol.prototype.getSprite = function(mode) {
+  if (typeof(mode) !== 'string') mode = undefined;
+  var sprite = this.renderedSprites[mode || 'med'];
+  if (sprite === undefined) return 'icon.png';
+  return sprite;
+};
+Idol.prototype.getThumbSprite = function() { return this.getSprite('thumb'); };
+Idol.prototype.renderSprite = function(mode) {
+  var images;
+
+  var offscreenCanvasElement = document.createElement('canvas');
+  var offscreenCanvas = offscreenCanvasElement.getContext('2d');
+
+  if (mode === undefined) mode = 'med';
+
+  if (mode === 'med') {
+    offscreenCanvas.canvas.width = 1000;
+    offscreenCanvas.canvas.height = 1684;
+    images = this.medImages;
+  } else if (mode === 'thumb') {
+    offscreenCanvas.canvas.width = 400;
+    offscreenCanvas.canvas.height = 674;
+    images = this.thumbImages;
+  }
+
+  offscreenCanvas.clearRect(0, 0, offscreenCanvas.canvas.width, offscreenCanvas.canvas.height);
+
+  for (var i = 0; i < images.length; i++) {
+    offscreenCanvas.drawImage(images[i], 0, 0);
+  }
+
+  this.renderedSprites[mode] = offscreenCanvasElement.toDataURL();
+
+  var subbableImages = document.querySelectorAll('.sprite img[data-sprite-' + mode + '-id="' + this.identifier + '"]');
+  for (var si = 0; si < subbableImages.length; si++) {
+    subbableImages[si].src = this.renderedSprites[mode];
+  }
+};
 Idol.prototype.spriteHTML = function(mode) {
+  if (mode === undefined || typeof(mode) !== 'string') mode = 'med';
+  var sprite;
+
+  if (mode === 'med') {
+    sprite = this.getSprite();
+  } else if (mode === 'thumb') {
+    sprite = this.getThumbSprite();
+  } else {
+    throw 'what is ' + mode
+  }
+
   return spriteTemplate({
-    parts: this.parts,
-    thumb: mode === 'thumb'
+    mode: mode,
+    identifier: this.identifier,
+    sprite: sprite
   });
 };
 Idol.prototype.thumbSpriteHTML = function() { return this.spriteHTML('thumb'); };
@@ -515,7 +599,8 @@ function initGame() {
 }
 
 if (window.location.hash === '#icon') {
-  document.body.innerHTML = '<div class="icon-container"><div class="portrait">' + new Idol(Math.random()).spriteHTML() + '</div></div>';
+  var iconIdol = new Idol(Math.random());
+  document.body.innerHTML = '<div class="icon-container"><div class="portrait">' + iconIdol.spriteHTML() + '</div></div>';
   document.body.classList.add('icon');
 } else {
   document.addEventListener('DOMContentLoaded', function() {

@@ -1,12 +1,16 @@
 var animationDuration = 1000;
 var anims = {};
 
-for(var i = 0; i < ANIMATIONS.length; i++) {
-  var name = ANIMATIONS[i];
-  var img = new Image();
-  img.src = 'anim/' + name;
-  anims[name] = img;
+function loadAnimations() {
+  for(var i = 0; i < ANIMATIONS.length; i++) {
+    var name = ANIMATIONS[i];
+    var img = new Image();
+    img.src = 'anim/' + name;
+    anims[name] = img;
+  }
 }
+
+loadAnimations();
 
 function BattleIdol(idol, control) {
   var self = this;
