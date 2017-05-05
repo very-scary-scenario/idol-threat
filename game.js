@@ -150,7 +150,7 @@ function Ability(parts, animation) {
 function Idol(seed) {
   var self = this;
 
-  this.recruitedAt = new Date();
+  this.recruitedAt = new Date().getTime();
   this.seed = seed;
   this.identifier = seed.toString(10);
   this.rand = seededRandom(seed);
@@ -328,7 +328,9 @@ Idol.prototype.isInUnit = function() {
 Idol.prototype.toggleUnitMembership = function() {
   if (this.isInUnit()) {
     agency.unit.splice(agency.unit.indexOf(this), 1);
-    this.catalogElement.classList.remove('active');
+    if (this.catalogElement !== undefined) {
+      this.catalogElement.classList.remove('active');
+    }
   } else {
     agency.addToUnit(this, true);
   }
@@ -501,7 +503,8 @@ Agency.prototype.load = function(agencyDump) {
   for(var i = 0, n = agencyDump.i.length; i < n; i++) {
     var idolDump = agencyDump.i[i];
     var idol = new Idol(idolDump.i);
-    if (idolDump.a !== undefined) idol.recruitedAt = new Date(idolDump.a);
+
+    idol.recruitedAt = idolDump.a;
 
     for(var si = 0, sn = STATS.length; si < sn; si++) {
       idol[STATS[si]] = idolDump.s[si];

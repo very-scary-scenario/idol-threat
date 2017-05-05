@@ -46,9 +46,6 @@
     <section id="canteen">
     </section>
 
-    <canvas id="offscreen-canvas">
-    </canvas>
-
     <input type="file" accept="image/*" capture="camera" id="barcode-image"/>
 
     <script id="catalog-template" type="text/x-handlebars-template">
@@ -123,7 +120,7 @@
         {{#each unit}}
           <li>
             <div class="portrait">
-              {{{spriteHTML}}}
+              {{{thumbSpriteHTML}}}
             </div>
           </li>
         {{/each}}
