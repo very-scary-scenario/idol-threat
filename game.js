@@ -95,6 +95,7 @@ var detailElement = document.getElementById('idol-detail');
 var catalogElement = document.getElementById('catalog');
 var unitElement = document.getElementById('unit');
 var battleElement = document.getElementById('battle');
+var promptArea = document.getElementById('prompt-area');
 
 var spriteTemplate = Handlebars.compile(document.getElementById('sprite-template').innerHTML);
 var catalogTemplate = Handlebars.compile(document.getElementById('catalog-template').innerHTML);
@@ -103,7 +104,7 @@ var idolDetailTemplate = Handlebars.compile(document.getElementById('idol-detail
 var battleTemplate = Handlebars.compile(document.getElementById('battle-template').innerHTML);
 var healthBarTemplate = Handlebars.compile(document.getElementById('health-bar-template').innerHTML);
 var abilityPromptTemplate = Handlebars.compile(document.getElementById('ability-prompt-template').innerHTML);
-var targetPromptElement = Handlebars.compile(document.getElementById('ability-prompt-template').innerHTML);
+var promptTemplate = Handlebars.compile(document.getElementById('prompt-template').innerHTML);
 
 var maxUnitSize = 3;
 var rerenderTimeout;
@@ -125,6 +126,25 @@ function seededRandom(seed) {
   }
 
   return rand;
+}
+
+function askUser(question, answers) {
+  promptArea.innerHTML = promptTemplate({
+    'question': question,
+    'answers': answers
+  });
+
+  function doAnswer(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    var answerIndex = parseInt(event.currentTarget.getAttribute('data-answer-index'), 10);
+    promptArea.innerHTML = '';
+    answers[answerIndex][1]();
+  }
+
+  for (var i = 0; i < answers.length; i++) {
+    promptArea.querySelector('a[data-answer-index="' + i.toString() + '"]').addEventListener('click', doAnswer);
+  }
 }
 
 function Ability(parts, animation) {
@@ -346,9 +366,27 @@ Idol.prototype.giveBonus = function(count) {
   }
 };
 Idol.prototype.showDetail = function() {
+  var self = this;
+
   detailElement.innerHTML = idolDetailTemplate(this);
   detailElement.classList.add('shown');
 	detailElement.querySelector('.close').addEventListener('click', hideIdolDetail);
+  detailElement.querySelector('.graduate').addEventListener('click', function() {
+    askUser('Do you want ' + this.name + ' to graduate? She will leave your agency and every other idol will get a stat bonus by attending the graduation party.', [
+      ['Graduate', function() {
+        detailElement.classList.remove('shown');
+        if (self.isInUnit()) agency.unit.splice(agency.catalog.indexOf(self), 1);
+        agency.catalog.splice(agency.catalog.indexOf(self), 1);
+
+        for (var i = 0; i < agency.catalog.length; i++) {
+          agency.catalog[i].giveBonus();
+        }
+
+        rerender();
+      }],
+      ['Keep', function() {}]
+    ]);
+  });
 };
 Idol.prototype.dump = function() {
   var idolDump = {

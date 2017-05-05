@@ -83,6 +83,12 @@ a {
 }
 
 .button() {
+  padding: .2em .5em;
+  border-radius: .2em;
+  background-color: @hl;
+}
+
+.button-shadow() {
   box-shadow: 0 .1em .3em fade(@fg, 50%);
 }
 
@@ -141,7 +147,7 @@ a {
     }
 
     .input {
-      .button();
+      .button-shadow();
       font-size: .8em;
       position: absolute;
       width: 1.5em;
@@ -290,9 +296,18 @@ a {
     }
   }
 
+  .actions {
+    a {
+      display: block;
+      .button();
+      margin-top: 1em;
+    }
+  }
+
   .controls {
     top: 0;
     right: 0;
+    background-color: @hl;
   }
 }
 
@@ -536,12 +551,10 @@ body.icon {
   height: 3.2em;
 
   #sort-button {
+    .button();
     position: absolute;
     z-index: 35;
-    padding: .2em .5em;
-    border-radius: .2em;
     box-sizing: border-box;
-    background-color: @hl;
     transition: background-color .5s, border-color .5s;
     border: .1em solid fade(@fg, 0%);
     right: .5em;
@@ -550,7 +563,7 @@ body.icon {
 
   #sort-list {
     .menu();
-    .button();
+    .button-shadow();
 
     border-radius: .5em 0 0 .5em;
     position: absolute;
@@ -570,6 +583,39 @@ body.icon {
 
     #sort-list {
       right: 0;
+    }
+  }
+}
+
+#prompt-backdrop {
+  background-color: fade(@bg, 70%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  text-align: center;
+
+  #prompt {
+    .button-shadow();
+    max-width: 25em;
+    border-radius: 0.5em;
+    background-color: fade(@bg, 90%);
+    display: inline-block;
+    margin: 25vh 3vw 0;
+    padding: 1em;
+
+    p {
+      margin-bottom: 1em;
+    }
+
+    li {
+      display: inline-block;
+
+      a {
+        .button();
+      }
     }
   }
 }

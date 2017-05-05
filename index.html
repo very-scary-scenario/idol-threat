@@ -46,6 +46,9 @@
     <section id="canteen">
     </section>
 
+    <section id="prompt-area">
+    </section>
+
     <input type="file" accept="image/*" capture="camera" id="barcode-image"/>
 
     <script id="catalog-template" type="text/x-handlebars-template">
@@ -108,6 +111,9 @@
           <ul>
             {{#each abilities}}<li>{{name}}</li>{{/each}}
           </ul>
+        </div>
+        <div class="actions">
+          <a class="graduate" href="#">Graduate…</a>
         </div>
       </div>
       <div class="bubble bio">
@@ -193,6 +199,19 @@
       <p>Also, pick a target from the enemy unit.</p>
 
       <button type="subit">Fight!</button>
+    </script>
+
+    <script id="prompt-template" type="text/x-handlebars-template">
+      <div id="prompt-backdrop">
+        <div id="prompt">
+          <p>{{question}}</p>
+          <ul>
+            {{#each answers}}
+              <li><a href="#" data-answer-index="{{@index}}">{{0}}</a></li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
     </script>
 
     <script id="canteen-template" type="text/x-handlebars-template">
