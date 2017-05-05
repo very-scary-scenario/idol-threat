@@ -575,7 +575,8 @@ function rerender() {
     barcodeImage.click();
   });
 
-  document.getElementById('fight').addEventListener('click', function(e) {
+  var fightButton = document.getElementById('fight');
+  if (fightButton) fightButton.addEventListener('click', function(e) {
     e.stopPropagation();
     e.preventDefault();
     if (agency.unit.length > 0) {
@@ -595,6 +596,22 @@ function rerender() {
       alert('You need an idol in your unit to fight.');
     }
     return false;
+  });
+
+  var randomFightButton = document.getElementById('random-fight');
+  if (randomFightButton) randomFightButton.addEventListener('click', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    var playerIdols = [];
+    var enemyIdols = [];
+    for (var i = maxUnitSize; i > 0; i--) {
+      enemyIdols.push(new BattleIdol(new Idol(Math.random()), 'ai'));
+      playerIdols.push(new BattleIdol(new Idol(Math.random()), 'player'));
+    }
+
+    var battle = new Battle(playerIdols, enemyIdols);
+    battle.loop();
   });
 
   var stateString = btoa(JSON.stringify(agency.dump()));
