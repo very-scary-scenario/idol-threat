@@ -42,7 +42,6 @@ function BattleIdol(idol, control) {
   self.hp = self.maxHp;
 
   self.abilities = idol.abilities;
-  console.log(self);
 }
 
 BattleIdol.prototype.doDamage = function(damage) {
