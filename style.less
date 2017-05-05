@@ -53,9 +53,11 @@ a {
   color: @fg;
   text-shadow: .1em .1em 0 @bg;
 
-  &:hover, &:focus {
-    color: @bg;
-    text-shadow: .1em .1em 0 @fg;
+  &[href] {
+    &:hover, &:focus {
+      color: @bg;
+      text-shadow: .1em .1em 0 @fg;
+    }
   }
 }
 
@@ -80,21 +82,35 @@ a {
   }
 }
 
-#menu {
+.button() {
+  box-shadow: 0 .1em .3em fade(@fg, 50%);
+}
+
+.menu() {
   li a {
     display: block;
     padding: 1em 1em;
     background-color: @mid;
     border-bottom: 1px solid fade(@fg, 30%);
+    color: fade(@fg, 50%);
 
-    &:hover, &:focus {
+    &[href] {
       background-color: @hl;
+      color: @fg;
+
+      &:hover, &:focus {
+        color: @bg;
+      }
     }
   }
 
   li:last-child a {
     border-bottom: none;
   }
+}
+
+#menu {
+  .menu();
 }
 
 .catalog {
@@ -125,6 +141,7 @@ a {
     }
 
     .input {
+      .button();
       font-size: .8em;
       position: absolute;
       width: 1.5em;
@@ -134,7 +151,6 @@ a {
       bottom: 0.2em;
       right: 0.2em;
       background-color: @bg;
-      box-shadow: 0 .1em .3em fade(@fg, 50%);
       text-align: center;
 
       &::after {
@@ -509,6 +525,56 @@ body.icon {
       font-size: @icon-size*3;
       z-index: -1;
       color: @hl;
+    }
+  }
+}
+
+#sort-orders {
+  position: relative;
+  z-index: 30;
+  height: 3.2em;
+
+  #sort-button {
+    position: absolute;
+    z-index: 35;
+    padding: .2em .5em;
+    border-radius: .2em;
+    box-sizing: border-box;
+    background-color: @hl;
+    transition: background-color .5s, border-color .5s;
+    border: .1em solid fade(@fg, 0%);
+    right: .5em;
+    top: 1em;
+
+    &::before {
+      font-weight: bold;
+      margin-right: .2em;
+      content: '⥮';
+    }
+  }
+
+  #sort-list {
+    .menu();
+    .button();
+
+    border-radius: .5em 0 0 .5em;
+    position: absolute;
+    width: 90vw;
+    max-width: 20em;
+    right: -22em;
+    top: .5em;
+    transition: right .5s;
+    overflow: hidden;
+  }
+
+  &.visible {
+    #sort-button {
+      border-color: fade(@fg, 50%);
+      background-color: @mid;
+    }
+
+    #sort-list {
+      right: 0;
     }
   }
 }

@@ -59,17 +59,20 @@
         {{/if}}
       </ul>
 
-      <ul id="sort-orders">
-        {{#each sortOrders}}
-          <li>
-            {{#if isSelectedOrder}}
-              {{1}} <em>(current)</em>
-            {{else}}
-              <a href="#" data-sort-order="{{0}}">{{1}}</a>
-            {{/if}}
-          </li>
-        {{/each}}
-      </ul>
+      <div id="sort-orders">
+        <a href="#" id="sort-button">sort</a>
+        <ul id="sort-list">
+          {{#each sortOrders}}
+            <li>
+              {{#if isSelectedOrder}}
+                <a>{{1}} <em>(current)</em></a>
+              {{else}}
+                <a href="#" data-sort-order="{{0}}">{{1}}</a>
+              {{/if}}
+            </li>
+          {{/each}}
+        </ul>
+      </div>
 
       <ul class="catalog">
         {{#each catalog}}

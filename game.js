@@ -400,8 +400,14 @@ Agency.prototype.renderCatalog = function() {
     rerender();
   }
 
+  document.getElementById('sort-button').addEventListener('click', function(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    document.getElementById('sort-orders').classList.toggle('visible');
+  });
+
   for (var sortKey in idolSortNames) {
-    element = document.querySelector('#sort-orders a[data-sort-order="' + sortKey + '"]');
+    element = document.querySelector('#sort-list a[data-sort-order="' + sortKey + '"]');
     if (element) element.addEventListener('click', setSortOrder);
   }
 
