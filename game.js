@@ -181,16 +181,6 @@ function Idol(seed) {
     return true;
   }
 
-  function renderMedIfLoaded() {
-    self.loadedMeds++;
-    if (self.loadedMeds === self.medImages.length) self.renderSprite('med');
-  }
-
-  function renderThumbIfLoaded() {
-    self.loadedThumbs++;
-    if (self.loadedThumbs === self.thumbImages.length) self.renderSprite('thumb');
-  }
-    
   while (partsMissing) {
     partsMissing = false;
     pose = choice(POSES, this.rand());
@@ -198,8 +188,6 @@ function Idol(seed) {
     hairColour = choice(HAIR_COLOURS, this.rand());
 
     this.parts = [];
-    this.medImages = [];
-    this.thumbImages = [];
     this.loadedMeds = 0;
     this.loadedThumbs = 0;
 
@@ -214,20 +202,7 @@ function Idol(seed) {
   }
 
   this.renderedSprites = {};
-
-  for (var pi = 0; pi < this.parts.length; pi++) {
-    var chosenPart = this.parts[pi];
-
-    var medImg = new Image();
-    medImg.src = chosenPart.medPath;
-    medImg.addEventListener('load', renderMedIfLoaded);
-    this.medImages.push(medImg);
-
-    var thumbImg = new Image();
-    thumbImg.src = chosenPart.thumbPath;
-    thumbImg.addEventListener('load', renderThumbIfLoaded);
-    this.thumbImages.push(thumbImg);
-  }
+  this.loadedImages = {};
 
   // build bio
   var bioParts = [];
@@ -263,29 +238,54 @@ Idol.prototype.generateName = function() {
   name = name[0].toUpperCase() + name.slice(1);
   return name;
 };
+Idol.prototype.deferRendering = function(mode) {
+  var self = this;
+  mode = mode || 'med';
+
+  if (this.loadedImages[mode] !== undefined) return;  // we're already loading
+
+  var loaded = 0;
+  var images = [];
+  this.loadedImages[mode] = images;
+
+  function renderIfLoaded() {
+    loaded++;
+    if (loaded === self.parts.length) self.renderSprite(mode);
+  }
+
+  for (var pi = 0; pi < this.parts.length; pi++) {
+    var chosenPart = this.parts[pi];
+    var img = new Image();
+
+    images.push(img);
+    img.src = chosenPart[mode + 'Path'];
+    img.addEventListener('load', renderIfLoaded);
+  }
+};
 Idol.prototype.getSprite = function(mode) {
   if (typeof(mode) !== 'string') mode = undefined;
   var sprite = this.renderedSprites[mode || 'med'];
-  if (sprite === undefined) return 'icon.png';
+  if (sprite === undefined) {
+    this.deferRendering(mode);
+    return 'icon.png';
+  }
   return sprite;
 };
 Idol.prototype.getThumbSprite = function() { return this.getSprite('thumb'); };
 Idol.prototype.renderSprite = function(mode) {
-  var images;
+  if (mode === undefined) mode = 'med';
+
+  var images = this.loadedImages[mode];
 
   var offscreenCanvasElement = document.createElement('canvas');
   var offscreenCanvas = offscreenCanvasElement.getContext('2d');
 
-  if (mode === undefined) mode = 'med';
-
   if (mode === 'med') {
     offscreenCanvas.canvas.width = 1000;
     offscreenCanvas.canvas.height = 1684;
-    images = this.medImages;
   } else if (mode === 'thumb') {
     offscreenCanvas.canvas.width = 400;
     offscreenCanvas.canvas.height = 674;
-    images = this.thumbImages;
   }
 
   offscreenCanvas.clearRect(0, 0, offscreenCanvas.canvas.width, offscreenCanvas.canvas.height);
@@ -301,8 +301,7 @@ Idol.prototype.renderSprite = function(mode) {
     subbableImages[si].src = this.renderedSprites[mode];
   }
 
-  if (mode === 'med') this.medImages = undefined;
-  else if (mode === 'thumb') this.thumbImages = undefined;
+  this.loadedImages[mode] = undefined;  // free up some memory?
 };
 Idol.prototype.spriteHTML = function(mode) {
   if (mode === undefined || typeof(mode) !== 'string') mode = 'med';
