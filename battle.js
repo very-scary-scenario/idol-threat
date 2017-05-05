@@ -159,7 +159,7 @@ Battle.prototype.nextMove = function() {
 
   if (this.playerHasWon() || this.enemyHasWon()) {
     if (this.playerHasWon()) {
-      alert('You win! Your idols get bonuses~');
+      alert('You win! Your unit gets bonuses~');
       for (var pi = 0; pi < this.playerIdols.length; pi++) {
         this.playerIdols[pi].idol.giveBonus(this.enemyIdols.length);
       }
