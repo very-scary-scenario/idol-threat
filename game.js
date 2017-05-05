@@ -372,7 +372,7 @@ Idol.prototype.showDetail = function() {
   detailElement.classList.add('shown');
 	detailElement.querySelector('.close').addEventListener('click', hideIdolDetail);
   detailElement.querySelector('.graduate').addEventListener('click', function() {
-    askUser('Do you want ' + this.name + ' to graduate? She will leave your agency and every other idol will get a stat bonus by attending the graduation party.', [
+    askUser('Do you want ' + self.name + ' to graduate? She will leave your agency and every other idol will get a stat bonus by attending the graduation party.', [
       ['Graduate', function() {
         detailElement.classList.remove('shown');
         if (self.isInUnit()) agency.unit.splice(agency.catalog.indexOf(self), 1);
