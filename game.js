@@ -129,6 +129,8 @@ function seededRandom(seed) {
 }
 
 function askUser(question, answers) {
+  if (answers === undefined) answers = [['Okay', null]];
+
   promptArea.innerHTML = promptTemplate({
     'question': question,
     'answers': answers
@@ -139,7 +141,8 @@ function askUser(question, answers) {
     event.preventDefault();
     var answerIndex = parseInt(event.currentTarget.getAttribute('data-answer-index'), 10);
     promptArea.innerHTML = '';
-    answers[answerIndex][1]();
+    var func = answers[answerIndex][1];
+    if (func) func();
   }
 
   for (var i = 0; i < answers.length; i++) {
@@ -507,7 +510,7 @@ Agency.prototype.addIdol = function(idol) {
 
   for(var i = 0, n = this.catalog.length; i < n; i++) {
     if (this.catalog[i].seed === idol.seed) {
-      alert("You recruited this idol already; it's " + idol.name + "!");
+      askUser("You recruited this idol already; it's " + idol.name + "!");
       return;
     }
   }
@@ -518,7 +521,7 @@ Agency.prototype.addIdol = function(idol) {
 Agency.prototype.addToUnit = function(idol, interactive) {
   if (this.unit.length >= maxUnitSize) {
     if (interactive !== undefined) {
-      alert("Your unit is full; you'll need to remove someone before you can add " + idol.name + ".");
+      askUser("Your unit is full; you'll need to remove someone before you can add " + idol.name + ".");
     }
   } else {
     this.unit.push(idol);
@@ -576,7 +579,7 @@ function numFromString(str) {
 
 function addIdolFromImage(data) {
   if ((!data) || (!data.codeResult)) {
-    alert("Sorry, we couldn't read a barcode in that picture, please try a clearer photo.");
+    askUser("Sorry, we couldn't read a barcode in that picture, please try a clearer photo.");
     return;
   }
   idol = new Idol(numFromString(data.codeResult.code));
@@ -633,7 +636,7 @@ function rerender() {
       var battle = new Battle(playerIdols, enemyIdols);
       battle.loop();
     } else {
-      alert('You need an idol in your unit to fight.');
+      askUser('You need an idol in your unit to fight.');
     }
     return false;
   });

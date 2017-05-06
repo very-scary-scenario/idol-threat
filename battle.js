@@ -158,13 +158,13 @@ Battle.prototype.nextMove = function() {
 
   if (this.playerHasWon() || this.enemyHasWon()) {
     if (this.playerHasWon()) {
-      alert('You win! Your unit gets bonuses~');
+      askUser('You win! Your unit gets bonuses~', [['Yay!', null]]);
       for (var pi = 0; pi < this.playerIdols.length; pi++) {
         this.playerIdols[pi].idol.giveBonus(this.enemyIdols.length);
       }
       rerender();
     } else if (this.enemyHasWon()) {
-      alert('You lose :<');
+      askUser('You lose :<', [['Aww, beans…', null]]);
     }
 
     document.body.classList.remove('in-battle');
