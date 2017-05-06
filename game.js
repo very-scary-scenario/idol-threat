@@ -33,20 +33,22 @@ var STATS = [
   'defense'
 ];
 var LAYERS = [
-    'hbe',
-    'hb',
-    'bd',
-    'cb',
-    'ct',
-    'hd',
-    'hf',
-    'hfe',
-    'ah',
-    'mt',
-    'ns',
-    'ey',
-    'eb'
+  'hbe',
+  'hb',
+  'bd',
+  'cb',
+  'ct',
+  'hd',
+  'hf',
+  'hfe',
+  'ah',
+  'mt',
+  'ns',
+  'ey',
+  'eb'
 ];
+var AFFINITIES = ['rock', 'paper', 'scissors'];
+
 var POSES;
 var HAIR_COLOURS;
 var SKIN_COLOURS;
@@ -155,9 +157,10 @@ function askUser(question, answers) {
   }
 }
 
-function Ability(parts, animation) {
+function Ability(parts, animation, affinity) {
   this.strength = 0;
   this.healing = false;
+  this.affinity = affinity;
 
   var partNames = [];
 
@@ -250,8 +253,11 @@ function Idol(seed) {
 
     abilityParts.push(choice(ABILITIES[1], this.rand()));
     abilityParts.push(choice(ABILITIES[2], this.rand()));
-    this.abilities.push(new Ability(abilityParts, choice(ANIMATIONS, this.rand())));
+    this.abilities.push(new Ability(abilityParts, choice(ANIMATIONS, this.rand()), choice(AFFINITIES, this.rand())));
   }
+
+  // build affinity
+  this.affinity = choice(AFFINITIES, this.rand());
 }
 Idol.prototype.generateName = function() {
   var name = '';
@@ -387,6 +393,7 @@ Idol.prototype.showDetail = function() {
   var self = this;
 
   detailElement.innerHTML = idolDetailTemplate(this);
+  detailElement.setAttribute('data-affinity', this.affinity);
   detailElement.classList.add('shown');
 	detailElement.querySelector('.close').addEventListener('click', hideIdolDetail);
 

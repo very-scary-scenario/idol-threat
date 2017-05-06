@@ -1,9 +1,17 @@
 @mid: #ccc;
 @unit-height: 8em;
-@bg: white;
-@fg: black;
+@bg: #fdfdfd;
+@fg: #111;
 @hl: pink;
 @icon-size: 512px;
+
+@rock: '✊';
+@paper: '✋';
+@scissors: '✌️';
+
+@rock-colour: hsl(0, 0.6, 0.6);
+@paper-colour: hsl(240, 0.6, 0.6);
+@scissors-colour: hsl(120, 0.6, 0.6);
 
 @keyframes bob {
   0% {top: -1em}
@@ -82,6 +90,28 @@ a {
   }
 }
 
+.affinity() {
+  &::after {
+    display: inline-block;
+    overflow: hidden;
+    padding-left: .3em;
+    color: fade(@fg, 0%);
+  }
+
+  &.affinity-rock::after {
+    content: @rock;
+    text-shadow: 0 0 0 @rock-colour;
+  }
+  &.affinity-paper::after {
+    content: @paper;
+    text-shadow: 0 0 0 @paper-colour;
+  }
+  &.affinity-scissors::after {
+    content: @scissors;
+    text-shadow: 0 0 0 @scissors-colour;
+  }
+}
+
 .button() {
   padding: .2em .5em;
   border-radius: .2em;
@@ -134,6 +164,21 @@ a {
     overflow: hidden;
     border-radius: .3em;
 
+    &::after {
+      // content: ' ';  // uncomment this if you want lil badges instead of backgrounds for affinity
+      position: absolute;
+      top: -1em;
+      right: -1.5em;
+      width: 4em;
+      height: 2em;
+      box-shadow: 0 -.1em .5em @fg inset;
+      transform: rotate(45deg);
+    }
+
+    &.affinity-rock { background-color: fade(@rock-colour, 90%); &::after { background-color: @rock-colour; } }
+    &.affinity-paper { background-color: fade(@paper-colour, 90%); &::after { background-color: @paper-colour; } }
+    &.affinity-scissors { background-color: fade(@scissors-colour, 90%); &::after { background-color: @scissors-colour; } }
+
     .portrait {
       margin-top: -3.5em;
       margin-left: -3.5em;
@@ -161,15 +206,18 @@ a {
 
       &::after {
         content: '✔️';
-        opacity: 0.1;
+        color: fade(@fg, 0%);
+        text-shadow: 0 0 0 fade(@fg, 10%);
       }
     }
 
     &.active {
-      background-color: @hl;
+      .input {
+        background-color: @fg;
 
-      .input::after {
-        opacity: 1;
+        &::after {
+          text-shadow: 0 0 0 @bg;
+        }
       }
     }
   }
@@ -219,11 +267,14 @@ a {
   overflow: hidden;
   width: 100%;
   min-height: 100%;
-  background-color: fade(@bg, 95%);
   opacity: 0;
   transition: opacity .5s;
   pointer-events: none;
   z-index: 100;
+
+  &[data-affinity="rock"] { background-color: fade(lighten(@rock-colour, 10%), 95%); }
+  &[data-affinity="paper"] { background-color: fade(lighten(@paper-colour, 10%), 95%); }
+  &[data-affinity="scissors"] { background-color: fade(lighten(@scissors-colour, 10%), 95%); }
 
   &.shown {
     opacity: 1;
@@ -258,6 +309,10 @@ a {
     left: 0;
     top: 0;
 
+    .name {
+      .affinity();
+    }
+
     .stats, .abilities {
       padding-top: .5em;
     }
@@ -274,6 +329,10 @@ a {
 
     .abilities {
       clear: both;
+
+      li {
+        .affinity();
+      }
     }
   }
 
@@ -495,6 +554,10 @@ body.in-battle {
       max-width: 15em;
       margin: 0 auto;
       padding: .5em;
+
+      label {
+        .affinity();
+      }
     }
 
     a {
