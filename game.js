@@ -211,8 +211,6 @@ function Idol(seed) {
     hairColour = choice(HAIR_COLOURS, this.rand());
 
     this.parts = [];
-    this.loadedMeds = 0;
-    this.loadedThumbs = 0;
 
     for(var li = 0, ln = LAYERS.length; li < ln; li++) {
       var options = PARTS[LAYERS[li]].filter(partIsAllowed);
@@ -281,7 +279,9 @@ Idol.prototype.deferRendering = function(mode) {
     var img = new Image();
 
     images.push(img);
-    img.src = chosenPart[mode + 'Path'];
+    var attr = mode + 'Path';
+    if (mode === 'huge') attr = 'path';
+    img.src = chosenPart[attr];
     img.addEventListener('load', renderIfLoaded);
   }
 };
@@ -295,6 +295,7 @@ Idol.prototype.getSprite = function(mode) {
   return sprite;
 };
 Idol.prototype.getThumbSprite = function() { return this.getSprite('thumb'); };
+Idol.prototype.getHugeSprite = function() { return this.getSprite('huge'); };
 Idol.prototype.renderSprite = function(mode) {
   if (mode === undefined) mode = 'med';
 
@@ -309,6 +310,9 @@ Idol.prototype.renderSprite = function(mode) {
   } else if (mode === 'thumb') {
     offscreenCanvas.canvas.width = 400;
     offscreenCanvas.canvas.height = 674;
+  } else if (mode === 'huge') {
+    offscreenCanvas.canvas.width = 1518;
+    offscreenCanvas.canvas.height = 2556;
   }
 
   offscreenCanvas.clearRect(0, 0, offscreenCanvas.canvas.width, offscreenCanvas.canvas.height);
@@ -334,6 +338,8 @@ Idol.prototype.spriteHTML = function(mode) {
     sprite = this.getSprite();
   } else if (mode === 'thumb') {
     sprite = this.getThumbSprite();
+  } else if (mode === 'huge') {
+    sprite = this.getHugeSprite();
   } else {
     throw 'what is ' + mode;
   }
@@ -345,6 +351,7 @@ Idol.prototype.spriteHTML = function(mode) {
   });
 };
 Idol.prototype.thumbSpriteHTML = function() { return this.spriteHTML('thumb'); };
+Idol.prototype.hugeSpriteHTML = function() { return this.spriteHTML('huge'); };
 Idol.prototype.isInUnit = function() {
   return agency.unit.indexOf(this) !== -1;
 };
@@ -681,7 +688,7 @@ function initGame() {
 
 if (window.location.hash === '#icon') {
   var iconIdol = new Idol(Math.random());
-  document.body.innerHTML = '<div class="icon-container"><div class="portrait">' + iconIdol.spriteHTML() + '</div></div>';
+  document.body.innerHTML = '<div class="icon-container"><div class="portrait">' + iconIdol.hugeSpriteHTML() + '</div></div>';
   document.body.classList.add('icon');
 } else {
   document.addEventListener('DOMContentLoaded', function() {
