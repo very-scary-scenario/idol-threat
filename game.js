@@ -364,6 +364,8 @@ Idol.prototype.giveBonus = function(count) {
     count--;
     this[choice(STATS, Math.random()) + 'Bonus']++;
   }
+
+  deferRerender();
 };
 Idol.prototype.showDetail = function() {
   var self = this;
