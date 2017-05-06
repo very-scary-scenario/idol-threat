@@ -59,9 +59,6 @@
         {{else}}
           <li><a href="#" class="needsclick" id="random-fight">Fight a random, consequence-free battle…</a></li>
         {{/if}}
-        {{#if canFeed}}
-          <li><a href="#" class="needsclick" id="feed">Feed idols to other idols…</a></li>
-        {{/if}}
       </ul>
 
       <div id="sort-orders">
@@ -113,6 +110,9 @@
           </ul>
         </div>
         <div class="actions">
+          {{#if canFeed}}
+            <li><a class="feed" href="#">“Train”</a></li>
+          {{/if}}
           <a class="graduate" href="#">Graduate…</a>
         </div>
       </div>
@@ -120,9 +120,7 @@
         <p>{{bio}}</p>
         <blockquote>“{{quote}}”</blockquote>
       </div>
-      <div class="bubble controls">
-        <a class="close" href="#">close</p>
-      </div>
+      <a class="close" href="#">close</p>
     </script>
 
     <script id="unit-template" type="text/x-handlebars-template">
@@ -215,6 +213,37 @@
     </script>
 
     <script id="canteen-template" type="text/x-handlebars-template">
+      <div id="buffet">
+        <p><a href="#" class="cancel">cancel</a></p>
+        <h2>Who do you want {{idol.name}} to “train with”?</h2>
+        
+        <ul class="catalog">
+          {{#each catalog}}
+            <li data-index="{{@index}}" class="idol {{#if isInUnit}}active{{/if}}">
+              <div class="portrait">{{{thumbSpriteHTML}}}</div>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+    </script>
+
+    <script id="canteen-confirm-template" type="text/x-handlebars-template">
+      <div id="buffet">
+        <h2>Are you sure you want {{idol.name}} to “train with” {{food.name}}?</h2>
+        <p>{{food.name}} will go on, uhh, “holiday”, and {{idol.name}}'s base stats will be changed as follows:</p>
+        <dl>
+          <dt>Attack</dt>
+          <dd>{{idol.attack}} + {{food.attack}} = <strong>{{summedStats.attack}}</strong></dd>
+          <dt>Defense</dt>
+          <dd>{{idol.defense}} + {{food.defense}} = <strong>{{summedStats.defense}}</strong></dd>
+          <dt>Speed</dt>
+          <dd>{{idol.speed}} + {{food.speed}} = <strong>{{summedStats.speed}}</strong></dd>
+          <dt>Endurance</dt>
+          <dd>{{idol.endurance}} + {{food.endurance}} = <strong>{{summedStats.endurance}}</strong></dd>
+        </dl>
+
+        <p class="actions"><a href="#" class="yes">Yes, “train”</a> <a href="#" class="no">No, it's okay</a></p>
+      </div>
     </script>
 
     <script src="fastclick.js"></script>

@@ -247,7 +247,7 @@ a {
     }
   }
 
-  .summary, .controls, .bio {
+  .summary, .bio {
     position: absolute;
     margin: 1em;
     z-index: 3;
@@ -299,15 +299,19 @@ a {
   .actions {
     a {
       display: block;
+      max-width: 10em;
       .button();
       margin-top: 1em;
     }
   }
 
-  .controls {
+  .close {
     top: 0;
     right: 0;
-    background-color: @hl;
+    position: absolute;
+    margin: 1em;
+    z-index: 3;
+    .button();
   }
 }
 
@@ -504,6 +508,10 @@ body.in-battle {
   }
 }
 
+#catalog {
+  overflow-x: hidden;
+}
+
 body.icon {
 	overflow: hidden;
 	width: @icon-size;
@@ -627,5 +635,51 @@ body.nothing-scanned {
 
   #sort-orders {
     display: none;
+  }
+}
+
+#buffet {
+  background-color: @bg;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  top: 0;
+  left: 0;
+  z-index: 500;
+
+  h2, p, dl {
+    padding: 1rem 1rem 0;
+  }
+
+  dl {
+    dt {
+      margin-top: .5em;
+    }
+
+    dd {
+      margin-left: 1em;
+
+      strong {
+        display: inline-block;
+        vertical-align: -7%;
+        font-size: 1.5em;
+      }
+    }
+  }
+
+  .cancel {
+    float: right;
+    margin: 1em;
+    .button();
+  }
+
+  .actions {
+    padding: 2em 0 1em;
+    text-align: center;
+
+    a {
+      .button();
+    }
   }
 }

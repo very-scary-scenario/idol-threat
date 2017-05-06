@@ -22,7 +22,7 @@ var KANA = [
   // 'rya', 'ryu', 'ryo',
   // 'gya', 'gyu', 'gyo',
   // 'bya', 'byu', 'byo',
-  // 'pya', 'pyu', 'pyo'
+  // 'pya', 'pyu', 'pyo',
   'ja', 'ju', 'jo'
 ];
 var N = 'n';
@@ -96,6 +96,7 @@ var catalogElement = document.getElementById('catalog');
 var unitElement = document.getElementById('unit');
 var battleElement = document.getElementById('battle');
 var promptArea = document.getElementById('prompt-area');
+var canteenElement = document.getElementById('canteen');
 
 var spriteTemplate = Handlebars.compile(document.getElementById('sprite-template').innerHTML);
 var catalogTemplate = Handlebars.compile(document.getElementById('catalog-template').innerHTML);
@@ -105,6 +106,8 @@ var battleTemplate = Handlebars.compile(document.getElementById('battle-template
 var healthBarTemplate = Handlebars.compile(document.getElementById('health-bar-template').innerHTML);
 var abilityPromptTemplate = Handlebars.compile(document.getElementById('ability-prompt-template').innerHTML);
 var promptTemplate = Handlebars.compile(document.getElementById('prompt-template').innerHTML);
+var canteenTemplate = Handlebars.compile(document.getElementById('canteen-template').innerHTML);
+var canteenConfirmTemplate = Handlebars.compile(document.getElementById('canteen-confirm-template').innerHTML);
 
 var maxUnitSize = 3;
 var rerenderTimeout;
@@ -296,6 +299,7 @@ Idol.prototype.getSprite = function(mode) {
 };
 Idol.prototype.getThumbSprite = function() { return this.getSprite('thumb'); };
 Idol.prototype.getHugeSprite = function() { return this.getSprite('huge'); };
+Idol.prototype.canFeed = function() { return this.agency.canFeed(); };
 Idol.prototype.renderSprite = function(mode) {
   if (mode === undefined) mode = 'med';
 
@@ -383,12 +387,69 @@ Idol.prototype.showDetail = function() {
   detailElement.innerHTML = idolDetailTemplate(this);
   detailElement.classList.add('shown');
 	detailElement.querySelector('.close').addEventListener('click', hideIdolDetail);
-  detailElement.querySelector('.graduate').addEventListener('click', function() {
+
+  function showFeedingUI(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    var catalogWithoutSelf = self.agency.sortedCatalog();
+    catalogWithoutSelf.splice(catalogWithoutSelf.indexOf(self), 1);
+
+    canteenElement.innerHTML = canteenTemplate({
+      idol: self,
+      catalog: catalogWithoutSelf
+    });
+
+    canteenElement.querySelector('.cancel').addEventListener('click', function(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      canteenElement.innerHTML = '';
+    });
+
+    function requestFeeding(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      var foodIdol = catalogWithoutSelf[parseInt(event.currentTarget.getAttribute('data-index'), 10)];
+
+      var summedStats = {};
+      for (var i = 0; i < STATS.length; i++) summedStats[STATS[i]] = idol[STATS[i]] + foodIdol[STATS[i]];
+
+      canteenElement.innerHTML = canteenConfirmTemplate({
+        idol: self,
+        food: foodIdol,
+        summedStats: summedStats
+      });
+
+      canteenElement.querySelector('.no').addEventListener('click', showFeedingUI);
+      canteenElement.querySelector('.yes').addEventListener('click', function(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        for (var stat in summedStats) {
+          self[stat] = summedStats[stat];
+        }
+        agency.removeIdol(foodIdol);
+        canteenElement.innerHTML = '';
+        self.showDetail();
+        askUser('Training complete.');
+      });
+    }
+
+    var idolElements = canteenElement.querySelectorAll('.idol');
+    for (var i = 0; i < idolElements.length; i++) {
+      idolElements[i].addEventListener('click', requestFeeding);
+    }
+  }
+
+  var feedElement = detailElement.querySelector('.feed');
+  if (feedElement) feedElement.addEventListener('click', showFeedingUI);
+
+  detailElement.querySelector('.graduate').addEventListener('click', function(event) {
+    event.stopPropagation();
+    event.preventDefault();
     askUser('Do you want ' + self.name + ' to graduate? She will leave your agency and every other idol will get a stat bonus by attending the graduation party.', [
       ['Graduate', function() {
         detailElement.classList.remove('shown');
-        if (self.isInUnit()) agency.unit.splice(agency.catalog.indexOf(self), 1);
-        agency.catalog.splice(agency.catalog.indexOf(self), 1);
+        agency.removeIdol(self);
 
         for (var i = 0; i < agency.catalog.length; i++) {
           agency.catalog[i].giveBonus();
@@ -522,7 +583,13 @@ Agency.prototype.addIdol = function(idol) {
     }
   }
   this.catalog.push(idol);
+  idol.agency = this;
   this.addToUnit(idol);
+  deferRerender();
+};
+Agency.prototype.removeIdol = function(idol) {
+  if (idol.isInUnit()) agency.unit.splice(agency.catalog.indexOf(idol), 1);
+  agency.catalog.splice(agency.catalog.indexOf(idol), 1);
   deferRerender();
 };
 Agency.prototype.addToUnit = function(idol, interactive) {
