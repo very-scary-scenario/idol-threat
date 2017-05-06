@@ -412,7 +412,7 @@ Idol.prototype.showDetail = function() {
       var foodIdol = catalogWithoutSelf[parseInt(event.currentTarget.getAttribute('data-index'), 10)];
 
       var summedStats = {};
-      for (var i = 0; i < STATS.length; i++) summedStats[STATS[i]] = idol[STATS[i]] + foodIdol[STATS[i]];
+      for (var i = 0; i < STATS.length; i++) summedStats[STATS[i]] = self[STATS[i]] + foodIdol[STATS[i]];
 
       canteenElement.innerHTML = canteenConfirmTemplate({
         idol: self,
