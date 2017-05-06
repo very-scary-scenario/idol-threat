@@ -1,0 +1,22 @@
+large_stage.jpg CC BY-SA 4.0 Ultrafan123
+https://commons.wikimedia.org/wiki/File:Europe_UMF_Croatia.jpg
+
+small_stage.jpg CC BY-SA 3.0 Joe Mabel
+https://commons.wikimedia.org/wiki/File:Vera_Project_12.jpg
+
+western.jpg CC BY-SA 3.0 Matthew Field
+https://commons.wikimedia.org/wiki/File:Pioneertown_california_saloon_and_bath_house.jpg
+
+budokan.png CC BY-SA 3.0 射場本健彦 (Ibamoto Takehiko)
+https://commons.wikimedia.org/wiki/File:Nippon_Budoukan_AGE_Ibamoto_3.png
+
+office.jpg Custom license but free to use
+http://www.imageafter.com/image.php?image=b19mechanics221.jpg
+http://www.imageafter.com/terms.php
+
+Image processing scrips
+http://www.fmwconcepts.com/imagemagick/kuwahara/index.php
+http://www.fmwconcepts.com/imagemagick/glow/index.php
+
+./kuwahara -d 3 -s 3 in.jpg out.jpg
+./glow in.jpg out.jpg

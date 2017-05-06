@@ -97,6 +97,7 @@ var unitElement = document.getElementById('unit');
 var battleElement = document.getElementById('battle');
 var promptArea = document.getElementById('prompt-area');
 var canteenElement = document.getElementById('canteen');
+var theatreElement = document.getElementById('theatre');
 
 var spriteTemplate = Handlebars.compile(document.getElementById('sprite-template').innerHTML);
 var catalogTemplate = Handlebars.compile(document.getElementById('catalog-template').innerHTML);
@@ -108,6 +109,7 @@ var abilityPromptTemplate = Handlebars.compile(document.getElementById('ability-
 var promptTemplate = Handlebars.compile(document.getElementById('prompt-template').innerHTML);
 var canteenTemplate = Handlebars.compile(document.getElementById('canteen-template').innerHTML);
 var canteenConfirmTemplate = Handlebars.compile(document.getElementById('canteen-confirm-template').innerHTML);
+var theatreTemplate = Handlebars.compile(document.getElementById('theatre-template').innerHTML);
 
 var maxUnitSize = 3;
 var rerenderTimeout;
@@ -485,6 +487,7 @@ function Agency() {
   this.catalog = [];
   this.unit = [];
   this.sortOrder = 'date';
+  this.storyChapter = 0;
 }
 Agency.prototype.renderCatalog = function() {
   var sortedCatalog = this.sortedCatalog();
@@ -501,6 +504,7 @@ Agency.prototype.renderCatalog = function() {
 
   catalogElement.innerHTML = catalogTemplate({
     'catalog': sortedCatalog,
+    'hasStoryRemaining': CAMPAIGN[this.storyChapter] !== undefined,
     'canFeed': this.canFeed(),
     'sortOrder': this.sortOrder,
     'sortOrders': sortOrders
@@ -605,10 +609,67 @@ Agency.prototype.addToUnit = function(idol, interactive) {
 Agency.prototype.canFeed = function() {
   return this.catalog.length >= 2;
 };
+Agency.prototype.doStory = function(pageNumber) {
+  if (pageNumber === undefined) pageNumber = 0;
+  var chapter = CAMPAIGN[this.storyChapter];
+  var page = chapter[pageNumber];
+  var self = this;
+
+  if (page === undefined) {
+    theatreElement.innerHTML = '';
+    this.storyChapter++;
+    rerender();
+  } else if (page.kind === 'setting') {
+    this.storySetting = page.value;
+    this.doStory(pageNumber + 1);
+  } else if (page.kind === 'text') {
+    theatreElement.innerHTML = theatreTemplate({
+      background: this.storySetting,
+      text: page.text
+    });
+    document.getElementById('script').addEventListener('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      self.doStory(pageNumber + 1);
+    });
+  } else if (page.kind === 'battle') {
+    theatreElement.innerHTML = '';
+    var playerIdols = [];
+
+    for (var pi = 0; pi < agency.unit.length; pi++) {
+      playerIdols.push(new BattleIdol(agency.unit[pi], 'player'));
+    }
+
+    var enemyIdols = [];
+
+    for (var ei = maxUnitSize; ei > 0; ei--) {
+      var enemyIdol = new Idol(Math.random());
+      for (var si = 0; si < STATS.length; si++) {
+        enemyIdol[STATS[si]] = enemyIdol[STATS[si]] + page.strength;
+      }
+      console.log(enemyIdol);
+      enemyIdols.push(new BattleIdol(enemyIdol, 'ai'));
+    }
+
+    var battle = new Battle(playerIdols, enemyIdols, function() {
+      for (var pi = 0; pi < this.playerIdols.length; pi++) {
+        this.playerIdols[pi].idol.giveBonus(enemyIdols.length);
+      }
+
+      self.doStory(pageNumber + 1);
+    }, function() {
+      theatreElement.innerHTML = '';
+      askUser('You lost the battle. Train up your unit some more and try again!');
+    });
+
+    battle.loop();
+  }
+};
 Agency.prototype.dump = function() {
   var agencyDump = {
     i: [],
     u: [],
+    c: this.storyChapter,
     o: this.sortOrder
   };
 
@@ -622,6 +683,7 @@ Agency.prototype.dump = function() {
 };
 Agency.prototype.load = function(agencyDump) {
   if (agencyDump.o !== undefined) this.sortOrder = agencyDump.o;
+  this.storyChapter = agencyDump.c || 0;
 
   for(var i = 0, n = agencyDump.i.length; i < n; i++) {
     var idolDump = agencyDump.i[i];
@@ -707,12 +769,33 @@ function rerender() {
         enemyIdols.push(new BattleIdol(new Idol(Math.random()), 'ai'));
       }
 
-      var battle = new Battle(playerIdols, enemyIdols);
+      var battle = new Battle(playerIdols, enemyIdols, function() {
+        askUser('You win! Your unit gets bonuses~', [['Yay!', null]]);
+        for (var pi = 0; pi < this.playerIdols.length; pi++) {
+          this.playerIdols[pi].idol.giveBonus(enemyIdols.length);
+        }
+        rerender();
+      }, function() {
+        askUser('You lose :<', [['Aww, beans…', null]]);
+      });
+
       battle.loop();
     } else {
       askUser('You need an idol in your unit to fight.');
     }
     return false;
+  });
+
+  var storyButton = document.getElementById('progress-story');
+  if (storyButton) storyButton.addEventListener('click', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    if (agency.unit.length > 0) {
+      agency.doStory();
+    } else {
+      askUser('You need an idol in your unit to progress in the story.');
+    }
   });
 
   var randomFightButton = document.getElementById('random-fight');
@@ -727,7 +810,12 @@ function rerender() {
       playerIdols.push(new BattleIdol(new Idol(Math.random()), 'player'));
     }
 
-    var battle = new Battle(playerIdols, enemyIdols);
+    var battle = new Battle(playerIdols, enemyIdols, function() {
+      askUser('You win!', [['Yay!', null]]);
+    }, function() {
+      askUser('You lose :<', [['Aww, beans…', null]]);
+    });
+
     battle.loop();
   });
 
@@ -766,5 +854,6 @@ if (window.location.hash === '#icon') {
   document.addEventListener('DOMContentLoaded', function() {
     initGame();
     // document.getElementById('fight').click();
+    // document.getElementById('progress-story').click();
   });
 }

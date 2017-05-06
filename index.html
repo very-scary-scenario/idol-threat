@@ -20,6 +20,7 @@
       var QUOTES;
       var ABILITIES;
       var ANIMATIONS;
+      var CAMPAIGN;
     </script>
   </head>
   <body class="nothing-scanned">
@@ -46,6 +47,9 @@
     <section id="canteen">
     </section>
 
+    <section id="theatre">
+    </section>
+
     <section id="prompt-area">
     </section>
 
@@ -56,6 +60,9 @@
         <li><a href="#" class="needsclick" id="recruit">Scan a barcode to recruit a new member…</a></li>
         {{#if catalog}}
           <li><a href="#" class="needsclick" id="fight">Quick battle!</a></li>
+          {{#if hasStoryRemaining}}
+            <li><a href="#" class="needsclick" id="progress-story">Attempt next story chapter…</a></li>
+          {{/if}}
         {{else}}
           <li><a href="#" class="needsclick" id="random-fight">Fight a random, consequence-free battle…</a></li>
         {{/if}}
@@ -243,6 +250,16 @@
         </dl>
 
         <p class="actions"><a href="#" class="yes">Yes, “train”</a> <a href="#" class="no">No, it's okay</a></p>
+      </div>
+    </script>
+
+    <script id="theatre-template" type="text/x-handlebars-template">
+      <div id="stage">
+        <div id="backdrop" style="background-image: url('backgrounds/processed/{{background}}.jpg');">
+        </div>
+        <div id="script" class="needsclick">
+          {{text}}
+        </div>
       </div>
     </script>
 

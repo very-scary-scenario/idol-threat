@@ -688,3 +688,50 @@ body.nothing-scanned {
     }
   }
 }
+
+#stage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  width: 100%;
+  height: 100%;
+
+  #backdrop {
+    height: 70vh;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-size: cover;
+    background-color: @mid;
+    background-position: center center;
+  }
+
+  #script {
+    min-height: 30vh;
+    position: absolute;
+    background-color: @bg;
+    bottom: 0;
+    left: 0;
+    padding: 1em 1em 2em;
+    font-size: 1.5em;
+    cursor: pointer;
+    box-sizing: border-box;
+    width: 100%;
+
+    &::after {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      margin: 1rem;
+      font-size: 1.5em;
+      content: "❯";
+      color: @hl;
+    }
+    &:focus, &:hover {
+      &::after {
+        color: @fg;
+      }
+    }
+  }
+}

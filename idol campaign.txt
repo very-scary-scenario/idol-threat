@@ -1,0 +1,277 @@
+# part one
+
+## earth_blur
+
+The year is 20XX. Idols.
+After a gruelling war against an otherworldly threat, Earth is in a state of recovery.
+It's a time of reflection, repair and respite.
+With a sombre mood permeating the planet, it has become the job of entertainers to lift the spirits of the populace.
+This is the story of an idol unit that conquered the world.
+With love.
+And also music.
+
+## office_bloom
+
+Our unit's humble beginning is in a rundown office building, in the middle of Shin Tokyo.
+People need encouragement from local idols, but it helps no one if the dances are sloppy.
+To build a successful idol unit, they must first learn from the idols that came before them.
+Fortunately for us, there's a local group that is available to teach our girls in a hands-on way.
+From one idol unit to the next, we can unite the world with cheer.
+Which is why they must fight.
+For the sake of the world.
+
+> battle 0
+
+With the rival unit defeated, our heroes have taken their first steps towards saving the world.
+Thank you, senpais.
+Your spirits will live on in the new generation.
+
+# part two
+
+## small_stage_bloom
+
+After learning some dance routines from the internet and squeezing in some karaoke sessions, our unit ventures into the wider world.
+Their prowess has been acknowledged by their seniors, but Shin Tokyo does not yet know that the saviours are here.
+To move forward, they must perform at local venues, slowly working their way up the idol food chain.
+Quite literally, in fact. But in these trying times, we must all make sacrifices.
+It's 6pm. The local venue, Angel Sparking Dream, is soon to open its doors for the night's performance.
+This is their chance at a big break, one that our heroes need desperately need.
+Idols! Defeat the rival idol unit and claim your rightful place as the hope of Shin Tokyo.
+
+> battle 50
+
+The rival unit is defeated, and their dreams merge with yours.
+It's quite beautiful, really. 
+Even with the mess.
+As the crowds filter into the venue, they seem surprised to see a different idol group on the stage.
+But surprise quickly turns to acceptance, feeding our idols energy through the medium of glowstick.
+
+# part three
+
+## small_stage_bloom
+
+After the performance, the idols are approached by someone in a business suit.
+They seem really nice, and offer to be the producer for the up-and-coming saviours of the world. 
+Not only will they help the unit get to the Shin Nippon Budokan, the most important stage in the country,
+but they'll also help with the cleaning! Score!
+Seriously, when you need to remove stains from your costume's frills, you need all the help you can get.
+Our idols are introduced to another local unit managed by the producer.
+New rivals for our idols.
+The two groups shake hands, dust down their costumes and get ready to battle.
+
+> battle 100
+
+With the battle won, our idols are one step closer to conquering the world.
+With love, sparkles and all that good stuff.
+The producer seems irritated at first that the second idol unit has just been annihilated,
+but concludes that the saving on wages was probably worth it.
+With the dreams, aspirations and more of three rival idol units inside them, they head to the Budokan. 
+
+# part four
+
+## budokan_glow
+
+The producer proves to be a great asset almost immediately, gaining the unit access to the Budokan.
+The guards stood no chance against a swift chop to the neck.
+While our heroes are surely going to become the saviours of the world, the general populace doesn't know that yet.
+So, you know. Needs must.
+Chop chop. 
+As our group approaches the stage, a famous idol unit slowly comes into view.
+You know, /it's them/. The most popular idols in all of Shin Japan.
+They aren't like the others, though. Their overwhelming presence is felt from across the corridor.
+Worst still, they know why our unit is here.
+The leader of the group, without breaking eye contact with our idols, removes her evening gloves and tosses them to one side.
+Another of them pats her mouth with a tissue. It appears we're not the first to challenge them today.
+That they are still hungry for battle is testament to their strength.
+This is going to be a tough fight, but the fate of Shin Japan is at stake.
+Show them your appeal!
+
+> battle 150
+
+We're unstoppable.
+With the power of Shin Japan's best idols, few can stand a chance against our unit.
+You /will/ be entertained. 
+However, this is untamed, raw power. 
+Japan may be conquered, but the whole world is currently out of the question.
+With her dying breath, one of the Budokan idols begins to speak.
+"You'll never make it. You don't stand a chance against the IIA".
+...
+"The IIA, idiots. The International Idol Association".
+She pauses briefly to cough up blood. 
+"If you're to succeed, you must first defeat the three representatives of the IIA".
+With that, she slumps to one side.
+Thank you for your help, idol-san. You and your taste will not be forgotten.
+
+# part five
+
+## shrine_bloom
+
+Fortunately for our heroes, it would not be long before the IIA made themselves known.
+As the idols left the Budokan, the earth began to shake.
+With a grand plume of fire, three masked figures appear before us.
+"We are the IIA representatives for Asia."
+"We have been watching, and we have decided to stop you here."
+"As representatives as the IIA."
+"Basically we're a big deal."
+As confusing as it may be, consuming an idol unit of this level would prove invaluable.
+Let's show them the power of Shin Japanese audio engineering!
+...for the sake of the world!
+
+> battle 200
+
+With the IIA representatives for Asia defeated, our idols are now the strongest in the entire continent.
+All of it! Even the small, boring parts.
+But that's, like, not even most of the world.
+Yes, legend tells of distant lands outside of Asia. Lands incomparable to Shin Japan.
+America. Europe.
+Europe, a gigantic country to the west, is first on the list.
+The producer schedules a flight, marking the beginning of our search for the European IIA representatives.
+
+# part six
+
+## norway_blur
+
+As our idols step off the plane, the European IIA representatives step out from behind a truck.
+"At last, we have found you. Welcome to Norway!"
+The European representative's attempt to lull our heroes into a false sense of security hasn't worked.
+We know we're in Europe, not Norway.
+Insulted by this cheap trick, they prepare for combat.
+
+> battle 250
+
+A lot of time was wasted locating the European representatives.
+With that in mind, it became imperative that the idols find the American representatives as soon as possible.
+The immediacy? Well, I suppose it isn't immediate per se...
+But the sooner we kill the American representative, the sooner we can save the planet!
+Kill their spirits, I mean. It's complicated.
+Love and stuff!
+Fortunately a plane won't be necessary, as America is easily within driving distance.
+Our idols spend the journey reflecting on battles past, preparing themselves for a life of fame and entertainment.
+
+# part seven
+
+## western_blur
+
+The drive was arduous.
+There were mountains, rivers, and even deserts!
+And they would have been a nightmare to cross had they not taken the highway. 
+But the traffic was awful, and that put a dampener on the mood of the idols.
+The idols that, as far as the plot so far is concerned, are second only to the American IIA representatives.
+But we're here now. The car has rolled up to a dusty saloon. 
+There are horses tied up by the watering hole, and some local kids were playing music on their mobile phones.
+The saloon doors swing open to reveal a trio of girls wearing cowboy hats, pistols on their hips and snarls to match the mood.
+It appears that even America has cosplay idols.
+"Yer done did it now, pardner" cries the leader of the unit, to the confusion of our heroes.
+This is it. The largest hurdle so far.
+End them, and become the strongest idol unit in the world!
+
+> battle 300
+
+Victory is ours!
+We are the strongest idol unit in the world!
+Maybe even the universe!
+With the IIA defeated, we've finally achieved our dream of bringing joy to the world.
+What's that? The world needs to hear the idols perform?
+Ah well, yeah. I suppose so. If you want.
+Like, hurry up though because we've got to have celebrations and stuff.
+
+# part eight
+
+## large_stage_bloom
+
+To mark the defeat of the IIA and a revolution in worldwide idoling, a grand stage has been constructed for the performance.
+It comes equipped with speakers the size of small nations, just to make sure that everyone can hear the idols sing.
+Living or dead.
+Which is fortunate really, because three familiar-looking ghosts have approached us.
+They were at least polite enough to wait until the end of the song, though.
+"You must stop! You're not ready!"
+"You're not strong enough!"
+"Think of the children!"
+Even now, the ex-leaders of the IIA representatives are doubting the abilities of our units.
+It's time to end this, once and for all.
+
+> battle 350
+
+If there was any doubting their abilities as the world's strongest idol unit,
+/they just killed three ghosts/.
+To celebrate this moment, we should have our idols raise their glowsticks in the air.
+You know, because it seems like an idol-y thing to do.
+And it might make for a good album cover or something.
+...
+That's right! Just like that!
+
+# part nine
+
+## earth_blur
+
+Finally, my plan is complete!
+With the world's strongest idols defeated, I'm free to conquer Earth!
+That's right, it's me! The narrator!
+You may have thought that you'd won the war, but the truth is...
+/we let you win/.
+With the world in this depressed state, we have been free to ready our new, super weapon.
+There's literally nothing you can do about it!
+Now, I think it's time we make idols an extinct species, starting with your precious little group!
+
+> battle 400
+
+No! This cannot be!
+Have I... Have I created a monster unit?
+/The Strongest Idols in the Universe™/?
+...
+...
+...
+Ahahaha! Of course not.
+What you defeated were simply a mass produced alien idol unit, one of millions ready to destroy your planet.
+That, and you ate them! Like honestly, did you not think the whole cannibalism thing was a bit weird?
+You're finished! There's nothing left that you can do! 
+Come with me, I'll let you watch the end of Earth before I finish you off.
+
+# part ten
+
+## sun_glow
+
+You see this? I believe you call it the sun.
+It's actually our mothership!
+Yep, you had no idea, did you? 
+It's pretty funny really. Like, it's super obvious.
+Look at it. It's a ball of fire. That's just weird.
+Inside this ship is our super weapon.
+That's right,
+/The Strongest Idols in the Universe™/.
+We had them all along!
+Watch in amazement as they appeal, excite and destroy you and your stupid planet!
+
+-ultra idols show up-
+
+RUNNING IDOL PROTOCOL 3.29
+CODENAME: KIRA KIRA KABOOM
+ALL NON-COMBATANTS SHOULD RETREAT TO A DISTANCE OF 20 LIGHT YEARS
+PREPARE TO BE ANNIHILATED
+WITH LOVE
+
+> battle 500
+
+How? How can this be?
+Our idols were undefeated in every simulation we ran!
+We haven't even paid off the loan we needed to create them...
+WARNING
+WARNING
+FEELINGS DETECTED
+PROCESSORS AT 100%
+WHAT IS... THIS
+HUMANS
+IDOLS
+MUST BE PROTECTED
+How dare you? 
+Destroy that planet before I destroy /you/ instead!
+THREAT TO PROTECTED SPECIES DETECTED
+HUMANS... STAY GENKI
+SARABADA
+
+> final image with slowly appearing disappearing text instead of text boxes>
+
+The alien threat was thwarted for a second time
+and the Earth saw a brief period of peace
+before everyone died when the sun was flown back to its home planet.
+The end.

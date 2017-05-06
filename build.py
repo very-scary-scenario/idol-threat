@@ -167,6 +167,33 @@ def build_animations():
     ])
 
 
+def build_campaign():
+    campaign = []
+    with open(os.path.join(HERE, 'idol campaign.txt')) as f:
+        for line in (l.strip() for l in f.readlines() if l.strip()):
+            if line.startswith('# '):
+                current_chapter = []
+                campaign.append(current_chapter)
+
+            elif line.startswith('## '):
+                current_chapter.append({
+                    'kind': 'setting',
+                    'value': line.lstrip('# '),
+                })
+            elif line.startswith('> battle'):
+                current_chapter.append({
+                    'kind': 'battle',
+                    'strength': int(line.split(' ')[-1]),
+                })
+            else:
+                current_chapter.append({
+                    'kind': 'text',
+                    'text': line,
+                })
+
+    return campaign
+
+
 def build_icon():
     from selenium.webdriver import PhantomJS
 
@@ -200,6 +227,7 @@ if __name__ == '__main__':
             p.write('ABILITIES = {};'.format(json.dumps(build_abilities())))
             p.write('QUOTES = {};'.format(json.dumps(build_quotes())))
             p.write('ANIMATIONS = {};'.format(json.dumps(build_animations())))
+            p.write('CAMPAIGN = {};'.format(json.dumps(build_campaign())))
 
         with open('style.css', 'wb') as c:
             c.write(subprocess.check_output(['lessc', 'style.less']))

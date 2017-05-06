@@ -80,9 +80,12 @@ BattleIdol.prototype.healthBar = function() {
   return healthBarTemplate(this);
 };
 
-function Battle(playerIdols, enemyIdols) {
+function Battle(playerIdols, enemyIdols, victoryCallback, lossCallback) {
   this.playerIdols = playerIdols;
   this.enemyIdols = enemyIdols;
+
+  this.victoryCallback = victoryCallback;
+  this.lossCallback = lossCallback;
 
   this.render();
 
@@ -157,17 +160,14 @@ Battle.prototype.nextMove = function() {
   var idol = this.turnOrder[this.turnIndex];
 
   if (this.playerHasWon() || this.enemyHasWon()) {
+    document.body.classList.remove('in-battle');
+
     if (this.playerHasWon()) {
-      askUser('You win! Your unit gets bonuses~', [['Yay!', null]]);
-      for (var pi = 0; pi < this.playerIdols.length; pi++) {
-        this.playerIdols[pi].idol.giveBonus(this.enemyIdols.length);
-      }
-      rerender();
+      this.victoryCallback();
     } else if (this.enemyHasWon()) {
-      askUser('You lose :<', [['Aww, beans…', null]]);
+      this.lossCallback();
     }
 
-    document.body.classList.remove('in-battle');
     return;
   }
 
