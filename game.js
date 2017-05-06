@@ -290,7 +290,7 @@ Idol.prototype.getSprite = function(mode) {
   var sprite = this.renderedSprites[mode || 'med'];
   if (sprite === undefined) {
     this.deferRendering(mode);
-    return this.renderedSprites.thumb || 'icon.png';
+    return this.renderedSprites.thumb || 'placeholder.png';
   }
   return sprite;
 };
