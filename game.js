@@ -667,6 +667,11 @@ function rerender() {
   var stateString = btoa(JSON.stringify(agency.dump()));
   // window.location.hash = stateString;
   document.cookie = 'state=' + stateString + cookieSuffix;
+  if (stateString !== getStateCookie()) {
+    console.log(stateString);
+    console.log(getStateCookie());
+    askUser('saving failed! this is a bug, but for now, you should graduate some idols until this message stops appearing');
+  }
 }
 
 function deferRerender() {
