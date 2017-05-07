@@ -116,12 +116,12 @@
             {{#each abilities}}<li class="affinity-{{affinity}}">{{name}}</li>{{/each}}
           </ul>
         </div>
-        <div class="actions">
+        <ul class="actions">
           {{#if canFeed}}
             <li><a class="feed" href="#">“Train”</a></li>
           {{/if}}
-          <a class="graduate" href="#">Graduate…</a>
-        </div>
+          <li><a class="graduate" href="#">Graduate…</a></li>
+        </ul>
       </div>
       <div class="bubble bio">
         <p>{{bio}}</p>
