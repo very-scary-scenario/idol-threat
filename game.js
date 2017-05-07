@@ -59,16 +59,16 @@ var cookieSuffix = '; expires=' + cookieExpiryDate.toUTCString();
 
 var idolSorters = {
   date: function(a, b) { return b.recruitedAt - a.recruitedAt; },
-  speed: function(a, b) { return (b.speed + b.speedBonus) - (a.speed + a.speedBonus); },
-  endurance: function(a, b) { return (b.endurance + b.enduranceBonus) - (a.endurance + a.enduranceBonus); },
-  attack: function(a, b) { return (b.attack + b.attackBonus) - (a.attack + a.attackBonus); },
-  defense: function(a, b) { return (b.defense + b.defenseBonus) - (a.defense + a.defenseBonus); },
+  statSpeed: function(a, b) { return (b.speed + b.speedBonus) - (a.speed + a.speedBonus); },
+  statEndurance: function(a, b) { return (b.endurance + b.enduranceBonus) - (a.endurance + a.enduranceBonus); },
+  statAttack: function(a, b) { return (b.attack + b.attackBonus) - (a.attack + a.attackBonus); },
+  statDefense: function(a, b) { return (b.defense + b.defenseBonus) - (a.defense + a.defenseBonus); },
   unitMembership: function(a, b) { return (Number(b.isInUnit()) - Number(a.isInUnit())); },
   allStats: function(a, b) { return (
-    idolSorters.speed(a, b) +
-    idolSorters.endurance(a, b) +
-    idolSorters.attack(a, b) +
-    idolSorters.defense(a, b)
+    idolSorters.statSpeed(a, b) +
+    idolSorters.statEndurance(a, b) +
+    idolSorters.statAttack(a, b) +
+    idolSorters.statDefense(a, b)
   ); },
   affinity: function(a, b) { return (
     (AFFINITIES.indexOf(a.affinity) - AFFINITIES.indexOf(b.affinity)) +
@@ -78,10 +78,10 @@ var idolSorters = {
 
 var idolSortNames = {
   date: 'Date recruited',
-  speed: 'Speed',
-  endurance: 'Endurance',
-  attack: 'Attack',
-  defense: 'Defense',
+  statSpeed: 'Speed',
+  statEndurance: 'Endurance',
+  statAttack: 'Attack',
+  statDefense: 'Defense',
   allStats: 'Total of all stats',
   affinity: 'Affinity and stats',
   unitMembership: 'Unit membership'
