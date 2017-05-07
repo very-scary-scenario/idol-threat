@@ -42,14 +42,19 @@ function BattleIdol(idol, control) {
   self.hp = self.maxHp;
 
   self.abilities = idol.abilities;
+  self.affinity = idol.affinity;
 }
 
 BattleIdol.prototype.doDamage = function(damage) {
+  var self = this;
   this.hp = this.hp - damage;
+
   if (this.hp <= 0) {
     this.isDead = true;
     this.hp = 0;
-    this.element.classList.add('dead');
+    setTimeout(function() {
+      self.element.classList.add('dead');
+    }, animationDuration);
   }
   this.element.querySelector('.health-bar-content').style.width = this.healthPercent().toString(10) + '%';
   this.element.querySelector('.health-bar-trail').style.width = this.healthPercent().toString(10) + '%';
@@ -153,6 +158,8 @@ Battle.prototype.enemyHasWon = function() {
 };
 
 Battle.prototype.nextMove = function() {
+  var self = this;
+
   if ((this.turnIndex === undefined) || (this.turnOrder[this.turnIndex] === undefined)) {
     this.turnIndex = 0;
   }
@@ -160,14 +167,16 @@ Battle.prototype.nextMove = function() {
   var idol = this.turnOrder[this.turnIndex];
 
   if (this.playerHasWon() || this.enemyHasWon()) {
-    document.body.classList.remove('in-battle');
+    setTimeout(function() {
+      document.body.classList.remove('in-battle');
 
-    if (this.playerHasWon()) {
-      this.victoryCallback();
-    } else if (this.enemyHasWon()) {
-      this.lossCallback();
-    }
+      if (self.playerHasWon()) {
+        self.victoryCallback();
+      } else if (self.enemyHasWon()) {
+        self.lossCallback();
+      }
 
+    }, animationDuration);
     return;
   }
 

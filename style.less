@@ -1,8 +1,8 @@
-@mid: #ccc;
+@mid: #ddd;
 @unit-height: 8em;
 @bg: #fdfdfd;
 @fg: #111;
-@hl: pink;
+@hl: #bbb;
 @icon-size: 512px;
 
 @rock: '✊';
@@ -118,6 +118,16 @@ a {
   background-color: @hl;
 }
 
+.affinity-button() {
+  .button();
+  text-shadow: none;
+  color: @bg;
+
+  &:hover, &:focus {
+    background-color: @fg !important;
+  }
+}
+
 .button-shadow() {
   box-shadow: 0 .1em .3em fade(@fg, 50%);
 }
@@ -164,20 +174,9 @@ a {
     overflow: hidden;
     border-radius: .3em;
 
-    &::after {
-      // content: ' ';  // uncomment this if you want lil badges instead of backgrounds for affinity
-      position: absolute;
-      top: -1em;
-      right: -1.5em;
-      width: 4em;
-      height: 2em;
-      box-shadow: 0 -.1em .5em @fg inset;
-      transform: rotate(45deg);
-    }
-
-    &.affinity-rock { background-color: fade(@rock-colour, 90%); &::after { background-color: @rock-colour; } }
-    &.affinity-paper { background-color: fade(@paper-colour, 90%); &::after { background-color: @paper-colour; } }
-    &.affinity-scissors { background-color: fade(@scissors-colour, 90%); &::after { background-color: @scissors-colour; } }
+    &.affinity-rock { background-color: fade(@rock-colour, 90%); }
+    &.affinity-paper { background-color: fade(@paper-colour, 90%); }
+    &.affinity-scissors { background-color: fade(@scissors-colour, 90%); }
 
     .portrait {
       margin-top: -3.5em;
@@ -272,9 +271,20 @@ a {
   pointer-events: none;
   z-index: 100;
 
-  &[data-affinity="rock"] { background-color: fade(lighten(@rock-colour, 10%), 95%); }
-  &[data-affinity="paper"] { background-color: fade(lighten(@paper-colour, 10%), 95%); }
-  &[data-affinity="scissors"] { background-color: fade(lighten(@scissors-colour, 10%), 95%); }
+  &[data-affinity="rock"] {
+    background-color: fade(lighten(@rock-colour, 10%), 95%);
+    a[href] { background-color: darken(@rock-colour, 10%) };
+  }
+
+  &[data-affinity="paper"] {
+    background-color: fade(lighten(@paper-colour, 10%), 95%);
+    a[href] { background-color: darken(@paper-colour, 10%) };
+  }
+
+  &[data-affinity="scissors"] {
+    background-color: fade(lighten(@scissors-colour, 10%), 95%);
+    a[href] { background-color: darken(@scissors-colour, 10%) };
+  }
 
   &.shown {
     opacity: 1;
@@ -359,7 +369,7 @@ a {
     a {
       display: block;
       max-width: 10em;
-      .button();
+      .affinity-button();
       margin-top: 1em;
     }
   }
@@ -370,7 +380,7 @@ a {
     position: absolute;
     margin: 1em;
     z-index: 3;
-    .button();
+    .affinity-button();
   }
 }
 
@@ -396,6 +406,9 @@ body.in-battle {
     box-sizing: border-box;
 
     .idol-list {
+      color: @bg;
+      background-color: fade(@fg, 90%);
+
       &::before {
         display: block;
         font-size: 1.5em;
@@ -408,7 +421,7 @@ body.in-battle {
 
       li {
         display: inline-block;
-        margin: 0 -3vh;
+        margin: 0 -2vh;
         position: relative;
         transition: transform 1s;
 
@@ -416,7 +429,7 @@ body.in-battle {
           position: absolute;
           box-sizing: border-box;
           width: 50%;
-          bottom: .45em;
+          bottom: 2.1em;
           left: 25%;
           border: .1em solid @fg;
           background-color: fade(@bg, 40%);
@@ -430,7 +443,6 @@ body.in-battle {
           }
 
           .health-bar-content {
-            background-color: @hl;
             border-right: .05em solid @fg;
             position: absolute;
             top: 0;
@@ -439,18 +451,42 @@ body.in-battle {
 
           .health-bar-trail {
             transition: width 2s;
-            background-color: fade(red, 70%);
+            background-color: fade(darken(red, 20%), 70%);
             border-right: .05em solid red;
           }
+
+          &.affinity-rock .health-bar-content { background-color: lighten(@rock-colour, 20%) }
+          &.affinity-paper .health-bar-content { background-color: lighten(@paper-colour, 20%) }
+          &.affinity-scissors .health-bar-content { background-color: lighten(@scissors-colour, 20%) }
         }
 
         .portrait {
           transition: transform .2s;
-          display: inline-block;
+          display: block;
           height: 30vw;
           max-height: 25vh !important;
           width: 30vw;
           max-width: 25vh !important;
+          margin-bottom: 2em;
+          transform-origin: 40% 100%;
+        }
+
+        .name {
+          .affinity();
+          position: absolute;
+          height: 1.5em;
+          bottom: .2em;
+          left: 0;
+          width: 30vw;
+          max-width: 25vh !important;
+          text-align: center;
+          white-space: nowrap;
+
+          @media (max-width: 35em) {
+            span {
+              display: none;
+            }
+          }
         }
 
         &.fighting .portrait, &.focussed .portrait {
@@ -459,6 +495,7 @@ body.in-battle {
 
         &.focussed {
           &::before {
+            color: @fg;
             content: '▼';
             font-size: 5vh;
             font-weight: bold;
@@ -485,10 +522,7 @@ body.in-battle {
     #enemy-idols {
       &::before {
         content: 'Enemy';
-        color: @bg;
       }
-
-      background-color: fade(@fg, 90%);
 
       li {
         label {
@@ -499,6 +533,7 @@ body.in-battle {
 
             &::before {
               position: relative;
+              right: 50%;
               content: ' ';
               border-radius: 50%;
               height: 25vw;
@@ -506,7 +541,7 @@ body.in-battle {
               width: 25vw;
               max-width: 20vh !important;
               box-sizing: border-box;
-              border: 1em solid red;
+              border: 1em solid @bg;
               text-align: center;
               opacity: 0;
               display: inline-block;
@@ -518,11 +553,15 @@ body.in-battle {
             }
           }
         }
+
+        &.affinity-rock label input::before { border-color: @rock-colour !important }
+        &.affinity-paper label input::before { border-color: @paper-colour !important }
+        &.affinity-scissors label input::before { border-color: @scissors-colour !important }
       }
     }
 
     #player-idols {
-      background-color: @hl;
+      pointer-events: none;
       position: fixed;
       bottom: 0;
     }
@@ -556,13 +595,28 @@ body.in-battle {
       padding: .5em;
 
       label {
+        input {
+          margin-right: .5em;
+        }
         .affinity();
       }
     }
 
-    a {
-      background-color: @hl;
-      text-shadow: .1em .1em 0 @bg;
+    button {
+      .affinity-button();
+      margin: .5em;
+      font-size: 1.5em;
+      cursor: pointer;
+
+      &::after {
+        color: fade(@bg, 0%);
+        text-shadow: 0 0 0 @bg;
+        padding-left: .3em;
+      }
+
+      &[data-affinity="rock"] { background-color: @rock-colour; &::after { content: @rock } }
+      &[data-affinity="paper"] { background-color: @paper-colour; &::after { content: @paper } }
+      &[data-affinity="scissors"] { background-color: @scissors-colour; &::after { content: @scissors } }
     }
   }
 
