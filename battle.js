@@ -1,5 +1,6 @@
 var SAME_TYPE_ATTACK_BONUS = 1.5;
 var SUPER_EFFECTIVE_ATTACK_BONUS = 2;
+var BASIC_ABILITY_DAMAGE = 15;
 
 var animationDuration = 1000;
 var anims = {};
@@ -89,7 +90,7 @@ BattleIdol.prototype.doMove = function(moveIndex, target) {
 
   ability = self.abilities[moveIndex];
 
-  var baseStrength = (this.attack / target.defense) * 50;
+  var baseStrength = (this.attack / target.defense) * BASIC_ABILITY_DAMAGE;
   var abilityStrength = baseStrength + ((baseStrength/5) * ability.strength);
 
   if (ability.affinity === self.affinity) {
@@ -97,8 +98,10 @@ BattleIdol.prototype.doMove = function(moveIndex, target) {
   }
 
   abilityStrength = abilityStrength * effectiveness(ability.affinity, target.affinity);
+  abilityStrength = Math.ceil(abilityStrength);
 
   target.doDamage(abilityStrength);
+  console.log(this.idol.name + ' did ' + abilityStrength.toString(10) + ' damage to ' + target.idol.name + ', bringing her HP to ' + target.hp.toString(10) + '/' + target.maxHp.toString(10));
 
   playAnimationCanvas(self.abilities[moveIndex].animation, target.element);
 
