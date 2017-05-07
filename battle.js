@@ -1,3 +1,6 @@
+var SAME_TYPE_ATTACK_BONUS = 1.5;
+var SUPER_EFFECTIVE_ATTACK_BONUS = 2;
+
 var animationDuration = 1000;
 var anims = {};
 
@@ -11,6 +14,26 @@ function loadAnimations() {
 }
 
 loadAnimations();
+
+function assertIsAffinity(affinity) {
+  if (AFFINITIES.indexOf(affinity) === -1) {
+    console.log(affinity);
+    throw 'that is not an affinity';
+  }
+}
+
+function effectiveness(attackAffinity, targetAffinity) {
+  assertIsAffinity(attackAffinity);
+  assertIsAffinity(targetAffinity);
+  attackIndex = AFFINITIES.indexOf(attackAffinity);
+  targetIndex = AFFINITIES.indexOf(targetAffinity);
+  var effectivenessIdentifier = ((attackIndex + AFFINITIES.length) - targetIndex) % 3;
+  return {
+    0: 1,  // the attack is the same type as the defense
+    1: SUPER_EFFECTIVE_ATTACK_BONUS, // the attack is strong
+    2: 1/SUPER_EFFECTIVE_ATTACK_BONUS // the attack is weak
+  }[effectivenessIdentifier];
+}
 
 function BattleIdol(idol, control) {
   var self = this;
@@ -67,7 +90,15 @@ BattleIdol.prototype.doMove = function(moveIndex, target) {
   ability = self.abilities[moveIndex];
 
   var baseStrength = (this.attack / target.defense) * 50;
-  target.doDamage(baseStrength + ((baseStrength/5) * ability.strength));
+  var abilityStrength = baseStrength + ((baseStrength/5) * ability.strength);
+
+  if (ability.affinity === self.affinity) {
+    abilityStrength = abilityStrength * SAME_TYPE_ATTACK_BONUS;
+  }
+
+  abilityStrength = abilityStrength * effectiveness(ability.affinity, target.affinity);
+
+  target.doDamage(abilityStrength);
 
   playAnimationCanvas(self.abilities[moveIndex].animation, target.element);
 
