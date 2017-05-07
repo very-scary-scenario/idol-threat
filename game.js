@@ -864,7 +864,7 @@ function initGame() {
 
 if (window.location.hash === '#icon') {
   var iconIdol = new Idol(Math.random());
-  document.body.innerHTML = '<div class="icon-container"><div class="portrait">' + iconIdol.hugeSpriteHTML() + '</div></div>';
+  document.body.innerHTML = '<div class="icon-container affinity-' + iconIdol.affinity + '"><div class="portrait">' + iconIdol.hugeSpriteHTML() + '</div></div>';
   document.body.classList.add('icon');
 } else {
   document.addEventListener('DOMContentLoaded', function() {

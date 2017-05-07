@@ -11,7 +11,7 @@
 
 @rock-colour: hsl(0, 0.6, 0.6);
 @paper-colour: hsl(240, 0.6, 0.6);
-@scissors-colour: hsl(120, 0.6, 0.6);
+@scissors-colour: hsl(120, 0.5, 0.55);
 
 @keyframes bob {
   0% {top: -1em}
@@ -666,8 +666,11 @@ body.icon {
       font-family: 'Zapf Dingbats';
       font-size: @icon-size*3;
       z-index: -1;
-      color: @hl;
     }
+
+    &.affinity-rock { color: @rock-colour; }
+    &.affinity-paper { color: @paper-colour; }
+    &.affinity-scissors { color: @scissors-colour; }
   }
 }
 
