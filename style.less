@@ -494,11 +494,15 @@ body.in-battle {
           max-width: 25vh !important;
           text-align: center;
           white-space: nowrap;
+        }
 
-          @media (max-width: 35em) {
-            span {
-              display: none;
-            }
+        @media (max-width: 35em) {
+          .health-bar { bottom: 1.3em; }
+          .portrait { margin-bottom: 1.2em; }
+          .name {
+            font-size: 0.8em;
+            margin: .1em 0 0;
+            span { display: none; }
           }
         }
 
