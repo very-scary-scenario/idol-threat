@@ -872,3 +872,51 @@ body.nothing-scanned {
     }
   }
 }
+
+#audition {
+  position: fixed;
+  text-align: center;
+  z-index: 30;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, @bg, @fg);
+
+  h2 {
+    position: relative;
+    display: inline-block;
+    margin: 5vh auto 0;
+    background-color: fade(@bg, 80%);
+    z-index: 200;
+    padding: .5em;
+    border-radius: .2em;
+    .affinity();
+  }
+
+  .portrait {
+    width: 100%;
+    height: 100%;
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+  }
+
+  #catch-button-container {
+    position: absolute;
+    bottom: 5vh;
+    width: 100%;
+  }
+
+  #catch-button {
+    .affinity-button();
+  }
+
+  &.affinity-rock #catch-button { background-color: @rock-colour }
+  &.affinity-paper #catch-button { background-color: @paper-colour }
+  &.affinity-scissors #catch-button { background-color: @scissors-colour }
+}

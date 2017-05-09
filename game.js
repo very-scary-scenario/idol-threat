@@ -107,6 +107,7 @@ var catalogElement = document.getElementById('catalog');
 var unitElement = document.getElementById('unit');
 var battleElement = document.getElementById('battle');
 var promptArea = document.getElementById('prompt-area');
+var auditionSpace = document.getElementById('audition-space');
 var canteenElement = document.getElementById('canteen');
 var theatreElement = document.getElementById('theatre');
 
@@ -118,6 +119,7 @@ var battleTemplate = Handlebars.compile(document.getElementById('battle-template
 var healthBarTemplate = Handlebars.compile(document.getElementById('health-bar-template').innerHTML);
 var abilityPromptTemplate = Handlebars.compile(document.getElementById('ability-prompt-template').innerHTML);
 var promptTemplate = Handlebars.compile(document.getElementById('prompt-template').innerHTML);
+var auditionTemplate = Handlebars.compile(document.getElementById('audition-template').innerHTML);
 var canteenTemplate = Handlebars.compile(document.getElementById('canteen-template').innerHTML);
 var canteenConfirmTemplate = Handlebars.compile(document.getElementById('canteen-confirm-template').innerHTML);
 var theatreTemplate = Handlebars.compile(document.getElementById('theatre-template').innerHTML);
@@ -479,6 +481,36 @@ Idol.prototype.showDetail = function() {
     ]);
   });
 };
+Idol.prototype.audition = function() {
+  var self = this;
+  var layerTimeout = 200;
+  auditionSpace.innerHTML = auditionTemplate(this);
+  
+  var currentLayer = 0;
+
+  function addLayerToAuditionPortrait() {
+    var portraitElement = document.querySelector('#audition .portrait');
+    if (!portraitElement) return;
+
+    var part = self.parts[currentLayer];
+    if (!part) return;
+
+    var img = new Image();
+    img.src = part.path;
+    portraitElement.appendChild(img);
+    currentLayer++;
+    setTimeout(addLayerToAuditionPortrait, layerTimeout);
+  }
+
+  setTimeout(addLayerToAuditionPortrait, layerTimeout);
+
+  document.getElementById('catch-button').addEventListener('click', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    auditionSpace.innerHTML = '';
+    self.showDetail();
+  });
+};
 Idol.prototype.dump = function() {
   var idolDump = {
     i: this.seed,
@@ -590,7 +622,7 @@ Agency.prototype.renderUnit = function() {
 
   unitElement.innerHTML = content;
 };
-Agency.prototype.addIdol = function(idol) {
+Agency.prototype.addIdol = function(idol, interactive) {
   if ((this.catalog.length === 0) && document.body.classList.contains('nothing-scanned')) {
     document.body.removeChild(document.getElementById('title'));
     document.body.classList.remove('nothing-scanned');
@@ -606,6 +638,10 @@ Agency.prototype.addIdol = function(idol) {
   idol.agency = this;
   this.addToUnit(idol);
   deferRerender();
+
+  if (interactive) {
+    idol.audition();
+  }
 };
 Agency.prototype.removeIdol = function(idol) {
   if (idol.isInUnit()) agency.unit.splice(agency.catalog.indexOf(idol), 1);
@@ -735,7 +771,7 @@ function addIdolFromImage(data) {
     return;
   }
   idol = new Idol(numFromString(data.codeResult.code));
-  agency.addIdol(idol);
+  agency.addIdol(idol, true);
 }
 
 barcodeImage.addEventListener('change', function(e) {
@@ -871,5 +907,6 @@ if (window.location.hash === '#icon') {
     initGame();
     // document.getElementById('fight').click();
     // document.getElementById('progress-story').click();
+    // agency.addIdol(new Idol(Math.random()), true);
   });
 }
