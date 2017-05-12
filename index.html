@@ -100,10 +100,12 @@
       <div class="portrait">
         {{{hugeSpriteHTML}}}
       </div>
-      <div class="summary bubble">
-        <h2 class="name affinity-{{affinity}}">{{name}}</h2>
-        <div class="stats">
+      <div class="summary">
+        <div class="nametag bubble">
+          <h2 class="name affinity-{{affinity}}">{{name}}</h2>
           <p class="rarity">{{rarity}}</p>
+        </div>
+        <div class="stats bubble">
           <dl>
             <dt>Attack</dt>
             <dd>{{attack}} +{{attackBonus}}</dd>
@@ -115,7 +117,7 @@
             <dd>{{endurance}} +{{enduranceBonus}}</dd>
           </dl>
         </div>
-        <div class="abilities">
+        <div class="abilities bubble">
           <ul>
             {{#each abilities}}<li class="affinity-{{affinity}}">{{name}}</li>{{/each}}
           </ul>

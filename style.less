@@ -43,6 +43,13 @@
     text-align: right;
     float: left;
   }
+
+  &::after {
+    content: ' ';
+    clear: both;
+    display: block;
+    height: 0;
+  }
 }
 
 * {
@@ -59,6 +66,7 @@ body {
   background-color: @bg;
   color: @fg;
   letter-spacing: .05em;
+  letter-spacing: 0;
   font-size: 1.1em;
 }
 
@@ -98,8 +106,8 @@ a {
 
 .affinity() {
   &::after {
-    display: inline-block;
-    height: 0;
+    line-height: 0;
+    top: -.3em;
     padding-left: .3em;
     color: fade(@fg, 0%);
   }
@@ -318,7 +326,6 @@ a {
 
   .summary, .bio {
     position: absolute;
-    margin: 1em;
     z-index: 3;
     box-sizing: border-box;
   }
@@ -330,22 +337,35 @@ a {
   }
 
   .summary {
-    border-radius: 0 0 .5em 0;
     left: 0;
     top: 0;
 
-    .name {
-      .affinity();
+    .nametag, .stats, .abilities {
+      float: left;
+      clear: both;
     }
 
-    .stats {
+    .nametag {
+      border-radius: 0 0 .5em 0;
+
+      .name {
+        .affinity();
+      }
+
       .rarity {
         &::before {
           content: '✪';
           padding-right: .2em;
         }
       }
+    }
 
+    .stats, .abilities {
+      margin-top: .5em;
+      border-radius: 0 .5em .5em 0;
+    }
+
+    .stats {
       dl {
         .stats-dl();
 
@@ -356,9 +376,6 @@ a {
     }
 
     .abilities {
-      padding-top: .5em;
-      clear: both;
-
       li {
         .affinity();
       }
@@ -379,10 +396,11 @@ a {
   }
 
   .actions {
-    margin-top: 1em;
+    clear: both;
+    padding: .5em;
 
     li {
-      margin-top: .5em;
+      margin-bottom: .5em;
 
       a {
         display: inline-block;
@@ -630,15 +648,15 @@ body.in-battle {
       font-size: 1.5em;
       cursor: pointer;
 
-      &::after {
+      &::before {
         color: fade(@bg, 0%);
         text-shadow: 0 0 0 @bg;
-        padding-left: .3em;
+        padding-right: .3em;
       }
 
-      &[data-affinity="rock"] { background-color: @rock-colour; &::after { content: @rock } }
-      &[data-affinity="paper"] { background-color: @paper-colour; &::after { content: @paper } }
-      &[data-affinity="scissors"] { background-color: @scissors-colour; &::after { content: @scissors } }
+      &[data-affinity="rock"] { background-color: @rock-colour; &::before { content: @rock } }
+      &[data-affinity="paper"] { background-color: @paper-colour; &::before { content: @paper } }
+      &[data-affinity="scissors"] { background-color: @scissors-colour; &::before { content: @scissors } }
     }
   }
 
