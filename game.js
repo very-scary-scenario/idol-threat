@@ -389,6 +389,7 @@ Idol.prototype.toggleUnitMembership = function() {
   }
 
   agency.renderUnit();
+  saveGame();
 };
 Idol.prototype.giveBonus = function(count) {
   if (count === undefined) count = 1;
@@ -871,6 +872,10 @@ function rerender() {
     battle.loop();
   });
 
+  saveGame();
+}
+
+function saveGame() {
   var stateString = btoa(JSON.stringify(agency.dump()));
   // window.location.hash = stateString;
   document.cookie = 'state=' + stateString + cookieSuffix;
