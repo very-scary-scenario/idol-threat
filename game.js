@@ -604,6 +604,8 @@ Agency.prototype.renderCatalog = function() {
   });
 
   function setSortOrder(event) {
+    event.stopPropagation();
+    event.preventDefault();
     agency.sortOrder = event.currentTarget.getAttribute('data-sort-order');
     rerender();
   }
