@@ -62,6 +62,8 @@ var RARITIES = [
 var BASE_RARITY = 300;
 var RARITY_CURVE = 0.6;
 
+var NEGATIVE_STAT_EFFECT = 2;
+
 var POSES;
 var HAIR_COLOURS;
 var SKIN_COLOURS;
@@ -474,15 +476,26 @@ Idol.prototype.showDetail = function() {
     function requestFeeding(event) {
       event.stopPropagation();
       event.preventDefault();
-      var foodIdol = catalogWithoutSelf[parseInt(event.currentTarget.getAttribute('data-index'), 10)];
 
+      var foodIdol = catalogWithoutSelf[parseInt(event.currentTarget.getAttribute('data-index'), 10)];
+      var negativeStats = {};
       var summedStats = {};
-      for (var i = 0; i < STATS.length; i++) summedStats[STATS[i]] = self[STATS[i]] + foodIdol[STATS[i]];
+
+      for (var i = 0; i < STATS.length; i++) {
+        var stat = STATS[i];
+        var increaseBy = foodIdol[stat];
+        if (increaseBy < 0) {
+          increaseBy /= NEGATIVE_STAT_EFFECT;
+          negativeStats[stat] = true;
+        }
+        summedStats[stat] = self[stat] + Math.ceil(increaseBy);
+      }
 
       canteenElement.innerHTML = canteenConfirmTemplate({
         idol: self,
         food: foodIdol,
-        summedStats: summedStats
+        summedStats: summedStats,
+        negativeStats: negativeStats
       });
 
       canteenElement.querySelector('.no').addEventListener('click', showFeedingUI);

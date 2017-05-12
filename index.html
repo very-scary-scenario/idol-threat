@@ -248,13 +248,13 @@
         <p>{{food.name}} will go on, uhh, “holiday”, and {{idol.name}}'s base stats will be changed as follows:</p>
         <dl>
           <dt>Attack</dt>
-          <dd>{{idol.attack}} + {{food.attack}} = <strong>{{summedStats.attack}}</strong></dd>
+          <dd>{{idol.attack}} + {{food.attack}}{{#if negativeStats.attack}}/2{{/if}} = <strong>{{summedStats.attack}}</strong></dd>
           <dt>Defense</dt>
-          <dd>{{idol.defense}} + {{food.defense}} = <strong>{{summedStats.defense}}</strong></dd>
+          <dd>{{idol.defense}} + {{food.defense}}{{#if negativeStats.defense}}/2{{/if}} = <strong>{{summedStats.defense}}</strong></dd>
           <dt>Speed</dt>
-          <dd>{{idol.speed}} + {{food.speed}} = <strong>{{summedStats.speed}}</strong></dd>
+          <dd>{{idol.speed}} + {{food.speed}}{{#if negativeStats.speed}}/2{{/if}} = <strong>{{summedStats.speed}}</strong></dd>
           <dt>Endurance</dt>
-          <dd>{{idol.endurance}} + {{food.endurance}} = <strong>{{summedStats.endurance}}</strong></dd>
+          <dd>{{idol.endurance}} + {{food.endurance}}{{#if negativeStats.endurance}}/2{{/if}} = <strong>{{summedStats.endurance}}</strong></dd>
         </dl>
 
         <p class="actions"><a href="#" class="yes">Yes, “train”</a> <a href="#" class="no">No, it's okay</a></p>
