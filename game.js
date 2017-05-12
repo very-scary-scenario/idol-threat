@@ -796,7 +796,7 @@ Agency.prototype.load = function(agencyDump) {
 
     this.addIdol(idol);
 
-    if (agencyDump.u[i] !== idol.isInUnit()) {
+    if (Boolean(agencyDump.u[i]) !== idol.isInUnit()) {
       idol.toggleUnitMembership();
     }
   }
