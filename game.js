@@ -48,6 +48,19 @@ var LAYERS = [
   'eb'
 ];
 var AFFINITIES = ['rock', 'paper', 'scissors'];
+var RARITIES = [
+  'Charred',
+  'Well done',
+  'Medium well',
+  'Medium',
+  'Medium rare',
+  'Rare',
+  'Blue',
+  'Raw',
+  'Mooing'
+];
+var BASE_RARITY = 300;
+var RARITY_CURVE = 0.6;
 
 var POSES;
 var HAIR_COLOURS;
@@ -66,12 +79,7 @@ var idolSorters = {
   statAttack: function(a, b) { return (b.attack + b.attackBonus) - (a.attack + a.attackBonus); },
   statDefense: function(a, b) { return (b.defense + b.defenseBonus) - (a.defense + a.defenseBonus); },
   unitMembership: function(a, b) { return (Number(b.isInUnit()) - Number(a.isInUnit())); },
-  allStats: function(a, b) { return (
-    idolSorters.statSpeed(a, b) +
-    idolSorters.statEndurance(a, b) +
-    idolSorters.statAttack(a, b) +
-    idolSorters.statDefense(a, b)
-  ); },
+  allStats: function(a, b) { return b.totalStats() - a.totalStats(); },
   affinity: function(a, b) { return (
     (AFFINITIES.indexOf(a.affinity) - AFFINITIES.indexOf(b.affinity)) +
     (idolSorters.allStats(a, b) / 10000)
@@ -184,6 +192,12 @@ function askUser(question, answers) {
   for (var i = 0; i < answers.length; i++) {
     promptArea.querySelector('a[data-answer-index="' + i.toString() + '"]').addEventListener('click', doAnswer);
   }
+}
+
+function getRarity(stats) {
+  if (stats < 0) return RARITIES[0];
+  rarityIndex = Math.floor(Math.pow(stats/BASE_RARITY, RARITY_CURVE));
+  return RARITIES[rarityIndex] || RARITIES[RARITIES.length - 1];
 }
 
 function Ability(parts, animation, affinity) {
@@ -395,6 +409,18 @@ Idol.prototype.thumbSpriteHTML = function() { return this.spriteHTML('thumb'); }
 Idol.prototype.hugeSpriteHTML = function() { return this.spriteHTML('huge'); };
 Idol.prototype.isInUnit = function() {
   return agency.unit.indexOf(this) !== -1;
+};
+Idol.prototype.totalStats = function() {
+  var total = 0;
+
+  for (var i = 0; i < STATS.length; i++) {
+    total += this[STATS[i]];
+  }
+
+  return total;
+};
+Idol.prototype.rarity = function() {
+  return getRarity(this.totalStats());
 };
 Idol.prototype.toggleUnitMembership = function() {
   if (this.isInUnit()) {
