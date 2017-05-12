@@ -1,5 +1,5 @@
 @mid: #ddd;
-@unit-height: 8em;
+@unit-height: 7em;
 @bg: #fdfdfd;
 @fg: #111;
 @hl: #bbb;
@@ -247,30 +247,35 @@ a {
   width: 100%;
   position: fixed;
   bottom: 0;
+  left: 0;
   background-color: fade(@fg, 90%);
   color: @bg;
 
   h2 {
+    font-size: @unit-height/5;
     display: inline-block;
     position: absolute;
     left: 0;
     top: 100%;
     padding: .3em .5em;
-    transform: rotate(270deg);
+    transform: rotate(-90deg);
     transform-origin: top left;
   }
 
   ul.unit {
     overflow-x: scroll;
+    overflow-y: hidden;
     white-space: nowrap;
-    padding-left: 2em;
+    padding-left: @unit-height/3;
 
     li {
       display: inline-block;
+      cursor: pointer;
 
       .portrait {
-        height: @unit-height;
-        width: @unit-height;
+        height: @unit-height * 2;
+        width: @unit-height * 2;
+        margin: -(@unit-height/3) -(@unit-height * 0.4);
       }
     }
   }

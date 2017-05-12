@@ -676,6 +676,7 @@ Agency.prototype.sortedCatalog = function() {
   return sortedCatalog;
 };
 Agency.prototype.renderUnit = function() {
+  var self = this;
   content = unitTemplate(this);
 
   if ((this.unit.length === 0) ^ unitElement.classList.contains('empty')) {
@@ -683,6 +684,17 @@ Agency.prototype.renderUnit = function() {
   }
 
   unitElement.innerHTML = content;
+  unitElements = unitElement.querySelectorAll('.unit li');
+
+  function handleUnitClick(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    self.unit[parseInt(e.currentTarget.getAttribute('data-index'), 10)].showDetail();
+  }
+
+  for (var i = 0; i < unitElements.length; i++) {
+    unitElements[i].addEventListener('click', handleUnitClick);
+  }
 };
 Agency.prototype.addIdol = function(idol, interactive) {
   if ((this.catalog.length === 0) && document.body.classList.contains('nothing-scanned')) {
