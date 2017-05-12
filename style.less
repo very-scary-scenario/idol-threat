@@ -648,15 +648,15 @@ body.in-battle {
       font-size: 1.5em;
       cursor: pointer;
 
-      &::before {
+      &::after {
         color: fade(@bg, 0%);
         text-shadow: 0 0 0 @bg;
-        padding-right: .3em;
+        padding-left: .3em;
       }
 
-      &[data-affinity="rock"] { background-color: @rock-colour; &::before { content: @rock } }
-      &[data-affinity="paper"] { background-color: @paper-colour; &::before { content: @paper } }
-      &[data-affinity="scissors"] { background-color: @scissors-colour; &::before { content: @scissors } }
+      &[data-affinity="rock"] { background-color: @rock-colour; &::after { content: @rock } }
+      &[data-affinity="paper"] { background-color: @paper-colour; &::after { content: @paper } }
+      &[data-affinity="scissors"] { background-color: @scissors-colour; &::after { content: @scissors } }
     }
   }
 
