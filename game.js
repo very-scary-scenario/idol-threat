@@ -450,6 +450,7 @@ Idol.prototype.giveBonus = function(count) {
 Idol.prototype.showDetail = function() {
   var self = this;
 
+  document.body.classList.add('overlay');
   detailElement.innerHTML = idolDetailTemplate(this);
   detailElement.setAttribute('data-affinity', this.affinity);
   detailElement.classList.add('shown');
@@ -587,6 +588,7 @@ function hideIdolDetail(event) {
   event.stopPropagation();
   event.preventDefault();
   detailElement.classList.remove('shown');
+  document.body.classList.remove('overlay');
 }
 
 function Agency() {
