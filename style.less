@@ -323,7 +323,14 @@ a {
     box-sizing: border-box;
   }
 
+  .bubble {
+    margin: 0;
+    padding: .5em;
+    background-color: fade(@bg, 70%);
+  }
+
   .summary {
+    border-radius: 0 0 .5em 0;
     left: 0;
     top: 0;
 
@@ -331,11 +338,14 @@ a {
       .affinity();
     }
 
-    .stats, .abilities {
-      padding-top: .5em;
-    }
-
     .stats {
+      .rarity {
+        &::before {
+          content: '✪';
+          padding-right: .2em;
+        }
+      }
+
       dl {
         .stats-dl();
 
@@ -346,6 +356,7 @@ a {
     }
 
     .abilities {
+      padding-top: .5em;
       clear: both;
 
       li {
@@ -354,14 +365,8 @@ a {
     }
   }
 
-  .bubble {
-    padding: .5em;
-    margin: .5em;
-    background-color: fade(@bg, 70%);
-    border-radius: .5em;
-  }
-
   .bio {
+    border-radius: 0 .5em 0 0;
     width: 90vw;
     max-width: 30em;
     bottom: 0;
