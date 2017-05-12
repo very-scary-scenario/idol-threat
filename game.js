@@ -56,6 +56,8 @@ var SKIN_COLOURS;
 var cookieExpiryDate = new Date();
 cookieExpiryDate.setFullYear(cookieExpiryDate.getFullYear() + 50);
 var cookieSuffix = '; expires=' + cookieExpiryDate.toUTCString();
+var cookieSliceSize = 2000;
+var endString = 'end';
 
 var idolSorters = {
   date: function(a, b) { return b.recruitedAt - a.recruitedAt; },
@@ -89,16 +91,32 @@ var idolSortNames = {
 
 function getStateCookie() {
   var cookieStrings = document.cookie.split(';');
+
+  indices = [];
+  fragments = {};
+
   for(var i = 0, n = cookieStrings.length; i < n; i++) {
-    var matches = cookieStrings[i].match(/(?:state=)(.*)/);
+    var matches = cookieStrings[i].match(/(?:state_(\d+)+=)(.*)/);
     if (!matches) {
       continue;
     }
-    var stateString = matches[1];
-    if (!!stateString) {
-      return stateString;
-    }
+    var index = parseInt(matches[1], 10);
+    var fragment = matches[2];
+    indices.push(index);
+    fragments[index] = fragment;
   }
+  
+  indices.sort(function(a, b) { return a - b; });
+
+  var stateString = '';
+
+  for (var f = 0; f < indices.length; f++) {
+    var thisFragment = fragments[indices[f]];
+    if (thisFragment === endString) break;
+    stateString += thisFragment;
+  }
+
+  return atob(stateString);
 }
 
 var barcodeImage = document.getElementById('barcode-image');
@@ -700,7 +718,6 @@ Agency.prototype.doStory = function(pageNumber) {
       for (var si = 0; si < STATS.length; si++) {
         enemyIdol[STATS[si]] = enemyIdol[STATS[si]] + page.strength;
       }
-      console.log(enemyIdol);
       enemyIdols.push(new BattleIdol(enemyIdol, 'ai'));
     }
 
@@ -729,7 +746,7 @@ Agency.prototype.dump = function() {
   for(var i = 0, n = this.catalog.length; i < n; i++) {
     idol = this.catalog[i];
     agencyDump.i.push(idol.dump());
-    agencyDump.u.push(idol.isInUnit());
+    agencyDump.u.push(Number(idol.isInUnit()));
   }
 
   return agencyDump;
@@ -876,13 +893,23 @@ function rerender() {
 }
 
 function saveGame() {
-  var stateString = btoa(JSON.stringify(agency.dump()));
-  // window.location.hash = stateString;
-  document.cookie = 'state=' + stateString + cookieSuffix;
-  if (stateString !== getStateCookie()) {
-    console.log(stateString);
+  var fullStateString = JSON.stringify(agency.dump());
+  var stateString = btoa(fullStateString);
+  var currentIndex = 0;
+
+  while (stateString) {
+    var slice = stateString.slice(0, cookieSliceSize);
+    stateString = stateString.slice(cookieSliceSize);
+    document.cookie = 'state_' + currentIndex.toString(10) + '=' + slice + cookieSuffix;
+    currentIndex++;
+  }
+
+  document.cookie = 'state_' + currentIndex.toString(10) + '=' + endString + cookieSuffix;
+
+  if (fullStateString !== getStateCookie()) {
+    console.log(fullStateString);
     console.log(getStateCookie());
-    askUser('saving failed! this is a bug, but for now, you should graduate some idols until this message stops appearing');
+    askUser('saving failed! this is a bug, so im not sure what to recommend');
   }
 }
 
@@ -895,9 +922,15 @@ function initGame() {
   FastClick.attach(document.body);
   document.getElementById('loading').innerText = '';
 
-  var savedStateString = getStateCookie();
-  if (!!savedStateString) {
-    agency.load(JSON.parse(atob(savedStateString)));
+  try {
+    var savedStateString = getStateCookie();
+    if (!!savedStateString) {
+      var agencyDump = JSON.parse(savedStateString);
+      agency.load(agencyDump);
+    }
+  } catch (e) {
+    console.log(e);
+    askUser('Your save game failed to load, sorry :<');
   }
 
   rerender();
