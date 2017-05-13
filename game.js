@@ -154,6 +154,7 @@ var theatreTemplate = Handlebars.compile(document.getElementById('theatre-templa
 
 var maxUnitSize = 3;
 var rerenderTimeout;
+var checkSaveTimeout;
 
 function choice(list, slice) {
   var result = list[Math.floor(slice * list.length)];
@@ -961,11 +962,14 @@ function saveGame() {
 
   document.cookie = 'state_' + currentIndex.toString(10) + '=' + endString + cookieSuffix;
 
-  if (fullStateString !== getStateCookie()) {
-    console.log(fullStateString);
-    console.log(getStateCookie());
-    askUser('saving failed! this is a bug, so im not sure what to recommend');
-  }
+  clearTimeout(checkSaveTimeout);
+  checkSaveTimeout = setTimeout(function() {
+    if (fullStateString !== getStateCookie()) {
+      console.log(fullStateString);
+      console.log(getStateCookie());
+      askUser('saving failed! this is a bug, so im not sure what to recommend');
+    }
+  }, 50);
 }
 
 function deferRerender() {
