@@ -540,6 +540,16 @@ Idol.prototype.showDetail = function() {
       ['Keep', function() {}]
     ]);
   });
+
+
+  detailElement.querySelector('.membership .input').addEventListener('click', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    self.toggleUnitMembership();
+    if (self.isInUnit() ^ e.currentTarget.classList.contains('active')) e.currentTarget.classList.toggle('active');
+    deferRerender();
+  });
 };
 Idol.prototype.audition = function() {
   var self = this;

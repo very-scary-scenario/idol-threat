@@ -90,7 +90,7 @@
         {{#each catalog}}
           <li data-index="{{@index}}" class="idol {{#if isInUnit}}active{{/if}} affinity-{{affinity}}">
             <div class="portrait">{{{thumbSpriteHTML}}}</div>
-            <div data-index="{{@index}}" class="input"/>
+            <div data-index="{{@index}}" class="input"></div>
           </li>
         {{/each}}
       </ul>
@@ -103,7 +103,10 @@
       <div class="summary">
         <div class="nametag bubble">
           <h2 class="name affinity-{{affinity}}">{{name}}</h2>
-          <p class="rarity">{{rarity}}</p>
+          <div class="membership">
+            <span>Is in unit</span>
+            <div data-index="{{@index}}" class="input {{#if isInUnit}}active{{/if}}"/></div>
+          </div>
         </div>
         <div class="stats bubble">
           <dl>
@@ -116,6 +119,7 @@
             <dt>Endurance</dt>
             <dd>{{endurance}} +{{enduranceBonus}}</dd>
           </dl>
+          <p class="rarity">{{rarity}}</p>
         </div>
         <div class="abilities bubble">
           <ul>
