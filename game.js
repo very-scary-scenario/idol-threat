@@ -379,6 +379,14 @@ Idol.prototype.renderSprite = function(mode) {
     offscreenCanvas.drawImage(images[i], 0, 0);
   }
 
+  // masking, for a fade at the bottom
+  offscreenCanvas.globalCompositeOperation = 'destination-in';
+  var gradient = offscreenCanvas.createLinearGradient(0, 0, 0, offscreenCanvas.canvas.height);
+  gradient.addColorStop(0.9, 'rgba(0, 0, 0, 1)');
+  gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  offscreenCanvas.fillStyle = gradient;
+  offscreenCanvas.fillRect(0, 0, offscreenCanvas.canvas.width, offscreenCanvas.canvas.height);
+
   this.renderedSprites[mode] = offscreenCanvasElement.toDataURL();
 
   var subbableImages = document.querySelectorAll('.sprite img[data-sprite-' + mode + '-id="' + this.identifier + '"]');
