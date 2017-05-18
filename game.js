@@ -276,7 +276,6 @@ function Idol(seed) {
     }
   }
 
-  this.renderedSprites = {};
   this.loadedImages = {};
 
   // build bio
@@ -344,12 +343,8 @@ Idol.prototype.deferRendering = function(mode) {
 };
 Idol.prototype.getSprite = function(mode) {
   if (typeof(mode) !== 'string') mode = undefined;
-  var sprite = this.renderedSprites[mode || 'med'];
-  if (sprite === undefined) {
-    this.deferRendering(mode);
-    return this.renderedSprites.thumb || 'placeholder.png';
-  }
-  return sprite;
+  this.deferRendering(mode);
+  return 'placeholder.png';
 };
 Idol.prototype.getThumbSprite = function() { return this.getSprite('thumb'); };
 Idol.prototype.getHugeSprite = function() { return this.getSprite('huge'); };
@@ -387,11 +382,10 @@ Idol.prototype.renderSprite = function(mode) {
   offscreenCanvas.fillStyle = gradient;
   offscreenCanvas.fillRect(0, 0, offscreenCanvas.canvas.width, offscreenCanvas.canvas.height);
 
-  this.renderedSprites[mode] = offscreenCanvasElement.toDataURL();
-
   var subbableImages = document.querySelectorAll('.sprite img[data-sprite-' + mode + '-id="' + this.identifier + '"]');
   for (var si = 0; si < subbableImages.length; si++) {
-    subbableImages[si].src = this.renderedSprites[mode];
+    console.log('rendering ' + this.name);
+    subbableImages[si].src = offscreenCanvasElement.toDataURL();
   }
 
   this.loadedImages[mode] = undefined;  // free up some memory?
