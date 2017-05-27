@@ -384,7 +384,6 @@ Idol.prototype.renderSprite = function(mode) {
 
   var subbableImages = document.querySelectorAll('.sprite img[data-sprite-' + mode + '-id="' + this.identifier + '"]');
   for (var si = 0; si < subbableImages.length; si++) {
-    console.log('rendering ' + this.name);
     subbableImages[si].src = offscreenCanvasElement.toDataURL();
   }
 
