@@ -235,7 +235,7 @@ cool
 crying
 +dance
 +dancing
-+daring
+daring
 +dazzling
 delightful
 dreamy
@@ -245,7 +245,7 @@ fairy
 fancy
 flash
 floral
-++fresh
+fresh
 +glitter
 glowy
 -harsh
@@ -259,10 +259,10 @@ hypnotic
 imagination
 impressive
 joke
-+jolly
-kind
-loving
-lovely
+jolly
++kind
++loving
++lovely
 +magical
 -meddling
 mega
@@ -276,7 +276,7 @@ relaxing
 rhythm
 -rough
 -scolding
-+smooth
+smooth
 +sparkle
 +star
 super
@@ -286,7 +286,7 @@ temptation
 tenacious
 thankful
 tickle
-+tough
+tough
 twinkle
 ultra
 -unpleasant
