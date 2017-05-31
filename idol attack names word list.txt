@@ -13,7 +13,6 @@
 +acclaimed
 ++affectionate
 +amazing
-+amusing
 +++angelic
 +aromatic
 +artistic
@@ -22,24 +21,20 @@
 ++attractive
 average
 +awesome
--awkward
 -babyish
 ++beautiful
 +++beloved
-+best
 -bland
 +blissful
 +blushing
 -boring
 --bossy
 +brave
-+bright
 ++brilliant
 +bubbly
 +bustling
 +buttery
 -calamitous
--candid
 +carefree
 ++caring
 +charming
@@ -56,9 +51,7 @@ average
 -creepy
 +cuddly
 ++cute
-+dancing
 --dangerous
-+daring
 ++darling
 ++dazzling
 @delicious
@@ -92,7 +85,6 @@ average
 -flustered
 -foolish
 +fragrant
-++fresh
 +friendly
 -frightening
 +frilly
@@ -127,12 +119,9 @@ average
 ++innocent
 -jealous
 -jittery
-+jolly
 +joyful
 +juicy
-+kindhearted
 -klutzy
-+lighthearted
 +likable
 +lively
 ++lovable
@@ -181,7 +170,6 @@ plain
 --reckless
 regular
 +remarkable
--rough
 -rowdy
 --salty
 -scary
@@ -194,7 +182,6 @@ regular
 -shoddy
 +silky
 simple
-+smooth
 +soft
 +sparking
 +sparkling
@@ -208,12 +195,10 @@ standard
 ++stylish
 +sugary
 +sunny
-+super
 +sweet
-+tasty
+@tasty
 ++terrific
 +thoughtful
-+tough
 ++treasured
 +trustworthy
 +++ultimate
@@ -221,10 +206,9 @@ standard
 +velvety
 +++very scary
 +vibrant
-+warm
 +wonderful
 +youthful
-+yummy
+@yummy
 
 
 # P2 (first part of an attack name)
@@ -233,13 +217,16 @@ amusing
 -annoying
 +appeal
 aromatic
+-awkward
 +aura
 +blush
 boast
 -boorish
 brave
++bright
 -bruising
 cake
+-candid
 -caustic
 +charm
 +cheer
@@ -247,6 +234,8 @@ confusion
 cool
 crying
 +dance
++dancing
++daring
 +dazzling
 delightful
 dreamy
@@ -256,8 +245,10 @@ fairy
 fancy
 flash
 floral
+++fresh
 +glitter
 glowy
+-harsh
 haunted
 @healing
 -hellish
@@ -268,6 +259,8 @@ hypnotic
 imagination
 impressive
 joke
++jolly
+kind
 loving
 lovely
 +magical
@@ -281,7 +274,9 @@ playful
 -punishing
 relaxing
 rhythm
+-rough
 -scolding
++smooth
 +sparkle
 +star
 super
@@ -291,9 +286,11 @@ temptation
 tenacious
 thankful
 tickle
++tough
 twinkle
 ultra
 -unpleasant
++warm
 wonder
 wiggle
 
@@ -324,6 +321,7 @@ club
 crash
 crush
 +dance
+dash
 drill
 drop
 elbow
@@ -332,8 +330,11 @@ flare
 flash
 flip
 flower
+flurry
 grip
 +groove
+glare
+gleam
 +heart
 hit
 hook
@@ -368,10 +369,12 @@ slam
 slap
 slash
 smash
++song
 spear
 spin
 splash
 spray
+stomp
 storm
 strike
 suplex
@@ -379,6 +382,7 @@ swing
 swipe
 throw
 thrust
+tongue
 +twirl
 voice
 wave
