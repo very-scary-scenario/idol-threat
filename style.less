@@ -254,6 +254,41 @@ a {
   }
 }
 
+#signature {
+  position: relative;
+  padding: 2em 0 2em;
+  bottom: @unit-height;
+  text-align: center;
+
+  img {
+    opacity: .4;
+    width: 5em;
+    height: 5em;
+
+    &:focus, &:hover {
+      opacity: .6;
+    }
+  }
+
+  ul {
+    margin-top: .5em;
+
+    li {
+      display: inline-block;
+
+      &::after {
+        content: ' ・ ';
+      }
+
+      &:last-child {
+        &::after {
+          content: none;
+        }
+      }
+    }
+  }
+}
+
 #unit {
   &.empty {
     display: none;
