@@ -852,7 +852,13 @@ function numFromString(str) {
 
 function addIdolFromImage(data) {
   if ((!data) || (!data.codeResult)) {
-    askUser("Sorry, we couldn't read a barcode in that picture, please try a clearer photo.");
+    askUser(
+      "Sorry, we couldn't read a barcode in that picture, please try a clearer photo.",
+      [
+        ['Try again', function() { barcodeImage.click(); }],
+        ['Cancel', null]
+      ]
+    );
     return;
   }
   idol = new Idol(numFromString(data.codeResult.code));
