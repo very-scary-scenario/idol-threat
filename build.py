@@ -223,6 +223,25 @@ def build_unit_names():
     return parts
 
 
+def build_kana():
+    kana = []
+    total_frequency = 0
+
+    with open(os.path.join(HERE, 'kana.txt')) as f:
+        for line in f.readlines():
+            if line.startswith('//'):
+                continue
+
+            letters, freq_string = line.split()
+            freq = int(freq_string)
+            total_frequency += freq
+            kana.append((letters, freq))
+
+    return [
+        (l, c / total_frequency) for l, c in kana
+    ]
+
+
 if __name__ == '__main__':
     import sys
 
@@ -244,6 +263,7 @@ if __name__ == '__main__':
             p.write('ANIMATIONS = {};'.format(json.dumps(build_animations())))
             p.write('CAMPAIGN = {};'.format(json.dumps(build_campaign())))
             p.write('UNIT_NAMES = {};'.format(json.dumps(build_unit_names())))
+            p.write('KANA = {};'.format(json.dumps(build_kana())))
 
         with open('style.css', 'wb') as c:
             c.write(subprocess.check_output(['lessc', 'style.less']))

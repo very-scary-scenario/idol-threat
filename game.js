@@ -1,33 +1,3 @@
-var KANA = [
-  'a', 'i', 'u', 'e', 'o',
-  'ka', 'ki', 'ku', 'ke', 'ko',
-  'sa', 'shi', 'su', 'se', 'so',
-  'ta', 'chi', 'tsu', 'te', 'to',
-  'na', 'ni', 'nu', 'ne', 'no',
-  'ha', 'hi', 'fu', 'he', 'ho',
-  'ma', 'mi', 'mu', 'me', 'mo',
-  'ya', 'yu', 'yo',
-  'ra', 'ri', 'ru', 're', 'ro',
-  'ga', 'gi', 'gu', 'ge', 'go',
-  'za', 'ji', 'zu', 'ze', 'zo',
-  'da', 'ji', 'zu', 'de', 'do',
-  'ba', 'bi', 'bu', 'be', 'bo',
-  'pa', 'pi', 'pu', 'pe', 'po',
-  // 'kya', 'kyu', 'kyo',
-  // 'sha', 'shu', 'sho',
-  // 'cha', 'chu', 'cho',
-  // 'nya', 'nyu', 'nyo',
-  // 'hya', 'hyu', 'hyo',
-  // 'mya', 'myu', 'myo',
-  // 'rya', 'ryu', 'ryo',
-  // 'gya', 'gyu', 'gyo',
-  // 'bya', 'byu', 'byo',
-  // 'pya', 'pyu', 'pyo',
-  'ja', 'ju', 'jo'
-];
-var SOKUON_OVERRIDES = {
-  c: 't'
-};
 var VOWELS = 'aeiou';
 var N = 'n';
 var STATS = [
@@ -314,14 +284,19 @@ Idol.prototype.generateName = function() {
   var name = '';
   var kanaCount = Math.floor(this.rand(4, 2));
   while (kanaCount > 0) {
-    var nextKana = choice(KANA, this.rand());
-    var sokuon = null;
+    var targetDepth = this.rand();
+    var currentDepth = 0;
+    var nextKana;
 
-    if (VOWELS.indexOf(nextKana[0]) === -1) {
-      sokuon = SOKUON_OVERRIDES[nextKana[0]] || nextKana[0];
+    for (var ki = 0; ki < KANA.length; ki++) {
+      var item = KANA[ki];
+      nextKana = item[0];
+      currentDepth += item[1];
+      if (currentDepth >= targetDepth) {
+        break;
+      }
     }
 
-    if (name && sokuon && (this.rand() > 0.9)) name += sokuon;
     name += nextKana;
     if (this.rand() > 0.9) name += N;
 
