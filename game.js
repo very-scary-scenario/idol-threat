@@ -707,7 +707,6 @@ Agency.prototype.renderUnit = function() {
   for (var ei = 0; ei < unitElements.length; ei++) {
     unitElements[ei].addEventListener('click', handleUnitClick);
   }
-  console.log(this.unitName());
 };
 Agency.prototype.unitName = function() {
   var unitSeed = 0;
