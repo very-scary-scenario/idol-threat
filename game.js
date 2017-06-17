@@ -172,6 +172,8 @@ function seededRandom(seed) {
     return min + rnd * (max - min);
   }
 
+  rand();
+
   return rand;
 }
 
