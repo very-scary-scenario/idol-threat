@@ -851,6 +851,8 @@ function numFromString(str) {
 }
 
 function addIdolFromImage(data) {
+  barcodeImage.value = '';
+
   if ((!data) || (!data.codeResult)) {
     askUser(
       "Sorry, we couldn't read a barcode in that picture, please try a clearer photo.",
