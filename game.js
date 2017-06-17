@@ -710,23 +710,14 @@ Agency.prototype.renderUnit = function() {
   console.log(this.unitName());
 };
 Agency.prototype.unitName = function() {
-  var unitSeeds = [];
+  var unitSeed = 0;
 
   for (var ii = 0; ii < this.unit.length; ii++) {
-    idol = this.unit[ii];
-    unitSeeds.push(idol.seed);
-  }
-
-  unitSeeds.sort(function(a, b) { return a > b; });
-  var unitSeed = 1;
-  
-  for (var si = 0; si < unitSeeds.length; si++) {
-    unitSeed = unitSeed / unitSeeds[si];
+    unitSeed += this.unit[ii].seed;
   }
   
   var rng = seededRandom(unitSeed);
-  var unitName = choice(UNIT_NAMES[0], rng()) + ' ' + choice(UNIT_NAMES[1], rng());
-  return unitName;
+  return choice(UNIT_NAMES[0], rng()) + ' ' + choice(UNIT_NAMES[1], rng());
 };
 Agency.prototype.addIdol = function(idol, interactive) {
   if ((this.catalog.length === 0) && document.body.classList.contains('nothing-scanned')) {
