@@ -704,9 +704,29 @@ Agency.prototype.renderUnit = function() {
     self.unit[parseInt(e.currentTarget.getAttribute('data-index'), 10)].showDetail();
   }
 
-  for (var i = 0; i < unitElements.length; i++) {
-    unitElements[i].addEventListener('click', handleUnitClick);
+  for (var ei = 0; ei < unitElements.length; ei++) {
+    unitElements[ei].addEventListener('click', handleUnitClick);
   }
+  console.log(this.unitName());
+};
+Agency.prototype.unitName = function() {
+  var unitSeeds = [];
+
+  for (var ii = 0; ii < this.unit.length; ii++) {
+    idol = this.unit[ii];
+    unitSeeds.push(idol.seed);
+  }
+
+  unitSeeds.sort(function(a, b) { return a > b; });
+  var unitSeed = 1;
+  
+  for (var si = 0; si < unitSeeds.length; si++) {
+    unitSeed = unitSeed / unitSeeds[si];
+  }
+  
+  var rng = seededRandom(unitSeed);
+  var unitName = choice(UNIT_NAMES[0], rng()) + ' ' + choice(UNIT_NAMES[1], rng());
+  return unitName;
 };
 Agency.prototype.addIdol = function(idol, interactive) {
   if ((this.catalog.length === 0) && document.body.classList.contains('nothing-scanned')) {

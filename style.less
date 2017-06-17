@@ -303,22 +303,23 @@ a {
   color: @bg;
 
   h2 {
-    font-size: @unit-height/5;
-    display: inline-block;
+    display: block;
     position: absolute;
     left: 0;
-    top: 100%;
+    top: -@unit-height/4;
+    height: @unit-height/4;
+    box-sizing: border-box;
     padding: .3em .5em;
-    transform: rotate(-90deg);
-    transform-origin: top left;
-    z-index: 1;
+
+    background-color: fade(@fg, 90%);
+    font-size: @unit-height/7;
+    border-radius: 0 .5em 0 0;
   }
 
   ul.unit {
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
-    padding-left: @unit-height/3;
 
     li {
       display: inline-block;

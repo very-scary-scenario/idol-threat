@@ -20,6 +20,7 @@
       var ABILITIES;
       var ANIMATIONS;
       var CAMPAIGN;
+      var UNIT_NAMES;
     </script>
   </head>
   <body class="nothing-scanned">
@@ -148,7 +149,7 @@
     </script>
 
     <script id="unit-template" type="text/x-handlebars-template">
-      <h2>Your unit</h2>
+      <h2>{{unitName}}</h2>
       <ul class="unit">
         {{#each unit}}
           <li class="needsclick" data-index="{{@index}}">

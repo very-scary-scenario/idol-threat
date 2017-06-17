@@ -208,6 +208,21 @@ def build_icon():
     subprocess.check_call(['optipng', icon_path])
 
 
+def build_unit_names():
+    parts = []
+
+    with open(os.path.join(HERE, 'idol unit name generator.txt')) as f:
+        for line in f.readlines():
+            word = line.strip()
+
+            if word in ('A', 'B'):
+                parts.append([])
+            elif parts and word:
+                parts[-1].append(word)
+
+    return parts
+
+
 if __name__ == '__main__':
     import sys
 
@@ -228,6 +243,7 @@ if __name__ == '__main__':
             p.write('QUOTES = {};'.format(json.dumps(build_quotes())))
             p.write('ANIMATIONS = {};'.format(json.dumps(build_animations())))
             p.write('CAMPAIGN = {};'.format(json.dumps(build_campaign())))
+            p.write('UNIT_NAMES = {};'.format(json.dumps(build_unit_names())))
 
         with open('style.css', 'wb') as c:
             c.write(subprocess.check_output(['lessc', 'style.less']))
