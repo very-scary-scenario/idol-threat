@@ -3,15 +3,18 @@ A+B
 
 A
 
+After School
 Angel
 Adorable
 Baby
+Bad
 Cheeky
 Cheerful
 Cherry
 Cutey
 Daring
 Diamond
+Doll
 Dreamy
 Energetic
 Fairy
@@ -59,6 +62,8 @@ Tokyo Girls'
 Totally
 Ultra
 Vanilla
+Vapor
+Very
 Yes
 
 
@@ -70,6 +75,8 @@ Angels
 Apple
 Asterisk
 Blessed
+Cats
+Clover
 Club
 Cute
 Dare
@@ -79,13 +86,16 @@ Factory
 Family
 Fantasy
 Garden
+Generation
 Girls
+Girls' School
 Girlz
 Happy
 Idol
 Infinite
 Japan
 Jump
+Junior
 Kids
 Kiss
 Ladies
@@ -109,4 +119,5 @@ Style
 Teens
 Troupe
 Wings
+Z
 Zone
