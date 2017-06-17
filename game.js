@@ -25,6 +25,10 @@ var KANA = [
   // 'pya', 'pyu', 'pyo',
   'ja', 'ju', 'jo'
 ];
+var SOKUON_OVERRIDES = {
+  c: 't'
+};
+var VOWELS = 'aeiou';
 var N = 'n';
 var STATS = [
   'endurance',
@@ -310,8 +314,17 @@ Idol.prototype.generateName = function() {
   var name = '';
   var kanaCount = Math.floor(this.rand(4, 2));
   while (kanaCount > 0) {
-    name += choice(KANA, this.rand());
+    var nextKana = choice(KANA, this.rand());
+    var sokuon = null;
+
+    if (VOWELS.indexOf(nextKana[0]) === -1) {
+      sokuon = SOKUON_OVERRIDES[nextKana[0]] || nextKana[0];
+    }
+
+    if (name && sokuon && (this.rand() > 0.9)) name += sokuon;
+    name += nextKana;
     if (this.rand() > 0.9) name += N;
+
     kanaCount--;
   }
   name = name[0].toUpperCase() + name.slice(1);
