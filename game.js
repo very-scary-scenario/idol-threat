@@ -42,6 +42,8 @@ var POSES;
 var HAIR_COLOURS;
 var SKIN_COLOURS;
 
+var confettiTimeout;
+
 var cookieExpiryDate = new Date();
 cookieExpiryDate.setFullYear(cookieExpiryDate.getFullYear() + 50);
 var cookieSuffix = '; expires=' + cookieExpiryDate.toUTCString();
@@ -149,6 +151,17 @@ function seededRandom(seed) {
   rand();
 
   return rand;
+}
+
+function celebrate() {
+  if (!confettiTimeout) confetti.restart();
+
+  clearTimeout(confettiTimeout);
+  confettiTimeout = setTimeout(function() {
+    confetti.stop();
+    clearTimeout(confettiTimeout);
+    confettiTimeout = undefined;
+  }, 3000);
 }
 
 function askUser(question, answers) {
@@ -501,7 +514,8 @@ Idol.prototype.showDetail = function() {
         agency.removeIdol(foodIdol);
         canteenElement.innerHTML = '';
         self.showDetail();
-        askUser('Training complete.');
+        askUser('Training successful!');
+        celebrate();
       });
     }
 
@@ -521,6 +535,7 @@ Idol.prototype.showDetail = function() {
       ['Graduate', function() {
         detailElement.classList.remove('shown');
         agency.removeIdol(self);
+        celebrate();
 
         for (var i = 0; i < agency.catalog.length; i++) {
           agency.catalog[i].giveBonus();
@@ -915,6 +930,7 @@ function rerender() {
       }
 
       var battle = new Battle(playerIdols, enemyIdols, function() {
+        celebrate();
         askUser('You win! Your unit gets bonuses~', [['Yay!', null]]);
         for (var pi = 0; pi < this.playerIdols.length; pi++) {
           this.playerIdols[pi].idol.giveBonus(enemyIdols.length);
@@ -956,6 +972,7 @@ function rerender() {
     }
 
     var battle = new Battle(playerIdols, enemyIdols, function() {
+      celebrate();
       askUser('You win!', [['Yay!', null]]);
     }, function() {
       askUser('You lose :<', [['Aww, beans…', null]]);
