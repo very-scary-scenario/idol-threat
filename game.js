@@ -551,7 +551,7 @@ Idol.prototype.showDetail = function() {
 
         askUser(
           template.replace('<idol>', self.name) +
-          ' The other idols in the rest of your agency get ' + bonus.toString(10) + ' bonus stat points each.'
+          ' The other idols in your agency get ' + bonus.toString(10) + ' bonus stat points each.'
         );
 
         celebrate();
