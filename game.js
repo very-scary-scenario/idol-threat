@@ -535,12 +535,20 @@ Idol.prototype.showDetail = function() {
       ['Graduate', function() {
         detailElement.classList.remove('shown');
         agency.removeIdol(self);
-        celebrate();
+        var graduationBonus = choice(GRADUATION_BONUSSES, Math.random());
+        bonus = graduationBonus[0];
+        template = graduationBonus[1];
 
         for (var i = 0; i < agency.catalog.length; i++) {
-          agency.catalog[i].giveBonus();
+          agency.catalog[i].giveBonus(bonus);
         }
 
+        askUser(
+          template.replace('<idol>', self.name) +
+          ' The other idols in the rest of your agency get ' + bonus.toString(10) + ' stat bonusses each.'
+        );
+
+        celebrate();
         rerender();
       }],
       ['Keep', function() {}]

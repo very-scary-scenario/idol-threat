@@ -242,6 +242,17 @@ def build_kana():
     ]
 
 
+def build_graduation_bonusses():
+    graduation_bonusses = []
+
+    with open(os.path.join(HERE, 'idol graduation bonusses.txt')) as f:
+        for line in f.readlines():
+            bonus_str, template = line.strip().split(maxsplit=1)
+            graduation_bonusses.append((int(bonus_str), template))
+
+    return graduation_bonusses
+
+
 if __name__ == '__main__':
     import sys
 
@@ -264,6 +275,9 @@ if __name__ == '__main__':
             p.write('CAMPAIGN = {};'.format(json.dumps(build_campaign())))
             p.write('UNIT_NAMES = {};'.format(json.dumps(build_unit_names())))
             p.write('KANA = {};'.format(json.dumps(build_kana())))
+            p.write('GRADUATION_BONUSSES = {};'.format(
+                json.dumps(build_graduation_bonusses())
+            ))
 
         with open('style.css', 'wb') as c:
             c.write(subprocess.check_output(['lessc', 'style.less']))
