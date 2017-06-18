@@ -164,10 +164,18 @@ Battle.prototype.determinePlayerMove = function(idol) {
   function pickMove(e) {
     e.stopPropagation();
     e.preventDefault();
-    document.getElementById('battle-form').removeEventListener('submit', pickMove);
+
     var targetInput = document.querySelector('input[name="target"]:checked');
+    var moveInput = document.querySelector('input[name="move"]:checked');
+    if ((!targetInput) || (!moveInput)) {
+      askUser('You have to pick both a target and a move');
+      return;
+    }
+
+    document.getElementById('battle-form').removeEventListener('submit', pickMove);
+
     targetIndex = parseInt(targetInput.getAttribute('value'), 10);
-    abilityIndex = parseInt(document.querySelector('input[name="move"]:checked').getAttribute('value'), 10);
+    abilityIndex = parseInt(moveInput.getAttribute('value'), 10);
 
     abilityPromptElement.innerHTML = '';
     idol.element.classList.remove('focussed');
