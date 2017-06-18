@@ -180,7 +180,11 @@ Battle.prototype.determinePlayerMove = function(idol) {
   abilityPromptElement.innerHTML = abilityPromptTemplate(idol);
 
   document.getElementById('battle-form').addEventListener('submit', pickMove);
-  document.getElementById('flee').addEventListener('click', function() { self.flee(); });
+  document.getElementById('flee').addEventListener('click', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    self.flee();
+  });
 
   return;
 };
