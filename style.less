@@ -516,6 +516,15 @@ body.in-battle {
     overflow: hidden;
     box-sizing: border-box;
 
+    #flee {
+      .button();
+      margin: .5em;
+      cursor: pointer;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
     .idol-list {
       color: @bg;
       background-color: fade(@fg, 90%);

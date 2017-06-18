@@ -148,6 +148,15 @@ Battle.prototype.loop = function() {
   this.nextMove();
 };
 
+Battle.prototype.hide = function() {
+  document.body.classList.remove('in-battle');
+};
+
+Battle.prototype.flee = function() {
+  this.hide();
+  askUser('You ran away.');
+};
+
 Battle.prototype.determinePlayerMove = function(idol) {
   var self = this;
   var abilityPromptElement = document.getElementById('ability-prompt');
@@ -171,6 +180,7 @@ Battle.prototype.determinePlayerMove = function(idol) {
   abilityPromptElement.innerHTML = abilityPromptTemplate(idol);
 
   document.getElementById('battle-form').addEventListener('submit', pickMove);
+  document.getElementById('flee').addEventListener('click', function() { self.flee(); });
 
   return;
 };
@@ -202,7 +212,7 @@ Battle.prototype.nextMove = function() {
 
   if (this.playerHasWon() || this.enemyHasWon()) {
     setTimeout(function() {
-      document.body.classList.remove('in-battle');
+      self.hide();
 
       if (self.playerHasWon()) {
         self.victoryCallback();
