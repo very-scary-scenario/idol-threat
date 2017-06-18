@@ -36,6 +36,12 @@ var RARITIES = [
 var BASE_RARITY = 300;
 var RARITY_CURVE = 0.6;
 
+var LETTER_DELAY = 20;
+var LETTER_DELAYS = {
+  '.': 8,
+  ',': 4
+};
+
 var NEGATIVE_STAT_EFFECT = 2;
 
 var POSES;
@@ -775,6 +781,40 @@ Agency.prototype.doStory = function(pageNumber) {
   var chapter = CAMPAIGN[this.storyChapter];
   var page = chapter[pageNumber];
   var self = this;
+  var letterTimeout;
+
+  function graduallyShowScript(visibleScriptElement, invisibleScriptElement) {
+    function showNextLetter() {
+      var nextLetter = invisibleScriptElement.textContent[0];
+      visibleScriptElement.textContent += nextLetter;
+      invisibleScriptElement.textContent = invisibleScriptElement.textContent.replace(/^./, '');
+
+      if (invisibleScriptElement.textContent) {
+        letterTimeout = setTimeout(showNextLetter, LETTER_DELAY * (LETTER_DELAYS[nextLetter] || 1));
+      } else {
+        letterTimeout = undefined;
+      }
+    }
+
+    letterTimeout = setTimeout(showNextLetter, 50);
+
+    var scriptElement = document.getElementById('script');
+    function handleScriptClick(e) {
+      e.stopPropagation();
+      e.preventDefault();
+
+      if (letterTimeout === undefined) {
+        scriptElement.removeEventListener('click', handleScriptClick);
+        self.doStory(pageNumber + 1);
+      } else {
+        clearTimeout(letterTimeout);
+        letterTimeout = undefined;
+        visibleScriptElement.textContent += invisibleScriptElement.textContent;
+        invisibleScriptElement.textContent = '';
+      }
+    }
+    scriptElement.addEventListener('click', handleScriptClick);
+  }
 
   if (page === undefined) {
     theatreElement.innerHTML = '';
@@ -782,17 +822,14 @@ Agency.prototype.doStory = function(pageNumber) {
     rerender();
   } else if (page.kind === 'setting') {
     this.storySetting = page.value;
+    theatreElement.innerHTML = theatreTemplate({background: this.storySetting});
     this.doStory(pageNumber + 1);
   } else if (page.kind === 'text') {
-    theatreElement.innerHTML = theatreTemplate({
-      background: this.storySetting,
-      text: page.text
-    });
-    document.getElementById('script').addEventListener('click', function(e) {
-      e.stopPropagation();
-      e.preventDefault();
-      self.doStory(pageNumber + 1);
-    });
+    var invisibleScriptElement = document.getElementById('invisible-script');
+    var visibleScriptElement = document.getElementById('visible-script');
+    invisibleScriptElement.textContent = page.text;
+    visibleScriptElement.textContent = '';
+    graduallyShowScript(visibleScriptElement, invisibleScriptElement);
   } else if (page.kind === 'battle') {
     theatreElement.innerHTML = '';
     var playerIdols = [];
