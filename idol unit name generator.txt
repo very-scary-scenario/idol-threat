@@ -5,6 +5,7 @@ A
 
 After School
 Angel
+Anis
 Adorable
 Baby
 Bad
@@ -20,6 +21,7 @@ Energetic
 Fairy
 Fancy
 Fluffy
+Fun
 Glitter
 Golden
 Groovy
@@ -42,6 +44,7 @@ Musical
 Neo
 No
 Party
+Peach
 Pink
 Pretty
 Project
@@ -49,6 +52,7 @@ Real
 Rose
 Sakura
 Scary
+Sing
 Smile
 Smiling
 Soft
@@ -85,6 +89,7 @@ Dust
 Factory
 Family
 Fantasy
+Fun
 Garden
 Generation
 Girls
@@ -110,14 +115,19 @@ Prism
 Project
 Renaissance
 School
+Sing
 Smile
+Song
 Sparkle
 Special
 Splash
 Star
+Stars
 Style
 Teens
+Touch
 Troupe
 Wings
+X
 Z
 Zone
