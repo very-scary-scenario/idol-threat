@@ -16,6 +16,11 @@ Our unit's humble beginning is in a rundown office building, in the middle of Sh
 People desperately need encouragement from local idols, but it helps no one if the dances are sloppy.
 For this idol unit to be successful, they must first learn from the girls that came before them.
 Fortunately for us, there's a local group available to teach our girls in a hands-on way.
+### boss_1_2 appear middle
+"What's this? Another fledgling idol group to cut down?"
+"Don't waste our time!"
+### clear
+Charming. Anyway.
 From one idol unit to the next, we can unite the world with cheer.
 Which is why they must fight.
 
