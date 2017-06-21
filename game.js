@@ -1,7 +1,6 @@
 var VOWELS = 'aeiou';
 var N = 'n';
 var STATS = [
-  'endurance',
   'attack',
   'speed',
   'defense'
@@ -59,7 +58,6 @@ var endString = 'end';
 var idolSorters = {
   date: function(a, b) { return b.recruitedAt - a.recruitedAt; },
   statSpeed: function(a, b) { return (b.speed + b.speedBonus) - (a.speed + a.speedBonus); },
-  statEndurance: function(a, b) { return (b.endurance + b.enduranceBonus) - (a.endurance + a.enduranceBonus); },
   statAttack: function(a, b) { return (b.attack + b.attackBonus) - (a.attack + a.attackBonus); },
   statDefense: function(a, b) { return (b.defense + b.defenseBonus) - (a.defense + a.defenseBonus); },
   unitMembership: function(a, b) { return (Number(b.isInUnit()) - Number(a.isInUnit())); },
@@ -73,7 +71,6 @@ var idolSorters = {
 var idolSortNames = {
   date: 'Date recruited',
   statSpeed: 'Speed',
-  statEndurance: 'Endurance',
   statAttack: 'Attack',
   statDefense: 'Defense',
   allStats: 'Total of all stats',

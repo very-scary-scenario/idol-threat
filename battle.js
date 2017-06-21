@@ -58,11 +58,10 @@ function BattleIdol(idol, control) {
   }
 
   self.attack = modStat(idol.attack + idol.attackBonus, 100);
-  self.defense = modStat(idol.defense + idol.defenseBonus, 50);
-  self.endurance = modStat(idol.endurance + idol.enduranceBonus, 50);
+  self.defense = modStat(idol.defense + idol.defenseBonus, 100);
   self.speed = modStat(idol.speed + idol.speedBonus, 20);
 
-  self.maxHp = self.endurance;
+  self.maxHp = 50;
   self.hp = self.maxHp;
 
   self.abilities = idol.abilities;
