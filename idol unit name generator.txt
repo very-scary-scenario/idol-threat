@@ -20,6 +20,7 @@ Energetic
 Fairy
 Fancy
 Fluffy
+Fun
 Glitter
 Golden
 Groovy
@@ -42,6 +43,7 @@ Musical
 Neo
 No
 Party
+Peach
 Pink
 Pretty
 Project
@@ -49,6 +51,7 @@ Real
 Rose
 Sakura
 Scary
+Sing
 Smile
 Smiling
 Soft
@@ -62,7 +65,7 @@ Tokyo Girls'
 Totally
 Ultra
 Vanilla
-Vapor
+Vapour
 Very
 Yes
 
@@ -72,6 +75,7 @@ B
 48
 Adolescence
 Angels
+Anis
 Apple
 Asterisk
 Blessed
@@ -85,6 +89,7 @@ Dust
 Factory
 Family
 Fantasy
+Fun
 Garden
 Generation
 Girls
@@ -110,14 +115,20 @@ Prism
 Project
 Renaissance
 School
+Sing
 Smile
+Song
 Sparkle
 Special
 Splash
 Star
+Stars
+☆STARS!
 Style
 Teens
+Touch
 Troupe
 Wings
+X
 Z
 Zone
