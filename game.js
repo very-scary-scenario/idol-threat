@@ -57,9 +57,9 @@ var endString = 'end';
 
 var idolSorters = {
   date: function(a, b) { return b.recruitedAt - a.recruitedAt; },
-  statSpeed: function(a, b) { return (b.speed + b.speedBonus) - (a.speed + a.speedBonus); },
-  statAttack: function(a, b) { return (b.attack + b.attackBonus) - (a.attack + a.attackBonus); },
-  statDefense: function(a, b) { return (b.defense + b.defenseBonus) - (a.defense + a.defenseBonus); },
+  statSpeed: function(a, b) { return b.speed - a.speed; },
+  statAttack: function(a, b) { return b.attack - a.attack; },
+  statDefense: function(a, b) { return b.defense - a.defense; },
   unitMembership: function(a, b) { return (Number(b.isInUnit()) - Number(a.isInUnit())); },
   allStats: function(a, b) { return b.totalStats() - a.totalStats(); },
   affinity: function(a, b) { return (
@@ -229,7 +229,6 @@ function Idol(seed) {
   // build stats
   for(var i = 0, n = STATS.length; i < n; i++) {
     this[STATS[i]] = Math.floor(this.rand(-100, 100));
-    this[STATS[i] + 'Bonus'] = 0;
   }
 
   this.abilities = [];
@@ -450,7 +449,7 @@ Idol.prototype.giveBonus = function(count) {
 
   while (count > 0) {
     count--;
-    this[choice(STATS, Math.random()) + 'Bonus']++;
+    this[choice(STATS, Math.random())]++;
   }
 
   deferRerender();
@@ -607,7 +606,6 @@ Idol.prototype.dump = function() {
   };
   for(var i = 0, n = STATS.length; i < n; i++) {
     idolDump.s.push(this[STATS[i]]);
-    idolDump.b.push(this[STATS[i] + 'Bonus']);
   }
   return idolDump;
 };
@@ -887,7 +885,6 @@ Agency.prototype.load = function(agencyDump) {
 
     for(var si = 0, sn = STATS.length; si < sn; si++) {
       idol[STATS[si]] = idolDump.s[si];
-      idol[STATS[si] + 'Bonus'] = (idolDump.b || {})[si] || 0;
     }
 
     this.addIdol(idol);
