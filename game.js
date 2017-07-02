@@ -811,15 +811,20 @@ Agency.prototype.doStory = function(pageNumber) {
     scriptElement.addEventListener('click', handleScriptClick);
   }
 
+  function renderSetting() {
+    theatreElement.innerHTML = theatreTemplate({background: self.storySetting});
+  }
+
   if (page === undefined) {
     theatreElement.innerHTML = '';
     this.storyChapter++;
     rerender();
   } else if (page.kind === 'setting') {
     this.storySetting = page.value;
-    theatreElement.innerHTML = theatreTemplate({background: this.storySetting});
+    renderSetting();
     this.doStory(pageNumber + 1);
   } else if (page.kind === 'text') {
+    if (!theatreElement.innerHTML) renderSetting();
     var invisibleScriptElement = document.getElementById('invisible-script');
     var visibleScriptElement = document.getElementById('visible-script');
     invisibleScriptElement.textContent = page.text;
@@ -829,8 +834,8 @@ Agency.prototype.doStory = function(pageNumber) {
     theatreElement.innerHTML = '';
     var playerIdols = [];
 
-    for (var pi = 0; pi < agency.unit.length; pi++) {
-      playerIdols.push(new BattleIdol(agency.unit[pi], 'player'));
+    for (var pi = 0; pi < self.unit.length; pi++) {
+      playerIdols.push(new BattleIdol(self.unit[pi], 'player'));
     }
 
     var enemyIdols = [];
