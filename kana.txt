@@ -73,7 +73,7 @@ kyu 96
 chu 91
 gu 80
 gyo 75
-po 57
+pa 57
 nu 54
 dzu 47
 nyu 46
