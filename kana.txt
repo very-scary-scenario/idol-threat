@@ -16,10 +16,10 @@ ko 1938
 na 1856
 ru 1693
 to 1631
-mo 1500
+ma 1500
 de 1463
 ki 1433
-ta 1428
+da 1428
 su 1420
 re 1415
 tsu 1386
@@ -37,7 +37,7 @@ ji 718
 e 713
 so 662
 yo 590
-me 576
+mi 576
 me 535
 do 466
 jo 464
@@ -73,7 +73,7 @@ kyu 96
 chu 91
 gu 80
 gyo 75
-po 57
+pa 57
 nu 54
 dzu 47
 nyu 46
