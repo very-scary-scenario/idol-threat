@@ -3,25 +3,25 @@ A+B
 
 A
 
-After School
-Angel
+Angel|Angelic
 Adorable
-Baby
+Baby|Babyish
 Bad
 Cheeky
-Cheerful
+Cheer|Cheery|Cheerful
 Cherry
-Cutey|Cute
-Daring
+Cool|Kool
+Cute|Cutey|Cutesy
+Dare|Daring
 Diamond
-Doll
-Dreamy
+Double
+Dream|Dreamy
 Energetic
 Fairy
 Fancy
 Fluffy
 Fun
-Glitter
+Glitter|Glittery
 Golden
 Groovy
 Happy
@@ -31,18 +31,16 @@ Idol
 Imagine
 Joyful
 Jumping
-Kool
-Little
+Little|Littlest
 Love
 Lovely
 Lyrical
-Magical
+Magic|Magical
 Mahou Shoujo
 Morning
 Musical
 Neo
 No
-Party
 Peach
 Pink
 Pretty
@@ -51,15 +49,15 @@ Real
 Rose
 Sakura
 Scary
+School|After School
 Sing
-Smile
-Smiling
+Smile|Smiling
 Soft
-Sparkle
+Sparkle|Sparkling
 Special
 Star
 Super
-Sweet
+Sweet|Sweety
 Team
 Tokyo Girls'
 Totally
@@ -74,17 +72,17 @@ B
 
 48
 Adolescence
-Angels
-Anis
+Angel|Angels
 Apple
 Asterisk
 Blessed
-Cats
+Cat|Cats
 Clover
 Club
 Cute
 Dare
-Dream
+Doll|Dolls
+Dream|Dreams
 Dust
 Factory
 Family
@@ -93,16 +91,15 @@ Fun
 Galactic
 Garden
 Generation
-Girls
-Girls' School
-Girlz
+Girls|Girlz|Girls' School
 Happy
-Idol
-Infinite
+Idol|Idols|Idolz
+Infinite|Infinity
+International|Worldwide
 Japan
-Jump
+Jump|Jumping
 Junior
-Kids
+Kids|Kidz
 Kiss
 Ladies
 Lips
@@ -122,14 +119,14 @@ Song
 Sparkle
 Special
 Splash
-Star
-Stars
-☆STARS!
+Squad
+Star|Stars|☆ STARS!
 Style
+Sunshine
+Surprise
 Teens
 Touch
 Troupe
 Wings
-X
-Z
+X|Z
 Zone
