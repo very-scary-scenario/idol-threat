@@ -43,6 +43,8 @@ var LETTER_DELAYS = {
 
 var NEGATIVE_STAT_EFFECT = 2;
 
+var PRESTIGE_DIFFICULTY_INCREASE = 600;
+
 var POSES;
 var HAIR_COLOURS;
 var SKIN_COLOURS;
@@ -623,6 +625,7 @@ function Agency() {
   this.unit = [];
   this.sortOrder = 'date';
   this.storyChapter = 0;
+  this.storyGeneration = 0;
 }
 Agency.prototype.renderCatalog = function() {
   var sortedCatalog = this.sortedCatalog();
@@ -659,8 +662,8 @@ Agency.prototype.renderCatalog = function() {
   });
 
   for (var sortKey in idolSortNames) {
-    element = document.querySelector('#sort-list a[data-sort-order="' + sortKey + '"]');
-    if (element) element.addEventListener('click', setSortOrder);
+    var sortElement = document.querySelector('#sort-list a[data-sort-order="' + sortKey + '"]');
+    if (sortElement) sortElement.addEventListener('click', setSortOrder);
   }
 
   var agency = this;
@@ -844,7 +847,8 @@ Agency.prototype.doStory = function(pageNumber) {
     for (var ei = maxUnitSize; ei > 0; ei--) {
       var enemyIdol = new Idol(Math.random());
       for (var si = 0; si < STATS.length; si++) {
-        enemyIdol[STATS[si]] = enemyIdol[STATS[si]] + page.strength;
+        enemyIdol[STATS[si]] = enemyIdol[STATS[si]] + page.strength + (
+          PRESTIGE_DIFFICULTY_INCREASE * agency.storyGeneration);
       }
       enemyIdols.push(new BattleIdol(enemyIdol, 'ai'));
     }
@@ -868,6 +872,7 @@ Agency.prototype.dump = function() {
     i: [],
     u: [],
     c: this.storyChapter,
+    g: this.storyGeneration,
     o: this.sortOrder
   };
 
@@ -882,6 +887,7 @@ Agency.prototype.dump = function() {
 Agency.prototype.load = function(agencyDump) {
   if (agencyDump.o !== undefined) this.sortOrder = agencyDump.o;
   this.storyChapter = agencyDump.c || 0;
+  this.storyGeneration = agencyDump.g || 0;
 
   for(var i = 0, n = agencyDump.i.length; i < n; i++) {
     var idolDump = agencyDump.i[i];
@@ -1001,6 +1007,19 @@ function rerender() {
     } else {
       askUser('You need an idol in your unit to progress in the story.');
     }
+  });
+
+  var prestigeButton = document.getElementById('prestige-story');
+  if (prestigeButton) prestigeButton.addEventListener('click', function(e) {
+    askUser('Do you want to reset story progress and make it harder? Your idols will stay with you.', [
+      ['I am ready', function() {
+        agency.storyGeneration++;
+        agency.storyChapter = 0;
+        rerender();
+        agency.doStory();
+      }],
+      ['Not yet', null],
+    ]);
   });
 
   var randomFightButton = document.getElementById('random-fight');
