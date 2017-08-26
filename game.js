@@ -872,12 +872,16 @@ Agency.prototype.doStory = function(pageNumber) {
 
       var actorElement = theatreElement.querySelector('#boards .actor[data-actor-name="' + page.actor + '"]');
       if (!actorElement) {
-        idol.actorName = page.actor;
+        actor.actorName = page.actor;
         actorElement = document.createElement('div');
         actorElement.setAttribute('data-actor-name', page.actor);
         actorElement.classList.add('actor');
-        actorElement.innerHTML = idol.hugeSpriteHTML();
+        actorElement.innerHTML = actor.hugeSpriteHTML();
         theatreElement.querySelector('#boards').appendChild(actorElement);
+      }
+
+      if (page.adjectives.into) {
+        actorElement.setAttribute('data-position', page.adjectives.into);
       }
     }
 

@@ -965,6 +965,35 @@ body.nothing-scanned {
     background-position: center center;
   }
 
+  #boards {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 80vh;
+    width: 100%;
+
+    .actor {
+      margin-left: -15vh;
+      position: absolute;
+      height: 100%;
+      bottom: 0;
+
+      &[data-position="middle"] { left: 50%; }
+      &[data-position="left"] { left: 20%; }
+      &[data-position="right"] { left: 80%; }
+
+      .sprite {
+        width: 30vh;
+        height: 100%;
+
+        img {
+          position: absolute;
+          bottom: 0;
+        }
+      }
+    }
+  }
+
   #script {
     min-height: 30vh;
     position: absolute;
