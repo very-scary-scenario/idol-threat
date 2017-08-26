@@ -802,6 +802,7 @@ Agency.prototype.doStory = function(pageNumber) {
   var page = chapter[pageNumber];
   var self = this;
   var letterTimeout;
+  var actorElement;
 
   function graduallyShowScript(visibleScriptElement, invisibleScriptElement) {
     function showNextLetter() {
@@ -846,6 +847,10 @@ Agency.prototype.doStory = function(pageNumber) {
     });
   }
 
+  function goToDestination() {
+    if (page.adjectives.into) actorElement.setAttribute('data-position', page.adjectives.into);
+  }
+
   if (page === undefined) {
     theatreElement.innerHTML = '';
     this.storyChapter++;
@@ -870,7 +875,7 @@ Agency.prototype.doStory = function(pageNumber) {
       var actor = this.storyActors[page.actor] || new Idol(Math.random());
       if (this.storyActors[page.actor] === undefined) this.storyActors[page.actor] = actor;
 
-      var actorElement = theatreElement.querySelector('#boards .actor[data-actor-name="' + page.actor + '"]');
+      actorElement = theatreElement.querySelector('#boards .actor[data-actor-name="' + page.actor + '"]');
       if (!actorElement) {
         actor.actorName = page.actor;
         actorElement = document.createElement('div');
@@ -880,8 +885,11 @@ Agency.prototype.doStory = function(pageNumber) {
         theatreElement.querySelector('#boards').appendChild(actorElement);
       }
 
-      if (page.adjectives.into) {
-        actorElement.setAttribute('data-position', page.adjectives.into);
+      if (page.verb === 'enter' && page.adjectives.from) {
+        actorElement.setAttribute('data-position', page.adjectives.from + '-offstage');
+        setTimeout(goToDestination, 10);
+      } else {
+        goToDestination();
       }
     }
 

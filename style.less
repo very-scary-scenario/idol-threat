@@ -977,10 +977,13 @@ body.nothing-scanned {
       position: absolute;
       height: 100%;
       bottom: 0;
+      transition: left 2s ease-in-out;
 
       &[data-position="middle"] { left: 50%; }
       &[data-position="left"] { left: 20%; }
       &[data-position="right"] { left: 80%; }
+      &[data-position="left-offstage"] { left: -20%; }
+      &[data-position="right-offstage"] { left: 120%; }
 
       .sprite {
         width: 30vh;
