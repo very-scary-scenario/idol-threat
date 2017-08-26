@@ -45,6 +45,8 @@ var NEGATIVE_STAT_EFFECT = 2;
 
 var PRESTIGE_DIFFICULTY_INCREASE = 600;
 
+var RECENT_FIRING_MEMORY = 20;
+
 var POSES;
 var HAIR_COLOURS;
 var SKIN_COLOURS;
@@ -625,6 +627,7 @@ function hideIdolDetail(event) {
 function Agency() {
   this.catalog = [];
   this.unit = [];
+  this.recentlyFired = [];
   this.sortOrder = 'date';
   this.storyChapter = 0;
   this.storyGeneration = 0;
@@ -750,6 +753,12 @@ Agency.prototype.addIdol = function(idol, interactive) {
       return;
     }
   }
+
+  if (this.recentlyFired.indexOf(idol.seed) !== -1) {
+    askUser(idol.name + " recently left your agency. Try recruiting some other idols before attempting to recruit her again.");
+    return;
+  }
+
   this.catalog.push(idol);
   idol.agency = this;
   this.addToUnit(idol);
@@ -762,6 +771,15 @@ Agency.prototype.addIdol = function(idol, interactive) {
 Agency.prototype.removeIdol = function(idol) {
   if (idol.isInUnit()) agency.unit.splice(agency.catalog.indexOf(idol), 1);
   agency.catalog.splice(agency.catalog.indexOf(idol), 1);
+
+  agency.recentlyFired.push(idol.seed);
+  if (agency.recentlyFired.length > RECENT_FIRING_MEMORY) {
+    agency.recentlyFired = agency.recentlyFired.splice(
+      agency.recentlyFired.length - RECENT_FIRING_MEMORY,
+      RECENT_FIRING_MEMORY
+    );
+  }
+
   deferRerender();
 };
 Agency.prototype.addToUnit = function(idol, interactive) {
@@ -886,6 +904,7 @@ Agency.prototype.dump = function() {
     u: [],
     c: this.storyChapter,
     g: this.storyGeneration,
+    f: this.recentlyFired,
     o: this.sortOrder
   };
 
@@ -901,6 +920,7 @@ Agency.prototype.load = function(agencyDump) {
   if (agencyDump.o !== undefined) this.sortOrder = agencyDump.o;
   this.storyChapter = agencyDump.c || 0;
   this.storyGeneration = agencyDump.g || 0;
+  this.recentlyFired = agencyDump.f || [];
 
   for(var i = 0, n = agencyDump.i.length; i < n; i++) {
     var idolDump = agencyDump.i[i];
