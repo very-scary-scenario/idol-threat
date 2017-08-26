@@ -82,15 +82,15 @@ Idols! Remove that rival idol unit fom their own gig and claim your rightful pla
 
 > battle 50
 
-The rival unit is defeated, and their dreams merge with yours.
+With the rival unit defeated, it's now up to us to achieve their dream.
 It's quite beautiful, really. 
 Even with the mess.
-As the crowds filter into the venue, they seem surprised to see a different idol group on the stage.
-But surprise quickly turns to acceptance, feeding our idols energy through the medium of glowstick.
+As crowds of people filter into the venue, they seem surprised to see a different idol group on the stage.
+But surprise quickly turns to acceptance, as they wave their approval through the medium of glowstick.
 
 # part three
 
-## jp_alley_bloom
+## jp_alley_blur
 
 While leaving the venue, the idols are approached by someone in a business suit.
 They seem really nice, offering to produce the up-and-coming saviours of the world. 
