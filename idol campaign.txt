@@ -18,19 +18,19 @@ People are desperate for encouragement from local idols, and it helps no one if 
 For this idol unit to be successful, they must first learn from the girls that came before them.
 Fortunately for us, there's a local group available to teach our girls in a hands-on way.
 ### boss_1_2 enter, from left, into middle
-"What's this? Another fledgling idol group to cut down?"
-"Pathetic."
+boss_1_2: "What's this? Another fledgling idol group to cut down?"
+boss_1_2: "Pathetic."
 ### boss_1_1 enter, from left, into left
-"Yeah!"
+boss_1_1: "Yeah!"
 ### boss_1_3 enter, from right, into right
-"Don't waste our time!"
+boss_1_3: "That showed them!"
 ### clear
 They appear to be pleased that you're asking for their help.
 ### boss_1_3 enter, from right, into right
-"What did you say?"
+boss_1_2: "What did you say?"
 ...
 ...
-"I thought so."
+boss_1_2: "I thought so."
 ### clear
 Charming.
 This may just be the beginning, but our idol unit has what it takes to unite the world with cheer.
@@ -60,22 +60,19 @@ But in these trying times, we must all make sacrifices.
 It's 6pm. The local venue, Angel Sparking Dream, is soon to open its doors for the night's performance.
 There's another idol group on the cards, but we should be able to convince them to give up their spot. 
 ### boss_2_2 enter, from left, into middle
-"Who the heck are these clowns?"
-"Security!"
+boss_2_2: "Who the heck are these clowns?"
+boss_2_2: "Security!"
 ### boss_2_1 enter, from left, into left
-"Hey what's up"
+boss_2_1: "Hey what's up"
 ### boss_2_2
-"Not you, idiot. You don't even have a suit or a clipboard."
-"SECURITY!"
+boss_2_2: "Not you, idiot. You don't even have a suit or a clipboard."
+boss_2_2: "SECURITY!"
 ### boss_2_3 enter, from right, into right
-"I'm here!"
-### boss_2_2
-"You're barely an idol, let alone security."
-"Honestly, where is that idiot?"
-### boss_2_3
-"On a date, boss. Nice place by the river."
-###boss_2_2
-"Phenomenal. It's lucky we're not paying them a wage."
+boss_2_3: "I'm here!"
+boss_2_2: "You're barely an idol, let alone security."
+boss_2_2: "Honestly, where the heck are they?"
+boss_2_3: "On a date, boss. Nice place by the river."
+boss_2_2: "Phenomenal. It's lucky we're not paying them a wage."
 "Looks like we'll be throwing you out this time."
 This is our chance at a big break, and one that our heroes so desperately need.
 Idols! Remove that rival idol unit fom their own gig and claim your rightful place as the hope of Shin Tokyo.
@@ -102,15 +99,14 @@ Seriously, when it comes to removing stains from your costume's frills, you need
 There is a condition, however.
 Our idols are introduced to another local unit. One that seems to know this person. 
 ### boss_3_2 enter, from left, into middle
-"Hey, back off. This person belongs to us."
+boss_3_2: "Hey, back off. This person belongs to us."
 ### boss_3_1 enter, from left, into left
-"We won them in an idol-off in the streets."
-"We own them and their next two generations."
+boss_3_1: "We won them in an idol-off in the streets."
+boss_3_1: "We own them and their next two generations."
 ### boss_3_3 enter, from right, into right
-"We don't know much about them, but the suit makes us seem more important."
-### boss_3_2
-"Now, how about some compensation?"
-"You know, for the emotional trauma you've caused us today."
+boss_3_3: "We don't know much about them, but the suit makes us seem more important."
+boss_3_2: "Now, how about some compensation?"
+boss_3_2: "You know, for the emotional trauma you've caused us today."
 To win the help of this suit, our idols must demonstrate what the opportunity means to them.
 The two groups dust down their costumes, assume their fighting stances and prepare for battle.
 
@@ -126,38 +122,46 @@ With the dreams and aspirations of three rival idol units inside them, they head
 
 ## budokan_glow
 
-The producer proves to be a great asset almost immediately, gaining the unit access to the Budokan.
-The guards stood no chance against a swift chop to the neck.
-While our heroes are surely going to become the saviours of the world, the general populace doesn't know that yet.
-So, you know. Needs must.
-Chop chop. 
+The producer proves to be a great asset almost immediately, gaining the idols access to the Budokan.
+While under regular circumstances we'd have been granted access to the venue, we are somewhat expediting the process.
+After all, while we know that these idols are going to become the saviours of the world, the general populace doesn't know that yet.
+So it's not really our fault that the guards stood no chance against a powerful chop to the neck.
 As our group approaches the stage, a famous idol unit slowly comes into view.
 You know, /it's them/. The most popular idols in all of Shin Japan.
 They aren't like the others, though. Their overwhelming presence is felt from across the corridor.
 Worst still, they know why our unit is here.
+### boss_4_2 enter, from left, into middle
+boss_4_2: "Another one? Seriously, these guards are an embarrassment to the Shin Budokan."
 The leader of the group, without breaking eye contact with our idols, removes her evening gloves and tosses them to one side.
-Another pats her mouth with a tissue. It appears we're not the first to challenge them today.
-That they are still hungry for battle is testament to their strength.
-This is going to be a tough fight, but the fate of Shin Japan is at stake.
-Show them your appeal, saviours!
+### boss_4_1 enter, from left, into left
+boss_4_1: "Lucky for them, I could use a warm up before this evening's performance."
+This one pats her mouth with a tissue. It appears we're not the first to challenge them today.
+### boss_4_3 enter, from right, into right
+boss_4_3: "These ones don't even /look/ like idols."
+...
+Unforgivable.
+We can't rush this. That they are still hungry for battle is testament to their strength.
+It's going to be a tough fight, but the fate of Shin Japan is at stake.
+Saviours, show them your appeal!
 
 > battle 150
 
 We're unstoppable.
-With the power of Shin Japan's best idols, few can stand a chance against our unit.
+With the power of Shin Japan's greatest idols, few can stand a chance against our unit.
 You /will/ be entertained. 
-However, this is untamed, raw power. 
-Japan may be conquered, but the whole world is currently out of the question.
+However, this is raw, untamed power. 
+We may have conquered Japan, but the whole world is currently out of the question.
 With her dying breath, one of the Budokan idols begins to speak.
-"You'll never make it. You don't stand a chance against the IIA".
+### boss_4_2 enter, from left, into middle, rotated left
+boss_4_2: "You'll never make it. You don't stand a chance against the IIA".
 ...
 ...
 ...
-"The IIA, idiots. The International Idol Association".
+boss_4_2: "The IIA, you idiots. The International Idol Association".
 She pauses briefly to cough up blood. 
-"If you're to succeed, you must first defeat the three representatives of the IIA".
+boss_4_2: "If you're to succeed, you must first defeat the three representatives of the IIA".
 With that, she slumps to one side.
-Thank you for your help, idol-san. Your tastes will not be forgotten.
+Thank you for your help, idol-san. Your unique flavour will never be forgotten.
 
 # part five
 
