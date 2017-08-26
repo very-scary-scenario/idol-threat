@@ -211,7 +211,7 @@ def build_campaign():
                     'strength': int(line.split(' ')[-1]),
                 })
             else:
-                speaker_match = re.match(r'^(\w+): (.+)$', line)
+                speaker_match = re.match(r'^(\w+):: (.+)$', line)
 
                 if speaker_match:
                     speaker, words = speaker_match.groups()
