@@ -861,11 +861,18 @@ Agency.prototype.doStory = function(pageNumber) {
     this.doStory(pageNumber + 1);
   } else if (page.kind === 'text') {
     if (!theatreElement.innerHTML) renderSetting();
+
+    var currentlySpeakingIdolElements = theatreElement.querySelectorAll('.speaking');
+    for (var ci = 0; ci < currentlySpeakingIdolElements.length; ci++) currentlySpeakingIdolElements[ci].classList.remove('speaking');
+
     if (isSkipping) {
       this.doStory(pageNumber + 1);
     } else {
       var invisibleScriptElement = document.getElementById('invisible-script');
       var visibleScriptElement = document.getElementById('visible-script');
+      for (var psi = 0; psi < page.speakers.length; psi++) {
+        theatreElement.querySelector('[data-actor-name="' + page.speakers[psi] + '"]').classList.add('speaking');
+      }
       invisibleScriptElement.textContent = page.text;
       visibleScriptElement.textContent = '';
       graduallyShowScript(visibleScriptElement, invisibleScriptElement);

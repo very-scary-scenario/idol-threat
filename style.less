@@ -14,9 +14,13 @@
 @scissors-colour: hsl(120, 0.5, 0.55);
 
 @keyframes bob {
-  0% {top: -1em}
+  from, to {top: -1em}
   50% {top: -2em}
-  100% {top: -1em}
+}
+
+@keyframes speak {
+  from, to {transform: scale(1.3) rotate(5deg) translateY(-3vw)}
+  50% {transform: scale(1.3) rotate(-5deg) translateY(-5vw)}
 }
 
 #title {
@@ -977,7 +981,14 @@ body.nothing-scanned {
       position: absolute;
       height: 100%;
       bottom: 0;
-      transition: left 2s ease-in-out;
+      transform-origin: 70% 70%;
+      transition: left 2s ease-in-out, transform 1s;
+
+      &.speaking {
+        animation-duration: 1s;
+        animation-name: speak;
+        animation-iteration-count: infinite;
+      }
 
       &[data-position="middle"] { left: 50%; }
       &[data-position="left"] { left: 20%; }
