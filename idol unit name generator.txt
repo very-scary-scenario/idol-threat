@@ -79,11 +79,12 @@ Angel|Angels
 Apple
 Asterisk
 Blessed
-Cat|Cats
+Cat|Cats|Kitten|Kittens
 Clover
 Club
 Cute
 Dare
+Dog|Dogs|Puppy|Puppies
 Doll|Dolls
 Dream|Dreams
 Dust
