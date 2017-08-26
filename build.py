@@ -250,8 +250,18 @@ def build_html():
     with open('index-src.html') as f:
         soup = BeautifulSoup(f, 'html5lib')
 
-    for attr in ('src', 'href'):
-        for element in soup.select('[{}]'.format(attr)):
+    with open('index-src.html') as f:
+        soup = BeautifulSoup(f, 'html5lib')
+
+    with open('idol-threat.manifest', 'wt') as mf:
+        print('CACHE MANIFEST', file=mf)
+        print('fonts/rumraisin.woff', file=mf)
+
+        for element, attr in [
+            (e, a)
+            for a in ('src', 'href')
+            for e in soup.select('[{}]'.format(a))
+        ]:
             parsed = urlparse(element[attr])
             if parsed.netloc or parsed.path.startswith('/'):
                 continue
@@ -262,6 +272,7 @@ def build_html():
                 checksum.update(cf.read())
 
             element[attr] += '?v={}'.format(checksum.hexdigest()[:8])
+            print(element[attr], file=mf)
 
     return str(soup)
 
