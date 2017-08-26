@@ -631,6 +631,7 @@ function Agency() {
   this.sortOrder = 'date';
   this.storyChapter = 0;
   this.storyGeneration = 0;
+  this.storyActors = {};
 }
 Agency.prototype.renderCatalog = function() {
   var sortedCatalog = this.sortedCatalog();
@@ -864,6 +865,23 @@ Agency.prototype.doStory = function(pageNumber) {
       visibleScriptElement.textContent = '';
       graduallyShowScript(visibleScriptElement, invisibleScriptElement);
     }
+  } else if (page.kind === 'direction') {
+    if (page.actor !== undefined) {
+      var actor = this.storyActors[page.actor] || new Idol(Math.random());
+      if (this.storyActors[page.actor] === undefined) this.storyActors[page.actor] = actor;
+
+      var actorElement = theatreElement.querySelector('#boards .actor[data-actor-name="' + page.actor + '"]');
+      if (!actorElement) {
+        idol.actorName = page.actor;
+        actorElement = document.createElement('div');
+        actorElement.setAttribute('data-actor-name', page.actor);
+        actorElement.classList.add('actor');
+        actorElement.innerHTML = idol.hugeSpriteHTML();
+        theatreElement.querySelector('#boards').appendChild(actorElement);
+      }
+    }
+
+    this.doStory(pageNumber + 1);
   } else if (page.kind === 'battle') {
     isSkipping = false;
     theatreElement.innerHTML = '';

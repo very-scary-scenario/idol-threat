@@ -184,6 +184,26 @@ def build_campaign():
                     'kind': 'setting',
                     'value': line.lstrip('# '),
                 })
+
+            elif line.startswith('### '):
+                direction = {'kind': 'direction'}
+                content = line[4:]
+
+                if ' ' in content:
+                    direction['actor'], instructions_raw = (
+                        content.split(' ', 1))
+                    direction['verb'], adjectives_raw = (
+                        instructions_raw.split(', ', 1))
+                    direction['adjectives'] = {
+                        k: v for k, v in (
+                            a.split(' ') for a in adjectives_raw.split(', ')
+                        )
+                    }
+                else:
+                    direction['verb'] = content
+
+                current_chapter.append(direction)
+
             elif line.startswith('> battle'):
                 current_chapter.append({
                     'kind': 'battle',
