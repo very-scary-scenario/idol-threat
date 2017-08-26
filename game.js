@@ -195,7 +195,7 @@ function getRarity(stats) {
   return RARITIES[rarityIndex] || RARITIES[RARITIES.length - 1];
 }
 
-function Ability(parts, animation, affinity) {
+function Ability(idol, parts, animation, affinity) {
   this.strength = 0;
   this.healing = false;
   this.affinity = affinity;
@@ -204,7 +204,7 @@ function Ability(parts, animation, affinity) {
 
   for(var i = 0, n = parts.length; i < n; i++) {
     var part = parts[i];
-    partNames.push(part.word);
+    partNames.push(choice(part.words, idol.rand()));
     this.strength += part.bonus;
     if (part.healing) {
       this.healing = true;
@@ -289,7 +289,7 @@ function Idol(seed) {
 
     abilityParts.push(choice(ABILITIES[1], this.rand()));
     abilityParts.push(choice(ABILITIES[2], this.rand()));
-    this.abilities.push(new Ability(abilityParts, choice(ANIMATIONS, this.rand()), choice(AFFINITIES, this.rand())));
+    this.abilities.push(new Ability(this, abilityParts, choice(ANIMATIONS, this.rand()), choice(AFFINITIES, this.rand())));
   }
 
   // build affinity
@@ -730,7 +730,7 @@ Agency.prototype.unitName = function() {
   }
   
   var rng = seededRandom(unitSeed);
-  return choice(UNIT_NAMES[0], rng()) + ' ' + choice(UNIT_NAMES[1], rng());
+  return choice(choice(UNIT_NAMES[0], rng()), rng()) + ' ' + choice(choice(UNIT_NAMES[1], rng()), rng());
 };
 Agency.prototype.addIdol = function(idol, interactive) {
   if ((this.catalog.length === 0) && document.body.classList.contains('nothing-scanned')) {

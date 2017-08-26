@@ -142,7 +142,7 @@ def build_abilities():
             parts[-1].append({
                 'bonus': bonus,
                 'healing': healing,
-                'word': line,
+                'words': line.split('|'),
             })
 
     return parts
@@ -213,12 +213,12 @@ def build_unit_names():
 
     with open(os.path.join(HERE, 'idol unit name generator.txt')) as f:
         for line in f.readlines():
-            word = line.strip()
+            words = line.strip().split('|')
 
-            if word in ('A', 'B'):
+            if words in (['A'], ['B']):
                 parts.append([])
-            elif parts and word:
-                parts[-1].append(word)
+            elif parts and any(words):
+                parts[-1].append(words)
 
     return parts
 

@@ -15,7 +15,7 @@
 +amazing
 +++angelic
 +aromatic
-+artistic
++artistic|arty
 +astonishing
 +astronomical
 ++attractive
