@@ -156,7 +156,8 @@ function seededRandom(seed) {
   return rand;
 }
 
-function celebrate() {
+function celebrate(density) {
+  confetti.setDensity(density);
   if (!confettiTimeout) confetti.restart();
 
   clearTimeout(confettiTimeout);
@@ -550,7 +551,7 @@ Idol.prototype.showDetail = function() {
           ' The other idols in your agency get ' + bonus.toString(10) + ' bonus stat point' + ((bonus === 1) ? '' : 's') + ' each.'
         );
 
-        celebrate();
+        celebrate(bonus);
         rerender();
       }],
       ['Keep', function() {}]
