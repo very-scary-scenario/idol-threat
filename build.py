@@ -276,7 +276,7 @@ def build_html():
     with open('idol-threat.manifest', 'wt') as mf:
         print('CACHE MANIFEST', file=mf)
         print('fonts/rumraisin.woff', file=mf)
-        print('https://vscary.co/logo-black.svg', file=mf)
+        print('vss-logo.svg', file=mf)
 
         for element, attr in [
             (e, a)
