@@ -2,38 +2,41 @@
 
 ## earth_blur
 
-The year is 20XX. Idols.
+It's the year 20XX.
 After a gruelling war against an otherworldly threat, Earth is in a state of recovery.
-It's a time of reflection, repair and respite.
-With a sombre mood permeating the planet, it has become the job of entertainers to lift the spirits of the populace.
-This is the story of an idol unit that conquered the world.
-With love.
-And also music.
+A time of reflection, repair and respite.
+With a sombre mood permeating the planet, the populace turns to entertainers to raise their spirits.
 
 ## office_bloom
 
-Our unit's humble beginning is in a rundown office building, in the middle of Shin Tokyo.
-People desperately need encouragement from local idols, but it helps no one if the dances are sloppy.
+This is the story of an idol unit that conquered the world.
+With love.
+And also music.
+Our unit's humble beginning is in an office building in central Shin Tokyo.
+It still lays in a state of disrepair following the attack, but it'll have to do.
+People are desperate for encouragement from local idols, and it helps no one if the dances are sloppy.
 For this idol unit to be successful, they must first learn from the girls that came before them.
 Fortunately for us, there's a local group available to teach our girls in a hands-on way.
 ### boss_1_2 enter, from left, into middle
 "What's this? Another fledgling idol group to cut down?"
-"Pathetic!"
+"Pathetic."
 ### boss_1_1 enter, from left, into left
 "Yeah!"
 ### boss_1_3 enter, from right, into right
 "Don't waste our time!"
 ### clear
-Charming. 
+They appear to be pleased that you're asking for their help.
 ### boss_1_3 enter, from right, into right
 "What did you say?"
 ...
 ...
 "I thought so."
 ### clear
-Anyway.
-From one idol unit to the next, we can unite the world with cheer.
-Which is why they must fight.
+Charming.
+This may just be the beginning, but our idol unit has what it takes to unite the world with cheer.
+The quickest way to the top is to learn from those with similar aspirations, however...
+...it also means that our rivals are standing in the way of this dream.
+They must fight.
 
 > battle 0
 
@@ -45,15 +48,37 @@ Your spirits will live on in the new generation.
 
 ## small_stage_bloom
 
-After learning some dance routines from the internet and squeezing in some karaoke sessions, our unit ventures into the wider world.
-Their prowess has been acknowledged by their seniors, but Shin Tokyo does not yet know that their saviours have arrived.
-To move forward, they must perform at local venues, slowly working their way up the idol food chain.
+After learning some dance routines from the internet and squeezing in some karaoke sessions, our unit is ready for their stage debut.
+From there we can show the rest of Shin Tokyo that their saviours have arrived.
+To move forward they must perform at local venues, slowly working their way up the idol food chain.
+Local venues with their tiny stages.
+Sticky floors.
+Cigarette stains.
+...
+Sigh.
 But in these trying times, we must all make sacrifices.
 It's 6pm. The local venue, Angel Sparking Dream, is soon to open its doors for the night's performance.
 There's another idol group on the cards, but we should be able to convince them to give up their spot. 
-This is a chance at a big break.
-One that our heroes desperately need.
-Idols! Defeat the rival idol unit and claim your rightful place as the hope of Shin Tokyo.
+### boss_2_2 enter, from left, into middle
+"Who the heck are these clowns?"
+"Security!"
+### boss_2_1 enter, from left, into left
+"Hey what's up"
+### boss_2_2
+"Not you, idiot. You don't even have a suit or a clipboard."
+"SECURITY!"
+### boss_2_3 enter, from right, into right
+"I'm here!"
+### boss_2_2
+"You're barely an idol, let alone security."
+"Honestly, where is that idiot?"
+### boss_2_3
+"On a date, boss. Nice place by the river."
+###boss_2_2
+"Phenomenal. It's lucky we're not paying them a wage."
+"Looks like we'll be throwing you out this time."
+This is our chance at a big break, and one that our heroes so desperately need.
+Idols! Remove that rival idol unit fom their own gig and claim your rightful place as the hope of Shin Tokyo.
 
 > battle 50
 
