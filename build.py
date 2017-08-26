@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 
+from bs4 import BeautifulSoup
+
+import hashlib
 import json
 import os
 import subprocess
 from tempfile import mkstemp
 from time import sleep
+from urllib.parse import urlparse
 
 
 HERE = os.path.realpath(os.path.dirname(__file__))
@@ -242,6 +246,26 @@ def build_kana():
     ]
 
 
+def build_html():
+    with open('index-src.html') as f:
+        soup = BeautifulSoup(f, 'html5lib')
+
+    for attr in ('src', 'href'):
+        for element in soup.select('[{}]'.format(attr)):
+            parsed = urlparse(element[attr])
+            if parsed.netloc or parsed.path.startswith('/'):
+                continue
+
+            checksum = hashlib.sha256()
+
+            with open(parsed.path, 'rb') as cf:
+                checksum.update(cf.read())
+
+            element[attr] += '?v={}'.format(checksum.hexdigest()[:8])
+
+    return str(soup)
+
+
 def build_graduation_bonuses():
     graduation_bonuses = []
 
@@ -281,6 +305,9 @@ if __name__ == '__main__':
 
         with open('style.css', 'wb') as c:
             c.write(subprocess.check_output(['lessc', 'style.less']))
+
+        with open('index.html', 'w') as h:
+            h.write(build_html())
 
     if '--no-icon' not in sys.argv:
         build_icon()
