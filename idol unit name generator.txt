@@ -59,6 +59,7 @@ Star
 Super
 Sweet|Sweety
 Team
+Triple
 Tokyo Girls'
 Totally
 Ultra
@@ -108,7 +109,7 @@ Parade
 Parfait
 Party
 Perfume
-Princess
+Princess|Princesses
 Prism
 Project
 Renaissance
