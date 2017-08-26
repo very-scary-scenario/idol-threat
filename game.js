@@ -57,6 +57,8 @@ var cookieSuffix = '; expires=' + cookieExpiryDate.toUTCString();
 var cookieSliceSize = 2000;
 var endString = 'end';
 
+var isSkipping = false;
+
 var idolSorters = {
   date: function(a, b) { return b.recruitedAt - a.recruitedAt; },
   statSpeed: function(a, b) { return b.speed - a.speed; },
@@ -817,6 +819,12 @@ Agency.prototype.doStory = function(pageNumber) {
 
   function renderSetting() {
     theatreElement.innerHTML = theatreTemplate({background: self.storySetting});
+    theatreElement.querySelector('#skip').addEventListener('click', function(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      isSkipping = true;
+      self.doStory(pageNumber + 1);
+    });
   }
 
   if (page === undefined) {
@@ -829,12 +837,17 @@ Agency.prototype.doStory = function(pageNumber) {
     this.doStory(pageNumber + 1);
   } else if (page.kind === 'text') {
     if (!theatreElement.innerHTML) renderSetting();
-    var invisibleScriptElement = document.getElementById('invisible-script');
-    var visibleScriptElement = document.getElementById('visible-script');
-    invisibleScriptElement.textContent = page.text;
-    visibleScriptElement.textContent = '';
-    graduallyShowScript(visibleScriptElement, invisibleScriptElement);
+    if (isSkipping) {
+      this.doStory(pageNumber + 1);
+    } else {
+      var invisibleScriptElement = document.getElementById('invisible-script');
+      var visibleScriptElement = document.getElementById('visible-script');
+      invisibleScriptElement.textContent = page.text;
+      visibleScriptElement.textContent = '';
+      graduallyShowScript(visibleScriptElement, invisibleScriptElement);
+    }
   } else if (page.kind === 'battle') {
+    isSkipping = false;
     theatreElement.innerHTML = '';
     var playerIdols = [];
 
@@ -1003,6 +1016,7 @@ function rerender() {
     e.preventDefault();
 
     if (agency.unit.length > 0) {
+      isSkipping = false;
       agency.doStory();
     } else {
       askUser('You need an idol in your unit to progress in the story.');
