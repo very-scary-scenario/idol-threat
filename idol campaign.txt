@@ -181,7 +181,7 @@ It's not clear what the IIA is, but-
 boss_5_3:: "We're the..."
 boss_5_1:: "International!"
 boss_5_2:: "Idol!"
-### Celebrate
+### celebrate
 boss_5_1, boss_5_2, boss_5_3:: "Association!"
 ...
 It appears our opponents are performing some kind of death ritual.

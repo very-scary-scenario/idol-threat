@@ -892,6 +892,7 @@ Agency.prototype.doStory = function(pageNumber) {
         goToDestination();
       }
     }
+    if (page.verb === 'celebrate') celebrate();
 
     this.doStory(pageNumber + 1);
   } else if (page.kind === 'battle') {
