@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import hashlib
 import json
 import os
+import re
 import subprocess
 from tempfile import mkstemp
 from time import sleep
@@ -210,9 +211,17 @@ def build_campaign():
                     'strength': int(line.split(' ')[-1]),
                 })
             else:
+                speaker_match = re.match(r'^(\w+): (.+)$', line)
+
+                if speaker_match:
+                    speaker, words = speaker_match.groups()
+                else:
+                    speaker, words = (None, line)
+
                 current_chapter.append({
                     'kind': 'text',
-                    'text': line,
+                    'text': words,
+                    'speaker': speaker,
                 })
 
     return campaign
