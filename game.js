@@ -975,7 +975,6 @@ function rerender() {
       }
 
       var battle = new Battle(playerIdols, enemyIdols, function() {
-        celebrate();
         askUser('You win! Your unit gets bonuses~', [['Yay!', null]]);
         for (var pi = 0; pi < this.playerIdols.length; pi++) {
           this.playerIdols[pi].idol.giveBonus(enemyIdols.length);
@@ -1017,7 +1016,6 @@ function rerender() {
     }
 
     var battle = new Battle(playerIdols, enemyIdols, function() {
-      celebrate();
       askUser('You win!', [['Yay!', null]]);
     }, function() {
       askUser('You lose :<', [['Aww, beans…', null]]);

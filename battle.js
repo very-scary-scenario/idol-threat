@@ -197,12 +197,18 @@ Battle.prototype.determinePlayerMove = function(idol) {
 };
 
 Battle.prototype.stillHasLivingMembers = function(team) {
+  return this.numberOfLivingMembers(team) > 0;
+};
+
+Battle.prototype.numberOfLivingMembers = function(team) {
+  var livingMemberCount = 0;
+
   for (var i = 0; i < team.length; i++) {
-    if (!team[i].isDead) return true;
+    if (!team[i].isDead) livingMemberCount++;
   }
 
-  return false;
-};
+  return livingMemberCount;
+}
 
 Battle.prototype.playerHasWon = function() {
   return (!this.stillHasLivingMembers(this.enemyIdols));
@@ -226,6 +232,7 @@ Battle.prototype.nextMove = function() {
       self.hide();
 
       if (self.playerHasWon()) {
+        celebrate(self.numberOfLivingMembers(self.playerIdols));
         self.victoryCallback();
       } else if (self.enemyHasWon()) {
         self.lossCallback();
