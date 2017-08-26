@@ -211,17 +211,18 @@ def build_campaign():
                     'strength': int(line.split(' ')[-1]),
                 })
             else:
-                speaker_match = re.match(r'^(\w+):: (.+)$', line)
+                speaker_match = re.match(r'^([\w, ]+):: (.+)$', line)
 
                 if speaker_match:
-                    speaker, words = speaker_match.groups()
+                    speaker_string, words = speaker_match.groups()
+                    speakers = [sp.strip() for sp in speaker_string.split(',')]
                 else:
-                    speaker, words = (None, line)
+                    speakers, words = ([], line)
 
                 current_chapter.append({
                     'kind': 'text',
                     'text': words,
-                    'speaker': speaker,
+                    'speakers': speakers,
                 })
 
     return campaign
