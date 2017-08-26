@@ -274,6 +274,8 @@ def build_html():
             element[attr] += '?v={}'.format(checksum.hexdigest()[:8])
             print(element[attr], file=mf)
 
+        print('NETWORK:\n/', file=mf)
+
     return str(soup)
 
 
