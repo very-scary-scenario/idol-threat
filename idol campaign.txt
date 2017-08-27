@@ -449,7 +449,7 @@ and the Earth saw a brief period of peace
 before everyone died when the sun was flown back to its home planet.
 The end.
 
-#### playthrough < 0
+#### playthrough > 0
 
 # part eleven
 
@@ -459,4 +459,63 @@ The end.
 There's a heated discussion happening nearby, but it's almost impossible to move your attention away from Earth.
 You'd seen pictures like this before, but the images simply couldn't 
 
-## office_bloom
+> battle 550: boss_ex1_maid_1, boss_ex1_maid_2, boss_ex1_maid_3
+
+After battle story 
+
+#### playthrough > 1
+
+# part twelve
+
+## earth_blur
+
+...
+There's a heated discussion happening nearby, but it's almost impossible to move your attention away from Earth.
+You'd seen pictures like this before, but the images simply couldn't 
+
+> battle 600: boss_ex3_dapper_1, boss_ex3_dapper_2, boss_ex3_dapper_3
+
+After battle story 
+
+#### playthrough > 2
+
+# part thirteen
+
+## earth_blur
+
+...
+There's a heated discussion happening nearby, but it's almost impossible to move your attention away from Earth.
+You'd seen pictures like this before, but the images simply couldn't 
+
+> battle 650: boss_ex2_hell_1, boss_ex1_hell_2, boss_ex1_hell_3
+
+After battle story 
+
+#### playthrough > 3
+
+# part fourteen
+
+## earth_blur
+
+...
+There's a heated discussion happening nearby, but it's almost impossible to move your attention away from Earth.
+You'd seen pictures like this before, but the images simply couldn't 
+
+> battle 700: boss_ex4_lmusic_1, boss_ex4_lmusic_2, boss_ex4_lmusic_3
+
+After battle story 
+
+#### playthrough > 4
+
+# part fifteen
+
+## earth_blur
+
+...
+There's a heated discussion happening nearby, but it's almost impossible to move your attention away from Earth.
+You'd seen pictures like this before, but the images simply couldn't 
+
+> battle 750: boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3
+
+After battle story 
+The actual end
