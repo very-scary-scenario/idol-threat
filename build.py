@@ -350,32 +350,38 @@ def build_graduation_bonuses():
     return graduation_bonuses
 
 
+def write_parts():
+    with open('parts.js', 'w') as p:
+        parts, poses, skin_colours, hair_colours = build_idols()
+        p.write(
+            'PARTS = {}; POSES = {}; SKIN_COLOURS = {}; '
+            'HAIR_COLOURS = {};'
+            .format(
+                json.dumps(parts),
+                json.dumps(poses),
+                json.dumps(skin_colours),
+                json.dumps(hair_colours),
+            )
+        ),
+        p.write('BOSS_NAMES = {};'.format(json.dumps(build_bosses())))
+        p.write('BIOS = {};'.format(json.dumps(build_bios())))
+        p.write('ABILITIES = {};'.format(json.dumps(build_abilities())))
+        p.write('QUOTES = {};'.format(json.dumps(build_quotes())))
+        p.write('ANIMATIONS = {};'.format(json.dumps(build_animations())))
+        p.write('CAMPAIGN = {};'.format(json.dumps(build_campaign())))
+        p.write('UNIT_NAMES = {};'.format(json.dumps(build_unit_names())))
+        p.write('KANA = {};'.format(json.dumps(build_kana())))
+        p.write('GRADUATION_BONUSES = {};'.format(
+            json.dumps(build_graduation_bonuses())
+        ))
+
+
 if __name__ == '__main__':
     import sys
 
     if '--icon-only' not in sys.argv:
-        with open('parts.js', 'w') as p:
-            parts, poses, skin_colours, hair_colours = build_idols()
-            p.write(
-                'PARTS = {}; POSES = {}; SKIN_COLOURS = {}; HAIR_COLOURS = {};'
-                .format(
-                    json.dumps(parts),
-                    json.dumps(poses),
-                    json.dumps(skin_colours),
-                    json.dumps(hair_colours),
-                )
-            ),
-            p.write('BOSS_NAMES = {};'.format(json.dumps(build_bosses())))
-            p.write('BIOS = {};'.format(json.dumps(build_bios())))
-            p.write('ABILITIES = {};'.format(json.dumps(build_abilities())))
-            p.write('QUOTES = {};'.format(json.dumps(build_quotes())))
-            p.write('ANIMATIONS = {};'.format(json.dumps(build_animations())))
-            p.write('CAMPAIGN = {};'.format(json.dumps(build_campaign())))
-            p.write('UNIT_NAMES = {};'.format(json.dumps(build_unit_names())))
-            p.write('KANA = {};'.format(json.dumps(build_kana())))
-            p.write('GRADUATION_BONUSES = {};'.format(
-                json.dumps(build_graduation_bonuses())
-            ))
+        if '--no-parts' not in sys.argv:
+            write_parts()
 
         with open('style.css', 'wb') as c:
             c.write(subprocess.check_output(['lessc', 'style.less']))
