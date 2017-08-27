@@ -439,6 +439,7 @@ boss_10_2:: THREAT TO PROTECTED SPECIES DETECTED
 boss_10_2:: INITIATING ACTION MOVIE TROPE PROTOCOL
 boss_10_2:: HUMANS... MUST BE PROTECTED
 boss_10_2:: STAY GENKI
+NOOOOOOOOOOOOOOOOOOOOOOOOOO
 
 <full-screen image with 'SARABADA' in larger font, slowly disappearing over time>
 
@@ -487,7 +488,7 @@ After battle story
 There's a heated discussion happening nearby, but it's almost impossible to move your attention away from Earth.
 You'd seen pictures like this before, but the images simply couldn't 
 
-> battle 650: boss_ex2_hell_1, boss_ex1_hell_2, boss_ex1_hell_3
+> battle 650: boss_ex2_hell_1, boss_ex2_hell_2, boss_ex2_hell_3
 
 After battle story 
 
