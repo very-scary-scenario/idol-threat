@@ -546,7 +546,7 @@ Idol.prototype.showDetail = function() {
     event.preventDefault();
     askUser('Do you want ' + self.name + ' to graduate? She will leave your agency and every other idol will get a stat bonus by attending the graduation party.', [
       ['Graduate', function() {
-        detailElement.classList.remove('shown');
+        hideIdolDetail();
         agency.removeIdol(self);
         var graduationBonus = choice(GRADUATION_BONUSES, Math.random());
         bonus = graduationBonus[0];
