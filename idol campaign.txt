@@ -229,33 +229,47 @@ Insulted by this cheap trick, our idols prepare for combat.
 
 > battle 250
 
-A lot of time was wasted locating the European representatives.
-With that in mind, it became imperative that the idols find the American representatives as soon as possible.
+A lot of time was wasted in the battle with the European representatives.
+With that in mind, it became imperative that the idols find the American IIA representatives as soon as possible.
 The immediacy? Well, I suppose it isn't immediate per se...
-But the sooner we kill the American representatives, the sooner we can save the planet!
+But the sooner we kill the American representatives, the sooner we can unite the world!
 Kill their spirits, I mean. It's complicated.
-Fortunately a plane won't be necessary, as America is easily within driving distance.
-Our idols spend the journey reflecting on battles past, preparing themselves for a life of fame and entertainment.
+Fortunately a plane won't be necessary this time, as America is easily within driving distance.
+Our idols can spend the journey reflecting on battles past, preparing themselves for a life of fame and entertainment.
 
 # part seven
 
 ## western_blur
 
 The drive was arduous.
-There were mountains, rivers, and even deserts!
-And they would have had to cross them if they hadn't taken the highway straight to America. 
-But the traffic was awful, which put a slight dampener on the mood.
-The idols that, as far as the plot so far is concerned, are second only to the American IIA representatives.
-But we're here now. 
-The car rolls up to a dusty saloon. 
+There were mountains, rivers, and even deserts
+on the Wikipedia page, but it turns out you can just take the highway straight to America. 
+The traffic was awful though, which put a slight dampener on the mood.
+Our idols have had time to come to terms with the reality of their situation.
+They had a humble beginning on the streets of Shin Tokyo, performing here and there to make a few Shin bucks. 
+Now, as far as the plot so far is concerned, they're number two in the entire world.
+/The entire world./
+They've learned all that there is to learn. Right now, the American IIA members are a mere roadblock on their inevitable rise to the top.
+It's time to solve this.
+
+## western_blur
+
+We're here now. We've arrived at the American capital.
+This isn't really what the idols had pictured the capital would look like. They were expecting something less modern.
+The car slowly rolls up to a nearby dusty saloon. 
 There are horses tied up by the watering hole, and some local kids are playing music on their mobile phones.
 The saloon doors swing open to reveal a trio of girls wearing cowboy hats, pistols on their hips and snarls to match the mood.
 It appears that even America has cosplay idols.
-"Yer done did it now, pardner" cries the leader of the unit, to the confusion of our heroes.
+### boss_7_2 enter, from left, into middle
+boss_7_2:: "Yer done did it now, pardner"
+### boss_7_1 enter, from left, into left
+boss_7_1:: "Gon dun in them Norway lasses they did."
+### boss_7_3 enter, from right, into right
+boss_7_3:: "Darn tootin'."
 When the diplomatic talks with the European idols broke down, we'd hoped to at least make progress with the Americans.
 But we were not prepared for them to speak such a bizarre language. The talks are off.
-We must be cautious, however. This is our largest hurdle thus far.
-End them, and our heroes become the strongest idol unit in the world!
+We must be cautious, however. This is our biggest hurdle thus far.
+End them, and our heroes will become the strongest idol unit in the world!
 
 > battle 300
 
@@ -268,10 +282,8 @@ The end.
 Fini.
 Endo.
 ...
-What's that? The world needs to hear the idols perform?
-Ah well, yeah. 
-I suppose so. 
-If you want.
+What's that? The world needs to hear our idols perform?
+Ah well, yeah. I suppose so. If you want.
 Like, hurry up though because we've got to have celebrations and stuff.
 
 # part eight
