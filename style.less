@@ -96,6 +96,12 @@
   border: 0;
   margin: 0;
   list-style: none;
+  cursor: default;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 body, button {
@@ -110,11 +116,12 @@ body {
 }
 
 a {
-  text-decoration: none;
-  color: @fg;
-  text-shadow: .1em .1em 0 @bg;
-
   &[href] {
+    text-decoration: none;
+    color: @fg;
+    text-shadow: .1em .1em 0 @bg;
+    cursor: pointer;
+
     &:hover, &:focus {
       color: @bg;
       text-shadow: .1em .1em 0 @fg;
