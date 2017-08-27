@@ -221,10 +221,16 @@ def build_campaign():
 
                 current_chapter.append(direction)
 
-            elif line.startswith('> battle'):
+            elif line.startswith('> battle '):
+                meta, bosses_string = line.split(':', 1)
+                _, _, strength_string = meta.split(' ', 2)
+
                 current_chapter.append({
                     'kind': 'battle',
-                    'strength': int(line.split(' ')[-1]),
+                    'strength': int(strength_string),
+                    'bosses': [
+                        b.strip() for b in bosses_string.split(',')
+                    ]
                 })
             else:
                 speaker_match = re.match(r'^([\w, ]+):: (.+)$', line)
