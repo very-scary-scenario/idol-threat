@@ -529,6 +529,7 @@ Idol.prototype.showDetail = function() {
         canteenElement.innerHTML = '';
         self.showDetail();
         askUser('Training successful!');
+        grantExperience(5);
         celebrate();
       });
     }
@@ -562,6 +563,7 @@ Idol.prototype.showDetail = function() {
           ' The other idols in your agency get ' + bonus.toString(10) + ' bonus stat point' + ((bonus === 1) ? '' : 's') + ' each.'
         );
 
+        grantExperience(5);
         celebrate(bonus);
         rerender();
       }],
@@ -612,6 +614,7 @@ Idol.prototype.audition = function() {
     e.preventDefault();
     auditionSpace.innerHTML = '';
     self.showDetail();
+    grantExperience(5);
   });
 };
 Idol.prototype.dump = function() {
