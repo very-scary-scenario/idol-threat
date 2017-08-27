@@ -273,6 +273,7 @@ End them, and our heroes will become the strongest idol unit in the world!
 
 > battle 300
 
+### celebrate
 Victory is ours!
 We are the strongest idol unit in the world!
 Maybe even the universe!
@@ -291,19 +292,24 @@ Like, hurry up though because we've got to have celebrations and stuff.
 ## large_stage_bloom
 
 To mark the defeat of the IIA and a revolution in worldwide idoling, a grand stage has been constructed for the performance.
-It comes equipped with speakers the size of small nations, just to make sure that everyone can hear the idols sing.
-Living or dead.
+Finally, some good use of taxpayer's money, and better yet, the death toll during construction was in single digits!
+It also comes equipped with speakers the size of small nations, just to make sure that everyone can hear the idols sing.
+Dead or alive.
+Perhaps this explains the appearance of three ghosts, who seem slightly concerned about something.
 Which is fortunate really, because three familiar-looking ghosts have approached us.
-They were at least polite enough to wait until the end of the song, though.
-"You must stop! You're not ready!"
-"You're not strong enough!"
-"Think of the children!"
-Even now, the ex-leaders of the IIA representatives are doubting the abilities of our units.
+### boss_8_2 enter, from left, into middle
+boss_8_2:: "You must stop! You're not ready!"
+### boss_8_1 enter, from left, into left
+boss_8_1:: "You're not strong enough!"
+### boss_8_3 enter, from right, into right
+boss_8_3:: "Think of the children!"
+Even now, the ex-leaders of the IIA representatives are doubting the abilities of our idols.
+I suppose they were at least polite enough to wait until the end of their set, though.
 It's time to end this, once and for all.
 
 > battle 350
 
-If there was any doubting their abilities as the world's strongest idol unit,
+If there was any doubting their abilities as the world's strongest idol unit, just remember
 /they just killed three ghosts./
 To celebrate this moment, we should have our idols raise their glowsticks in the air.
 You know, because it seems like an idol-y thing to do.
