@@ -38,12 +38,8 @@ var RARITY_CURVE = 0.6;
 var BOSSES = {};
 
 function getBoss(name) {
-  var boss = BOSSES[name];
-  if (boss) return boss;
   if (BOSS_NAMES.indexOf(name) === -1) throw name + ' is not a real boss';
-
   boss = new Idol(numFromString(name));
-
   var path = 'bosses/' + name + '.png';
   boss.parts = [{path: path, medPath: path, thumbPath: path}];
   return boss;
@@ -964,8 +960,8 @@ Agency.prototype.doStory = function(pageNumber) {
 
     var enemyIdols = [];
 
-    for (var ei = maxUnitSize; ei > 0; ei--) {
-      var enemyIdol = new Idol(Math.random());
+    for (var ei = 0; ei < page.bosses.length; ei++) {
+      var enemyIdol = getBoss(page.bosses[ei]);
       for (var si = 0; si < STATS.length; si++) {
         enemyIdol[STATS[si]] = enemyIdol[STATS[si]] + page.strength + (
           PRESTIGE_DIFFICULTY_INCREASE * agency.storyGeneration);
