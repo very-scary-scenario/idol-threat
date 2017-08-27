@@ -26,7 +26,7 @@ boss_1_1:: "Yeah!"
 boss_1_3:: "That showed them!"
 ### clear
 They appear to be pleased that you're asking for their help.
-### boss_1_3 enter, from right, into right
+### boss_1_2 enter, into middle
 boss_1_2:: "What did you say?"
 ...
 ...
@@ -195,19 +195,37 @@ With the IIA representatives for Asia defeated, our idols are now the strongest 
 All of it! Even the small, boring parts.
 But that's, like, not even most of the world.
 Yes, legend tells of distant lands outside of Asia. Lands incomparable to Shin Japan.
-America. Europe.
-Europe, the gigantic country to the west, is first on the list.
+America. 
+Europe.
+America and Europe.
+Our idols can't obtain their dream of uniting the world while there are members of the IIA still around.
+We must bring the fight to them.
 Business suit schedules a flight, marking the beginning of our search for the European IIA representatives.
 
 # part six
 
 ## norway_blur
 
+Europe, the gigantic country to the west, is first on the list.
+The plane journey has been largely uneventful, but I can't say the same for the in-flight meal.
+The main dish of the Japanese meal is sushi. An extravagant selection of futomaki rolls with inspired ingredients.
+The first pair flaunted delicate slices of lightly seasoned bluefin tuna, which mingled exquisitely with the crunchy cucumber and mildly spiced mayonnaise. 
+These were followed by a modest pairing of sweet tempura shrimp and toasted sesame seeds. The crisp nori seaweed added a delicate resistance to the piece.
+However, it's the final pair that will leave a lasting impression. 
+The outstanding composition of fresh salmon and tender avocado, accentuated with crunchy lettuce, truly set the dish apart from all others like it.
+A completely inedible offering for an idol unit that doesn't eat seafood.
+Never trust a fish. These are words that the agency will live and die by.
+Fortunately the disappointment will only be momentary, as the flight to Europe proves to be a short one. We have arrived.
 As our idols step off the plane, the European IIA representatives step out from behind a truck.
-"At last, we have found you. Welcome to Norway!"
+### boss_6_2 enter, from left, into middle
+boss_6_2:: "At last, we have found you. Welcome to Norway!"
+### boss_6_1 enter, from left, into left
+boss_6_1:: "Velkommen!"
+### boss_6_3 enter, from right, into right
+boss_6_3:: "Ni hao!"
 The European representative's attempt to lull our heroes into a false sense of security hasn't worked.
 We know we're in Europe, not Norway.
-Insulted by this cheap trick, they prepare for combat.
+Insulted by this cheap trick, our idols prepare for combat.
 
 > battle 250
 
