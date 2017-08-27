@@ -35,6 +35,20 @@ var RARITIES = [
 var BASE_RARITY = 300;
 var RARITY_CURVE = 0.6;
 
+var BOSSES = {};
+
+function getBoss(name) {
+  var boss = BOSSES[name];
+  if (boss) return boss;
+  if (BOSS_NAMES.indexOf(name) === -1) throw name + ' is not a real boss';
+
+  boss = new Idol(numFromString(name));
+
+  var path = 'bosses/' + name + '.png';
+  boss.parts = [{path: path, medPath: path, thumbPath: path}];
+  return boss;
+}
+
 var LETTER_DELAY = 20;
 var LETTER_EMPHASIS_MULTIPLIER = 4;
 var LETTER_DELAYS = {
@@ -372,16 +386,8 @@ Idol.prototype.renderSprite = function(mode) {
   var offscreenCanvasElement = document.createElement('canvas');
   var offscreenCanvas = offscreenCanvasElement.getContext('2d');
 
-  if (mode === 'med') {
-    offscreenCanvas.canvas.width = 1000;
-    offscreenCanvas.canvas.height = 1684;
-  } else if (mode === 'thumb') {
-    offscreenCanvas.canvas.width = 400;
-    offscreenCanvas.canvas.height = 674;
-  } else if (mode === 'huge') {
-    offscreenCanvas.canvas.width = 1518;
-    offscreenCanvas.canvas.height = 2556;
-  }
+  offscreenCanvas.canvas.width = images[0].naturalWidth;
+  offscreenCanvas.canvas.height = images[0].naturalHeight;
 
   offscreenCanvas.clearRect(0, 0, offscreenCanvas.canvas.width, offscreenCanvas.canvas.height);
 
@@ -921,9 +927,7 @@ Agency.prototype.doStory = function(pageNumber) {
     }
   } else if (page.kind === 'direction') {
     if (page.actor !== undefined) {
-      var actor = this.storyActors[page.actor] || new Idol(Math.random());
-      if (this.storyActors[page.actor] === undefined) this.storyActors[page.actor] = actor;
-
+      var actor = getBoss(page.actor);
       actorElement = theatreElement.querySelector('#boards .actor[data-actor-name="' + page.actor + '"]');
       if (!actorElement) {
         actor.actorName = page.actor;

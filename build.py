@@ -16,6 +16,8 @@ HERE = os.path.realpath(os.path.dirname(__file__))
 ICON_SIZE = 256
 IDOL_DIRNAME = 'idols'
 IDOLS_DIR = os.path.join(HERE, IDOL_DIRNAME)
+BOSSES_DIRNAME = 'bosses'
+BOSSES_DIR = os.path.join(HERE, BOSSES_DIRNAME)
 THUMBS_DIRNAME = 'idol-thumbs'
 THUMBS_DIR = os.path.join(HERE, 'idol-thumbs')
 POSES = set()
@@ -100,6 +102,20 @@ def build_idols():
                 subprocess.check_call(['optipng', med_path])
 
     return parts, sorted(POSES), sorted(SKIN_COLOURS), sorted(HAIR_COLOURS)
+
+
+def build_bosses():
+    bosses = []
+
+    for fn in sorted(
+        os.listdir(BOSSES_DIR)
+    ):
+        if fn.startswith('.') or not fn.endswith('.png'):
+            continue
+        boss, ext = os.path.splitext(fn)
+        bosses.append(boss)
+
+    return bosses
 
 
 def build_bios():
@@ -343,6 +359,7 @@ if __name__ == '__main__':
                     json.dumps(hair_colours),
                 )
             ),
+            p.write('BOSS_NAMES = {};'.format(json.dumps(build_bosses())))
             p.write('BIOS = {};'.format(json.dumps(build_bios())))
             p.write('ABILITIES = {};'.format(json.dumps(build_abilities())))
             p.write('QUOTES = {};'.format(json.dumps(build_quotes())))

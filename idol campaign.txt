@@ -17,20 +17,20 @@ It still lays in a state of disrepair following the attack, but it'll have to do
 People are desperate for encouragement from local idols, and it helps no one if the dances are sloppy.
 For this idol unit to be successful, they must first learn from the girls that came before them.
 Fortunately for us, there's a local group available to teach our girls in a hands-on way.
-### boss_1_2 enter, from left, into middle
-boss_1_2:: "What's this? Another fledgling idol group to cut down?"
-boss_1_2:: "Pathetic."
-### boss_1_1 enter, from left, into left
-boss_1_1:: "Yeah!"
-### boss_1_3 enter, from right, into right
-boss_1_3:: "That showed them!"
+### boss_01_2 enter, from left, into middle
+boss_01_2:: "What's this? Another fledgling idol group to cut down?"
+boss_01_2:: "Pathetic."
+### boss_01_1 enter, from left, into left
+boss_01_1:: "Yeah!"
+### boss_01_3 enter, from right, into right
+boss_01_3:: "That showed them!"
 ### clear
 They appear to be pleased that you're asking for their help.
-### boss_1_2 enter, into middle
-boss_1_2:: "What did you say?"
+### boss_01_2 enter, into middle
+boss_01_2:: "What did you say?"
 ...
 ...
-boss_1_2:: "I thought so."
+boss_01_2:: "I thought so."
 ### clear
 Charming.
 This may just be the beginning, but our idol unit has what it takes to unite the world with cheer.
@@ -59,20 +59,20 @@ Sigh.
 But in these trying times, we must all make sacrifices.
 It's 6pm. The local venue, Angel Sparking Dream, is soon to open its doors for the night's performance.
 There's another idol group on the cards, but we should be able to convince them to give up their spot. 
-### boss_2_2 enter, from left, into middle
-boss_2_2:: "Who the heck are these clowns?"
-boss_2_2:: "Security!"
-### boss_2_1 enter, from left, into left
-boss_2_1:: "Hey what's up"
-### boss_2_2
-boss_2_2:: "Not you, idiot. You don't even have a suit or a clipboard."
-boss_2_2:: "SECURITY!"
-### boss_2_3 enter, from right, into right
-boss_2_3:: "I'm here!"
-boss_2_2:: "You're barely an idol, let alone security."
-boss_2_2:: "Honestly, where the heck are they?"
-boss_2_3:: "On a date, boss. Nice place by the river."
-boss_2_2:: "Phenomenal. It's lucky we're not paying them a wage."
+### boss_02_2 enter, from left, into middle
+boss_02_2:: "Who the heck are these clowns?"
+boss_02_2:: "Security!"
+### boss_02_1 enter, from left, into left
+boss_02_1:: "Hey what's up"
+### boss_02_2
+boss_02_2:: "Not you, idiot. You don't even have a suit or a clipboard."
+boss_02_2:: "SECURITY!"
+### boss_02_3 enter, from right, into right
+boss_02_3:: "I'm here!"
+boss_02_2:: "You're barely an idol, let alone security."
+boss_02_2:: "Honestly, where the heck are they?"
+boss_02_3:: "On a date, boss. Nice place by the river."
+boss_02_2:: "Phenomenal. It's lucky we're not paying them a wage."
 "Looks like we'll be throwing you out this time."
 This is our chance at a big break, and one that our heroes so desperately need.
 Idols! Remove that rival idol unit fom their own gig and claim your rightful place as the hope of Shin Tokyo.
@@ -98,15 +98,15 @@ but they'll also help with the cleaning! Score!
 Seriously, when it comes to removing stains from your costume's frills, you need all the help you can get.
 There is a condition, however.
 Our idols are introduced to another local unit. One that seems to know this person. 
-### boss_3_2 enter, from left, into middle
-boss_3_2:: "Hey, back off. This person belongs to us."
-### boss_3_1 enter, from left, into left
-boss_3_1:: "We won them in an idol-off in the streets."
-boss_3_1:: "We own them and their next two generations."
-### boss_3_3 enter, from right, into right
-boss_3_3:: "We don't know much about them, but the suit makes us seem more important."
-boss_3_2:: "Now, how about some compensation?"
-boss_3_2:: "You know, for the emotional trauma you've caused us today."
+### boss_03_2 enter, from left, into middle
+boss_03_2:: "Hey, back off. This person belongs to us."
+### boss_03_1 enter, from left, into left
+boss_03_1:: "We won them in an idol-off in the streets."
+boss_03_1:: "We own them and their next two generations."
+### boss_03_3 enter, from right, into right
+boss_03_3:: "We don't know much about them, but the suit makes us seem more important."
+boss_03_2:: "Now, how about some compensation?"
+boss_03_2:: "You know, for the emotional trauma you've caused us today."
 To win the help of this suit, our idols must demonstrate what the opportunity means to them.
 The two groups dust down their costumes, assume their fighting stances and prepare for battle.
 
@@ -130,14 +130,14 @@ As our group approaches the stage, a famous idol unit slowly comes into view.
 You know, /it's them/. The most popular idols in all of Shin Japan.
 They aren't like the others, though. Their overwhelming presence is felt from across the corridor.
 Worst still, they know why our unit is here.
-### boss_4_2 enter, from left, into middle
-boss_4_2:: "Another one? Seriously, these guards are an embarrassment to the Shin Budokan."
+### boss_04_2 enter, from left, into middle
+boss_04_2:: "Another one? Seriously, these guards are an embarrassment to the Shin Budokan."
 The leader of the group, without breaking eye contact with our idols, removes her evening gloves and tosses them to one side.
-### boss_4_1 enter, from left, into left
-boss_4_1:: "Lucky for them, I could use a warm up before this evening's performance."
+### boss_04_1 enter, from left, into left
+boss_04_1:: "Lucky for them, I could use a warm up before this evening's performance."
 This one pats her mouth with a tissue. It appears we're not the first to challenge them today.
-### boss_4_3 enter, from right, into right
-boss_4_3:: "These ones don't even /look/ like idols."
+### boss_04_3 enter, from right, into right
+boss_04_3:: "These ones don't even /look/ like idols."
 ...
 Unforgivable.
 We can't rush this. That they are still hungry for battle is testament to their strength.
@@ -152,14 +152,14 @@ You /will/ be entertained.
 However, this is raw, untamed power. 
 We may have conquered Japan, but the whole world is currently out of the question.
 With her dying breath, one of the Budokan idols begins to speak.
-### boss_4_2 enter, from left, into middle, rotated left
-boss_4_2:: "You'll never make it. You don't stand a chance against the IIA".
+### boss_04_2 enter, from left, into middle, rotated left
+boss_04_2:: "You'll never make it. You don't stand a chance against the IIA".
 ...
 ...
 ...
-boss_4_2:: "The IIA, you idiots. The International Idol Association".
+boss_04_2:: "The IIA, you idiots. The International Idol Association".
 She pauses briefly to cough up blood. 
-boss_4_2:: "If you're to succeed, you must first defeat the three representatives of the IIA".
+boss_04_2:: "If you're to succeed, you must first defeat the three representatives of the IIA".
 With that, she slumps to one side.
 Thank you for your help, idol-san. Your unique flavour will never be forgotten.
 
@@ -170,19 +170,19 @@ Thank you for your help, idol-san. Your unique flavour will never be forgotten.
 Fortunately for our heroes, it would not be long before the IIA made themselves known.
 As the idols left the Budokan, the earth began to shake.
 With a grand plume of fire, three masked figures appear before us.
-### boss_5_2 enter, from left, into middle
-boss_5_2:: "We are the IIA representatives for Asia."
-### boss_5_1 enter, from left, into left
-boss_5_1:: "We have been watching, and we have decided to stop you here."
-### boss_5_3 enter, from right, into right
-boss_5_3:: "As representatives as the IIA."
-boss_5_1:: "Basically we're a big deal."
+### boss_05_2 enter, from left, into middle
+boss_05_2:: "We are the IIA representatives for Asia."
+### boss_05_1 enter, from left, into left
+boss_05_1:: "We have been watching, and we have decided to stop you here."
+### boss_05_3 enter, from right, into right
+boss_05_3:: "As representatives as the IIA."
+boss_05_1:: "Basically we're a big deal."
 It's not clear what the IIA is, but-
-boss_5_3:: "We're the..."
-boss_5_1:: "International!"
-boss_5_2:: "Idol!"
+boss_05_3:: "We're the..."
+boss_05_1:: "International!"
+boss_05_2:: "Idol!"
 ### celebrate
-boss_5_1, boss_5_2, boss_5_3:: "Association!"
+boss_05_1, boss_05_2, boss_05_3:: "Association!"
 ...
 It appears our opponents are performing some kind of death ritual.
 However, as dangerous as it may be, consuming the experiences of an idol unit of this level would prove invaluable.
@@ -217,12 +217,12 @@ A completely inedible offering for an idol unit that doesn't eat seafood.
 Never trust a fish. These are words that the agency will live and die by.
 Fortunately the disappointment will only be momentary, as the flight to Europe proves to be a short one. We have arrived.
 As our idols step off the plane, the European IIA representatives step out from behind a truck.
-### boss_6_2 enter, from left, into middle
-boss_6_2:: "At last, we have found you. Welcome to Norway!"
-### boss_6_1 enter, from left, into left
-boss_6_1:: "Velkommen!"
-### boss_6_3 enter, from right, into right
-boss_6_3:: "Ni hao!"
+### boss_06_2 enter, from left, into middle
+boss_06_2:: "At last, we have found you. Welcome to Norway!"
+### boss_06_1 enter, from left, into left
+boss_06_1:: "Velkommen!"
+### boss_06_3 enter, from right, into right
+boss_06_3:: "Ni hao!"
 The European representative's attempt to lull our heroes into a false sense of security hasn't worked.
 We know we're in Europe, not Norway.
 Insulted by this cheap trick, our idols prepare for combat.
@@ -260,12 +260,12 @@ The car slowly rolls up to a nearby dusty saloon.
 There are horses tied up by the watering hole, and some local kids are playing music on their mobile phones.
 The saloon doors swing open to reveal a trio of girls wearing cowboy hats, pistols on their hips and snarls to match the mood.
 It appears that even America has cosplay idols.
-### boss_7_2 enter, from left, into middle
-boss_7_2:: "Yer done did it now, pardner"
-### boss_7_1 enter, from left, into left
-boss_7_1:: "Gon dun in them Norway lasses they did."
-### boss_7_3 enter, from right, into right
-boss_7_3:: "Darn tootin'."
+### boss_07_2 enter, from left, into middle
+boss_07_2:: "Yer done did it now, pardner"
+### boss_07_1 enter, from left, into left
+boss_07_1:: "Gon dun in them Norway lasses they did."
+### boss_07_3 enter, from right, into right
+boss_07_3:: "Darn tootin'."
 When the diplomatic talks with the European idols broke down, we'd hoped to at least make progress with the Americans.
 But we were not prepared for them to speak such a bizarre language. The talks are off.
 We must be cautious, however. This is our biggest hurdle thus far.
@@ -298,17 +298,17 @@ Dead or alive.
 Perhaps this explains the appearance of three ghosts, who seem slightly concerned about something.
 Which is fortunate really, because three familiar-looking ghosts have approached us.
 They look scary, but they were polite enough to wait until the end of the set.
-### boss_8_2 enter, from left, into middle
-boss_8_2:: "Stop... Yer not ready..."
-### boss_8_1 enter, from left, into left
-boss_8_1:: "I don't know what she just said, but you're not strong enough..."
-### boss_8_3 enter, from right, into right
-boss_8_3:: "I can't feel my legs..."
+### boss_08_2 enter, from left, into middle
+boss_08_2:: "Stop... Yer not ready..."
+### boss_08_1 enter, from left, into left
+boss_08_1:: "I don't know what she just said, but you're not strong enough..."
+### boss_08_3 enter, from right, into right
+boss_08_3:: "I can't feel my legs..."
 Even now, the ex-leaders of the IIA representatives are doubting the abilities of our idols.
 Strong enough? We're literally the strongest!
-boss_8_3:: "We weren't talking about them..."
-boss_8_2:: "Why did I hav ter die..."
-boss_8_1:: "Avenge us..."
+boss_08_3:: "We weren't talking about them..."
+boss_08_2:: "Why did I hav ter die..."
+boss_08_1:: "Avenge us..."
 I have no idea what they're talking about and honestly I'm shocked and appalled. 
 Anyway it's time to end this, once and for all.
 

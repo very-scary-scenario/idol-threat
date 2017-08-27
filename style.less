@@ -981,15 +981,15 @@ body.nothing-scanned {
     position: absolute;
     top: 0;
     left: 0;
-    height: 80vh;
+    height: 78vh;
     width: 100%;
 
     .actor {
-      margin-left: -15vh;
+      margin-left: -20vh;
       position: absolute;
       height: 100%;
       bottom: 0;
-      transform-origin: 70% 70%;
+      transform-origin: 60% bottom;
       transition: left 2s ease-in-out, transform 1s, opacity 1s;
       z-index: 0;
 
@@ -1009,7 +1009,7 @@ body.nothing-scanned {
       &[data-position="right-offstage"] { left: 120%; }
 
       .sprite {
-        width: 30vh;
+        width: 40vh;
         height: 100%;
 
         img {
