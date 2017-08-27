@@ -4,7 +4,7 @@
 
 It's the year 20XX.
 After a gruelling war against an otherworldly threat, Earth is in a state of recovery.
-/A time of reflection, repair and respite./
+A time of reflection, repair and respite.
 With a sombre mood permeating the planet, the populace turns to entertainers to raise their spirits.
 
 ## office_bloom
