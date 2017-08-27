@@ -564,33 +564,38 @@ body.in-battle {
         transition: transform 1s;
 
         .health-bar {
+          overflow: hidden;
           position: absolute;
           box-sizing: border-box;
+          border-radius: @button-radius;
           width: 50%;
           bottom: 2.1em;
           left: 25%;
-          border: .1em solid @fg;
+          box-shadow: 0 .1em .5em @fg;
           background-color: fade(@bg, 40%);
-          outline: .1em solid @bg;
           transition: opacity 2s;
           opacity: 1;
 
           .health-bar-content, .health-bar-trail {
+            border-radius: @button-radius;
             height: 2vw;
             max-height: 2vh !important;
           }
 
           .health-bar-content {
-            border-right: .05em solid @fg;
             position: absolute;
             top: 0;
             left: 0;
+            z-index: 2;
           }
 
           .health-bar-trail {
             transition: width 2s;
+            position: relative;
+            right: 1px;
+            z-index: 1;
             background-color: fade(darken(red, 20%), 70%);
-            border-right: .05em solid red;
+            box-shadow: 0 0 .6em @fg;
           }
 
           &.affinity-rock .health-bar-content { background-color: lighten(@rock-colour, 20%) }
