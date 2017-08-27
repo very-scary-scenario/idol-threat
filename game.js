@@ -793,6 +793,10 @@ Agency.prototype.levelProgress = function() {
   var level = this.level();
   return level - Math.floor(level);
 };
+Agency.prototype.grantExperience = function(count) {
+  this.experience += count;
+  deferRerender();
+};
 Agency.prototype.unitName = function() {
   var unitSeed = 0;
 
