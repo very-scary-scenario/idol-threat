@@ -78,6 +78,8 @@ BattleIdol.prototype.doDamage = function(damage) {
     setTimeout(function() {
       self.element.classList.add('dead');
     }, animationDuration);
+
+    if (!this.playerControlled) agency.grantExperience(1);
   }
   this.element.querySelector('.health-bar-content').style.width = this.healthPercent().toString(10) + '%';
   this.element.querySelector('.health-bar-trail').style.width = this.healthPercent().toString(10) + '%';
@@ -208,7 +210,7 @@ Battle.prototype.numberOfLivingMembers = function(team) {
   }
 
   return livingMemberCount;
-}
+};
 
 Battle.prototype.playerHasWon = function() {
   return (!this.stillHasLivingMembers(this.enemyIdols));

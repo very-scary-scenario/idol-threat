@@ -244,7 +244,6 @@ function Idol(seed) {
   this.identifier = seed.toString(10);
   this.rand = seededRandom(seed);
   this.xp = 0;
-  this.level = 0;
 
   // build stats
   for(var i = 0, n = STATS.length; i < n; i++) {
@@ -784,7 +783,7 @@ Agency.prototype.level = function() {
     level++;
     xpRemainder -= level;
   }
-  return level + (xpRemainder / level);
+  return 1 + level + (xpRemainder / level);
 };
 Agency.prototype.levelFloor = function() {
   return Math.floor(this.level());
