@@ -26,7 +26,7 @@ boss_1_1:: "Yeah!"
 boss_1_3:: "That showed them!"
 ### clear
 They appear to be pleased that you're asking for their help.
-### boss_1_2 enter, from right, into right
+### boss_1_2 enter, into middle
 boss_1_2:: "What did you say?"
 ...
 ...
