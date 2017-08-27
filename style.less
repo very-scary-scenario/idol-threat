@@ -983,11 +983,13 @@ body.nothing-scanned {
       bottom: 0;
       transform-origin: 70% 70%;
       transition: left 2s ease-in-out, transform 1s;
+      z-index: 0;
 
       &.speaking {
         animation-duration: 1s;
         animation-name: speak;
         animation-iteration-count: infinite;
+        z-index: 1;
       }
 
       &[data-position="middle"] { left: 50%; }
@@ -1019,6 +1021,7 @@ body.nothing-scanned {
     cursor: pointer;
     box-sizing: border-box;
     width: 100%;
+    z-index: 2;
 
     #invisible-script {
       opacity: 0;
