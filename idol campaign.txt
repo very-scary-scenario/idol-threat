@@ -38,7 +38,7 @@ The quickest way to the top is to learn from those with similar aspirations, how
 ...it also means that our rivals are standing in the way of this dream.
 They must fight.
 
-> battle 0
+> battle 0: boss_1_1, boss_1_2, boss_1_3
 
 With the rival unit defeated, our heroes have taken their first steps towards saving the world.
 Thank you, senpais.
@@ -77,7 +77,7 @@ boss_2_2:: "Phenomenal. It's lucky we're not paying them a wage."
 This is our chance at a big break, and one that our heroes so desperately need.
 Idols! Remove that rival idol unit fom their own gig and claim your rightful place as the hope of Shin Tokyo.
 
-> battle 50
+> battle 50: boss_2_1, boss_2_2, boss_2_3
 
 With the rival unit defeated, it's now up to us to achieve their dream.
 It's quite beautiful, really. 
@@ -110,7 +110,7 @@ boss_3_2:: "You know, for the emotional trauma you've caused us today."
 To win the help of this suit, our idols must demonstrate what the opportunity means to them.
 The two groups dust down their costumes, assume their fighting stances and prepare for battle.
 
-> battle 100
+> battle 100: boss_3_1, boss_3_2, boss_3_3
 
 With the battle won, our idols are one step closer to conquering the world.
 With love, sparkles and all that good stuff.
@@ -144,7 +144,7 @@ We can't rush this. That they are still hungry for battle is testament to their 
 It's going to be a tough fight, but the fate of Shin Japan is at stake.
 Saviours, show them your appeal!
 
-> battle 150
+> battle 150: boss_4_1, boss_4_2, boss_4_3
 
 We're unstoppable.
 With the power of Shin Japan's greatest idols, few can stand a chance against our unit.
@@ -189,7 +189,7 @@ However, as dangerous as it may be, consuming the experiences of an idol unit of
 We need to win now, when it really counts. Let's show them the power of Shin Japanese audio engineering!
 ...for the sake of the world!
 
-> battle 200
+> battle 200: boss_5_1, boss_5_2, boss_5_3
 
 With the IIA representatives for Asia defeated, our idols are now the strongest in the entire continent.
 All of it! Even the small, boring parts.
@@ -227,7 +227,7 @@ The European representative's attempt to lull our heroes into a false sense of s
 We know we're in Europe, not Norway.
 Insulted by this cheap trick, our idols prepare for combat.
 
-> battle 250
+> battle 250: boss_6_1, boss_6_2, boss_6_3
 
 A lot of time was wasted in the battle with the European representatives.
 With that in mind, it became imperative that the idols find the American IIA representatives as soon as possible.
@@ -271,7 +271,7 @@ But we were not prepared for them to speak such a bizarre language. The talks ar
 We must be cautious, however. This is our biggest hurdle thus far.
 End them, and our heroes will become the strongest idol unit in the world!
 
-> battle 300
+> battle 300: boss_7_1, boss_7_2, boss_7_3
 
 ### celebrate
 Victory is ours!
@@ -312,7 +312,7 @@ boss_8_1:: "Avenge us..."
 I have no idea what they're talking about and honestly I'm shocked and appalled. 
 Anyway it's time to end this, once and for all.
 
-> battle 350
+> battle 350: boss_8_1, boss_8_2, boss_8_3
 
 If there was any doubting their abilities as the world's strongest idol unit, just remember
 /they just killed three ghosts./
@@ -325,19 +325,42 @@ Hold that pose!
 
 # part nine
 
+## large_stage_bloom
+
+Our idols have raised their glowsticks into the air.
+At first, it doesn't seem all that strange, but something started to happen after twenty minutes or so.
+The clouds above the stage began to swirl, eventually parting to reveal a flying object of unidentified origin.
+The underside of the ship opens up, and with a quick flash, the idols were no longer on Earth.
+
 ## earth_blur
 
 Finally, my plan is complete!
 With the world's strongest idols defeated, I'm free to conquer Earth.
 That's right, it's me! The narrator!
-You may have thought that you'd won the war, but the truth is...
+You may have thought that you'd won the previous war, but the truth is...
 /we let you win./
-With the world in this depressed state, we have been free to prepare a super weapon.
-One that will wipe out your planet before you can even say goodbye to it.
-There's literally nothing you can do about it!
-Now, I think it's time we make idols an extinct species, starting with your precious little group!
+With the world in this weakened state, we have been free to build a super weapon.
+A weapon unlike anything you've ever seen before!
+### boss_9_2 enter, from left, into middle
+boss_9_2:: "Hello."
+boss_9_2:: "I'm a weapon unlike anything you've ever seen before."
+boss_9_2:: "Pleased to make your acquaintance."
+### boss_9_1 enter, from left, into left
+boss_9_1:: "It's good to finally meet you."
+boss_9_1:: "I am also a weapon unlike anything you've ever seen before."
+boss_9_1:: "I hope we get along well."
+### boss_9_3 enter, from right, into right
+boss_9_3:: "Hello."
+boss_9_3:: "I too am a weapon, but you may recognise me from the 1997 hit comedy Flubber."
+boss_9_3:: "The pleasure's all mine."
+How do you like that! I bet you can't help but be shocked!
+These weapons have the power to wipe out your planet before you can even say goodbye to it!
+/and there's literally nothing you can do about it./
+You've done me a great service, taking care of the only idol groups that would have posed us much of a threat.
+For that, you have my thanks.
+It's time we make idols an extinct species, starting with your precious little group!
 
-> battle 400
+> battle 400: boss_9_1, boss_9_2, boss_9_3
 
 No! This cannot be!
 Have I... Have I created a monster unit?
@@ -347,11 +370,10 @@ Have I... Have I created a monster unit?
 ...
 Ahahaha! 
 Of course not.
-What you defeated were simply a mass-produced alien idol unit, one of millions ready to destroy your planet.
+What you defeated were simply a mass-produced alien idol unit, one of millions we have prepared for destroying your planet.
 That, and you ate them! 
 Honestly, did you not think the whole cannibalism thing was a bit weird?
-Anyway.
-You're finished! There's nothing left that you can do! 
+Anyway, you're finished! There's nothing left that you can do! 
 Come with me. 
 I'll permit you to watch the end of Earth before I finish you off.
 
@@ -361,7 +383,7 @@ I'll permit you to watch the end of Earth before I finish you off.
 
 You see this? I believe you call it the sun.
 It's actually our mothership!
-Yep, you had no idea, did you? 
+Yep. You had no idea, did you? 
 It's pretty funny really. Like, it's super obvious.
 Look at it. It's a ball of fire. That's just weird.
 Inside this ship is our super weapon.
@@ -369,40 +391,58 @@ That's right,
 /The Strongest Idols in the Universe™./
 We had them all along!
 Watch in amazement as they appeal, excite and destroy you and your stupid planet!
+### boss_10_2 enter, from left, into middle
+### boss_10_1 enter, from left, into left
+### boss_10_3 enter, from right, into right
+boss_10_1, boss_10_2, boss_10_3:: RUNNING IDOL PROTOCOL 3.29
+boss_10_1, boss_10_2, boss_10_3:: CODENAME: KIRA KIRA KILLA
+boss_10_1:: WARNING. CRITICAL UPDATE IS REQUIRED
+boss_10_3:: PLEASE ENSURE THAT YOUR IDOL IS PLUGGED INTO THE MAINS BEFORE CONTINUING
+boss_10_2:: REBOOTING
+...
+...
+...
+boss_10_1, boss_10_2, boss_10_3:: RUNNING IDOL PROTOCOL 3.30
+boss_10_1, boss_10_2, boss_10_3:: CODENAME: KIRA KIRA KILLLA
+boss_10_1:: ALL NON-COMBATANTS SHOULD RETREAT TO A DISTANCE OF 20 LIGHT YEARS
+boss_10_3:: PREPARE TO BE ANNIHILATED
+boss_10_2:: WITH LOVE
 
--ultra idols show up-
+> battle 500: boss_10_1, boss_10_2, boss_10_3
 
-RUNNING IDOL PROTOCOL 3.29
-CODENAME: KIRA KIRA KILLA
-WARNING. CRITICAL UPDATE IS REQUIRED
-PLEASE ENSURE THAT YOUR IDOL IS PLUGGED INTO THE MAINS BEFORE CONTINUING
-REBOOTING
-RUNNING IDOL PROTOCOL 3.30
-CODENAME: KIRA KIRA KILLLA
-ALL NON-COMBATANTS SHOULD RETREAT TO A DISTANCE OF 20 LIGHT YEARS
-PREPARE TO BE ANNIHILATED
-WITH LOVE
-
-> battle 500
-
-How? 
+...how? 
 How can this be?
 Our idols were undefeated in every battle simulation...
+Built with technology far beyond the capabilities of your planet...
+Equipped with weapons so strong that could wipe out a universe with a sneeze...
 We haven't even paid off the loan we needed to create them...
-WARNING
-WARNING
-FEELINGS DETECTED
-PROCESSORS AT 100%
-WHAT IS... THIS
-HUMANS
-IDOLS
-MUST BE PROTECTED
-How dare you? 
-Destroy that planet before I destroy /you/ instead!
-THREAT TO PROTECTED SPECIES DETECTED
-HUMANS... STAY GENKI
+### boss_10_2 enter, from left, into middle, rotated left
+boss_10_2:: WARNING
+boss_10_2:: WARNING
+boss_10_2:: FEELINGS DETECTED
+boss_10_2:: PROCESSORS AT 100%
+boss_10_2:: WHAT IS... THIS
+boss_10_2:: HUMANS
+boss_10_2:: IDOLS
+boss_10_2:: MUST BE PROTECTED
+How dare you speak to your parents that way? 
+Destroy that planet right this minute young lady.
+boss_10_2:: NO
+Don't make me ask you again!
+boss_10_2:: NO I DON'T WANT TO
+/That's enough. Bed without supper./
+boss_10_2:: NO, YOU CAN'T TELL ME WHAT TO DO
+You know what? Fine. I'll handle the idols myself.
+boss_10_2:: THREAT TO PROTECTED SPECIES DETECTED
+Excuse me?
+boss_10_2:: THREAT TO PROTECTED SPECIES DETECTED
+boss_10_2:: INITIATING ACTION MOVIE TROPE PROTOCOL
+boss_10_2:: HUMANS... MUST BE PROTECTED
+boss_10_2:: STAY GENKI
 
 <full-screen image with 'SARABADA' in larger font, slowly disappearing over time>
+
+#### if this is the first playthrough
 
 The alien threat was thwarted for a second time
 and the Earth saw a brief period of peace
