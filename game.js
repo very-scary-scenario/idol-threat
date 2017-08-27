@@ -861,13 +861,12 @@ Agency.prototype.doStory = function(pageNumber) {
 
     letterTimeout = setTimeout(showNextLetter, 50);
 
-    var scriptElement = document.getElementById('script');
     function handleScriptClick(e) {
       e.stopPropagation();
       e.preventDefault();
 
       if (letterTimeout === undefined) {
-        scriptElement.removeEventListener('click', handleScriptClick);
+        theatreElement.removeEventListener('click', handleScriptClick);
         self.doStory(pageNumber + 1);
       } else {
         clearTimeout(letterTimeout);
@@ -876,7 +875,7 @@ Agency.prototype.doStory = function(pageNumber) {
         invisibleScriptElement.textContent = '';
       }
     }
-    scriptElement.addEventListener('click', handleScriptClick);
+    theatreElement.addEventListener('click', handleScriptClick);
   }
 
   function renderSetting() {
