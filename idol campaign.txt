@@ -38,7 +38,7 @@ The quickest way to the top is to learn from those with similar aspirations, how
 ...it also means that our rivals are standing in the way of this dream.
 They must fight.
 
-> battle 0: boss_1_1, boss_1_2, boss_1_3
+> battle 0: boss_01_1, boss_01_2, boss_01_3
 
 With the rival unit defeated, our heroes have taken their first steps towards saving the world.
 Thank you, senpais.
@@ -77,7 +77,7 @@ boss_02_2:: "Phenomenal. It's lucky we're not paying them a wage."
 This is our chance at a big break, and one that our heroes so desperately need.
 Idols! Remove that rival idol unit fom their own gig and claim your rightful place as the hope of Shin Tokyo.
 
-> battle 50: boss_2_1, boss_2_2, boss_2_3
+> battle 50: boss_02_1, boss_02_2, boss_02_3
 
 With the rival unit defeated, it's now up to us to achieve their dream.
 It's quite beautiful, really. 
@@ -110,7 +110,7 @@ boss_03_2:: "You know, for the emotional trauma you've caused us today."
 To win the help of this suit, our idols must demonstrate what the opportunity means to them.
 The two groups dust down their costumes, assume their fighting stances and prepare for battle.
 
-> battle 100: boss_3_1, boss_3_2, boss_3_3
+> battle 100: boss_03_1, boss_03_2, boss_03_3
 
 With the battle won, our idols are one step closer to conquering the world.
 With love, sparkles and all that good stuff.
@@ -144,7 +144,7 @@ We can't rush this. That they are still hungry for battle is testament to their 
 It's going to be a tough fight, but the fate of Shin Japan is at stake.
 Saviours, show them your appeal!
 
-> battle 150: boss_4_1, boss_4_2, boss_4_3
+> battle 150: boss_04_1, boss_04_2, boss_04_3
 
 We're unstoppable.
 With the power of Shin Japan's greatest idols, few can stand a chance against our unit.
@@ -189,7 +189,7 @@ However, as dangerous as it may be, consuming the experiences of an idol unit of
 We need to win now, when it really counts. Let's show them the power of Shin Japanese audio engineering!
 ...for the sake of the world!
 
-> battle 200: boss_5_1, boss_5_2, boss_5_3
+> battle 200: boss_05_1, boss_05_2, boss_05_3
 
 With the IIA representatives for Asia defeated, our idols are now the strongest in the entire continent.
 All of it! Even the small, boring parts.
@@ -227,7 +227,7 @@ The European representative's attempt to lull our heroes into a false sense of s
 We know we're in Europe, not Norway.
 Insulted by this cheap trick, our idols prepare for combat.
 
-> battle 250: boss_6_1, boss_6_2, boss_6_3
+> battle 250: boss_06_1, boss_06_2, boss_06_3
 
 A lot of time was wasted in the battle with the European representatives.
 With that in mind, it became imperative that the idols find the American IIA representatives as soon as possible.
@@ -271,7 +271,7 @@ But we were not prepared for them to speak such a bizarre language. The talks ar
 We must be cautious, however. This is our biggest hurdle thus far.
 End them, and our heroes will become the strongest idol unit in the world!
 
-> battle 300: boss_7_1, boss_7_2, boss_7_3
+> battle 300: boss_07_1, boss_07_2, boss_07_3
 
 ### celebrate
 Victory is ours!
@@ -312,7 +312,7 @@ boss_08_1:: "Avenge us..."
 I have no idea what they're talking about and honestly I'm shocked and appalled. 
 Anyway it's time to end this, once and for all.
 
-> battle 350: boss_8_1, boss_8_2, boss_8_3
+> battle 350: boss_08_1, boss_08_2, boss_08_3
 
 If there was any doubting their abilities as the world's strongest idol unit, just remember
 /they just killed three ghosts./
@@ -360,7 +360,7 @@ You've done me a great service, taking care of the only idol groups that would h
 For that, you have my thanks.
 It's time we make idols an extinct species, starting with your precious little group!
 
-> battle 400: boss_9_1, boss_9_2, boss_9_3
+> battle 400: boss_09_1, boss_09_2, boss_09_3
 
 No! This cannot be!
 Have I... Have I created a monster unit?
