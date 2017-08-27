@@ -212,17 +212,24 @@ def build_campaign():
                 })
             else:
                 speaker_match = re.match(r'^([\w, ]+):: (.+)$', line)
-
                 if speaker_match:
                     speaker_string, words = speaker_match.groups()
                     speakers = [sp.strip() for sp in speaker_string.split(',')]
                 else:
                     speakers, words = ([], line)
 
+                em_match = re.match(r'^/(.+)/$', words)
+                if em_match:
+                    words, = em_match.groups()
+                    em = True
+                else:
+                    em = False
+
                 current_chapter.append({
                     'kind': 'text',
                     'text': words,
                     'speakers': speakers,
+                    'em': em,
                 })
 
     return campaign
