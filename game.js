@@ -142,6 +142,8 @@ var maxUnitSize = 3;
 var rerenderTimeout;
 var checkSaveTimeout;
 
+var currentlyShowingDetail;
+
 function choice(list, slice) {
   var result = list[Math.floor(slice * list.length)];
   return result;
@@ -464,6 +466,7 @@ Idol.prototype.giveBonus = function(count) {
 };
 Idol.prototype.showDetail = function() {
   var self = this;
+  currentlyShowingDetail = this;
 
   document.body.classList.add('overlay');
   detailElement.innerHTML = idolDetailTemplate(this);
@@ -575,6 +578,11 @@ Idol.prototype.showDetail = function() {
     deferRerender();
   });
 };
+Idol.prototype.next = function(mod) {
+  var sc = agency.sortedCatalog();
+  return sc[sc.indexOf(this) + (mod || 1)];
+};
+Idol.prototype.prev = function() { return this.next(-1); };
 Idol.prototype.audition = function() {
   var self = this;
   var layerTimeout = 200;
@@ -619,11 +627,37 @@ Idol.prototype.dump = function() {
 };
 
 function hideIdolDetail(event) {
-  event.stopPropagation();
-  event.preventDefault();
+  if (event) {
+    event.stopPropagation();
+    event.preventDefault();
+  }
   detailElement.classList.remove('shown');
   document.body.classList.remove('overlay');
+  currentlyShowingDetail = undefined;
 }
+function showNextIdol() {
+  if (!currentlyShowingDetail) return;
+  currentlyShowingDetail.next().showDetail();
+}
+function showPrevIdol() {
+  if (!currentlyShowingDetail) return;
+  currentlyShowingDetail.prev().showDetail();
+}
+var keyHandlers = {
+  ArrowLeft: showPrevIdol,
+  ArrowRight: showNextIdol,
+  Escape: hideIdolDetail
+};
+
+document.addEventListener('keydown', function(event) {
+  handler = keyHandlers[event.key];
+  if (handler) {
+    event.preventDefault();
+    event.stopPropagation();
+    handler();
+  }
+});
+
 
 function Agency() {
   this.catalog = [];
