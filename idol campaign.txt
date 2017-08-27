@@ -341,18 +341,18 @@ You may have thought that you'd won the previous war, but the truth is...
 /we let you win./
 With the world in this weakened state, we have been free to build a super weapon.
 A weapon unlike anything you've ever seen before!
-### boss_9_2 enter, from left, into middle
-boss_9_2:: "Hello."
-boss_9_2:: "I'm a weapon unlike anything you've ever seen before."
-boss_9_2:: "Pleased to make your acquaintance."
-### boss_9_1 enter, from left, into left
-boss_9_1:: "It's good to finally meet you."
-boss_9_1:: "I am also a weapon unlike anything you've ever seen before."
-boss_9_1:: "I hope we get along well."
-### boss_9_3 enter, from right, into right
-boss_9_3:: "Hello."
-boss_9_3:: "I too am a weapon, but you may recognise me from the 1997 hit comedy Flubber."
-boss_9_3:: "The pleasure's all mine."
+### boss_09_2 enter, from left, into middle
+boss_09_2:: "Hello."
+boss_09_2:: "I'm a weapon unlike anything you've ever seen before."
+boss_09_2:: "Pleased to make your acquaintance."
+### boss_09_1 enter, from left, into left
+boss_09_1:: "It's good to finally meet you."
+boss_09_1:: "I am also a weapon unlike anything you've ever seen before."
+boss_09_1:: "I hope we get along well."
+### boss_09_3 enter, from right, into right
+boss_09_3:: "Hello."
+boss_09_3:: "I too am a weapon, but you may recognise me from the 1997 hit comedy Flubber."
+boss_09_3:: "The pleasure's all mine."
 How do you like that! I bet you can't help but be shocked!
 These weapons have the power to wipe out your planet before you can even say goodbye to it!
 /and there's literally nothing you can do about it./
