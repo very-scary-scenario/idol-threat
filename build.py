@@ -20,6 +20,7 @@ BOSSES_DIRNAME = 'bosses'
 BOSSES_DIR = os.path.join(HERE, BOSSES_DIRNAME)
 THUMBS_DIRNAME = 'idol-thumbs'
 THUMBS_DIR = os.path.join(HERE, 'idol-thumbs')
+ICON_PATH = os.path.join(HERE, 'icon.png')
 POSES = set()
 SKIN_COLOURS = set()
 HAIR_COLOURS = set()
@@ -266,9 +267,8 @@ def build_icon():
     driver.get(url)
     sleep(3)
 
-    icon_path = os.path.join(HERE, 'icon.png')
-    driver.save_screenshot(icon_path)
-    subprocess.check_call(['optipng', icon_path])
+    driver.save_screenshot(ICON_PATH)
+    subprocess.check_call(['optipng', ICON_PATH])
 
 
 def build_unit_names():
@@ -385,6 +385,9 @@ if __name__ == '__main__':
 
         with open('style.css', 'wb') as c:
             c.write(subprocess.check_output(['lessc', 'style.less']))
+
+        if not os.path.exists(ICON_PATH):
+            build_icon()
 
         with open('index.html', 'w') as h:
             h.write(build_html())
