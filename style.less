@@ -117,11 +117,15 @@ body {
   cursor: default;
 }
 
+.link-shadow() {
+  text-shadow: .1em .1em 0 @bg;
+}
+
 a {
   &[href] {
+    .link-shadow();
     text-decoration: none;
     color: @fg;
-    text-shadow: .1em .1em 0 @bg;
     cursor: pointer;
 
     &:hover, &:focus {
@@ -822,8 +826,10 @@ body.icon {
 
   #agency-summary {
     .button();
+    .link-shadow();
     background-color: @mid;
     position: absolute;
+    overflow: hidden;
     left: .5em;
     top: 1em;
 
@@ -850,13 +856,14 @@ body.icon {
     }
 
     #agency-level-progress {
+      box-shadow: 0 0 1em @bg;
       position: absolute;
       left: 0;
       top: 0;
       height: 100%;
       z-index: 1;
       border-radius: @button-radius;
-      background-color: pink;
+      background-color: fade(@fg, 20%);
     }
   }
 
