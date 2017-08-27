@@ -36,6 +36,7 @@ var BASE_RARITY = 300;
 var RARITY_CURVE = 0.6;
 
 var LETTER_DELAY = 20;
+var LETTER_EMPHASIS_MULTIPLIER = 4;
 var LETTER_DELAYS = {
   '.': 8,
   ',': 4
@@ -811,7 +812,9 @@ Agency.prototype.doStory = function(pageNumber) {
       invisibleScriptElement.textContent = invisibleScriptElement.textContent.replace(/^./, '');
 
       if (invisibleScriptElement.textContent) {
-        letterTimeout = setTimeout(showNextLetter, LETTER_DELAY * (LETTER_DELAYS[nextLetter] || 1));
+        var letterDelay = LETTER_DELAY * (LETTER_DELAYS[nextLetter] || 1);
+        if (page.em) letterDelay *= LETTER_EMPHASIS_MULTIPLIER;
+        letterTimeout = setTimeout(showNextLetter, letterDelay);
       } else {
         letterTimeout = undefined;
       }
@@ -861,6 +864,7 @@ Agency.prototype.doStory = function(pageNumber) {
     this.doStory(pageNumber + 1);
   } else if (page.kind === 'text') {
     if (!theatreElement.innerHTML) renderSetting();
+    if (theatreElement.classList.contains('em') !== Boolean(page.em)) theatreElement.classList.toggle('em');
 
     var currentlySpeakingIdolElements = theatreElement.querySelectorAll('.speaking');
     for (var ci = 0; ci < currentlySpeakingIdolElements.length; ci++) currentlySpeakingIdolElements[ci].classList.remove('speaking');
