@@ -671,6 +671,7 @@ function Agency() {
   this.unit = [];
   this.recentlyFired = [];
   this.sortOrder = 'date';
+  this.experience = 0;
   this.storyChapter = 0;
   this.storyGeneration = 0;
   this.storyActors = {};
@@ -692,6 +693,8 @@ Agency.prototype.renderCatalog = function() {
     'catalog': sortedCatalog,
     'hasStoryRemaining': CAMPAIGN[this.storyChapter] !== undefined,
     'canFeed': this.canFeed(),
+    'levelFloor': this.levelFloor(),
+    'levelProgressPercent': Math.floor(this.levelProgress() * 100),
     'sortOrder': this.sortOrder,
     'sortOrders': sortOrders
   });
@@ -706,7 +709,7 @@ Agency.prototype.renderCatalog = function() {
   document.getElementById('sort-button').addEventListener('click', function(event) {
     event.stopPropagation();
     event.preventDefault();
-    document.getElementById('sort-orders').classList.toggle('visible');
+    document.getElementById('agency-meta').classList.toggle('sort-visible');
   });
 
   for (var sortKey in idolSortNames) {
@@ -773,6 +776,22 @@ Agency.prototype.renderUnit = function() {
   for (var ei = 0; ei < unitElements.length; ei++) {
     unitElements[ei].addEventListener('click', handleUnitClick);
   }
+};
+Agency.prototype.level = function() {
+  var level = 0;
+  var xpRemainder = this.experience;
+  while (xpRemainder >= level) {
+    level++;
+    xpRemainder -= level;
+  }
+  return level + (xpRemainder / level);
+};
+Agency.prototype.levelFloor = function() {
+  return Math.floor(this.level());
+};
+Agency.prototype.levelProgress = function() {
+  var level = this.level();
+  return level - Math.floor(level);
 };
 Agency.prototype.unitName = function() {
   var unitSeed = 0;
@@ -987,6 +1006,7 @@ Agency.prototype.dump = function() {
   var agencyDump = {
     i: [],
     u: [],
+    x: this.experience,
     c: this.storyChapter,
     g: this.storyGeneration,
     f: this.recentlyFired,
@@ -1003,6 +1023,7 @@ Agency.prototype.dump = function() {
 };
 Agency.prototype.load = function(agencyDump) {
   if (agencyDump.o !== undefined) this.sortOrder = agencyDump.o;
+  this.experience = agencyDump.x || 0;
   this.storyChapter = agencyDump.c || 0;
   this.storyGeneration = agencyDump.g || 0;
   this.recentlyFired = agencyDump.f || [];

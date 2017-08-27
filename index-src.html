@@ -76,7 +76,15 @@
         {{/if}}
       </ul>
 
-      <div id="sort-orders">
+      <div id="agency-meta">
+        <div id="agency-summary">
+          <div id="agency-level-progress" style="width: {{levelProgressPercent}}%"></div>
+          <span id="agency-name">The Agency</span>
+          <span id="agency-level">
+            <span>lv</span><strong>{{levelFloor}}</strong>
+          </span>
+        </div>
+
         <a href="#" id="sort-button">sort…</a>
         <ul id="sort-list">
           {{#each sortOrders}}

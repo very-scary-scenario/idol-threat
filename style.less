@@ -4,6 +4,7 @@
 @fg: #111;
 @hl: #bbb;
 @icon-size: 512px;
+@button-radius: .2em;
 
 @rock: '✊';
 @paper: '✋';
@@ -175,7 +176,7 @@ a {
 
 .button() {
   padding: .2em .5em;
-  border-radius: .2em;
+  border-radius: @button-radius;
   background-color: @hl;
 }
 
@@ -815,10 +816,49 @@ body.icon {
   }
 }
 
-#sort-orders {
+#agency-meta {
   position: relative;
-  z-index: 30;
   height: 3.2em;
+
+  #agency-summary {
+    .button();
+    background-color: @mid;
+    position: absolute;
+    left: .5em;
+    top: 1em;
+
+    #agency-name {
+      position: relative;
+      z-index: 2;
+      margin-right: 2em;
+    }
+
+    #agency-level {
+      position: relative;
+      z-index: 2;
+      display: inline-block;
+      transform-origin: center;
+      transform: scale(1.2);
+
+      span {
+        font-size: .7em;
+      }
+      strong {
+        margin-left: .1em;
+        font-weight: normal;
+      }
+    }
+
+    #agency-level-progress {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      z-index: 1;
+      border-radius: @button-radius;
+      background-color: pink;
+    }
+  }
 
   #sort-button {
     .button();
@@ -845,7 +885,7 @@ body.icon {
     overflow: hidden;
   }
 
-  &.visible {
+  &.sort-visible {
     #sort-button {
       border-color: fade(@fg, 50%);
       background-color: @mid;
@@ -895,7 +935,7 @@ body.nothing-scanned {
     text-align: center;
   }
 
-  #sort-orders {
+  #agency-meta {
     display: none;
   }
 }
@@ -989,7 +1029,7 @@ body.nothing-scanned {
       position: absolute;
       height: 100%;
       bottom: 0;
-      transform-origin: 60% bottom;
+      transform-origin: 70% bottom;
       transition: left 2s ease-in-out, transform 1s, opacity 1s;
       z-index: 0;
 
