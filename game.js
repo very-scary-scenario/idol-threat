@@ -891,6 +891,7 @@ Agency.prototype.doStory = function(pageNumber) {
         actorElement.innerHTML = actor.hugeSpriteHTML();
         theatreElement.querySelector('#boards').appendChild(actorElement);
       }
+      actorElement.classList.remove('exited');
 
       if (page.verb === 'enter' && page.adjectives.from) {
         actorElement.setAttribute('data-position', page.adjectives.from + '-offstage');
@@ -900,6 +901,10 @@ Agency.prototype.doStory = function(pageNumber) {
       }
     }
     if (page.verb === 'celebrate') celebrate();
+    if (page.verb === 'clear') {
+      var actorElements = theatreElement.querySelectorAll('#boards .actor');
+      for (var aei = 0; aei < actorElements.length; aei++) actorElements[aei].classList.add('exited');
+    }
 
     this.doStory(pageNumber + 1);
   } else if (page.kind === 'battle') {

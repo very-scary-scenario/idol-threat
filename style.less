@@ -982,7 +982,7 @@ body.nothing-scanned {
       height: 100%;
       bottom: 0;
       transform-origin: 70% 70%;
-      transition: left 2s ease-in-out, transform 1s;
+      transition: left 2s ease-in-out, transform 1s, opacity 1s;
       z-index: 0;
 
       &.speaking {
@@ -991,6 +991,8 @@ body.nothing-scanned {
         animation-iteration-count: infinite;
         z-index: 1;
       }
+
+      &.exited { opacity: 0; }
 
       &[data-position="middle"] { left: 50%; }
       &[data-position="left"] { left: 20%; }
