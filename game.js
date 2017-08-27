@@ -637,11 +637,13 @@ function hideIdolDetail(event) {
 }
 function showNextIdol() {
   if (!currentlyShowingDetail) return;
-  currentlyShowingDetail.next().showDetail();
+  var nextIdol = currentlyShowingDetail.next();
+  if (nextIdol) nextIdol.showDetail();
 }
 function showPrevIdol() {
   if (!currentlyShowingDetail) return;
-  currentlyShowingDetail.prev().showDetail();
+  var prevIdol = currentlyShowingDetail.prev();
+  if (prevIdol) prevIdol.showDetail();
 }
 var keyHandlers = {
   ArrowLeft: showPrevIdol,
@@ -658,6 +660,9 @@ document.addEventListener('keydown', function(event) {
   }
 });
 
+var hammerManager = new Hammer(document.body);
+hammerManager.on('swipeleft', showNextIdol);
+hammerManager.on('swiperight', showPrevIdol);
 
 function Agency() {
   this.catalog = [];
