@@ -1122,8 +1122,16 @@ function rerender() {
         enemyIdols.push(new BattleIdol(new Idol(Math.random()), 'ai'));
       }
 
-      var battle = new Battle(playerIdols, enemyIdols, function() {
+      var battle = new Battle(playerIdols, enemyIdols, function(battle) {
         askUser('You win! Your unit gets bonuses~', [['Yay!', null]]);
+        agency.grantExperience(
+          5 * (maxUnitSize - battle.playerIdols.length)
+        );
+
+        if (battle.numberOfLivingMembers(battle.playerIdols) === battle.playerIdols.length) {
+          agency.grantExperience(2);
+        }
+
         for (var pi = 0; pi < this.playerIdols.length; pi++) {
           this.playerIdols[pi].idol.giveBonus(enemyIdols.length);
         }

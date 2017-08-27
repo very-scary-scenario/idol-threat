@@ -235,9 +235,9 @@ Battle.prototype.nextMove = function() {
 
       if (self.playerHasWon()) {
         celebrate(self.numberOfLivingMembers(self.playerIdols));
-        self.victoryCallback();
+        self.victoryCallback(self);
       } else if (self.enemyHasWon()) {
-        self.lossCallback();
+        self.lossCallback(self);
       }
 
     }, animationDuration);
