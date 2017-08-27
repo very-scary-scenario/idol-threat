@@ -300,10 +300,10 @@ Which is fortunate really, because three familiar-looking ghosts have approached
 They look scary, but they were polite enough to wait until the end of the set.
 ### boss_08_2 enter, from left, into middle
 boss_08_2:: "Stop... Yer not ready..."
-### boss_08_1 enter, from left, into left
-boss_08_1:: "I don't know what she just said, but you're not strong enough..."
-### boss_08_3 enter, from right, into right
-boss_08_3:: "I can't feel my legs..."
+### boss_08_3 enter, from left, into left
+boss_08_3:: "I don't know what she just said, but you're not strong enough..."
+### boss_08_1 enter, from right, into right
+boss_08_1:: "I can't feel my legs..."
 Even now, the ex-leaders of the IIA representatives are doubting the abilities of our idols.
 Strong enough? We're literally the strongest!
 boss_08_3:: "We weren't talking about them..."
