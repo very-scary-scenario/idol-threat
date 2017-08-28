@@ -286,7 +286,7 @@ function playAnimationCanvas(animationName, element) {
   animationCanvas.style.position = "absolute";
   animationCanvas.style.display = "inline";
   animationCanvas.style.left = 2;
-  animationCanvas.style.zIndex = 2;
+  animationCanvas.style.zIndex = 3;
 
   var ctx = animationCanvas.getContext('2d');
   portraitDiv.appendChild(animationCanvas);

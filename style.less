@@ -5,6 +5,7 @@
 @hl: #bbb;
 @icon-size: 512px;
 @button-radius: .2em;
+@health-bar-radius: .3vw;
 
 @rock: '✊';
 @paper: '✋';
@@ -567,19 +568,20 @@ body.in-battle {
           overflow: hidden;
           position: absolute;
           box-sizing: border-box;
-          border-radius: @button-radius;
+          border-radius: @health-bar-radius;
           width: 50%;
           bottom: 2.1em;
           left: 25%;
-          box-shadow: 0 .1em .5em @fg;
+          box-shadow: 0 .1em .4em @fg;
           background-color: fade(@bg, 40%);
           transition: opacity 2s;
           opacity: 1;
+          height: 2vw;
+          max-height: 2vh !important;
 
           .health-bar-content, .health-bar-trail {
-            border-radius: @button-radius;
-            height: 2vw;
-            max-height: 2vh !important;
+            border-radius: @health-bar-radius;
+            height: 100%;
           }
 
           .health-bar-content {
@@ -595,7 +597,7 @@ body.in-battle {
             right: 1px;
             z-index: 1;
             background-color: fade(darken(red, 20%), 70%);
-            box-shadow: 0 0 .6em @fg;
+            box-shadow: 0 0 .2em @fg;
           }
 
           &.affinity-rock .health-bar-content { background-color: lighten(@rock-colour, 20%) }
@@ -632,7 +634,7 @@ body.in-battle {
           .portrait { margin-bottom: 1.2em; }
           .name {
             font-size: 0.8em;
-            margin: .1em 0 0;
+            bottom: -.5em;
             span { display: none; }
           }
         }
