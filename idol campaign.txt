@@ -476,7 +476,7 @@ boss_ex1_maid_1, boss_ex1_maid_2, boss_ex1_maid_3:: "...re..r..."
 What was that all about?
 Those people are still arguing...
 ...
-My head hurts...
+Your head hurts...
 
 #### if playthrough 0 to 1 goto END
 
@@ -485,12 +485,43 @@ My head hurts...
 ## earth_blur
 
 ...
-There's a heated discussion happening nearby, but it's almost impossible to move your attention away from Earth.
-You'd seen pictures like this before, but the images simply couldn't 
+You're still on the ship, watching an argument play out about the fate of everyone on board.
+On one side, there's the power-hungry, manipulative person who is responsible for this mess.
+On the other is the weaponised idol that you defeated not too long ago. 
+You feel like you know how this is going to end.
+Like the ending is an inevitability. 
+But try as you might, you can't move.
+Is it through fear? Or, perhaps, a complete resignation to fate?
+You instead move your attention back to the sight of Earth through the window.
+"...m..er..."
+"...re..r..."
+"...mb..r..."
+
+## school_blur
+
+...you know this place.
+"It's the school you attended, many years ago."
+Your memory is hazy about the details, but you don't remember hating it. 
+Getting nostalgic, you remember the time when you decided to join an after-school club.
+### boss_ex4_lmusic_1 enter, from left, into left
+boss_ex1_lmusic_1:: "You wanted to join the music club. "
+### boss_ex4_lmusic_3 enter, from right, into right
+boss_ex1_lmusic_3:: "You wanted to be a star."
+### boss_ex4_lmusic_2 enter, from left, into middle
+boss_ex4_lmusic_2:: "Whatever the cost."
+boss_ex4_lmusic_1:: "But there wasn't a music club."
+boss_ex4_lmusic_3:: "So you decided to make one."
+boss_ex4_lmusic_2:: "And that's what you got."
+boss_ex4_lmusic_1, boss_ex4_lmusic_2, boss_ex4_lmusic_3:: "...m..er..."
+boss_ex4_lmusic_1, boss_ex4_lmusic_2, boss_ex4_lmusic_3:: "...re..r..."
 
 > battle 600: boss_ex4_lmusic_1, boss_ex4_lmusic_2, boss_ex4_lmusic_3
 
-After battle story 
+...
+Why?
+These memories...
+You haven't thought about them in a long time.
+Your head hurts...
 
 #### if playthrough 0 to 2 goto END
 
