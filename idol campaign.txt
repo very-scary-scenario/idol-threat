@@ -504,7 +504,7 @@ You instead move your attention back to the sight of Earth through the window.
 Your memory is hazy about the details, but you don't remember hating it. 
 Getting nostalgic, you remember the time when you decided to join an after-school club.
 ### boss_ex4_lmusic_1 enter, from left, into left
-boss_ex1_lmusic_1:: "You wanted to join the music club. "
+boss_ex1_lmusic_1:: "You wanted to join the music club."
 ### boss_ex4_lmusic_3 enter, from right, into right
 boss_ex1_lmusic_3:: "You wanted to be a star."
 ### boss_ex4_lmusic_2 enter, from left, into middle
@@ -530,12 +530,41 @@ Your head hurts...
 ## earth_blur
 
 ...
-There's a heated discussion happening nearby, but it's almost impossible to move your attention away from Earth.
-You'd seen pictures like this before, but the images simply couldn't 
+Why are you still here?
+It feels like this conversation is taking forever, but barely any time has passed.
+It's your thoughts that have been moving quickly, without a care for the outside world.
+Without a care for the current situation.
+You know, now with certainty, what is about to happen.
+But still you must stand here and reminisce.
+You must.
+"...m..er..."
+"...re..r..."
+"...mb..r..."
+
+## cafe_blur
+
+...you know this place.
+"It's the cafe you worked weekends at, a year or two ago."
+Your memory is hazy about the details, but you don't remember hating it. 
+Getting nostalgic, you remember the time when you were looking for a job.
+### boss_ex3_dapper_1 enter, from left, into left
+boss_ex3_dapper_1:: "You wanted to work at a themed cafe."
+### boss_ex3_dapper_3 enter, from right, into right
+boss_ex3_dapper_3:: "One with some class, with a mix of clientele."
+### boss_ex3_dapper_2 enter, from left, into middle
+boss_ex3_dapper_2:: "Whatever the cost."
+boss_ex3_dapper_1:: "But there wasn't a vacancy."
+boss_ex3_dapper_3:: "So you decided to make one."
+boss_ex3_dapper_2:: "And that's what you got."
+boss_ex3_dapper_1, boss_ex3_dapper_2, boss_ex3_dapper_3:: "...m..er..."
+boss_ex3_dapper_1, boss_ex3_dapper_2, boss_ex3_dapper_3:: "...re..r..."
 
 > battle 650: boss_ex3_dapper_1, boss_ex3_dapper_2, boss_ex3_dapper_3
 
-After battle story 
+...
+...stop.
+...please stop.
+Your head hurts...
 
 #### if playthrough 0 to 3 goto END
 
