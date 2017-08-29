@@ -672,10 +672,14 @@ function Agency() {
   this.catalog = [];
   this.unit = [];
   this.recentlyFired = [];
+
   this.sortOrder = 'date';
+
   this.experience = 0;
   this.storyChapter = 0;
   this.storyGeneration = 0;
+  this.totalStoryChaptersBeaten = 0;
+
   this.storyActors = {};
 }
 Agency.prototype.renderCatalog = function() {
@@ -922,6 +926,8 @@ Agency.prototype.doStory = function(pageNumber) {
   if (page === undefined) {
     theatreElement.innerHTML = '';
     this.storyChapter++;
+    this.totalStoryChaptersBeaten++;
+    this.grantExperience(this.totalStoryChaptersBeaten);
     rerender();
   } else if (page.kind === 'setting') {
     this.storySetting = page.value;
@@ -1015,6 +1021,7 @@ Agency.prototype.dump = function() {
     x: this.experience,
     c: this.storyChapter,
     g: this.storyGeneration,
+    b: this.totalStoryChaptersBeaten,
     f: this.recentlyFired,
     o: this.sortOrder
   };
@@ -1032,6 +1039,7 @@ Agency.prototype.load = function(agencyDump) {
   this.experience = agencyDump.x || 0;
   this.storyChapter = agencyDump.c || 0;
   this.storyGeneration = agencyDump.g || 0;
+  this.totalStoryChaptersBeaten = agencyDump.b || 0;
   this.recentlyFired = agencyDump.f || [];
 
   for(var i = 0, n = agencyDump.i.length; i < n; i++) {
