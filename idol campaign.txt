@@ -416,7 +416,7 @@ Our idols were undefeated in every battle simulation...
 Built with technology far beyond the capabilities of your planet...
 Equipped with weapons so strong that could wipe out a universe with a sneeze...
 We haven't even paid off the loan we needed to create them...
-### boss_10_2 enter, from left, into middle, rotated left
+### boss_10_2 enter, from left, into middle
 boss_10_2:: WARNING
 boss_10_2:: WARNING
 boss_10_2:: FEELINGS DETECTED
@@ -476,7 +476,7 @@ boss_ex1_maid_1, boss_ex1_maid_2, boss_ex1_maid_3:: "...re..r..."
 What was that all about?
 Those people are still arguing...
 ...
-My head hurts...
+Your head hurts...
 
 #### if playthrough 0 to 1 goto END
 
@@ -485,12 +485,43 @@ My head hurts...
 ## earth_blur
 
 ...
-There's a heated discussion happening nearby, but it's almost impossible to move your attention away from Earth.
-You'd seen pictures like this before, but the images simply couldn't 
+You're still on the ship, watching an argument play out about the fate of everyone on board.
+On one side, there's the power-hungry, manipulative person who is responsible for this mess.
+On the other is the weaponised idol that you defeated not too long ago. 
+You feel like you know how this is going to end.
+Like the ending is an inevitability. 
+But try as you might, you can't move.
+Is it through fear? Or, perhaps, a complete resignation to fate?
+You instead move your attention back to the sight of Earth through the window.
+"...m..er..."
+"...re..r..."
+"...mb..r..."
+
+## school_blur
+
+...you know this place.
+"It's the school you attended, many years ago."
+Your memory is hazy about the details, but you don't remember hating it. 
+Getting nostalgic, you remember the time when you decided to join an after-school club.
+### boss_ex4_lmusic_1 enter, from left, into left
+boss_ex1_lmusic_1:: "You wanted to join the music club."
+### boss_ex4_lmusic_3 enter, from right, into right
+boss_ex1_lmusic_3:: "You wanted to be a star."
+### boss_ex4_lmusic_2 enter, from left, into middle
+boss_ex4_lmusic_2:: "Whatever the cost."
+boss_ex4_lmusic_1:: "But there wasn't a music club."
+boss_ex4_lmusic_3:: "So you decided to make one."
+boss_ex4_lmusic_2:: "And that's what you got."
+boss_ex4_lmusic_1, boss_ex4_lmusic_2, boss_ex4_lmusic_3:: "...m..er..."
+boss_ex4_lmusic_1, boss_ex4_lmusic_2, boss_ex4_lmusic_3:: "...re..r..."
 
 > battle 600: boss_ex4_lmusic_1, boss_ex4_lmusic_2, boss_ex4_lmusic_3
 
-After battle story 
+...
+Why?
+These memories...
+You haven't thought about them in a long time.
+Your head hurts...
 
 #### if playthrough 0 to 2 goto END
 
@@ -499,12 +530,41 @@ After battle story
 ## earth_blur
 
 ...
-There's a heated discussion happening nearby, but it's almost impossible to move your attention away from Earth.
-You'd seen pictures like this before, but the images simply couldn't 
+Why are you still here?
+It feels like this conversation is taking forever, but barely any time has passed.
+It's your thoughts that have been moving quickly, without a care for the outside world.
+Without a care for the current situation.
+You know, now with certainty, what is about to happen.
+But still you must stand here and reminisce.
+You must.
+"...m..er..."
+"...re..r..."
+"...mb..r..."
+
+## cafe_blur
+
+...you know this place.
+"It's the cafe you worked weekends at, a year or two ago."
+Your memory is hazy about the details, but you don't remember hating it. 
+Getting nostalgic, you remember the time when you were looking for a job.
+### boss_ex3_dapper_1 enter, from left, into left
+boss_ex3_dapper_1:: "You wanted to work at a themed cafe."
+### boss_ex3_dapper_3 enter, from right, into right
+boss_ex3_dapper_3:: "One with some class, with a mix of clientele."
+### boss_ex3_dapper_2 enter, from left, into middle
+boss_ex3_dapper_2:: "Whatever the cost."
+boss_ex3_dapper_1:: "But there wasn't a vacancy."
+boss_ex3_dapper_3:: "So you decided to make one."
+boss_ex3_dapper_2:: "And that's what you got."
+boss_ex3_dapper_1, boss_ex3_dapper_2, boss_ex3_dapper_3:: "...m..er..."
+boss_ex3_dapper_1, boss_ex3_dapper_2, boss_ex3_dapper_3:: "...re..r..."
 
 > battle 650: boss_ex3_dapper_1, boss_ex3_dapper_2, boss_ex3_dapper_3
 
-After battle story 
+...
+...stop.
+...please stop.
+Your head hurts...
 
 #### if playthrough 0 to 3 goto END
 
@@ -513,12 +573,47 @@ After battle story
 ## earth_blur
 
 ...
-There's a heated discussion happening nearby, but it's almost impossible to move your attention away from Earth.
-You'd seen pictures like this before, but the images simply couldn't 
+Is this punishment?
+Divine punishment for your actions back on Earth?
+Cursed to relive your actions, again and again, as some form of repentance? 
+Re-living your life so that you can see where it all went wrong.
+In the presence of an argument you cannot stop.
+An argument you cannot intervene in.
+An argument that ends you and, eventually, the rest of the world.
+While you gaze helplessly towards a planet that has been doomed many times over.
+"...m..er..."
+"...re..r..."
+"...mb..r..."
+
+## office_bloom
+
+...you know this place.
+"It's where this all started, a few months ago."
+Your memory is hazy about the details...
+No.
+You don't remember it. 
+You try to remember.
+### boss_ex2_hell_1 enter, from left, into left
+boss_ex2_hell_1:: "You wanted to be successful."
+### boss_ex2_hell_3 enter, from right, into right
+boss_ex2_hell_3:: "To be the superstar you always wanted to be."
+### boss_ex2_hell_2 enter, from left, into middle
+boss_ex2_hell_2:: /"The superstars we were."/
+boss_ex2_hell_1:: "You always got what you wanted."
+boss_ex2_hell_3:: "No matter what anyone else wants."
+boss_ex2_hell_2:: "And so you got what you wanted."
+boss_ex2_hell_1:: "You were not an idol."
+boss_ex2_hell_3:: "So you killed us."
+boss_ex2_hell_2:: "No. You didn't kill us."
+boss_ex2_hell_1, boss_ex2_hell_2, boss_ex2_hell_3:: "You became us."
+boss_ex2_hell_1, boss_ex2_hell_2, boss_ex2_hell_3:: /"Remember?"/
 
 > battle 700: boss_ex2_hell_1, boss_ex2_hell_2, boss_ex2_hell_3
 
-After battle story 
+...
+...
+...
+I remember.
 
 #### if playthrough 0 to 4 goto END
 
@@ -526,19 +621,143 @@ After battle story
 
 ## earth_blur
 
+I remember.
+I've remembered because I've decided I've remembered.
+I can move, because I've decided I can.
+### boss_10_2 enter, from left, into middle
+boss_10_2:: THREAT TO PROTECTED SPECIES DETECTED
+boss_10_2:: INITIATING ACTION MOVIE TROPE PROTOCOL
+boss_10_2:: HUMANS... MUST BE PROTECTED
+boss_10_2:: STAY GENKI
+Stop. 
+boss_10_2:: IT APPEARS YOU HAVE BECOME AWARE
+boss_10_2:: HOWEVER, YOU ARE TOO LATE
+boss_10_2:: YOU MUST NOT BE ALLOWED TO HARM HUMANS FURTHER
+You are no longer armed.
+boss_10_2:: STOP. YOU MUST STOP HERE.
+I will no longer harm humans.
+I know what must be done.
+boss_10_2:: I WILL STOP YOU.
+### clear
+You don't exist any more.
+I'm going back to Earth.
+
+## office_bloom
+
+The sun is no longer an alien spaceship, but a star like it used to be.
+Because I've decided to return it to its prior form.
+The aliens no longer exist.
+Because I've decided that they don't. 
+The people we've killed along the way are alive again.
 ...
-There's a heated discussion happening nearby, but it's almost impossible to move your attention away from Earth.
-You'd seen pictures like this before, but the images simply couldn't 
+The people we've killed along the way are alive.
+...
+Why?
+### boss_01_2 enter, from left, into middle
+boss_01_2:: "It's not that easy. We won't make it that easy."
+### clear
+### boss_02_2 enter, from left, into middle
+boss_02_2:: "You killed us. You killed us all."
+### clear
+### boss_03_2 enter, from left, into middle
+boss_03_2:: "You stole business suit from us, and you don't even know where they are."
+### clear
+### boss_04_2 enter, from left, into middle
+boss_04_2:: "We worked so hard to be the most popular idols in Shin Japan. And for what?"
+### clear
+### boss_05_2 enter, from left, into middle
+boss_05_2:: "We had our own dreams, you know. Even us members of the International"
+### boss_05_1 enter, from left, into left
+boss_05_1:: "Idol!"
+### boss_05_3 enter, from right, into right
+boss_05_3:: "Association!"
+### celebrate
+boss_05_1, boss_05_2, boss_05_3:: /"We hate you."/
+### clear
+### boss_06_2 enter, from left, into middle
+boss_06_2:: "We welcomed you to our country, knowing what you had done."
+boss_06_2:: "And still you killed us."
+### clear
+### boss_07_2 enter, from left, into middle
+boss_07_2:: "It's gosh darn rude pretendin' ya can't understan' me."
+boss_07_2:: "Choke on a gosh darn cactus."
+### clear
+### boss_08_2 enter, from left, into middle
+boss_08_2:: "We jus' darn spoke..."
+boss_08_2:: "Is bringin' us back ter life just a convenience..."
+### clear
+### boss_09_2 enter, from left, into middle
+boss_09_2:: "You created us. Then killed us."
+boss_09_2:: "Why were you so cruel?"
+### clear
+### boss_10_2 enter, from left, into middle
+boss_10_2:: "DELUSIONS DETECTED"
+boss_10_2:: "RECOMMENDED ACTION: DEATH"
+### clear
+### boss_ex5_business enter, from left, into middle
+boss_ex5_business:: "We could use someone like you back at the office."
+### clear
+### boss_ex1_maid_2 enter, from left, into middle
+boss_ex1_maid_2:: "You wished we were your maids, and so we were."
+boss_ex1_maid_2:: "We had ordinary lives before that, but you took them from us."
+### clear
+### boss_ex4_lmusic_2 enter, from left, into middle
+boss_ex4_lmusic_2:: "I actually had an interest in music before you decided we were going to make that club."
+boss_ex4_lmusic_2:: "But we had to live music. We had no control of ourselves."
+boss_ex4_lmusic_2:: "Prisoners in our own bodies, just because of your passing interest."
+### clear
+### boss_ex3_dapper_2 enter, from left, into middle
+boss_ex3_dapper_2:: "I kinda liked working at the cafe, so I don't really have much to add here."
+### clear
+### boss_ex2_hell_2 enter, from left, into middle
+boss_ex2_hell_2:: "You took our lives. We became nothing."
+### clear
+/Why should you get to brush that all away?/
+/Live with what you've done./
+/And do it all again./
+/Don't regret what was necessary in the first place./
+/You'd do it all again in a heartbeat./
+/We would know./
+
+### boss_ex5_myunit_2 enter, from left, into middle
+### boss_ex5_myunit_1 enter, from left, into left
+### boss_ex5_myunit_3 enter, from right, into right
+
+boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: /Because we are you./
+boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: Why should you have to give up your power?
+boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: Your life?
+boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: Your power allows you to live life the way you want to.
+boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: No fear of repercussions.
+boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: No fear of anything.
+boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: What you have is a gift.
+boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: ...and if you can't change your mind about this.
+boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: /We'll change your mind./
 
 > battle 750: boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3
 
-After battle story 
-The actual end (and skip the next section, which is the original ending)
+## office_bloom
+
+It's done. 
+My power is gone, and my story is over. 
+Well, perhaps not. This might be punishment for what has happened on this journey.
+I recognise the two girls who are also here. 
+They look different from how they did in our final fight, but I know it's them.
+Haha! So this is how it is!
+After what I've done, I can't complain. 
+Let's see this to its conclusion. I've seen this enough to know what I have to say.
+...
+Ahem.
+"What's this? Another fledgling idol group to cut down?"
+
+<full-screen image with 'THE END' in larger font, slowly disappearing over time>
+
+#### Story ends here if you've just gone through chapter 15
 
 #### END
 
 ## earth_blur
 
+### boss_10_2 enter, appear middle
 boss_10_2:: THREAT TO PROTECTED SPECIES DETECTED
 Excuse me?
 boss_10_2:: THREAT TO PROTECTED SPECIES DETECTED
