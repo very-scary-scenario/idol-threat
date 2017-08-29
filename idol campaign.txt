@@ -273,7 +273,6 @@ End them, and our heroes will become the strongest idol unit in the world!
 
 > battle 300: boss_07_1, boss_07_2, boss_07_3
 
-### celebrate
 Victory is ours!
 We are the strongest idol unit in the world!
 Maybe even the universe!
