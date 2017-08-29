@@ -966,6 +966,8 @@ Agency.prototype.doStory = function(pageNumber) {
       }
       actorElement.classList.remove('exited');
 
+      if (page.adjectives.rotated) actorElement.setAttribute('data-rotated', page.adjectives.rotated);
+
       if (page.verb === 'enter' && page.adjectives.from) {
         actorElement.setAttribute('data-position', page.adjectives.from + '-offstage');
         setTimeout(goToDestination, 10);

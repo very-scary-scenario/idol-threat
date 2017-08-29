@@ -1072,8 +1072,13 @@ body.nothing-scanned {
         img {
           position: absolute;
           bottom: 0;
+          transform-origin: center;
         }
       }
+
+      &[data-rotated] { bottom: 25vh; margin-left: -10vh }
+      &[data-rotated="left"] { transform: rotate(280deg); }
+      &[data-rotated="right"] { transform: rotate(80deg); }
     }
   }
 
