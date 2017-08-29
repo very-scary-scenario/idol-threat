@@ -841,7 +841,7 @@ Agency.prototype.addIdol = function(idol, interactive) {
   }
 };
 Agency.prototype.removeIdol = function(idol) {
-  if (idol.isInUnit()) agency.unit.splice(agency.catalog.indexOf(idol), 1);
+  if (idol.isInUnit()) idol.toggleUnitMembership();
   agency.catalog.splice(agency.catalog.indexOf(idol), 1);
 
   agency.recentlyFired.push(idol.seed);
