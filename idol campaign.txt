@@ -91,48 +91,49 @@ But surprise quickly turns to acceptance, as they wave their approval through th
 
 While leaving the venue, the idols are approached by someone in a business suit.
 They wanted to know if you'd seen the idols that were meant to be performing tonight.
-Having no idea what they're talking about, it seems you aren't going to be of much use.
-The rudimentary check behind the stage leaves them optionless, and it's decided that they will help our idols instead.
+Having no idea what they're talking about, it seems like you aren't going to be of much use.
+A brief glance behind the stage leaves them optionless, and it's decided that they will help our idols instead.
 Not only do they have contacts at the Shin Nippon Budokan, the most important stage in the country,
 but they'll also help with the cleaning! Score!
 Seriously, when it comes to removing stains from your costume's frills, you need all the help you can get.
 There is a condition, however.
 Our idols are introduced to another local unit. One that seems to know this person. 
-### boss_03_2 enter, from left, into middle
-boss_03_2:: "Hey, back off. This person belongs to us."
-### boss_03_1 enter, from left, into left
-boss_03_1:: "We won them in an idol-off in the streets."
-boss_03_1:: "We own them and their next two generations."
-### boss_03_3 enter, from right, into right
-boss_03_3:: "We don't know much about them, but the suit makes us seem more important."
-boss_03_2:: "Now, how about some compensation?"
-boss_03_2:: "You know, for the emotional trauma you've caused us today."
+### boss_03_3 enter, from left, into middle
+boss_03_3:: "Hey, back off. This person belongs to us."
+### boss_03_2 enter, from left, into left
+boss_03_2:: "We won them in an idol-off in the streets."
+boss_03_2:: "We own them and their next two generations."
+### boss_03_1 enter, from right, into right
+boss_03_1:: "We don't know much about them, but the suit makes us seem more important."
+boss_03_3:: "Now, how about some compensation?"
+boss_03_3:: "You know, for the emotional trauma you've caused us today."
 To win the help of this suit, our idols must demonstrate what the opportunity means to them.
-The two groups dust down their costumes, assume their fighting stances and prepare for battle.
+The two groups dust down their clothes, assume their fighting stances and prepare for battle.
 
-> battle 100: boss_03_1, boss_03_2, boss_03_3
+> battle 100: boss_03_2, boss_03_3, boss_03_1
 
 With the battle won, our idols are one step closer to conquering the world.
 With love, sparkles and all that good stuff.
 Business suit seems irritated that the other unit didn't learn their name,
-but concludes that we're probably kinder and might learn it eventually.
+but concludes that we are probably kinder and might learn it eventually.
 With the dreams and aspirations of three rival idol units inside them, they head to the Shin Nippon Budokan. 
 
 # part four
 
 ## budokan_glow
 
-The producer proves to be a great asset almost immediately, gaining the idols access to the Budokan.
+The producer proves to be a great asset almost immediately, gaining the idols access to the Shin Nippon Budokan.
 While under regular circumstances we'd have been granted access to the venue, we are somewhat expediting the process.
 After all, while we know that these idols are going to become the saviours of the world, the general populace doesn't know that yet.
 So it's not really our fault that the guards stood no chance against a powerful chop to the neck.
 As our group approaches the stage, a famous idol unit slowly comes into view.
-You know, /it's them/. The most popular idols in all of Shin Japan.
+/It's them./
+/The most popular idols in all of Shin Japan./
 They aren't like the others, though. Their overwhelming presence is felt from across the corridor.
-Worst still, they know why our unit is here.
+What's worse, they know why our unit is here.
 ### boss_04_2 enter, from left, into middle
 boss_04_2:: "Another one? Seriously, these guards are an embarrassment to the Shin Budokan."
-The leader of the group, without breaking eye contact with our idols, removes her evening gloves and tosses them to one side.
+The leader of the group, without breaking eye contact with our idols, tightens the bow under her collar.
 ### boss_04_1 enter, from left, into left
 boss_04_1:: "Lucky for them, I could use a warm up before this evening's performance."
 This one pats her mouth with a tissue. It appears we're not the first to challenge them today.
@@ -148,7 +149,7 @@ Saviours, show them your appeal!
 
 We're unstoppable.
 With the power of Shin Japan's greatest idols, few can stand a chance against our unit.
-You /will/ be entertained. 
+/You will be entertained./
 However, this is raw, untamed power. 
 We may have conquered Japan, but the whole world is currently out of the question.
 With her dying breath, one of the Budokan idols begins to speak.
@@ -172,17 +173,17 @@ As the idols left the Budokan, the earth began to shake.
 With a grand plume of fire, three masked figures appear before us.
 ### boss_05_2 enter, from left, into middle
 boss_05_2:: "We are the IIA representatives for Asia."
-### boss_05_1 enter, from left, into left
-boss_05_1:: "We have been watching, and we have decided to stop you here."
-### boss_05_3 enter, from right, into right
-boss_05_3:: "As representatives as the IIA."
-boss_05_1:: "Basically we're a big deal."
+### boss_05_3 enter, from left, into left
+boss_05_3:: "We have been watching, and we have decided to stop you here."
+### boss_05_1 enter, from right, into right
+boss_05_1:: "As representatives as the IIA."
+boss_05_3:: "Basically we're a big deal."
 It's not clear what the IIA is, but-
-boss_05_3:: "We're the..."
-boss_05_1:: "International!"
+boss_05_1:: "We're the..."
+boss_05_3:: "International!"
 boss_05_2:: "Idol!"
 ### celebrate
-boss_05_1, boss_05_2, boss_05_3:: "Association!"
+boss_05_3, boss_05_2, boss_05_1:: "Association!"
 ...
 It appears our opponents are performing some kind of death ritual.
 However, as dangerous as it may be, consuming the experiences of an idol unit of this level would prove invaluable.
@@ -209,7 +210,7 @@ Business suit schedules a flight, marking the beginning of our search for the Eu
 Europe, the gigantic country to the west, is first on the list.
 The plane journey has been largely uneventful, but I can't say the same for the in-flight meal.
 The main dish of the Japanese meal is sushi. An extravagant selection of futomaki rolls with inspired ingredients.
-The first pair flaunted delicate slices of lightly seasoned bluefin tuna, which mingled exquisitely with the crunchy cucumber and mildly spiced mayonnaise. 
+The first pair of rolls flaunted delicate slices of lightly seasoned bluefin tuna, which mingled exquisitely with the crunchy cucumber and mildly spiced mayonnaise. 
 These were followed by a modest pairing of sweet tempura shrimp and toasted sesame seeds. The crisp nori seaweed added a delicate resistance to the piece.
 However, it's the final pair that will leave a lasting impression. 
 The outstanding composition of fresh salmon and tender avocado, accentuated with crunchy lettuce, truly set the dish apart from all others like it.
@@ -223,14 +224,14 @@ boss_06_2:: "At last, we have found you. Welcome to Norway!"
 boss_06_1:: "Velkommen!"
 ### boss_06_3 enter, from right, into right
 boss_06_3:: "Ni hao!"
-The European representative's attempt to lull our heroes into a false sense of security hasn't worked.
+The European IIA's attempt to lull our heroes into a false sense of security hasn't worked.
 We know we're in Europe, not Norway.
 Insulted by this cheap trick, our idols prepare for combat.
 
 > battle 250: boss_06_1, boss_06_2, boss_06_3
 
 A lot of time was wasted in the battle with the European representatives.
-With that in mind, it became imperative that the idols find the American IIA representatives as soon as possible.
+With that in mind, it became imperative that you find the American IIA representatives as soon as possible.
 The immediacy? Well, I suppose it isn't immediate per se...
 But the sooner we kill the American representatives, the sooner we can unite the world!
 Kill their spirits, I mean. It's complicated.
@@ -291,11 +292,10 @@ Like, hurry up though because we've got to have celebrations and stuff.
 ## large_stage_bloom
 
 To mark the defeat of the IIA and a revolution in worldwide idoling, a grand stage has been constructed for the performance.
-Finally, some good use of taxpayer's money, and better yet, the death toll during construction was in single digits!
+Finally, some good use of taxpayer's money. Better yet, the death toll during construction was in single digits!
 It also comes equipped with speakers the size of small nations, just to make sure that everyone can hear the idols sing.
-Dead or alive.
+/Dead or alive./
 Perhaps this explains the appearance of three ghosts, who seem slightly concerned about something.
-Which is fortunate really, because three familiar-looking ghosts have approached us.
 They look scary, but they were polite enough to wait until the end of the set.
 ### boss_08_2 enter, from left, into middle
 boss_08_2:: "Stop... Yer not ready..."
@@ -405,7 +405,7 @@ boss_10_1, boss_10_2, boss_10_3:: RUNNING IDOL PROTOCOL 3.30
 boss_10_1, boss_10_2, boss_10_3:: CODENAME: KIRA KIRA KILLLA
 boss_10_1:: ALL NON-COMBATANTS SHOULD RETREAT TO A DISTANCE OF 20 LIGHT YEARS
 boss_10_3:: PREPARE TO BE ANNIHILATED
-boss_10_2:: WITH LOVE
+boss_10_1, boss_10_2, boss_10_3:: WITH LOVE
 
 > battle 500: boss_10_1, boss_10_2, boss_10_3
 
@@ -503,9 +503,9 @@ You instead move your attention back to the sight of Earth through the window.
 Your memory is hazy about the details, but you don't remember hating it. 
 Getting nostalgic, you remember the time when you decided to join an after-school club.
 ### boss_ex4_lmusic_1 enter, from left, into left
-boss_ex1_lmusic_1:: "You wanted to join the music club."
+boss_ex4_lmusic_1:: "You wanted to join the music club."
 ### boss_ex4_lmusic_3 enter, from right, into right
-boss_ex1_lmusic_3:: "You wanted to be a star."
+boss_ex4_lmusic_3:: "You wanted to be a star."
 ### boss_ex4_lmusic_2 enter, from left, into middle
 boss_ex4_lmusic_2:: "Whatever the cost."
 boss_ex4_lmusic_1:: "But there wasn't a music club."
@@ -515,6 +515,8 @@ boss_ex4_lmusic_1, boss_ex4_lmusic_2, boss_ex4_lmusic_3:: "...m..er..."
 boss_ex4_lmusic_1, boss_ex4_lmusic_2, boss_ex4_lmusic_3:: "...re..r..."
 
 > battle 600: boss_ex4_lmusic_1, boss_ex4_lmusic_2, boss_ex4_lmusic_3
+
+## earth_blur
 
 ...
 Why?
@@ -559,6 +561,8 @@ boss_ex3_dapper_1, boss_ex3_dapper_2, boss_ex3_dapper_3:: "...m..er..."
 boss_ex3_dapper_1, boss_ex3_dapper_2, boss_ex3_dapper_3:: "...re..r..."
 
 > battle 650: boss_ex3_dapper_1, boss_ex3_dapper_2, boss_ex3_dapper_3
+
+## earth_blur
 
 ...
 ...stop.
@@ -608,6 +612,8 @@ boss_ex2_hell_1, boss_ex2_hell_2, boss_ex2_hell_3:: "You became us."
 boss_ex2_hell_1, boss_ex2_hell_2, boss_ex2_hell_3:: /"Remember?"/
 
 > battle 700: boss_ex2_hell_1, boss_ex2_hell_2, boss_ex2_hell_3
+
+## earth_blur
 
 ...
 ...
@@ -666,9 +672,9 @@ boss_04_2:: "We worked so hard to be the most popular idols in Shin Japan. And f
 ### clear
 ### boss_05_2 enter, from left, into middle
 boss_05_2:: "We had our own dreams, you know. Even us members of the International"
-### boss_05_1 enter, from left, into left
+### boss_05_3 enter, from left, into left
 boss_05_1:: "Idol!"
-### boss_05_3 enter, from right, into right
+### boss_05_1 enter, from right, into right
 boss_05_3:: "Association!"
 ### celebrate
 boss_05_1, boss_05_2, boss_05_3:: /"We hate you."/
