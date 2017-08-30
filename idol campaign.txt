@@ -73,7 +73,7 @@ boss_02_2:: "You're barely an idol, let alone security."
 boss_02_2:: "Honestly, where the heck are they?"
 boss_02_3:: "On a date, boss. Nice place by the river."
 boss_02_2:: "Phenomenal. It's lucky we're not paying them a wage."
-"Looks like we'll be throwing you out this time."
+boss_02_2:: "Looks like we'll be throwing you out this time."
 This is our chance at a big break, and one that our heroes so desperately need.
 Idols! Remove that rival idol unit from their own gig and claim your rightful place as the hope of Shin Tokyo.
 
