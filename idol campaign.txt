@@ -673,9 +673,9 @@ boss_04_2:: "We worked so hard to be the most popular idols in Shin Japan. And f
 ### boss_05_2 enter, from left, into middle
 boss_05_2:: "We had our own dreams, you know. Even us members of the International"
 ### boss_05_3 enter, from left, into left
-boss_05_1:: "Idol!"
+boss_05_3:: "Idol!"
 ### boss_05_1 enter, from right, into right
-boss_05_3:: "Association!"
+boss_05_1:: "Association!"
 ### celebrate
 boss_05_1, boss_05_2, boss_05_3:: /"We hate you."/
 ### clear
