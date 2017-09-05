@@ -205,18 +205,33 @@ Business suit schedules a flight, marking the beginning of our search for the Eu
 
 # part six
 
-## norway_blur
+## VSS02
 
 Europe, the gigantic country to the west, is first on the list.
 The plane journey has been largely uneventful, but I can't say the same for the in-flight meal.
 The main dish of the Japanese meal is sushi. An extravagant selection of futomaki rolls with inspired ingredients.
+
+## maki1-blur
+
 The first pair of rolls flaunted delicate slices of lightly seasoned bluefin tuna, which mingled exquisitely with the crunchy cucumber and mildly spiced mayonnaise. 
+
+## nigiri1-blur
+
 These were followed by a modest pairing of sweet tempura shrimp and toasted sesame seeds. The crisp nori seaweed added a delicate resistance to the piece.
 However, it's the final pair that will leave a lasting impression. 
+
+## avocado-blur
+
 The outstanding composition of fresh salmon and tender avocado, accentuated with crunchy lettuce, truly set the dish apart from all others like it.
 A completely inedible offering for an idol unit that doesn't eat seafood.
 Never trust a fish. These are words that the agency will live and die by.
+
+## VSS01
+
 Fortunately the disappointment will only be momentary, as the flight to Europe proves to be a short one. We have arrived.
+
+## norway_blur
+
 As our idols step off the plane, the European IIA representatives step out from behind a truck.
 ### boss_06_2 enter, from left, into middle
 boss_06_2:: "At last, we have found you. Welcome to Norway!"
