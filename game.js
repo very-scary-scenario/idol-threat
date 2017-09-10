@@ -802,6 +802,7 @@ Agency.prototype.levelProgress = function() {
 Agency.prototype.grantExperience = function(count) {
   this.experience += count;
   deferRerender();
+  if (!count) return;  // we don't need to congratulate them on this one i don't think
 
   var indicator = document.createElement('div');
   indicator.classList.add('xp-indicator');
