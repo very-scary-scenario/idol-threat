@@ -313,16 +313,16 @@ It also comes equipped with speakers the size of small nations, just to make sur
 Perhaps this explains the appearance of three ghosts, who seem slightly concerned about something.
 They look scary, but they were polite enough to wait until the end of the set.
 ### boss_08_2 enter, from left, into middle
-boss_08_2:: "Stop... Yer not ready..."
+boss_08_2:: "Stop... Ya murderin' vermint..."
 ### boss_08_3 enter, from left, into left
-boss_08_3:: "I don't know what she just said, but you're not strong enough..."
+boss_08_3:: "I don't know what she just said..."
 ### boss_08_1 enter, from right, into right
-boss_08_1:: "I can't feel my legs..."
-Even now, the ex-leaders of the IIA representatives are doubting the abilities of our idols.
-Strong enough? We're literally the strongest!
-boss_08_3:: "We weren't talking about them..."
+boss_08_1:: "I can't feel my legs and I'm freaking out right now..."
+Even now, the ex-leaders of the IIA representatives have the gall to call you a murderer.
+It's not your fault that they had a weak constitution.
+boss_08_3:: "You're both as bad as each other..."
 boss_08_2:: "Why did I hav ter die..."
-boss_08_1:: "Avenge us..."
+boss_08_1:: "We'll bring you down with us..."
 I have no idea what they're talking about and honestly I'm shocked and appalled. 
 Anyway it's time to end this, once and for all.
 
