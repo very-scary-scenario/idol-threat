@@ -2,6 +2,7 @@
 @unit-height: 7em;
 @bg: #fdfdfd;
 @fg: #111;
+@battle-bg: #282828;
 @hl: #bbb;
 @icon-size: 512px;
 @button-radius: .2em;
@@ -23,8 +24,8 @@
 }
 
 @keyframes speak {
-  from, to {transform: scale(1.3) rotate(5deg) translateY(0vw)}
-  50% {transform: scale(1.3) rotate(-5deg) translateY(-2vw)}
+  from, to {transform: scale(1.2) rotate(5deg) translateY(0vw)}
+  50% {transform: scale(1.2) rotate(-5deg) translateY(-2vw)}
 }
 
 @keyframes xp-ascend {
@@ -162,7 +163,7 @@ a {
     position: absolute;
     left: 0;
     right: 0;
-    width: 100%;
+    height: 100%;
 
     // &.layer-eb {
     //   animation-duration: 2s;
@@ -269,8 +270,8 @@ a {
       left: 0;
 
       .sprite {
-        width: 12em;
-        height: 100%;
+        height: 22em;
+        width: 100%;
       }
     }
 
@@ -364,6 +365,10 @@ a {
         height: @unit-height * 2;
         width: @unit-height * 2;
         margin: -(@unit-height/3) -(@unit-height * 0.4);
+
+        img {
+          height: @unit-height * 3.2;
+        }
       }
     }
   }
@@ -401,8 +406,8 @@ a {
   }
 
   .portrait {
-    width: 100vw;
-    height: 120vh;
+    width: 150vw;
+    height: 150vw;
     text-align: right;
     position: absolute;
     top: -7vh;
@@ -413,7 +418,7 @@ a {
     .sprite {
       display: inline-block;
       left: 15vw;
-      max-width: 100vh;
+      max-height: 150vh;
     }
   }
 
@@ -561,7 +566,7 @@ body.in-battle {
 
     .idol-list {
       color: @bg;
-      background-color: fade(@fg, 90%);
+      background-color: @battle-bg;
 
       &::before {
         display: block;
@@ -629,6 +634,25 @@ body.in-battle {
           max-width: 25vh !important;
           margin-bottom: 2em;
           transform-origin: 40% 100%;
+          overflow: hidden;
+          position: relative;
+
+          .sprite {
+            height: 50vw;
+            max-height: 42vh !important;
+          }
+
+          &::after {
+            content: ' ';
+            pointer-events: none;
+            display: block;
+            background: linear-gradient(to bottom, fade(@battle-bg, 0%), fade(@battle-bg, 0%) 80%, @battle-bg);
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 30vw;
+            max-height: 25vh !important;
+          }
         }
 
         .name {
@@ -1053,13 +1077,13 @@ body.nothing-scanned {
     position: absolute;
     top: 0;
     left: 0;
-    height: 78vh;
-    width: 100%;
+    height: 110vh;
+    width: 100vw;
 
     .actor {
       margin-left: -20vh;
       position: absolute;
-      height: 100%;
+      height: 78vh;
       bottom: 0;
       transform-origin: 70% bottom;
       transition: left 2s ease-in-out, transform 1s, opacity 1s;
@@ -1081,8 +1105,8 @@ body.nothing-scanned {
       &[data-position="right-offstage"] { left: 120%; }
 
       .sprite {
+        height: 50vh;
         width: 40vh;
-        height: 100%;
         transform-origin: bottom center;
 
         img {
