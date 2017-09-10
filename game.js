@@ -802,6 +802,16 @@ Agency.prototype.levelProgress = function() {
 Agency.prototype.grantExperience = function(count) {
   this.experience += count;
   deferRerender();
+
+  var indicator = document.createElement('div');
+  indicator.classList.add('xp-indicator');
+  indicator.innerHTML = count.toString(10) + 'xp';
+  indicator.style.left = ((Math.random() * 60) - 30).toString(10) + '%';
+  document.body.appendChild(indicator);
+
+  setTimeout(function() {
+    document.body.removeChild(indicator);
+  }, 4000);
 };
 Agency.prototype.unitName = function() {
   var unitSeed = 0;

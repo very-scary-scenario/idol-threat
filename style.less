@@ -6,6 +6,8 @@
 @icon-size: 512px;
 @button-radius: .2em;
 @health-bar-radius: .3vw;
+@xp-indicator-size: 20vw;
+@xp-yellow: #964;
 
 @rock: '✊';
 @paper: '✋';
@@ -23,6 +25,19 @@
 @keyframes speak {
   from, to {transform: scale(1.3) rotate(5deg) translateY(0vw)}
   50% {transform: scale(1.3) rotate(-5deg) translateY(-2vw)}
+}
+
+@keyframes xp-ascend {
+  from {
+    bottom: -@xp-indicator-size;
+    opacity: 1;
+    transform: rotate(5deg) scale(0.9);
+  }
+  to {
+    bottom: 50vh;
+    opacity: 0;
+    transform: rotate(-5deg) scale(1.2);
+  }
 }
 
 #title {
@@ -1171,6 +1186,20 @@ body.nothing-scanned {
   &.affinity-rock #catch-button { background-color: @rock-colour }
   &.affinity-paper #catch-button { background-color: @paper-colour }
   &.affinity-scissors #catch-button { background-color: @scissors-colour }
+}
+
+.xp-indicator {
+  position: absolute;
+  width: 100%;
+  pointer-events: none;
+  z-index: 2001;
+  text-align: center;
+  color: @xp-yellow;
+  text-shadow: .05em .05em 0 darken(@xp-yellow, 50%);
+  font-size: @xp-indicator-size;
+  transform-origin: center;
+  animation-duration: 2s;
+  animation-name: xp-ascend;
 }
 
 #confetti {
