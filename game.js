@@ -134,6 +134,7 @@ var promptArea = document.getElementById('prompt-area');
 var auditionSpace = document.getElementById('audition-space');
 var canteenElement = document.getElementById('canteen');
 var theatreElement = document.getElementById('theatre');
+var xpIndicatorsElement = document.getElementById('xp-indicators');
 
 var spriteTemplate = Handlebars.compile(document.getElementById('sprite-template').innerHTML);
 var catalogTemplate = Handlebars.compile(document.getElementById('catalog-template').innerHTML);
@@ -808,10 +809,10 @@ Agency.prototype.grantExperience = function(count) {
   indicator.classList.add('xp-indicator');
   indicator.innerHTML = count.toString(10) + 'xp';
   indicator.style.left = ((Math.random() * 60) - 30).toString(10) + '%';
-  document.body.appendChild(indicator);
+  xpIndicatorsElement.appendChild(indicator);
 
   setTimeout(function() {
-    document.body.removeChild(indicator);
+    xpIndicatorsElement.removeChild(indicator);
   }, 4000);
 };
 Agency.prototype.unitName = function() {

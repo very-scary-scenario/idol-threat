@@ -1212,19 +1212,28 @@ body.nothing-scanned {
   &.affinity-scissors #catch-button { background-color: @scissors-colour }
 }
 
-.xp-indicator {
-  position: absolute;
+#xp-indicators {
+  position: fixed;
+  height: 100%;
   width: 100%;
-  pointer-events: none;
-  opacity: 0;
+  top: 0;
+  left: 0;
+  overflow: hidden;
   z-index: 2001;
-  text-align: center;
-  color: @xp-yellow;
-  text-shadow: .05em .05em 0 darken(@xp-yellow, 50%);
-  font-size: @xp-indicator-size;
-  transform-origin: center;
-  animation-duration: 2s;
-  animation-name: xp-ascend;
+  pointer-events: none;
+
+  .xp-indicator {
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+    text-align: center;
+    color: @xp-yellow;
+    text-shadow: .05em .05em 0 darken(@xp-yellow, 50%);
+    font-size: @xp-indicator-size;
+    transform-origin: center;
+    animation-duration: 2s;
+    animation-name: xp-ascend;
+  }
 }
 
 #confetti {
