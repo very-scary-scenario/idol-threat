@@ -211,16 +211,16 @@ Europe, the gigantic country to the west, is first on the list.
 The plane journey has been largely uneventful, but I can't say the same for the in-flight meal.
 The main dish of the Japanese meal is sushi. An extravagant selection of futomaki rolls with inspired ingredients.
 
-## maki1-blur
+## maki1_blur
 
 The first pair of rolls flaunted delicate slices of lightly seasoned bluefin tuna, which mingled exquisitely with the crunchy cucumber and mildly spiced mayonnaise. 
 
-## nigiri1-blur
+## nigiri1_blur
 
 These were followed by a modest pairing of sweet tempura shrimp and toasted sesame seeds. The crisp nori seaweed added a delicate resistance to the piece.
 However, it's the final pair that will leave a lasting impression. 
 
-## avocado-blur
+## avocado_blur
 
 The outstanding composition of fresh salmon and tender avocado, accentuated with crunchy lettuce, truly set the dish apart from all others like it.
 A completely inedible offering for an idol unit that doesn't eat seafood.
