@@ -1121,6 +1121,8 @@ barcodeImage.addEventListener('change', function(e) {
 var agency = new Agency();
 
 function rerender() {
+  if (document.body.classList.contains('in-battle')) return;  // there's no need to rerender when in battle
+
   agency.renderCatalog();
   agency.renderUnit();
 
