@@ -1150,13 +1150,16 @@ function rerender() {
 
       var battle = new Battle(playerIdols, enemyIdols, function(battle) {
         askUser('You win! Your unit gets bonuses~', [['Yay!', null]]);
-        agency.grantExperience(
-          5 * (maxUnitSize - battle.playerIdols.length)
-        );
+
+        var experienceGained = 0;
+
+        experienceGained += 5 * (maxUnitSize - battle.playerIdols.length);
 
         if (battle.numberOfLivingMembers(battle.playerIdols) === battle.playerIdols.length) {
-          agency.grantExperience(2);
+          experienceGained += 2;
         }
+
+        agency.grantExperience(experienceGained);
 
         for (var pi = 0; pi < this.playerIdols.length; pi++) {
           this.playerIdols[pi].idol.giveBonus(enemyIdols.length);
