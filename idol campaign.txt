@@ -211,11 +211,11 @@ Europe, the gigantic country to the west, is first on the list.
 The plane journey has been largely uneventful, but I can't say the same for the in-flight meal.
 It's a Japanese meal, largely made up of sushi in a variety of styles. An extravagant selection with inspired ingredients.
 
-## maki1_blur
+## maki_blur
 
 The first set of rolls flaunted delicate slices of lightly seasoned bluefin tuna, complimented by a drizzling of toasted sesame seeds. The crisp nori seaweed added a delicate resistance to the piece.
 
-## nigiri1_blur
+## nigiri_blur
 
 These were followed by a platter of king salmon nigiri, polished by a thin glaze of mizkan vinegar. This mingled exquisitely with a mildly spiced mayonnaise, daringly placed beneath the fish. 
 However, it's this final pair that will leave a lasting impression. 
