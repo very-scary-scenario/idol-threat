@@ -303,7 +303,13 @@
         <h2 class="affinity-{{affinity}}">{{name}}</h2>
         <div class="portrait"></div>
         <p id="catch-button-container">
-          <a href="#" id="catch-button">Recruit!</a>
+          <a href="#" id="catch-button">
+            {{#if isShadow}}
+              Shadow Recruit
+            {{else}}
+              Recruit!
+            {{/if}}
+          </a>
         </p>
       </div>
     </script>

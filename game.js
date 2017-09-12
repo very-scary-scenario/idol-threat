@@ -58,6 +58,7 @@ var SEED_OVERRIDE_HANDLERS = {
     ];
   }
 };
+for (var overrideName in SEED_OVERRIDE_HANDLERS) SEED_OVERRIDE_HANDLERS[overrideName].overrideName = overrideName;
 var SEED_OVERRIDES = {};
 
 function parsePresetBarcodes() {
@@ -676,7 +677,13 @@ Idol.prototype.dump = function() {
 Idol.prototype.handleOverrides = function() {
   // look, we need _somewhere_ to hide our easter eggs
   var override = SEED_OVERRIDES[this.seed];
-  if (override !== undefined) override(this);
+  if (override !== undefined) {
+    override(this);
+    this.seedOverride = override.overrideName;
+  }
+};
+Idol.prototype.isShadow = function() {
+  return this.seedOverride === 'shadow';
 };
 
 function hideIdolDetail(event) {
