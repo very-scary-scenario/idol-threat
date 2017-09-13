@@ -35,6 +35,45 @@ var RARITIES = [
 var BASE_RARITY = 300;
 var RARITY_CURVE = 0.6;
 
+var SEED_OVERRIDE_HANDLERS = {
+  shadow: function(idol) {
+    idol.firstName = 'Jack';
+    idol.lastName = 'Ryan';
+    idol.cacheName();
+    idol.defense = 100;
+    idol.attack = 100;
+    idol.speed = 100;
+    idol.bio = "Somebody tried to kill them. Lied to their wife for three years. Didn't give their PhD.";
+    idol.quote = "Now, talk me through your very scary scenario.";
+
+    function makeSpecialAbility(name, affinity) {
+      return new Ability(idol, [{words: [name], bonus: 3}], choice(ANIMATIONS, idol.rand()), affinity);
+    }
+
+    idol.abilities = [
+      makeSpecialAbility('play rough', AFFINITIES[0]),
+      makeSpecialAbility('geopolitics', AFFINITIES[1]),
+      makeSpecialAbility('american directness', AFFINITIES[2]),
+      makeSpecialAbility('very scary scenario', idol.affinity)
+    ];
+  }
+};
+for (var overrideName in SEED_OVERRIDE_HANDLERS) SEED_OVERRIDE_HANDLERS[overrideName].overrideName = overrideName;
+var SEED_OVERRIDES = {};
+
+function parsePresetBarcodes() {
+  // cache what overrides we need to apply for a given seed
+  var overrideList;
+
+  for (var override in BARCODES) {
+    overrideList = BARCODES[override];
+
+    for (var i = 0; i < overrideList.length; i++) {
+      SEED_OVERRIDES[numFromString(overrideList[i])] = SEED_OVERRIDE_HANDLERS[override];
+    }
+  }
+}
+
 var BOSSES = {};
 
 function getBoss(name) {
@@ -256,7 +295,7 @@ function Idol(seed) {
   // build name
   this.firstName = this.generateName();
   this.lastName = this.generateName();
-  this.name = [this.firstName, this.lastName].join(' ');
+  this.cacheName();
 
   // build portrait
   var partsMissing = true;
@@ -314,6 +353,8 @@ function Idol(seed) {
 
   // build affinity
   this.affinity = choice(AFFINITIES, this.rand());
+
+  this.handleOverrides();
 }
 Idol.prototype.generateName = function() {
   var name = '';
@@ -339,6 +380,9 @@ Idol.prototype.generateName = function() {
   }
   name = name[0].toUpperCase() + name.slice(1);
   return name;
+};
+Idol.prototype.cacheName = function() {
+  this.name = [this.firstName, this.lastName].join(' ');
 };
 Idol.prototype.deferRendering = function(mode) {
   var self = this;
@@ -629,6 +673,17 @@ Idol.prototype.dump = function() {
     idolDump.s.push(this[STATS[i]]);
   }
   return idolDump;
+};
+Idol.prototype.handleOverrides = function() {
+  // look, we need _somewhere_ to hide our easter eggs
+  var override = SEED_OVERRIDES[this.seed];
+  if (override !== undefined) {
+    override(this);
+    this.seedOverride = override.overrideName;
+  }
+};
+Idol.prototype.isShadow = function() {
+  return this.seedOverride === 'shadow';
 };
 
 function hideIdolDetail(event) {
@@ -1259,6 +1314,7 @@ function deferRerender() {
 function initGame() {
   FastClick.attach(document.body);
   document.getElementById('loading').innerText = '';
+  parsePresetBarcodes();
 
   try {
     var savedStateString = getStateCookie();

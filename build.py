@@ -350,6 +350,24 @@ def build_graduation_bonuses():
     return graduation_bonuses
 
 
+def build_barcodes():
+    barcodes = {}
+
+    with open(os.path.join(HERE, 'barcodes.txt')) as f:
+        for line in f.readlines():
+            line = line.strip()
+            if not line:
+                continue
+
+            if line.startswith('# '):
+                section = line[2:]
+            else:
+                l = barcodes.setdefault(section, [])
+                l.append(line)
+
+    return barcodes
+
+
 def write_parts():
     with open('parts.js', 'w') as p:
         parts, poses, skin_colours, hair_colours = build_idols()
@@ -371,6 +389,7 @@ def write_parts():
         p.write('CAMPAIGN = {};'.format(json.dumps(build_campaign())))
         p.write('UNIT_NAMES = {};'.format(json.dumps(build_unit_names())))
         p.write('KANA = {};'.format(json.dumps(build_kana())))
+        p.write('BARCODES = {};'.format(json.dumps(build_barcodes())))
         p.write('GRADUATION_BONUSES = {};'.format(
             json.dumps(build_graduation_bonuses())
         ))
