@@ -43,7 +43,7 @@ var SEED_OVERRIDE_HANDLERS = {
     idol.defense = 100;
     idol.attack = 100;
     idol.speed = 100;
-    idol.bio = "Somebody tried to kill them. Lied to their wife for three years. Didn't give their PhD.";
+    idol.bio = "Somebody tried to kill her. She lied to her wife for three years. Didn't give them her PhD.";
     idol.quote = "Now, talk me through your very scary scenario.";
 
     function makeSpecialAbility(name, affinity) {
