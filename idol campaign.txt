@@ -674,6 +674,9 @@ The people we've killed along the way are alive again.
 The people we've killed along the way are alive.
 ...
 Why?
+
+## dimension
+
 ### boss_01_2 enter, from left, into middle
 boss_01_2:: "It's not that easy. We won't make it that easy."
 ### clear
