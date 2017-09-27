@@ -72,6 +72,9 @@ def build_idols():
             os.scandir(os.path.join(IDOLS_DIR, d.name)),
             key=lambda de: de.name,
         ):
+            if entry.name.startswith('.'):
+                continue
+
             fn = entry.name.replace('.png', '')
 
             basename, ext = os.path.splitext(entry.name)
