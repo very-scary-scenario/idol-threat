@@ -1254,7 +1254,7 @@ function rerender() {
         rerender();
         agency.doStory();
       }],
-      ['Not yet', null],
+      ['Not yet', null]
     ]);
   });
 
@@ -1330,9 +1330,31 @@ function initGame() {
   rerender();
 }
 
-if (window.location.hash === '#icon') {
+
+function iconHTML(idol) {
+  return '<div class="icon-container affinity-' + idol.affinity + '"><div class="portrait">' + idol.hugeSpriteHTML() + '</div></div>';
+}
+
+var batchMatch = window.location.hash.match(/#batch-(\d+)/);
+
+if (batchMatch) {
+  document.body.innerHTML = '';
+
+  var batchCount = parseInt(batchMatch[1], 10);
+  var batchElement = document.createElement('div');
+
+  for (var bi = batchCount; bi > 0; bi--) {
+    var thisIdol = new Idol(Math.random());
+    var thisIdolElement = document.createElement('div');
+    thisIdolElement.innerHTML = iconHTML(thisIdol);
+    batchElement.appendChild(thisIdolElement);
+  }
+
+  document.body.appendChild(batchElement);
+  document.body.classList.add('batch');
+} else if (window.location.hash === '#icon') {
   var iconIdol = new Idol(Math.random());
-  document.body.innerHTML = '<div class="icon-container affinity-' + iconIdol.affinity + '"><div class="portrait">' + iconIdol.hugeSpriteHTML() + '</div></div>';
+  document.body.innerHTML = iconHTML(iconIdol);
   document.body.classList.add('icon');
 } else {
   document.addEventListener('DOMContentLoaded', function() {
