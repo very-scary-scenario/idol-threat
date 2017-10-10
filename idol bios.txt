@@ -247,6 +247,9 @@ Likes to hide behind the other idols.
 Prefers to watch romantic comedies when at the cinema.
 Prefers to watch horror films when at the cinema.
 Prefers to watch sci-fi films when at the cinema.
+Prefers to watch documentaries films when at the cinema.
+Prefers to watch kids films when at the cinema.
+Would rather go to the opera than go to the cinema.
 Always watches the football when it's on TV.
 Always watches the tennis when it's on TV.
 Always watches the snooker when it's on TV.
@@ -286,8 +289,37 @@ Is only in it for the open buffet.
 Is only in it for the friends she made along the way.
 Is only in it for the merchandise.
 Is only in it because she's bored.
+Works part-time as a shrine maiden.
+Works part-time at a cabaret.
+Works part-time as a yakuza patriarch.
+Works part-time as a ticket scalper.
+Works part-time at a maid cafe.
+Works part-time at her parent's dingy bar.
+Is the current district swimming champion.
+Is the current district judo champion.
+Is the current district kendo champion.
+Is the current district archery champion.
+Is the current district spelling champion.
+Was once arrested for shoplifting.
+Was once arrested for punching a fan.
+Was once arrested while sleepwalking.
+Was once arrested for tax evasion.
+Was once arrested for causing a public disturbance.
+Is self-conscious about her squeaky shoes.
+Is self-conscious about her unruly hair.
+Is self-conscious about her strangely-coloured eyebrows.
+Is self-conscious about her lack of feet.
+Is self-conscious about a lot of things.
 Gets carried away talking about how anime used to be good.
 Gets carried away talking about how idols used to be good.
+Has been a vegetarian all her life.
+Has recently become vegetarian. 
+Has recently become vegan.
+Has been a vegan all her life.
+Has recently become pescatarian. 
+Has been a pescatarian all her life.
+Always responds to fan mail.
+Never responds to fan mail. 
 Is really looking forward to graduation.
 Is oddly worried about graduation.
 Uses newspapers to stay up to date on news.
@@ -326,7 +358,7 @@ Has her eyes set on the western market.
 Is preparing for her Hollywood debut.
 Is wearing her top back-to-front.
 Has twelve pairs of shoes but only one pair of socks.
-Wants to be on a New Year's Day gameshow.
+Wants to be on a New Year's Day game show.
 Spends all of her pocket money on lottery scratchcards.
 Has kept a tamagotchi alive since the 1990s.
 Is still collecting Pogs.
@@ -350,3 +382,19 @@ Is happy with the way things are.
 Wants to one day win Eurovision.
 Has been a dedicated member of the Wide Awake Club for years.
 Wants to build an eco-friendly car.
+Remembers the good old days.
+Still records anime on VHS tapes.
+Has never owned a mobile phone.
+Gets really enthusiastic about bleepers.
+Likes to stream video games for charity.
+Occasionally sleeps in graveyards.
+Folds the first sheet of a fresh toilet roll for that hotel feeling.
+Has a twin sister who often pretends to be a mirror.
+Won't buy anything unless she has a voucher for it.
+Always carries a tazer.
+Insists on working from home.
+Only keeps venomous pets.
+Puts her junk mail in the neighbour's mailbox.
+Writes negative album reviews for other idol groups.
+Paid to have her university essays written for her.
+Never uses honorifics.
