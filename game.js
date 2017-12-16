@@ -134,6 +134,14 @@ var idolSortNames = {
   unitMembership: 'Unit membership'
 };
 
+var upgradeNames = {
+  attack: "Attack bonus",
+  defense: "Defense bonus",
+  speed: "Speed bonus",
+  recruitment: "Recruitment bonus",
+  graduation: "Graduation bonus"
+};
+
 function getStateCookie() {
   var cookieStrings = document.cookie.split(';');
 
@@ -726,13 +734,8 @@ function Agency() {
   this.catalog = [];
   this.unit = [];
   this.recentlyFired = [];
-  this.upgrades = {
-    attack: 0,
-    defense: 0,
-    speed: 0,
-    recruitment: 0,
-    graduation: 0
-  };
+  this.upgrades = {};
+  for (var upgradeName in upgradeNames) this.upgrades[upgradeName] = 0;
 
   this.sortOrder = 'date';
 
@@ -746,7 +749,7 @@ function Agency() {
 Agency.prototype.renderCatalog = function() {
   var sortedCatalog = this.sortedCatalog();
 
-  sortOrders = [];
+  var sortOrders = [];
 
   for (var key in idolSortNames) {
     var item = [key, idolSortNames[key]];
@@ -756,6 +759,16 @@ Agency.prototype.renderCatalog = function() {
 
   sortOrders.sort();
 
+  var upgrades = [];
+
+  for (var upgradeName in upgradeNames) {
+    upgrades.push({
+      name: upgradeName,
+      description: upgradeNames[upgradeName],
+      currentLevel: this.upgrades[upgradeName]
+    });
+  }
+
   catalogElement.innerHTML = catalogTemplate({
     'catalog': sortedCatalog,
     'hasStoryRemaining': CAMPAIGN[this.storyChapter] !== undefined,
@@ -763,7 +776,7 @@ Agency.prototype.renderCatalog = function() {
     'levelFloor': this.levelFloor(),
     'levelProgressPercent': Math.floor(this.levelProgress() * 100),
     'spendableLevels': this.spendableLevels(),
-    'upgrades': this.upgrades,
+    'upgrades': upgrades,
     'sortOrder': this.sortOrder,
     'sortOrders': sortOrders
   });
@@ -778,7 +791,15 @@ Agency.prototype.renderCatalog = function() {
   document.getElementById('sort-button').addEventListener('click', function(event) {
     event.stopPropagation();
     event.preventDefault();
+    document.getElementById('agency-meta').classList.remove('upgrade-visible');
     document.getElementById('agency-meta').classList.toggle('sort-visible');
+  });
+
+  document.getElementById('agency-summary').addEventListener('click', function(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    document.getElementById('agency-meta').classList.remove('sort-visible');
+    document.getElementById('agency-meta').classList.toggle('upgrade-visible');
   });
 
   for (var sortKey in idolSortNames) {
@@ -800,6 +821,28 @@ Agency.prototype.renderCatalog = function() {
   for (var i = 0, n = inputs.length; i < n; i++) {
     var element = inputs[i];
     element.addEventListener('click', toggleMembership);
+  }
+
+  var upgradeButtons = document.querySelectorAll('#upgrade-list a[data-upgrade-name]');
+
+  function upgradeAgency(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    if (agency.spendableLevels() <= 0) {
+      askUser('You have no points to spend. Level up your agency some more and try again later.');
+      return;
+    }
+
+    var upgradeName = event.currentTarget.getAttribute('data-upgrade-name');
+    agency.upgrades[upgradeName] += 1;
+    event.currentTarget.querySelector('.current-level').innerText = agency.upgrades[upgradeName].toString(10);
+    document.getElementById('spendable-levels').innerText = agency.spendableLevels();
+    if (agency.spendableLevels() === 0) document.getElementById('agency-meta').classList.remove('spendable-levels');
+    saveGame();
+  }
+
+  for (var k = 0; k < upgradeButtons.length; k++) {
+    upgradeButtons[k].addEventListener('click', upgradeAgency);
   }
 
   var lis = document.querySelectorAll('#catalog li.idol');
@@ -1102,6 +1145,7 @@ Agency.prototype.dump = function() {
     i: [],
     u: [],
     x: this.experience,
+    p: this.upgrades,
     c: this.storyChapter,
     g: this.storyGeneration,
     b: this.totalStoryChaptersBeaten,
@@ -1124,6 +1168,7 @@ Agency.prototype.load = function(agencyDump) {
   this.storyGeneration = agencyDump.g || 0;
   this.totalStoryChaptersBeaten = agencyDump.b || 0;
   this.recentlyFired = agencyDump.f || [];
+  this.upgrades = agencyDump.p || this.upgrades;
 
   for(var i = 0, n = agencyDump.i.length; i < n; i++) {
     var idolDump = agencyDump.i[i];
@@ -1338,7 +1383,7 @@ function initGame() {
     }
   } catch (e) {
     console.log(e);
-    askUser('Your save game failed to load, sorry :<');
+    askUser('Your save game failed to load, sorry; try reloading somewhere with a better network connection, maybe? :<');
   }
 
   rerender();

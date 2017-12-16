@@ -895,31 +895,23 @@ body.batch {
   height: 3.2em;
   z-index: 1;
 
-  &.spendable-levels {
-    &::after {
-      z-index: 2;
-      content: ' ';
-      position: absolute;
-      top: .7em;
-      left: .3em;
-      background-color: red;
-      width: .5em;
-      height: .5em;
-      border: .15em solid @bg;
-      pointer-events: none;
-      border-radius: 50%;
-    }
-  }
-
   #agency-summary {
     .button();
-    .link-shadow();
+    display: block;
     background-color: @mid;
     position: absolute;
     overflow: hidden;
     left: .5em;
     top: 1em;
-    z-index: 1;
+    z-index: 35;
+    box-sizing: border-box;
+    transition: border-color .5s;
+    border: .1em solid fade(@fg, 0%);
+
+    .link-shadow();
+    &:hover {
+      .linkish-shadow(@fg);
+    }
 
     #agency-name {
       position: relative;
@@ -966,30 +958,96 @@ body.batch {
     top: 1em;
   }
 
-  #sort-list {
+  #upgrade-list, #sort-list {
     .menu();
     .button-shadow();
-
-    border-radius: .5em 0 0 .5em;
     position: absolute;
+    top: .5em;
     width: 90vw;
     max-width: 20em;
-    right: -22em;
-    top: .5em;
-    transition: right .5s;
     overflow: hidden;
     z-index: 2;
   }
 
-  &.sort-visible {
-    #sort-button {
-      border-color: fade(@fg, 50%);
-      background-color: @mid;
+  #sort-list {
+    border-radius: .5em 0 0 .5em;
+    right: -22em;
+    transition: right .5s;
+  }
+
+  #upgrade-list {
+    .points-count {
+      text-align: right;
+      
+      a { color: @fg; }
+      strong { font-weight: normal; }
     }
 
-    #sort-list {
-      right: 0;
+    border-radius: 0 .5em .5em 0;
+    left: -22em;
+    transition: left .5s;
+
+    li a {
+      span {
+        display: block;
+        float: right;
+
+        &::before {
+          opacity: 0;
+          transition: opacity .5s;
+          display: inline-block;
+          text-shadow: none;
+          color: @bg;
+          padding: .1em .5em;
+          margin: -.1em 1em -1em 0;
+          background-color: darken(@hl, 20%);
+          border-radius: @button-radius;
+          content: "level up";
+        }
+      }
+
+      &:hover {
+        span::before {
+          background-color: @bg;
+          color: @hl;
+        }
+      }
     }
+  }
+
+  &.spendable-levels {
+    &::after {
+      z-index: 36;
+      content: ' ';
+      position: absolute;
+      top: .7em;
+      left: .3em;
+      background-color: red;
+      width: .5em;
+      height: .5em;
+      border: .15em solid @bg;
+      pointer-events: none;
+      border-radius: 50%;
+    }
+
+    #upgrade-list li a span::before {
+      opacity: 1;
+    }
+  }
+
+  &.sort-visible #sort-button, &.upgrade-visible #agency-summary {
+    border-color: fade(@fg, 50%);
+    background-color: @mid;
+  }
+
+  &.sort-visible {
+    #agency-summary, &::after { z-index: 1; }
+    #sort-list { right: 0; }
+  }
+
+  &.upgrade-visible {
+    #sort-button { z-index: 1; }
+    #upgrade-list { left: 0; }
   }
 }
 

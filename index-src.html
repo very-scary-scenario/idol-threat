@@ -81,13 +81,19 @@
       </ul>
 
       <div id="agency-meta" class="{{#if spendableLevels}}spendable-levels{{/if}}">
-        <div id="agency-summary">
+        <a href="#" id="agency-summary">
           <div id="agency-level-progress" style="width: {{levelProgressPercent}}%"></div>
           <span id="agency-name">The Agency</span>
           <span id="agency-level">
             <span>lv</span><strong>{{levelFloor}}</strong>
           </span>
-        </div>
+        </a>
+        <ul id="upgrade-list">
+          <li class="points-count"><a>points available: <strong id="spendable-levels">{{spendableLevels}}</strong></a></li>
+          {{#each upgrades}}
+            <li><a data-upgrade-name="{{name}}" href="#">{{description}} <span class="current-level">{{currentLevel}}</span></a></li>
+          {{/each}}
+        </ul>
 
         <a href="#" id="sort-button">sort…</a>
         <ul id="sort-list">
