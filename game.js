@@ -283,7 +283,6 @@ function Idol(seed) {
   this.seed = seed;
   this.identifier = seed.toString(10);
   this.rand = seededRandom(seed);
-  this.xp = 0;
 
   // build stats
   for(var i = 0, n = STATS.length; i < n; i++) {
@@ -727,6 +726,13 @@ function Agency() {
   this.catalog = [];
   this.unit = [];
   this.recentlyFired = [];
+  this.upgrades = {
+    attack: 0,
+    defense: 0,
+    speed: 0,
+    recruitment: 0,
+    graduation: 0
+  };
 
   this.sortOrder = 'date';
 
@@ -756,6 +762,8 @@ Agency.prototype.renderCatalog = function() {
     'canFeed': this.canFeed(),
     'levelFloor': this.levelFloor(),
     'levelProgressPercent': Math.floor(this.levelProgress() * 100),
+    'spendableLevels': this.spendableLevels(),
+    'upgrades': this.upgrades,
     'sortOrder': this.sortOrder,
     'sortOrders': sortOrders
   });
@@ -846,6 +854,13 @@ Agency.prototype.level = function() {
     xpRemainder -= level;
   }
   return 1 + level + (xpRemainder / level);
+};
+Agency.prototype.spendableLevels = function() {
+  var spendableLevels = this.levelFloor();
+  for (var upgradeType in this.upgrades) {
+    spendableLevels -= this.upgrades[upgradeType];
+  }
+  return spendableLevels;
 };
 Agency.prototype.levelFloor = function() {
   return Math.floor(this.level());

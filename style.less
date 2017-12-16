@@ -895,6 +895,22 @@ body.batch {
   height: 3.2em;
   z-index: 1;
 
+  &.spendable-levels {
+    &::after {
+      z-index: 2;
+      content: ' ';
+      position: absolute;
+      top: .7em;
+      left: .3em;
+      background-color: red;
+      width: .5em;
+      height: .5em;
+      border: .15em solid @bg;
+      pointer-events: none;
+      border-radius: 50%;
+    }
+  }
+
   #agency-summary {
     .button();
     .link-shadow();
