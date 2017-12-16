@@ -1,6 +1,7 @@
 @mid: #ddd;
 @unit-height: 7em;
 @bg: #fdfdfd;
+@title-bg: #00002a;
 @fg: #111;
 @battle-bg: #282828;
 @hl: #bbb;
@@ -41,12 +42,6 @@
   }
 }
 
-#title {
-  margin: 20vh auto;
-  text-align: center;
-  padding: 1em;
-}
-
 @font-face {
   font-family: 'Rum Raisin';
   font-style: normal;
@@ -60,6 +55,10 @@
   @media (max-width: 18em) {
     body { font-size: 0.8em !important; }
   }
+}
+
+html {
+  min-height: 100%;
 }
 
 .stats-dl() {
@@ -134,8 +133,12 @@ body {
   cursor: default;
 }
 
+.linkish-shadow(@colour) {
+  text-shadow: .1em .1em 0 @colour;
+}
+
 .link-shadow() {
-  text-shadow: .1em .1em 0 @bg;
+  .linkish-shadow(@bg);
 }
 
 a {
@@ -550,7 +553,7 @@ body.in-battle {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     background-color: @bg;
     z-index: 5;
     overflow: hidden;
@@ -1008,9 +1011,70 @@ body.batch {
 }
 
 body.nothing-scanned {
+  background-image: url('splash.jpg');
+  background-size: auto 100%;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-color: @title-bg;
+
+  height: 100%;
+
+  #title {
+    display: none;
+  }
+
   #catalog {
     text-align: center;
+
+    #menu {
+      margin-top: 45vh;
+
+      li a {
+        background: radial-gradient(circle farthest-corner, fade(@title-bg, 50%) 6em, fade(@title-bg, 0%) 12em) !important;
+        text-weight: normal;
+        color: @bg;
+        .linkish-shadow(@fg);
+
+        &:hover {
+          color: @fg;
+          .linkish-shadow(@bg);
+        }
+      }
+    }
+
+    .catalog {
+      display: none;
+    }
   }
+
+  #signature {
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
+    padding: .1em 0 .3em;
+    background: radial-gradient(circle farthest-corner, fade(@title-bg, 70%) 5em, fade(@title-bg, 0%) 10em) !important;
+
+    color: @bg;
+
+    a {
+      color: @bg;
+      .linkish-shadow(@fg);
+
+      &:hover {
+        color: @fg;
+        .linkish-shadow(@bg);
+      }
+    }
+
+    ul {
+      margin: 0;
+    }
+
+    #vscary-link {
+      display: none;
+    }
+  }
+
 
   #agency-meta {
     display: none;
