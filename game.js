@@ -343,11 +343,10 @@ function Idol(seed) {
   while (this.abilities.length < 4) {
     var abilityParts = [];
 
-    if (this.rand() > 0.8)
-      abilityParts.push(choice(ABILITIES[0], this.rand()));
-
-    abilityParts.push(choice(ABILITIES[1], this.rand()));
+    abilityParts.push(choice(ABILITIES[0], this.rand()));
+    if (this.rand() > 0.8) abilityParts.push(choice(ABILITIES[1], this.rand()));
     abilityParts.push(choice(ABILITIES[2], this.rand()));
+
     this.abilities.push(new Ability(this, abilityParts, choice(ANIMATIONS, this.rand()), choice(AFFINITIES, this.rand())));
   }
 
