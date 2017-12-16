@@ -173,6 +173,7 @@ function getStateCookie() {
 }
 
 var barcodeImage = document.getElementById('barcode-image');
+var loadGame = document.getElementById('load-game');
 var detailElement = document.getElementById('idol-detail');
 var catalogElement = document.getElementById('catalog');
 var unitElement = document.getElementById('unit');
@@ -831,7 +832,8 @@ Agency.prototype.renderCatalog = function() {
     'spendableLevels': this.spendableLevels(),
     'upgrades': upgrades,
     'sortOrder': this.sortOrder,
-    'sortOrders': sortOrders
+    'sortOrders': sortOrders,
+    'backupUrl': 'data:application/x-idol-threat-save;charset=utf-8,' + encodeURIComponent(btoa(JSON.stringify(this.dump())))
   });
 
   function setSortOrder(event) {
@@ -912,6 +914,12 @@ Agency.prototype.renderCatalog = function() {
     sortedCatalog[j].catalogElement = li;
     li.addEventListener('click', showDetail);
   }
+
+  document.getElementById('load-backup').addEventListener('click', function(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    loadGame.click();
+  });
 };
 Agency.prototype.sortedCatalog = function() {
   var sortedCatalog = [];
@@ -1285,6 +1293,34 @@ barcodeImage.addEventListener('change', function(e) {
     },
     debug: true
   }, addIdolFromImage);
+});
+
+function complainAboutBadSaveFile() {
+  askUser("We couldn't load this save file, sorry. Try another one, or perhaps send us the file and we'll see if we can help.");
+}
+
+loadGame.addEventListener('change', function(e) {
+  var reader = new FileReader();
+  reader.onload = function() {
+    var newAgency = new Agency();
+
+    try {
+      newAgency.load(JSON.parse(atob(reader.result)));
+    } catch (e) {
+      complainAboutBadSaveFile();
+      console.log(e);
+      return;
+    }
+
+    askUser('Loaded save successfully!');
+    agency = newAgency;
+    rerender();
+  };
+
+  reader.onerror = complainAboutBadSaveFile;
+  var file = loadGame.files[0];
+  reader.readAsText(file, 'ascii');
+  loadGame.value = '';
 });
 
 var agency = new Agency();

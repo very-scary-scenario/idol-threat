@@ -64,6 +64,7 @@
     </section>
 
     <input type="file" accept="image/*" capture="camera" id="barcode-image"/>
+    <input type="file" accept="application/x-idol-threat-save" id="load-game"/>
 
     <script id="catalog-template" type="text/x-handlebars-template">
       <ul id="menu">
@@ -93,6 +94,8 @@
           {{#each upgrades}}
             <li><a data-upgrade-name="{{name}}" href="#">{{description}} <span class="current-level">{{currentLevel}}</span></a></li>
           {{/each}}
+          <li class="meta"><a id="save-backup" href="{{backupUrl}}" download="idol-threat.save">Download backup</a></li>
+          <li class="meta"><a id="load-backup" href="#" class="needsclick">Load saved backup&hellip;</a></li>
         </ul>
 
         <a href="#" id="sort-button">sort…</a>
