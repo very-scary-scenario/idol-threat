@@ -235,6 +235,46 @@ function celebrate(density) {
   }, 3000);
 }
 
+var sparkleImage = new Image();
+sparkleImage.src = 'lib/sparkle/sparkle.png';
+
+function initSparkle(sparkleCanvas) {
+  var sparkleContext = sparkleCanvas.getContext('2d');
+  var sparkleEmitter = new SparkleEmitter(sparkleCanvas);
+
+  sparkleCanvas.width = sparkleCanvas.clientWidth * (window.devicePixelRatio || 1);
+  sparkleCanvas.height = sparkleCanvas.clientHeight * (window.devicePixelRatio || 1);
+
+  sparkleEmitter.setParticlesPerSecond(40);
+  sparkleEmitter.setParticleLifetime(15);
+  sparkleEmitter.setPosition({x: sparkleCanvas.width/2, y: -(sparkleCanvas.height/5)});
+  sparkleEmitter.setGravity(sparkleCanvas.clientHeight/3);
+  sparkleEmitter.setParticleSpeed(sparkleCanvas.clientHeight/3);
+  sparkleEmitter.setDirection(90);
+  sparkleEmitter.setRadius(360);
+
+  var size = sparkleCanvas.height/8;
+
+  sparkleEmitter.drawParticle = function(x, y, particle) {
+    // this.context.setTransform(0, 0, 0, 0, particle.x, particle.y);
+    // this.context.rotate(sparkleEmitter.getParticleAge(particle) / 100);
+    this.context.globalAlpha = Math.max(particle.opacity * Math.sin(
+      (sparkleEmitter.getParticleAge(particle) + (particle.born * 10)) / 100), 0
+    );
+    this.context.globalCompositeOperation = 'source-over';
+    this.context.drawImage(sparkleImage, x-(size/2), y-(size/2), size, size);
+    return this;
+  };
+
+  function drawSparkle() {
+    sparkleContext.clearRect(0, 0, sparkleCanvas.width, sparkleCanvas.height);
+    sparkleEmitter.fire();
+    requestAnimationFrame(drawSparkle);
+  }
+  
+  drawSparkle();
+}
+
 function askUser(question, answers) {
   if (answers === undefined) answers = [['Okay', null]];
 
@@ -390,7 +430,7 @@ Idol.prototype.generateName = function() {
 Idol.prototype.cacheName = function() {
   this.name = [this.firstName, this.lastName].join(' ');
 };
-Idol.prototype.deferRendering = function(mode) {
+Idol.prototype.deferRendering = function(mode, callback) {
   var self = this;
   mode = mode || 'med';
 
@@ -402,7 +442,10 @@ Idol.prototype.deferRendering = function(mode) {
 
   function renderIfLoaded() {
     loaded++;
-    if (loaded === self.parts.length) self.renderSprite(mode);
+    if (loaded === self.parts.length) {
+      if (callback !== undefined) callback();
+      self.renderSprite(mode);
+    }
   }
 
   for (var pi = 0; pi < this.parts.length; pi++) {
@@ -640,25 +683,35 @@ Idol.prototype.prev = function() { return this.next(-1); };
 Idol.prototype.audition = function() {
   var self = this;
   var layerTimeout = 200;
-  auditionSpace.innerHTML = auditionTemplate(this);
-  
   var currentLayer = 0;
+  var hugeImages;
+
+  auditionSpace.innerHTML = auditionTemplate(this);
+  setTimeout(function() {
+    initSparkle(document.getElementById('sparkle-canvas'));
+  }, 1);
 
   function addLayerToAuditionPortrait() {
     var portraitElement = document.querySelector('#audition .portrait');
     if (!portraitElement) return;
 
-    var part = self.parts[currentLayer];
+    var part = hugeImages[currentLayer];
     if (!part) return;
 
-    var img = new Image();
-    img.src = part.path;
-    portraitElement.appendChild(img);
+    portraitElement.appendChild(part);
+    setTimeout(function() { part.classList.add('visible'); }, 1);
     currentLayer++;
     setTimeout(addLayerToAuditionPortrait, layerTimeout);
   }
 
-  setTimeout(addLayerToAuditionPortrait, layerTimeout);
+  function showLayersGradually() {
+    hugeImages = self.loadedImages.huge;
+    setTimeout(addLayerToAuditionPortrait, layerTimeout);
+  }
+
+  setTimeout(function() {
+    self.deferRendering('huge', showLayersGradually);
+  }, 1);
 
   document.getElementById('catch-button').addEventListener('click', function(e) {
     e.stopPropagation();

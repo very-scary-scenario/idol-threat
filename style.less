@@ -3,6 +3,7 @@
 @bg: #fdfdfd;
 @title-bg: #00002a;
 @fg: #111;
+@lfg: lighten(@fg, 30%);
 @battle-bg: #282828;
 @hl: #bbb;
 @icon-size: 512px;
@@ -40,6 +41,11 @@
     opacity: 0;
     transform: rotate(-5deg) scale(1.2);
   }
+}
+
+@keyframes pulse-audition-bg {
+  from, to { background: @fg; }
+  50% { background: @lfg; }
 }
 
 @font-face {
@@ -1331,7 +1337,17 @@ body.nothing-scanned {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, @bg, @fg);
+  animation-duration: 2s;
+  animation-name: pulse-audition-bg;
+  animation-iteration-count: infinite;
+
+  #sparkle-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 
   h2 {
     position: relative;
@@ -1350,9 +1366,12 @@ body.nothing-scanned {
 
     img {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
+      top: -10%;
+      left: -15%;
+      width: 130%;
+      opacity: 0;
+      transition: opacity .2s;
+      &.visible { opacity: 1; }
     }
   }
 
