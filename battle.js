@@ -70,11 +70,13 @@ function BattleIdol(idol, control) {
 
 BattleIdol.prototype.doDamage = function(damage) {
   var self = this;
+  if (this.isDead) return;
   this.hp = this.hp - damage;
 
   if (this.hp <= 0) {
     this.isDead = true;
     this.hp = 0;
+
     setTimeout(function() {
       self.element.classList.add('dead');
       if (!this.playerControlled) agency.grantExperience(1);
