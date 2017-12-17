@@ -114,7 +114,7 @@
 
       <ul class="catalog">
         {{#each catalog}}
-          <li data-index="{{@index}}" class="idol {{#if isInUnit}}active{{/if}} affinity-{{affinity}}">
+          <li data-index="{{@index}}" class="idol {{#if isInUnit}}active{{/if}} affinity-{{affinity}} needsclick">
             <div class="portrait">{{{thumbSpriteHTML}}}</div>
             <div data-index="{{@index}}" class="input"></div>
           </li>
@@ -194,6 +194,10 @@
       </div>
     </script>
 
+    <script id="idol-deets-template" type="text/x-handlebars-template">
+      <h2>{{idol.name}}</h2>
+    </script>
+
     <script id="battle-template" type="text/x-handlebars-template">
       <form id="battle-form">
         <ul class="idol-list" id="enemy-idols">
@@ -212,6 +216,9 @@
         </ul>
 
         <div id="ability-prompt">
+        </div>
+
+        <div id="deets-space">
         </div>
 
         <ul class="idol-list" id="player-idols">

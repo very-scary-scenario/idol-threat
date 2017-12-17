@@ -189,6 +189,7 @@ var catalogTemplate = Handlebars.compile(document.getElementById('catalog-templa
 var unitTemplate = Handlebars.compile(document.getElementById('unit-template').innerHTML);
 var idolDetailTemplate = Handlebars.compile(document.getElementById('idol-detail-template').innerHTML);
 var battleTemplate = Handlebars.compile(document.getElementById('battle-template').innerHTML);
+var idolDeetsTemplate = Handlebars.compile(document.getElementById('idol-deets-template').innerHTML);
 var healthBarTemplate = Handlebars.compile(document.getElementById('health-bar-template').innerHTML);
 var abilityPromptTemplate = Handlebars.compile(document.getElementById('ability-prompt-template').innerHTML);
 var promptTemplate = Handlebars.compile(document.getElementById('prompt-template').innerHTML);

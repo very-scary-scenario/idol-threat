@@ -704,6 +704,7 @@ body.in-battle {
 
         &.focussed {
           &::before {
+            pointer-events: none;
             color: @fg;
             content: '▼';
             font-size: 5vh;
@@ -784,7 +785,6 @@ body.in-battle {
     }
 
     #player-idols {
-      pointer-events: none;
       position: fixed;
       bottom: 0;
     }
@@ -840,6 +840,25 @@ body.in-battle {
       &[data-affinity="rock"] { background-color: @rock-colour; &::after { content: @rock } }
       &[data-affinity="paper"] { background-color: @paper-colour; &::after { content: @paper } }
       &[data-affinity="scissors"] { background-color: @scissors-colour; &::after { content: @scissors } }
+    }
+  }
+
+  #deets-space {
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5000;
+    position: absolute;
+    top: 2vw;
+    left: 2vw;
+    width: 96vw;
+    border-radius: @button-radius;
+    box-sizing: border-box;
+    background-color: @hl;
+    color: @fg;
+    transition: opacity .5s;
+
+    &.visible {
+      opacity: 1;
     }
   }
 

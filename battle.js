@@ -262,17 +262,43 @@ Battle.prototype.nextMove = function() {
   }
 };
 
+function bindHoverDetail(idol, idolElement) {
+  var showing = false;
+  var deetsSpace = document.getElementById('deets-space');
+
+  function showHoverDetail() {
+    if (showing) return;
+    showing = true;
+    deetsSpace.innerHTML = idolDeetsTemplate(idol);
+    deetsSpace.classList.add('visible');
+  }
+
+  function hideHoverDetail() {
+    if (!showing) return;
+    showing = false;
+    deetsSpace.classList.remove('visible');
+  }
+
+  var startEvents = ['mouseover', 'touchenter', 'touchstart'];
+  for (var si = 0; si < startEvents.length; si++) idolElement.addEventListener(startEvents[si], showHoverDetail);
+
+  var endEvents = ['mouseout', 'touchleave', 'touchend'];
+  for (var ei = 0; ei < endEvents.length; ei++) idolElement.addEventListener(endEvents[ei], hideHoverDetail);
+}
+
 Battle.prototype.render = function() {
   battleElement.innerHTML = battleTemplate(this);
 
   var playerIdolElements = battleElement.querySelectorAll('#player-idols > li');
   for (var pi = 0; pi < this.playerIdols.length; pi++) {
     this.playerIdols[pi].element = playerIdolElements[pi];
+    bindHoverDetail(this.playerIdols[pi], playerIdolElements[pi]);
   }
 
   var enemyIdolElements = battleElement.querySelectorAll('#enemy-idols > li');
   for (var ei = 0; ei < this.enemyIdols.length; ei++) {
     this.enemyIdols[ei].element = enemyIdolElements[ei];
+    bindHoverDetail(this.enemyIdols[ei], enemyIdolElements[ei]);
   }
 };
 
