@@ -1506,6 +1506,7 @@ if (batchMatch) {
   document.body.classList.add('batch');
 } else if (window.location.hash === '#icon') {
   var iconIdol = new Idol(Math.random());
+  document.body.classList.remove('nothing-scanned');
   document.body.innerHTML = iconHTML(iconIdol);
   document.body.classList.add('icon');
 } else {
