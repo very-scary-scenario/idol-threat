@@ -781,6 +781,10 @@ body.in-battle {
         &.affinity-rock label input::before { border-color: @rock-colour !important }
         &.affinity-paper label input::before { border-color: @paper-colour !important }
         &.affinity-scissors label input::before { border-color: @scissors-colour !important }
+
+        &.dead label input {
+          display: none;
+        }
       }
     }
 
