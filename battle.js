@@ -288,10 +288,10 @@ function bindHoverDetail(idol, idolElement) {
     deetsSpace.classList.remove('visible');
   }
 
-  var startEvents = ['mouseover', 'touchenter', 'touchstart'];
+  var startEvents = ['touchenter', 'touchstart'];
   for (var si = 0; si < startEvents.length; si++) idolElement.addEventListener(startEvents[si], showHoverDetail);
 
-  var endEvents = ['mouseout', 'touchleave', 'touchend'];
+  var endEvents = ['touchleave', 'touchend', 'touchcancel'];
   for (var ei = 0; ei < endEvents.length; ei++) idolElement.addEventListener(endEvents[ei], hideHoverDetail);
 }
 
