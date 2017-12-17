@@ -268,14 +268,21 @@ function bindHoverDetail(idol, idolElement) {
 
   function showHoverDetail() {
     if (showing) return;
-    showing = true;
+
+    if (idol.playerControlled) {
+      deetsSpace.classList.add('player');
+      deetsSpace.classList.remove('enemy');
+    } else {
+      deetsSpace.classList.remove('player');
+      deetsSpace.classList.add('enemy');
+    }
+
+    deetsSpace.setAttribute('data-affinity', idol.idol.affinity);
     deetsSpace.innerHTML = idolDeetsTemplate(idol);
     deetsSpace.classList.add('visible');
   }
 
   function hideHoverDetail() {
-    if (!showing) return;
-    showing = false;
     deetsSpace.classList.remove('visible');
   }
 

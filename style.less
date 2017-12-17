@@ -848,17 +848,52 @@ body.in-battle {
     pointer-events: none;
     z-index: 5000;
     position: absolute;
-    top: 2vw;
     left: 2vw;
     width: 96vw;
     border-radius: @button-radius;
     box-sizing: border-box;
-    background-color: @hl;
-    color: @fg;
-    transition: opacity .5s;
+    padding: 2vw;
+    color: @bg;
+    transition: opacity .5s, background-color .5s;
+
+    h2 {
+      color: fade(@fg, 0%);
+      text-shadow: 0 0 0 @bg;
+
+      &::after {
+        margin-left: .3em;
+        font-weight: normal;
+      }
+    }
+
+    dl {
+      dt {
+        clear: both;
+        width: 30vw;
+        float: left;
+      }
+    }
+
+    &[data-affinity="rock"] { background-color: @rock-colour; h2::after { content: @rock } }
+    &[data-affinity="paper"] { background-color: @paper-colour; h2::after { content: @paper } }
+    &[data-affinity="scissors"] { background-color: @scissors-colour; h2::after { content: @scissors } }
+
+    dl {
+      
+    }
 
     &.visible {
       opacity: 1;
+    }
+
+    &.enemy {
+      top: auto;
+      bottom: 2vw;
+    }
+
+    &.player {
+      top: 2vw;
+      bottom: auto;
     }
   }
 

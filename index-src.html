@@ -195,7 +195,16 @@
     </script>
 
     <script id="idol-deets-template" type="text/x-handlebars-template">
-      <h2>{{idol.name}}</h2>
+      <h2 class="name">{{idol.name}}</h2>
+      <dl>
+        <dt>Attack</dt>
+        <dd>{{idol.attack}}</dd>
+        <dt>Defense</dt>
+        <dd>{{idol.defense}}</dd>
+        <dt>Speed</dt>
+        <dd>{{idol.speed}}</dd>
+      </dl>
+
     </script>
 
     <script id="battle-template" type="text/x-handlebars-template">
@@ -218,7 +227,7 @@
         <div id="ability-prompt">
         </div>
 
-        <div id="deets-space">
+        <div id="deets-space" class="player">
         </div>
 
         <ul class="idol-list" id="player-idols">
