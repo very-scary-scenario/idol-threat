@@ -824,6 +824,7 @@ Agency.prototype.renderCatalog = function() {
   }
 
   catalogElement.innerHTML = catalogTemplate({
+    'hasNeverScannedAnything': (this.catalog.length === 0) && document.body.classList.contains('nothing-scanned'),
     'catalog': sortedCatalog,
     'hasStoryRemaining': CAMPAIGN[this.storyChapter] !== undefined,
     'canFeed': this.canFeed(),
@@ -915,11 +916,14 @@ Agency.prototype.renderCatalog = function() {
     li.addEventListener('click', showDetail);
   }
 
-  document.getElementById('load-backup').addEventListener('click', function(event) {
+  function triggerLoad(event) {
     event.stopPropagation();
     event.preventDefault();
     loadGame.click();
-  });
+  }
+  document.getElementById('load-backup').addEventListener('click', triggerLoad);
+  var footerLoad = document.getElementById('footer-load');
+  if (footerLoad) footerLoad.addEventListener('click', triggerLoad);
 };
 Agency.prototype.sortedCatalog = function() {
   var sortedCatalog = [];
