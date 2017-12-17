@@ -682,11 +682,18 @@ body.in-battle {
         }
 
         @media (max-width: 35em) {
-          .health-bar { bottom: 1.3em; }
-          .portrait { margin-bottom: 1.2em; }
+          .health-bar {
+            bottom: .3em;
+            width: 42%;
+          }
+          .portrait { margin-bottom: .2em; }
           .name {
-            font-size: 0.8em;
-            bottom: -.5em;
+            &::after {
+              position: relative;
+              right: 35%;
+              font-size: 3vw;
+              top: .6em;
+            }
             span { display: none; }
           }
         }
@@ -722,19 +729,33 @@ body.in-battle {
     }
 
     #enemy-idols {
-      &::before {
+      &::after {
         content: 'Enemy';
+        text-transform: uppercase;
+        position: absolute;
+        top: -9vw;
+        left: -9vw;
+        width: 100vw;
+        text-align: center;
+        font-size: 10vw;
+        transform-origin: 50vw 50vw;
+        transform: rotate(-45deg);
+        color: fade(@bg, 50%);
       }
+
+      padding-top: .5em;
 
       li {
         label {
           input {
             position: absolute;
+            top: -5em;
             width: 90%;
             text-align: center;
 
             &::before {
               position: relative;
+              top: 5em;
               right: 50%;
               content: ' ';
               border-radius: 50%;
