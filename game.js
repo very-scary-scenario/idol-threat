@@ -683,7 +683,7 @@ Idol.prototype.next = function(mod) {
 Idol.prototype.prev = function() { return this.next(-1); };
 Idol.prototype.audition = function() {
   var self = this;
-  var layerTimeout = 200;
+  var layerTimeout = 400;
   var currentLayer = 0;
   var hugeImages;
 
