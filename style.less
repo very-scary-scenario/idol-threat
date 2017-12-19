@@ -25,6 +25,11 @@
   50% {top: -2em}
 }
 
+@keyframes bob-bottom {
+  from, to {bottom: 1em}
+  50% {bottom: -1em}
+}
+
 @keyframes speak {
   from, to {transform: scale(1.2) rotate(5deg) translateY(0vw)}
   50% {transform: scale(1.2) rotate(-5deg) translateY(-2vw)}
@@ -1375,6 +1380,14 @@ body.nothing-scanned {
       &[data-rotated] { bottom: 25vh; margin-left: -10vh }
       &[data-rotated="left"] .sprite { transform: rotate(280deg); }
       &[data-rotated="right"] .sprite { transform: rotate(80deg); }
+
+      &[data-actor-name="boss_08_1"],
+      &[data-actor-name="boss_08_2"],
+      &[data-actor-name="boss_08_3"] {
+        animation-duration: 2s;
+        animation-name: bob-bottom;
+        animation-iteration-count: infinite;
+      }
     }
   }
 
