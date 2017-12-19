@@ -135,11 +135,26 @@ var idolSortNames = {
 };
 
 var upgradeNames = {
-  attack: "Attack bonus",
-  defense: "Defense bonus",
-  speed: "Speed bonus",
-  recruitment: "Recruitment bonus",
-  graduation: "Graduation bonus"
+  attack: {
+    name: "Attack level",
+    description: "Vocal coaches at the agency will have access to better equipment, improving their ability to sing with impact."
+  },
+  defense: {
+    name: "Defense level",
+    description: "Designers at the agency will have access to better costume materials, improving their ability to create costumes that withstand enemy attacks."
+  },
+  speed: {
+    name: "Speed level",
+    description: "Choreographers at the agency will have access to better studios, improving their ability to teach idols faster and more complicated dances."
+  },
+  recruitment: {
+    name: "Scouting level",
+    description: "Scouts at the agency will have access to better snacks, improving their ability to find stand-out idols."
+  },
+  graduation: {
+    name: "Graduation level",
+    description: "Managers will have access to better leaving card designs, improving their ability to send idols home with a smile on their face."
+  }
 };
 
 function getStateCookie() {
@@ -819,7 +834,8 @@ Agency.prototype.renderCatalog = function() {
   for (var upgradeName in upgradeNames) {
     upgrades.push({
       name: upgradeName,
-      description: upgradeNames[upgradeName],
+      verboseName: upgradeNames[upgradeName].name,
+      description: upgradeNames[upgradeName].description,
       currentLevel: this.upgrades[upgradeName]
     });
   }
@@ -1006,7 +1022,7 @@ Agency.prototype.unitName = function() {
 Agency.prototype.addIdol = function(idol, interactive) {
   if ((this.catalog.length === 0) && document.body.classList.contains('nothing-scanned')) {
     document.body.removeChild(document.getElementById('title'));
-    document.body.classlist.remove('nothing-scanned');
+    document.body.classList.remove('nothing-scanned');
   }
 
   for(var i = 0, n = this.catalog.length; i < n; i++) {
@@ -1309,13 +1325,14 @@ loadGame.addEventListener('change', function(e) {
   reader.onload = function() {
     var newAgency = new Agency();
 
-    try {
-      newAgency.load(JSON.parse(atob(reader.result)));
-    } catch (e) {
-      complainAboutBadSaveFile();
-      console.log(e);
-      return;
-    }
+    newAgency.load(JSON.parse(atob(reader.result)));
+    // try {
+    //   newAgency.load(JSON.parse(atob(reader.result)));
+    // } catch (e) {
+    //   complainAboutBadSaveFile();
+    //   console.log(e);
+    //   return;
+    // }
 
     askUser('Loaded save successfully!');
     agency = newAgency;

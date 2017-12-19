@@ -92,7 +92,15 @@
         <ul id="upgrade-list">
           <li class="points-count"><a>points available: <strong id="spendable-levels">{{spendableLevels}}</strong></a></li>
           {{#each upgrades}}
-            <li><a data-upgrade-name="{{name}}" href="#">{{description}} <span class="current-level">{{currentLevel}}</span></a></li>
+            <li><a class="upgrade-link" data-upgrade-name="{{name}}" href="#">
+              <div class="upgrade-meta">
+                <p class="upgrade-name">{{verboseName}}</p>
+                <p class="upgrade-description">{{description}}</p>
+              </div>
+              <div class="upgrade-status">
+                <span class="current-level">{{currentLevel}}</span>
+              </div>
+            </a></li>
           {{/each}}
           <li class="meta"><a id="save-backup" href="{{backupUrl}}" download="idol-threat.save">Download backup</a></li>
           <li class="meta"><a id="load-backup" href="#" class="needsclick">Load saved backup&hellip;</a></li>

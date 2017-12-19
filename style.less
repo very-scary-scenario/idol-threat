@@ -1089,27 +1089,45 @@ body.batch {
     left: -22em;
     transition: left .5s;
 
-    li a {
-      span {
-        display: block;
-        float: right;
+    li a.upgrade-link {
+      display: table-row;
 
-        &::before {
-          opacity: 0;
-          transition: opacity .5s;
-          display: inline-block;
-          text-shadow: none;
-          color: @bg;
-          padding: .1em .5em;
-          margin: -.1em 1em -1em 0;
-          background-color: darken(@hl, 20%);
-          border-radius: @button-radius;
-          content: "level up";
+      .upgrade-meta, .upgrade-status {
+        display: table-cell;
+        vertical-align: middle;
+        padding: .5em;
+      }
+
+      .upgrade-meta {
+        padding-right: 0 !important;
+        .upgrade-description {
+          font-size: .8em;
+        }
+      }
+
+      .upgrade-status {
+        width: 6em;
+        .current-level {
+          display: block;
+          float: right;
+
+          &::before {
+            opacity: 0;
+            transition: opacity .5s;
+            display: inline-block;
+            text-shadow: none;
+            color: @bg;
+            padding: .1em .5em;
+            margin: -.1em 1em -1em 0;
+            background-color: darken(@hl, 20%);
+            border-radius: @button-radius;
+            content: "level up";
+          }
         }
       }
 
       &:hover {
-        span::before {
+        .current-level::before {
           background-color: @bg;
           color: @hl;
         }
@@ -1132,7 +1150,7 @@ body.batch {
       border-radius: 50%;
     }
 
-    #upgrade-list li a span::before {
+    #upgrade-list li a .upgrade-status .current-level::before {
       opacity: 1;
     }
   }
