@@ -79,7 +79,7 @@ BattleIdol.prototype.doDamage = function(damage) {
 
     setTimeout(function() {
       self.element.classList.add('dead');
-      if (!this.playerControlled) agency.grantExperience(1);
+      if (!self.playerControlled) agency.grantExperience(1);
     }, animationDuration);
   }
   this.element.querySelector('.health-bar-content').style.width = this.healthPercent().toString(10) + '%';
