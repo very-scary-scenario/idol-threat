@@ -1006,7 +1006,7 @@ Agency.prototype.unitName = function() {
 Agency.prototype.addIdol = function(idol, interactive) {
   if ((this.catalog.length === 0) && document.body.classList.contains('nothing-scanned')) {
     document.body.removeChild(document.getElementById('title'));
-    document.body.classList.remove('nothing-scanned');
+    document.body.classlist.remove('nothing-scanned');
   }
 
   for(var i = 0, n = this.catalog.length; i < n; i++) {
@@ -1491,6 +1491,7 @@ function iconHTML(idol) {
 var batchMatch = window.location.hash.match(/#batch-(\d+)/);
 
 if (batchMatch) {
+  document.body.classList.remove('nothing-scanned');
   document.body.innerHTML = '';
 
   var batchCount = parseInt(batchMatch[1], 10);
