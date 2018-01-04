@@ -137,19 +137,19 @@ var idolSortNames = {
 var upgradeNames = {
   attack: {
     name: "Attack level",
-    description: "Vocal coaches at the agency will have access to better equipment, improving their ability to sing with impact."
+    description: "Vocal coaches will have access to better equipment, improving their ability to sing with impact."
   },
   defense: {
     name: "Defense level",
-    description: "Designers at the agency will have access to better costume materials, improving their ability to create costumes that withstand enemy attacks."
+    description: "Designers will have access to better costume materials, improving their ability to create costumes that withstand enemy attacks."
   },
   speed: {
     name: "Speed level",
-    description: "Choreographers at the agency will have access to better studios, improving their ability to teach idols faster and more complicated dances."
+    description: "Choreographers will have access to better studios, improving their ability to teach idols faster and more complicated dances."
   },
   recruitment: {
     name: "Scouting level",
-    description: "Scouts at the agency will have access to better snacks, improving their ability to find stand-out idols."
+    description: "Scouts will have access to better snacks, improving their ability to find stand-out idols."
   },
   graduation: {
     name: "Graduation level",
