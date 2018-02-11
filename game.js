@@ -137,11 +137,11 @@ var idolSortNames = {
 var upgradeNames = {
   attack: {
     name: "Attack level",
-    description: "Vocal coaches will have access to better equipment, improving their ability to sing with impact."
+    description: "Vocal coaches will have access to better equipment, improving their ability to teach idols how to sing with impact."
   },
   defense: {
     name: "Defense level",
-    description: "Designers will have access to better costume materials, improving their ability to create costumes that withstand enemy attacks."
+    description: "Designers will have access to better costume materials, improving their ability to create idol costumes that withstand enemy attacks."
   },
   speed: {
     name: "Speed level",
