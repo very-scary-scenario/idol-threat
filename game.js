@@ -35,6 +35,9 @@ var RARITIES = [
 var BASE_RARITY = 300;
 var RARITY_CURVE = 0.6;
 
+var MAXIMUM_CATALOG_SIZE = 50;
+var CATALOG_FULL = "Your agency is full! You'll have to graduate or train with some of them before you can recruit any more.";
+
 var SEED_OVERRIDE_HANDLERS = {
   shadow: function(idol) {
     idol.firstName = 'Jack';
@@ -816,6 +819,9 @@ function Agency() {
 
   this.storyActors = {};
 }
+Agency.prototype.full = function() {
+  return this.catalog.length >= MAXIMUM_CATALOG_SIZE;
+};
 Agency.prototype.renderCatalog = function() {
   var sortedCatalog = this.sortedCatalog();
 
@@ -1303,6 +1309,11 @@ function addIdolFromImage(data) {
 }
 
 barcodeImage.addEventListener('change', function(e) {
+  if (agency.full()) {
+    askUser(CATALOG_FULL);
+    return;
+  }
+
   Quagga.decodeSingle({
     src: window.URL.createObjectURL(barcodeImage.files[0]),
     decoder: {
@@ -1362,7 +1373,9 @@ function rerender() {
   document.getElementById('recruit').addEventListener('click', function(e) {
     e.stopPropagation();
     e.preventDefault();
-    barcodeImage.click();
+
+    if (agency.full()) askUser(CATALOG_FULL);
+    else barcodeImage.click();
   });
 
   var fightButton = document.getElementById('fight');
