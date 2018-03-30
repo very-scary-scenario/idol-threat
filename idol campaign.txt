@@ -775,7 +775,38 @@ Ahem.
 
 <full-screen image with 'THE END' in larger font, slowly disappearing over time>
 
-#### Story ends here if you've just gone through chapter 15
+#### if playthrough < 9 end it here
+
+# part sixteen
+
+## earth_blur
+
+Ahem.
+We interrupt this regularly scheduled canonical ending to bring you a bonus round!
+Our story may have concluded several times, but that's not going to stop us.
+And it's not just because we have some extra art to use up.
+These are warriors more formidable than any that you have fought up to this point.
+They have each harnessed the power of moe, their spirits teeming with raw energy.
+Plus they have adorable Christmas outfits, so that's pretty cool.
+### boss_ex_santa_2 enter, appear middle
+boss_ex_santa_2:: Merii Kurisumasu!!!
+### boss_ex_santa_1 enter, appear left
+boss_ex_santa_1:: Akemashite omedetô gozaimanew year!
+### boss_ex_santa_3 enter, appear right
+boss_ex_santa_3:: Why have you played this game so much geez
+### clear
+It's time for one last hurrah!
+Even though you're still going to be dead after this.
+Sorry about that. 
+Give it your best!
+
+> battle 750: boss_ex_santa_1, boss_ex_santa_2, boss_ex_santa_3
+
+## earth_blur
+Thank you for playing!
+You can stop now.
+
+#### If you just did chapter 16 then end it here, the following end is for other chapters
 
 #### END
 
