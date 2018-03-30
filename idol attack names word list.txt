@@ -59,6 +59,7 @@ crying
 daring
 ++darling
 ++dazzling
+-deadly
 +delicious
 +delightful
 -dirty
@@ -186,6 +187,7 @@ rhythm
 -scary
 +scented
 -scolding
+-screaming
 secret
 ++serene
 +serious
@@ -226,7 +228,7 @@ tickle
 +++very scary
 +vibrant
 +wonder|wonderful|wondrous
-wiggle
+wiggle|wiggly
 +youthful
 
 # P2 (first part of an attack name)
@@ -241,6 +243,7 @@ wiggle
 explosion
 fancy
 fresh
+giga
 +glitter
 glowy
 -harsh
@@ -262,6 +265,7 @@ smooth
 +sparkle
 super
 sweet
+-tepid
 tough
 ultra
 +warm
@@ -273,6 +277,7 @@ arrow
 attack
 avalanche
 +ballad
+barrage
 beam
 bite
 blast
@@ -286,31 +291,39 @@ cannon
 charge
 +charm
 chop
-chord
++chord
 claw
 club
 crash
 crush
 +dance
 dash
+dive
 drill
 drop
 elbow
+embrace
+fireball
 fist
 flare
 flash
+flick
 flip
 flower
 flurry
+grind
 grip
 +groove
 glare
 gleam
+headbutt
 +heart
 hit
 hook
 hug
 inferno
+interview
+jab
 jewel
 jump
 kick
@@ -318,12 +331,15 @@ kiss
 knee
 knuckle
 lariat
+leap
+lunge
 meteor
 nibble
 nova
 palm
 party
 poke
+pound
 press
 pulse
 pummel
@@ -333,13 +349,16 @@ rainbow
 ray
 rush
 scratch
+scream
 shot
+shoulder
 shout
 shower
 slam
 slap
 slash
 smash
++solo
 +song
 spear
 spin
@@ -351,10 +370,13 @@ strike
 suplex
 swing
 swipe
+tackle
 throw
 thrust
 tongue
+tornado
 +twirl
-voice
++voice
+vortex
 wave
 wind
