@@ -1027,7 +1027,13 @@ Agency.prototype.addIdol = function(idol, interactive) {
 
   for(var i = 0, n = this.catalog.length; i < n; i++) {
     if (this.catalog[i].seed === idol.seed) {
-      askUser("You recruited this idol already; it's " + idol.name + "!");
+      var catalogIdol = this.catalog[i];
+      askUser("You recruited this idol already; it's " + idol.name + "!",
+        [
+          ['Show me', catalogIdol.showDetail.bind(catalogIdol)],
+          ['Okay', null]
+        ]
+      );
       return;
     }
   }
