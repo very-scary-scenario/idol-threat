@@ -11,6 +11,7 @@
 @health-bar-radius: .3vw;
 @xp-indicator-size: 20vw;
 @xp-yellow: #964;
+@favourite-yellow: hsl(60, 0.8, 0.5);
 
 @rock: '✊';
 @paper: '✋';
@@ -95,19 +96,25 @@ html {
 
 .checkbox() {
   .button-shadow();
+  display: inline-block;
+  vertical-align: middle;
   cursor: pointer;
-  font-size: .8em;
   width: 1.5em;
   height: 1.5em;
-  padding: .2em;
   border-radius: .2em;
   background-color: @bg;
-  text-align: center;
+  position: relative;
+  margin-top: -.05em;
 
   &::after {
+    font-size: .8em;
     content: '✔️';
     color: fade(@fg, 0%);
     text-shadow: 0 0 0 fade(@fg, 10%);
+    display: inline-block;
+    margin: .1em 0;
+    width: 100%;
+    text-align: center;
   }
 }
 
@@ -466,13 +473,42 @@ a {
 
       .name {
         .affinity();
+
+        &::after {
+          font-size: .8em;
+          margin-left: 0;
+        }
+
+        .favourite {
+          font-size: 0.8em;
+          margin-right: .2em;
+
+          .checkbox();
+
+          &::after {
+            content: '☆';
+            font-weight: normal;
+            font-size: .9em;
+            margin-top: .05em;
+          }
+
+          &.selected {
+            .checkbox-checked();
+
+            &::after {
+              color: @favourite-yellow;
+              text-shadow: 0 0 .5em @favourite-yellow;
+              content: '★';
+            }
+          }
+        }
       }
 
       .membership {
         .input {
           .checkbox();
+          margin-left: .15em;  // centre against the fave button
           display: inline-block !important;
-          margin-left: .3em;
 
           &.active {
             .checkbox-checked();
@@ -481,6 +517,7 @@ a {
 
         span {
           font-size: 1.2em;
+          margin-left: .3em;
         }
       }
     }

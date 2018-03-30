@@ -348,6 +348,7 @@ function Idol(seed) {
   var self = this;
 
   this.recruitedAt = new Date().getTime();
+  this.favourite = false;
   this.seed = seed;
   this.identifier = seed.toString(10);
   this.rand = seededRandom(seed);
@@ -694,6 +695,15 @@ Idol.prototype.showDetail = function() {
     if (self.isInUnit() ^ e.currentTarget.classList.contains('active')) e.currentTarget.classList.toggle('active');
     deferRerender();
   });
+
+  detailElement.querySelector('a.favourite').addEventListener('click', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    self.favourite = !self.favourite;
+    e.target.classList.toggle('selected');
+    deferRerender();
+  });
 };
 Idol.prototype.next = function(mod) {
   var sc = agency.sortedCatalog();
@@ -745,6 +755,7 @@ Idol.prototype.dump = function() {
   var idolDump = {
     i: this.seed,
     a: this.recruitedAt,
+    f: this.favourite,
     s: [],
     b: []
   };
@@ -1269,6 +1280,7 @@ Agency.prototype.load = function(agencyDump) {
     var idol = new Idol(idolDump.i);
 
     idol.recruitedAt = idolDump.a;
+    idol.favourite = idolDump.f;
 
     for(var si = 0, sn = STATS.length; si < sn; si++) {
       idol[STATS[si]] = idolDump.s[si];

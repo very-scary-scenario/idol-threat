@@ -147,10 +147,14 @@
       </div>
       <div class="summary">
         <div class="nametag bubble">
-          <h2 class="name affinity-{{affinity}}">{{name}}</h2>
+          <h2 class="name affinity-{{affinity}}">
+            <a class="favourite {{#if favourite}}selected{{/if}}" href="#"></a>
+            {{name}}
+          </h2>
+
           <div class="membership">
-            <span>Is in unit</span>
             <div data-index="{{@index}}" class="input {{#if isInUnit}}active{{/if}}"/></div>
+            <span>In unit</span>
           </div>
         </div>
         <div class="stats bubble">
