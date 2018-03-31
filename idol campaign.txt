@@ -5,7 +5,7 @@
 It's the year 20XX.
 After a gruelling war against an otherworldly threat, Earth is in a state of recovery.
 A time of reflection, repair and respite.
-With a sombre mood permeating the planet, the populace turns to entertainers to raise their spirits.
+With a sombre mood permeating the planet, the populace turns to young entertainers to raise their spirits.
 
 ## office_bloom
 
@@ -14,18 +14,18 @@ With love.
 And also music.
 Our unit's humble beginning is in an office building in central Shin Tokyo.
 It still lays in a state of disrepair following the attack, but it'll have to do.
-People are desperate for encouragement from local idols, and it helps no one if the dances are sloppy.
-For this idol unit to be successful, they must first learn from the girls that came before them.
-Fortunately for us, there's a local group available to teach our girls in a hands-on way.
+People are desperate for encouragement from local idols, and you can't do that if the dances are sloppy.
+So, if this idol unit is to be successful, they must first learn from the girls that came before them.
+Fortunately for us, there's a local group available that can teach our girls in a hands-on way.
 ### boss_01_2 enter, from left, into middle
 boss_01_2:: "What's this? Another fledgling idol group to cut down?"
 boss_01_2:: "Pathetic."
 ### boss_01_1 enter, from left, into left
 boss_01_1:: "Yeah!"
 ### boss_01_3 enter, from right, into right
-boss_01_3:: "That showed them!"
+boss_01_3:: "That showed them, boss!"
 ### clear
-They appear to be pleased that you're asking for their help.
+They appear to be pleased that you've asked for their help.
 ### boss_01_2 enter, into middle
 boss_01_2:: "What did you say?"
 ...
@@ -35,7 +35,7 @@ boss_01_2:: "I thought so."
 Charming.
 This may just be the beginning, but our idol unit has what it takes to unite the world with cheer.
 The quickest way to the top is to learn from those with similar aspirations, however...
-...it also means that our rivals are standing in the way of this dream.
+...they are also our rivals, and they're standing in the way of this dream.
 They must fight.
 
 > battle 0: boss_01_1, boss_01_2, boss_01_3
@@ -46,7 +46,7 @@ Your spirits will live on in the new generation.
 
 # part two
 
-## small_stage_bloom
+## office_bloom
 
 After learning some dance routines from the internet and squeezing in some karaoke sessions, our unit is ready for their stage debut.
 From there we can show the rest of Shin Tokyo that their saviours have arrived.
@@ -57,7 +57,10 @@ Cigarette stains.
 ...
 Sigh.
 But in these trying times, we must all make sacrifices.
-It's 6pm. The local venue, Angel Sparking Dream, is soon to open its doors for the night's performance.
+
+## small_stage_bloom
+
+It's 6pm. The local venue, Angel Sparkling Dream, is soon to open its doors for tonight's performance.
 There's another idol group on the cards, but we should be able to convince them to give up their spot. 
 ### boss_02_2 enter, from left, into middle
 boss_02_2:: "Who the heck are these clowns?"
@@ -74,20 +77,20 @@ boss_02_2:: "Honestly, where the heck are they?"
 boss_02_3:: "On a date, boss. Nice place by the river."
 boss_02_2:: "Phenomenal. It's lucky we're not paying them a wage."
 boss_02_2:: "Looks like we'll be throwing you out this time."
-This is our chance at a big break, and one that our heroes so desperately need.
-Idols! Remove that rival idol unit from their own gig and claim your rightful place as the hope of Shin Tokyo.
+This is our chance to catch a big break, and one that our heroes so desperately need.
+Idols! Remove that rival unit from their own gig and claim your rightful place as the hope of Shin Tokyo!
 
 > battle 50: boss_02_1, boss_02_2, boss_02_3
 
 With the rival unit defeated, it's now up to us to achieve their dream.
-It's quite beautiful, really. 
+It's quite beautiful, really. Dreams passing from one group of idols to another.
 Even with the mess.
 As crowds of people filter into the venue, they seem surprised to see a different idol group on the stage.
 But surprise quickly turns to acceptance, as they wave their approval through the medium of glowstick.
 
 # part three
 
-## jp_alley_blur
+## small_stage_bloom
 
 While leaving the venue, the idols are approached by someone in a business suit.
 They wanted to know if you'd seen the idols that were meant to be performing tonight.
@@ -95,9 +98,12 @@ Having no idea what they're talking about, it seems like you aren't going to be 
 A brief glance behind the stage leaves them optionless, and it's decided that they will help our idols instead.
 Not only do they have contacts at the Shin Nippon Budokan, the most important stage in the country,
 but they'll also help with the cleaning! Score!
-Seriously, when it comes to removing stains from your costume's frills, you need all the help you can get.
+Seriously, when it comes to removing stains from your costume's frills, you take all the help you can get.
 There is a condition, however.
-Our idols are introduced to another local unit. One that seems to know this person. 
+
+## jp_alley_blur
+
+Our idols are introduced to another local unit. One that seems to know the person in the business suit. 
 ### boss_03_3 enter, from left, into middle
 boss_03_3:: "Hey, back off. This person belongs to us."
 ### boss_03_2 enter, from left, into left
@@ -114,36 +120,38 @@ The two groups dust down their clothes, assume their fighting stances and prepar
 
 With the battle won, our idols are one step closer to conquering the world.
 With love, sparkles and all that good stuff.
-Business suit seems irritated that the other unit didn't learn their name,
-but concludes that we are probably kinder and might learn it eventually.
-With the dreams and aspirations of three rival idol units inside them, they head to the Shin Nippon Budokan. 
+Business suit seems irritated that the other unit didn't try to learn their name,
+but concludes that we are probably the kinder of the two and might learn it eventually.
+With the dreams and aspirations of three rival idol units inside them, it's time to head to the Shin Nippon Budokan. 
 
 # part four
 
 ## budokan_glow
 
-The producer proves to be a great asset almost immediately, gaining the idols access to the Shin Nippon Budokan.
-While under regular circumstances we'd have been granted access to the venue, we are somewhat expediting the process.
-After all, while we know that these idols are going to become the saviours of the world, the general populace doesn't know that yet.
-So it's not really our fault that the guards stood no chance against a powerful chop to the neck.
+Business suit proves to be a great asset almost immediately, gaining the idols access to the Shin Nippon Budokan.
+Under regular circumstances we'd have to spend more time at smaller venues, making a name for ourselves.
+But we already know that these idols are going to become the saviours of the world,
+so it's not really our fault that the guards don't stand a chance against a powerful chop to the neck.
 As our group approaches the stage, a famous idol unit slowly comes into view.
 /It's them./
 /The most popular idols in all of Shin Japan./
-They aren't like the others, though. Their overwhelming presence is felt from across the corridor.
-What's worse, they know why our unit is here.
+They aren't like the idols we've met before. Their overwhelming presence is felt immediately from across the corridor.
+What's worse is that they know why our unit is here.
 ### boss_04_2 enter, from left, into middle
 boss_04_2:: "Another one? Seriously, these guards are an embarrassment to the Shin Budokan."
 The leader of the group, without breaking eye contact with our idols, tightens the bow under her collar.
 ### boss_04_1 enter, from left, into left
-boss_04_1:: "Lucky for them, I could use a warm up before this evening's performance."
-This one pats her mouth with a tissue. It appears we're not the first to challenge them today.
+boss_04_1:: "It's no bother, I could use a warm up before this evening's performance."
+This one pats her mouth gently with a tissue. It appears we're not the first to challenge them today.
 ### boss_04_3 enter, from right, into right
 boss_04_3:: "These ones don't even /look/ like idols."
 ...
 Unforgivable.
 We can't rush this. That they are still hungry for battle is testament to their strength.
-It's going to be a tough fight, but the fate of Shin Japan is at stake.
-Saviours, show them your appeal!
+It's going to be a tough fight, but we're fighting for the fate of Shin Japan.
+Don't back down.
+Don't give up.
+Show them your appeal!
 
 > battle 150: boss_04_1, boss_04_2, boss_04_3
 
@@ -187,7 +195,7 @@ boss_05_3, boss_05_2, boss_05_1:: "Association!"
 ...
 It appears our opponents are performing some kind of death ritual.
 However, as dangerous as it may be, consuming the experiences of an idol unit of this level would prove invaluable.
-We need to win now, when it really counts. Let's show them the power of Shin Japanese audio engineering!
+We need to win now, when it really counts. Let's show them the power of Shin Japanese audio engineering.
 ...for the sake of the world!
 
 > battle 200: boss_05_1, boss_05_2, boss_05_3
@@ -199,7 +207,7 @@ Yes, legend tells of distant lands outside of Asia. Lands incomparable to Shin J
 America. 
 Europe.
 America and Europe.
-Our idols can't obtain their dream of uniting the world while there are members of the IIA still around.
+Our idols can't obtain their dream of uniting the world while there are members of the IIA still around to stop them.
 We must bring the fight to them.
 Business suit schedules a flight, marking the beginning of our search for the European IIA representatives.
 
@@ -247,7 +255,7 @@ Insulted by this cheap trick, our idols prepare for combat.
 > battle 250: boss_06_1, boss_06_2, boss_06_3
 
 A lot of time was wasted in the battle with the European representatives.
-With that in mind, it became imperative that you find the American IIA representatives as soon as possible.
+With that in mind, it's imperative that the American IIA representatives are found as soon as possible.
 The immediacy? Well, I suppose it isn't immediate per se...
 But the sooner we kill the American representatives, the sooner we can unite the world!
 Kill their spirits, I mean. It's complicated.
@@ -264,16 +272,16 @@ on the Wikipedia page, but it turns out you can just take the highway straight t
 The traffic was awful though, which put a slight dampener on the mood.
 Our idols have had time to come to terms with the reality of their situation.
 They had a humble beginning on the streets of Shin Tokyo, performing here and there to make a few Shin bucks. 
-Now, as far as the plot so far is concerned, they're number two in the entire world.
+Now, as far as the plot is concerned, they're number two in the entire world.
 /The entire world./
 They've learned all that there is to learn. Right now, the American IIA members are a mere roadblock on their inevitable rise to the top.
 It's time to solve this.
 
 ## western_blur
 
-We're here now. We've arrived at the American capital.
+We're here. We've arrived at the American capital.
 This isn't really what the idols had pictured the capital would look like. They were expecting something less modern.
-The car slowly rolls up to a nearby dusty saloon. 
+Our car comes to a complete stop outside a nearby dusty saloon. 
 There are horses tied up by the watering hole, and some local kids are playing music on their mobile phones.
 The saloon doors swing open to reveal a trio of girls wearing cowboy hats, pistols on their hips and snarls to match the mood.
 It appears that even America has cosplay idols.
@@ -286,7 +294,7 @@ boss_07_3:: "Darn tootin'."
 When the diplomatic talks with the European idols broke down, we'd hoped to at least make progress with the Americans.
 But we were not prepared for them to speak such a bizarre language. The talks are off.
 We must be cautious, however. This is our biggest hurdle thus far.
-End them, and our heroes will become the strongest idol unit in the world!
+End them, and our heroes will be the strongest idol unit in the world!
 
 > battle 300: boss_07_1, boss_07_2, boss_07_3
 
@@ -307,12 +315,12 @@ Like, hurry up though because we've got to have celebrations and stuff.
 
 ## large_stage_bloom
 
-To mark the defeat of the IIA and a revolution in worldwide idoling, a grand stage has been constructed for the performance.
-Finally, some good use of taxpayer's money. Better yet, the death toll during construction was in single digits!
+To mark the defeat of the IIA and a revolution in worldwide idoling, we're holding a celebratory live performance.
+A grand stage has been constructed especially. Finally, a good use of taxpayer's money.
 It also comes equipped with speakers the size of small nations, just to make sure that everyone can hear the idols sing.
 /Dead or alive./
 Perhaps this explains the appearance of three ghosts, who seem slightly concerned about something.
-They look scary, but they were polite enough to wait until the end of the set.
+They look scary, but they were polite enough to wait until we were done admiring the stage.
 ### boss_08_2 enter, from left, into middle
 boss_08_2:: "Stop... Ya murderin' vermint..."
 ### boss_08_3 enter, from left, into left
@@ -324,12 +332,12 @@ It's not your fault that they had a weak constitution.
 boss_08_3:: "You're both as bad as each other..."
 boss_08_2:: "Why did I hav ter die..."
 boss_08_1:: "We'll bring you down with us..."
-I have no idea what they're talking about and honestly I'm shocked and appalled. 
-Anyway it's time to end this, once and for all.
+I have no idea what they're talking about and honestly I'm both shocked and appalled. 
+It's time to end this, once and for all.
 
 > battle 350: boss_08_1, boss_08_2, boss_08_3
 
-If there was any doubting their abilities as the world's strongest idol unit, just remember
+If there was any doubt about the abilities of the world's strongest idol unit, just remember
 /they just killed three ghosts./
 To celebrate this moment, we should have our idols raise their glowsticks in the air.
 You know, because it seems like an idol-y thing to do.
@@ -369,8 +377,8 @@ boss_09_3:: "Hello."
 boss_09_3:: "I too am a weapon, but you may recognise me from the 1997 hit comedy Flubber."
 boss_09_3:: "The pleasure's all mine."
 How do you like that! I bet you can't help but be shocked!
-These weapons have the power to wipe out your planet before you can even say goodbye to it!
-/and there's literally nothing you can do about it./
+These weapons have the power to wipe out your planet before you can even say goodbye to it.
+/And there's literally nothing you can do about it./
 You've done me a great service, taking care of the only idol groups that would have posed us much of a threat.
 For that, you have my thanks.
 It's time we make idols an extinct species, starting with your precious little group!
@@ -412,7 +420,7 @@ Watch in amazement as they appeal, excite and destroy you and your stupid planet
 boss_10_1, boss_10_2, boss_10_3:: RUNNING IDOL PROTOCOL 3.29
 boss_10_1, boss_10_2, boss_10_3:: CODENAME: KIRA KIRA KILLA
 boss_10_1:: WARNING. CRITICAL UPDATE IS REQUIRED
-boss_10_3:: PLEASE ENSURE THAT YOUR IDOL IS PLUGGED INTO THE MAINS BEFORE CONTINUING
+boss_10_3:: PLEASE ENSURE THAT YOUR IDOL IS PLUGGED INTO A POWER SOURCE BEFORE CONTINUING
 boss_10_2:: REBOOTING
 ...
 ...
