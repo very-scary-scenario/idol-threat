@@ -451,6 +451,14 @@ Idol.prototype.generateName = function() {
 Idol.prototype.cacheName = function() {
   this.name = [this.firstName, this.lastName].join(' ');
 };
+Idol.prototype.applyAgencyBonuses = function() {
+  var multiplier = 1 + (agency.upgrades.recruitment / 10);
+
+  for (var i = 0; i < STATS.length; i++) {
+    var statName = STATS[i];
+    this[statName] = Math.floor(this[statName] * multiplier);
+  }
+};
 Idol.prototype.deferRendering = function(mode, callback) {
   var self = this;
   mode = mode || 'med';
@@ -1316,7 +1324,7 @@ function numFromString(str) {
   return total;
 }
 
-function addIdolFromImage(data) {
+function addNewIdolFromImage(data) {
   barcodeImage.value = '';
 
   if ((!data) || (!data.codeResult)) {
@@ -1330,6 +1338,7 @@ function addIdolFromImage(data) {
     return;
   }
   idol = new Idol(numFromString(data.codeResult.code));
+  idol.applyAgencyBonuses();
   agency.addIdol(idol, true);
 }
 
@@ -1355,7 +1364,7 @@ barcodeImage.addEventListener('change', function(e) {
       ]
     },
     debug: true
-  }, addIdolFromImage);
+  }, addNewIdolFromImage);
 });
 
 function complainAboutBadSaveFile() {
