@@ -679,7 +679,7 @@ Idol.prototype.showDetail = function() {
         hideIdolDetail();
         agency.removeIdol(self);
         var graduationBonus = choice(GRADUATION_BONUSES, Math.random());
-        bonus = graduationBonus[0];
+        bonus = graduationBonus[0] + agency.upgrades.graduation;
         template = graduationBonus[1];
 
         for (var i = 0; i < agency.catalog.length; i++) {
@@ -692,7 +692,7 @@ Idol.prototype.showDetail = function() {
         );
 
         agency.grantExperience(5);
-        celebrate(bonus);
+        celebrate(graduationBonus[0]);
         rerender();
       }],
       ['Keep', function() {}]
