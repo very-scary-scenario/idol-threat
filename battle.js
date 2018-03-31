@@ -57,9 +57,9 @@ function BattleIdol(idol, control) {
     return Math.ceil(mod * Math.pow(statModifier, stat));
   }
 
-  self.attack = modStat(idol.attack, 100);
-  self.defense = modStat(idol.defense, 100);
-  self.speed = modStat(idol.speed, 20);
+  self.attack = modStat(idol.effective.attack(), 100);
+  self.defense = modStat(idol.effective.defense(), 100);
+  self.speed = modStat(idol.effective.speed(), 20);
 
   self.maxHp = 50;
   self.hp = self.maxHp;

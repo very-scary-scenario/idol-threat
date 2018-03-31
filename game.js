@@ -43,16 +43,17 @@ var SEED_OVERRIDE_HANDLERS = {
     idol.firstName = 'Jack';
     idol.lastName = 'Ryan';
     idol.cacheName();
-    idol.defense = 100;
-    idol.attack = 100;
-    idol.speed = 100;
+
+    for (var i = 0; i < STATS.length; i++) {
+      idol[STATS[i]] = 100;
+    }
+
     idol.bio = "Somebody tried to kill her. She lied to her wife for three years. Didn't give them her PhD.";
     idol.quote = "Now, talk me through your very scary scenario.";
 
     function makeSpecialAbility(name, affinity) {
       return new Ability(idol, [{words: [name], bonus: 3}], choice(ANIMATIONS, idol.rand()), affinity);
     }
-
     idol.abilities = [
       makeSpecialAbility('play rough', AFFINITIES[0]),
       makeSpecialAbility('geopolitics', AFFINITIES[1]),
@@ -344,6 +345,12 @@ function Ability(idol, parts, animation, affinity) {
   this.animation = animation;
 }
 
+function effectiveStatGetter(idol, stat) {
+  return function() {
+    return idol[stat] + agency.upgrades[stat];
+  };
+}
+
 function Idol(seed) {
   var self = this;
 
@@ -354,8 +361,11 @@ function Idol(seed) {
   this.rand = seededRandom(seed);
 
   // build stats
+  this.effective = {};
+
   for(var i = 0, n = STATS.length; i < n; i++) {
     this[STATS[i]] = Math.floor(this.rand(-100, 100));
+    this.effective[STATS[i]] = effectiveStatGetter(self, STATS[i]);
   }
 
   this.abilities = [];
@@ -706,7 +716,6 @@ Idol.prototype.showDetail = function() {
       ['Keep', function() {}]
     ]);
   });
-
 
   detailElement.querySelector('.membership .input').addEventListener('click', function(e) {
     e.stopPropagation();
@@ -1552,7 +1561,6 @@ function initGame() {
 
   rerender();
 }
-
 
 function iconHTML(idol) {
   return '<div class="icon-container affinity-' + idol.affinity + '"><div class="portrait">' + idol.hugeSpriteHTML() + '</div></div>';
