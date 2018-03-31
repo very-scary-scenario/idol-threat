@@ -122,7 +122,13 @@
 
       <ul class="catalog">
         {{#each catalog}}
-          <li data-index="{{@index}}" class="idol {{#if isInUnit}}active{{/if}} affinity-{{affinity}} needsclick">
+          <li data-index="{{@index}}" class="
+            idol
+            {{#if isInUnit}}active{{/if}}
+            {{#if favourite}}favourite{{/if}}
+            affinity-{{affinity}}
+            needsclick
+          ">
             <div class="portrait">{{{thumbSpriteHTML}}}</div>
             <div data-index="{{@index}}" class="input"></div>
           </li>

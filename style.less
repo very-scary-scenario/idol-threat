@@ -94,6 +94,12 @@ html {
   }
 }
 
+.star() {
+  color: @favourite-yellow;
+  text-shadow: 0 0 .5em @favourite-yellow;
+  content: '★';
+}
+
 .checkbox() {
   .button-shadow();
   display: inline-block;
@@ -312,6 +318,24 @@ a {
         .checkbox-checked();
       }
     }
+
+    &.favourite {
+      &::after {
+        .star();
+        background-color: @fg;
+        text-shadow: none !important;
+
+        position: absolute;
+        display: block;
+        width: 1.5em;
+        height: 1.5em;
+        text-align: center;
+        border-radius: 0 0 0 .5em;
+
+        top: 0em;
+        right: 0em;
+      }
+    }
   }
 }
 
@@ -496,9 +520,7 @@ a {
             .checkbox-checked();
 
             &::after {
-              color: @favourite-yellow;
-              text-shadow: 0 0 .5em @favourite-yellow;
-              content: '★';
+              .star();
             }
           }
         }
