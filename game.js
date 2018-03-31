@@ -451,7 +451,7 @@ Idol.prototype.generateName = function() {
 Idol.prototype.cacheName = function() {
   this.name = [this.firstName, this.lastName].join(' ');
 };
-Idol.prototype.applyAgencyBonuses = function() {
+Idol.prototype.applyRecruitmentBonuses = function() {
   var multiplier = 1 + (agency.upgrades.recruitment / 10);
 
   for (var i = 0; i < STATS.length; i++) {
@@ -1338,7 +1338,7 @@ function addNewIdolFromImage(data) {
     return;
   }
   idol = new Idol(numFromString(data.codeResult.code));
-  idol.applyAgencyBonuses();
+  idol.applyBonuses();
   agency.addIdol(idol, true);
 }
 
