@@ -655,7 +655,8 @@ Idol.prototype.showDetail = function() {
       });
     }
 
-    var idolElements = canteenElement.querySelectorAll('.idol');
+    var idolElements = canteenElement.querySelectorAll('.idol.enabled');
+
     for (var i = 0; i < idolElements.length; i++) {
       idolElements[i].addEventListener('click', requestFeeding);
     }

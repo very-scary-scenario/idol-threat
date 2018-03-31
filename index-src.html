@@ -308,8 +308,23 @@
         
         <ul class="catalog">
           {{#each catalog}}
-            <li data-index="{{@index}}" class="idol {{#if isInUnit}}active{{/if}} affinity-{{affinity}}">
+            <li data-index="{{@index}}" class="
+              idol
+              {{#if isInUnit}}disabled active{{/if}}
+              {{#if favourite}}disabled favourite{{/if}}
+
+              {{#if isInUnit}}
+                disabled
+              {{else if favourite}}
+                disabled
+              {{else}}
+                enabled
+              {{/if}}
+
+              affinity-{{affinity}}
+            ">
               <div class="portrait">{{{thumbSpriteHTML}}}</div>
+              <div data-index="{{@index}}" disabled="disabled" class="input"></div>
             </li>
           {{/each}}
         </ul>
