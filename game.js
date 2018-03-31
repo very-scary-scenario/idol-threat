@@ -35,6 +35,8 @@ var RARITIES = [
 var BASE_RARITY = 300;
 var RARITY_CURVE = 0.6;
 
+var SHINY_CHANCE = 1/4096;
+
 var MAXIMUM_CATALOG_SIZE = 50;
 var CATALOG_FULL = "Your agency is full! You'll have to graduate or train with some of them before you can recruit any more.";
 
@@ -468,6 +470,8 @@ Idol.prototype.applyRecruitmentBonuses = function() {
     var statName = STATS[i];
     this[statName] = Math.floor(this[statName] * multiplier);
   }
+
+  this.shiny = Math.random() <= SHINY_CHANCE;
 };
 Idol.prototype.deferRendering = function(mode, callback) {
   var self = this;
@@ -561,6 +565,7 @@ Idol.prototype.spriteHTML = function(mode) {
   return spriteTemplate({
     mode: mode,
     identifier: this.identifier,
+    shiny: this.shiny,
     sprite: sprite
   });
 };
@@ -783,11 +788,12 @@ Idol.prototype.audition = function() {
 };
 Idol.prototype.dump = function() {
   var idolDump = {
-    i: this.seed,
     a: this.recruitedAt,
+    b: [],
     f: this.favourite,
-    s: [],
-    b: []
+    i: this.seed,
+    r: this.shiny,
+    s: []
   };
   for(var i = 0, n = STATS.length; i < n; i++) {
     idolDump.s.push(this[STATS[i]]);
@@ -1311,6 +1317,7 @@ Agency.prototype.load = function(agencyDump) {
 
     idol.recruitedAt = idolDump.a;
     idol.favourite = idolDump.f;
+    idol.shiny = Boolean(idolDump.r);
 
     for(var si = 0, sn = STATS.length; si < sn; si++) {
       idol[STATS[si]] = idolDump.s[si];
@@ -1347,7 +1354,7 @@ function addNewIdolFromImage(data) {
     return;
   }
   idol = new Idol(numFromString(data.codeResult.code));
-  idol.applyBonuses();
+  idol.applyRecruitmentBonuses();
   agency.addIdol(idol, true);
 }
 

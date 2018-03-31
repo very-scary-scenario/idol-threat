@@ -207,7 +207,7 @@
     </script>
 
     <script id="sprite-template" type="text/x-handlebars-template">
-      <div class="sprite">
+      <div class="sprite {{#if shiny}}shiny{{/if}}">
         <img data-sprite-{{mode}}-id="{{identifier}}" class="needsclick" src="{{sprite}}"/>
       </div>
     </script>
@@ -363,7 +363,7 @@
       <div id="audition" class="affinity-{{affinity}}">
         <canvas id="sparkle-canvas"></canvas>
         <h2 class="affinity-{{affinity}}">{{name}}</h2>
-        <div class="portrait"></div>
+        <div class="portrait {{#if shiny}}shiny{{/if}}"></div>
         <p id="catch-button-container">
           <a href="#" id="catch-button">
             {{#if isShadow}}
