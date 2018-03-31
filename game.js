@@ -514,8 +514,14 @@ Idol.prototype.renderSprite = function(mode) {
   offscreenCanvas.fillRect(0, 0, offscreenCanvas.canvas.width, offscreenCanvas.canvas.height);
 
   var subbableImages = document.querySelectorAll('.sprite img[data-sprite-' + mode + '-id="' + this.identifier + '"]');
+  var dataURL = offscreenCanvasElement.toDataURL();
+
   for (var si = 0; si < subbableImages.length; si++) {
-    subbableImages[si].src = offscreenCanvasElement.toDataURL();
+    subbableImages[si].src = dataURL;
+  }
+
+  if (mode === 'thumb') {
+    this.loadedThumbSprite = dataURL;
   }
 
   this.loadedImages[mode] = undefined;  // free up some memory?
@@ -527,7 +533,7 @@ Idol.prototype.spriteHTML = function(mode) {
   if (mode === 'med') {
     sprite = this.getSprite();
   } else if (mode === 'thumb') {
-    sprite = this.getThumbSprite();
+    sprite = this.loadedThumbSprite || this.getThumbSprite();
   } else if (mode === 'huge') {
     sprite = this.getHugeSprite();
   } else {
