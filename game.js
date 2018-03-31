@@ -668,6 +668,12 @@ Idol.prototype.showDetail = function() {
   detailElement.querySelector('.graduate').addEventListener('click', function(event) {
     event.stopPropagation();
     event.preventDefault();
+
+    if (self.favourite) {
+      askUser('You cannot graduate ' + self.name + ' while you have her marked as a favourite idol.');
+      return;
+    }
+
     askUser('Do you want ' + self.name + ' to graduate? She will leave your agency and every other idol will get a stat bonus by attending the graduation party.', [
       ['Graduate', function() {
         hideIdolDetail();
