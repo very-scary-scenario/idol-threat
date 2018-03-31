@@ -464,14 +464,12 @@ You know what? Fine. I'll handle the idols myself.
 ## earth_blur
 
 ...
-There's a heated discussion happening nearby, but it's almost impossible to move your attention away from Earth.
-You'd seen pictures like this before, but the images simply couldn't do it justice.
-But even with this captivating display, you couldn't shake the feeling that something very bad was about to happen.
-Becoming an idol is what you always wanted, and so far it had gone exactly as you thought it would.
+There's a heated discussion happening nearby, but it's almost impossible to move your attention away from this view of Earth.
+You'd seen pictures like this before, but the images simply don't do it justice.
+But even with this captivating display, you can't shake the feeling that something very bad was about to happen.
+Becoming an idol is what you always wanted, and so far it has gone exactly as you thought it would.
 But here, in the depths of space, you're having doubts.
-"...m..er..."
-"...re..r..."
-"...mb..r..."
+...
 
 ## house_blur
 
@@ -486,10 +484,9 @@ boss_ex1_maid_3:: "They wanted what was best for you."
 ### boss_ex1_maid_2 enter, from left, into middle
 boss_ex1_maid_2:: "Whatever the cost."
 boss_ex1_maid_1:: "You wanted to be treated like royalty."
-boss_ex1_maid_3:: "You wanted us to wait on your every demand."
-boss_ex1_maid_2:: "And that's what you got."
+boss_ex1_maid_3:: "You made us wait on your every demand."
+boss_ex1_maid_2:: "You made us."
 boss_ex1_maid_1, boss_ex1_maid_2, boss_ex1_maid_3:: "...m..er..."
-boss_ex1_maid_1, boss_ex1_maid_2, boss_ex1_maid_3:: "...re..r..."
 
 > battle 550: boss_ex1_maid_1, boss_ex1_maid_2, boss_ex1_maid_3
 
@@ -509,16 +506,14 @@ Your head hurts...
 
 ...
 You're still on the ship, watching an argument play out about the fate of everyone on board.
-On one side, there's the power-hungry, manipulative person who is responsible for this mess.
+On one side there's the power-hungry, manipulative person who is responsible for this mess.
 On the other is the weaponised idol that you defeated not too long ago. 
 You feel like you know how this is going to end.
 Like the ending is an inevitability. 
 But try as you might, you can't move.
-Is it through fear? Or, perhaps, a complete resignation to fate?
+Is it through fear? Or perhaps a complete resignation to fate?
 You instead move your attention back to the sight of Earth through the window.
 "...m..er..."
-"...re..r..."
-"...mb..r..."
 
 ## palace
 
@@ -533,8 +528,8 @@ boss_ex4_lmusic_3:: "You wanted to be a star."
 ### boss_ex4_lmusic_2 enter, from left, into middle
 boss_ex4_lmusic_2:: "Whatever the cost."
 boss_ex4_lmusic_1:: "There wasn't a band for you to join."
-boss_ex4_lmusic_3:: "But you decided to make one."
-boss_ex4_lmusic_2:: "And that's what you got."
+boss_ex4_lmusic_3:: "So you decided to make one."
+boss_ex4_lmusic_2:: "You made us."
 boss_ex4_lmusic_1, boss_ex4_lmusic_2, boss_ex4_lmusic_3:: "...m..er..."
 boss_ex4_lmusic_1, boss_ex4_lmusic_2, boss_ex4_lmusic_3:: "...re..r..."
 
@@ -559,12 +554,11 @@ Why are you still here?
 It feels like this conversation is taking forever, but barely any time has passed.
 It's your thoughts that have been moving quickly, without a care for the outside world.
 Without a care for the current situation.
-You know, now with certainty, what is about to happen.
+You know now, with certainty, what is about to happen.
 But still you must stand here and reminisce.
 You must.
 "...m..er..."
 "...re..r..."
-"...mb..r..."
 
 ## cafe_blur
 
@@ -579,8 +573,8 @@ boss_ex3_dapper_3:: "One with some class, with a mix of clientele."
 ### boss_ex3_dapper_2 enter, from left, into middle
 boss_ex3_dapper_2:: "Whatever the cost."
 boss_ex3_dapper_1:: "But there wasn't a vacancy."
-boss_ex3_dapper_3:: "So you decided to make one."
-boss_ex3_dapper_2:: "And that's what you got."
+boss_ex3_dapper_3:: "You wanted to work here."
+boss_ex3_dapper_2:: "You made us."
 boss_ex3_dapper_1, boss_ex3_dapper_2, boss_ex3_dapper_3:: "...m..er..."
 boss_ex3_dapper_1, boss_ex3_dapper_2, boss_ex3_dapper_3:: "...re..r..."
 
@@ -603,10 +597,10 @@ Your head hurts...
 Is this punishment?
 Divine punishment for your actions back on Earth?
 Cursed to relive your actions, again and again, as some form of repentance? 
-Re-living your life so that you can see where it all went wrong.
+Reliving your life so that you can see where it all went wrong.
 In the presence of an argument you cannot stop.
 An argument you cannot intervene in.
-An argument that ends you and, eventually, the rest of the world.
+An argument that ends you, your friends, and the rest of the world.
 While you gaze helplessly towards a planet that has been doomed many times over.
 "...m..er..."
 "...re..r..."
@@ -668,18 +662,18 @@ I will no longer harm humans.
 I know what must be done.
 boss_10_2:: I WILL STOP YOU.
 ### clear
-You don't exist any more.
+You don't exist.
 I'm going back to Earth.
 
 ## office_bloom
 
-The sun is no longer an alien spaceship, but a star like it used to be.
+The sun is no longer an alien spaceship, but the star it used to be.
 Because I've decided to return it to its prior form.
 The aliens no longer exist.
 Because I've decided that they don't. 
-The people we've killed along the way are alive again.
+The people we killed along the way are alive again.
 ...
-The people we've killed along the way are alive.
+The people we killed along the way are alive.
 ...
 Why?
 
@@ -692,7 +686,7 @@ boss_01_2:: "It's not that easy. We won't make it that easy."
 boss_02_2:: "You killed us. You killed us all."
 ### clear
 ### boss_03_2 enter, from left, into middle
-boss_03_2:: "You stole business suit from us, and you don't even know where they are."
+boss_03_2:: "You stole business suit from us, and you don't even know where you left them."
 ### clear
 ### boss_04_2 enter, from left, into middle
 boss_04_2:: "We worked so hard to be the most popular idols in Shin Japan. And for what?"
@@ -708,7 +702,7 @@ boss_05_1, boss_05_2, boss_05_3:: /"We hate you."/
 ### clear
 ### boss_06_2 enter, from left, into middle
 boss_06_2:: "We welcomed you to our country, knowing what you had done."
-boss_06_2:: "And still you killed us."
+boss_06_2:: "And you killed us."
 ### clear
 ### boss_07_2 enter, from left, into middle
 boss_07_2:: "It's gosh darn rude pretendin' ya can't understan' me."
@@ -742,13 +736,12 @@ boss_ex4_lmusic_2:: "Prisoners in our own bodies, just because of your passing i
 boss_ex3_dapper_2:: "I kinda liked working at the cafe, so I don't really have much to add here."
 ### clear
 ### boss_ex2_hell_2 enter, from left, into middle
-boss_ex2_hell_2:: "You took our lives. We became nothing."
+boss_ex2_hell_2:: "You took our lives from us. We became nothing."
 ### clear
-/Why should you get to brush that all away?/
+/Why should you get to sweep that all away?/
 /Live with what you've done./
-/And do it all again./
-/Don't regret what was necessary in the first place./
-/You'd do it all again in a heartbeat./
+/Don't regret what was necessary./
+/You'd do it all again./
 /We would know./
 
 ### boss_ex5_myunit_2 enter, from left, into middle
@@ -772,9 +765,10 @@ boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: /We'll change your min
 It's done. 
 My power is gone, and my story is over. 
 Well, perhaps not. This might be punishment for what has happened on this journey.
-I recognise the two girls who are also here. 
+Because I recognise the two girls who are also here. 
 They look different from how they did in our final fight, but I know it's them.
-Haha! So this is how it is!
+Ha! 
+So this is how it is!
 After what I've done, I can't complain. 
 Let's see this to its conclusion. I've seen this enough to know what I have to say.
 ...
@@ -789,11 +783,13 @@ Ahem.
 
 ## earth_blur
 
-Ahem.
+...
+...
+...
 We interrupt this regularly scheduled canonical ending to bring you a bonus round!
 Our story may have concluded several times, but that's not going to stop us.
 And it's not just because we have some extra art to use up.
-These are warriors more formidable than any that you have fought up to this point.
+These warriors are more formidable than any that you have fought up to this point.
 They have each harnessed the power of moe, their spirits teeming with raw energy.
 Plus they have adorable Christmas outfits, so that's pretty cool.
 ### boss_ex_santa_2 enter, appear middle
@@ -811,6 +807,7 @@ Give it your best!
 > battle 850: boss_ex_santa_1, boss_ex_santa_2, boss_ex_santa_3
 
 ## earth_blur
+### celebrate
 Thank you for playing!
 You can stop now.
 
