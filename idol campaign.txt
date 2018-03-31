@@ -800,7 +800,7 @@ Even though you're still going to be dead after this.
 Sorry about that. 
 Give it your best!
 
-> battle 750: boss_ex_santa_1, boss_ex_santa_2, boss_ex_santa_3
+> battle 850: boss_ex_santa_1, boss_ex_santa_2, boss_ex_santa_3
 
 ## earth_blur
 Thank you for playing!
