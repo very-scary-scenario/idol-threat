@@ -460,7 +460,7 @@ a {
     height: 150vw;
     text-align: right;
     position: absolute;
-    top: -7vh;
+    top: 0;
     left: 0;
     z-index: 2;
     text-align: center;
@@ -1586,7 +1586,7 @@ body.nothing-scanned {
 
     img {
       position: absolute;
-      top: -10%;
+      top: -10vw;
       left: -15%;
       width: 130%;
       opacity: 0;
@@ -1596,9 +1596,10 @@ body.nothing-scanned {
   }
 
   #catch-button-container {
+    width: 100%;
     position: absolute;
     bottom: 5vh;
-    width: 100%;
+    bottom: calc(env(safe-area-inset-bottom) + 5vh);
   }
 
   #catch-button {
