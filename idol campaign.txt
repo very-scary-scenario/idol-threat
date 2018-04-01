@@ -133,7 +133,7 @@ Under regular circumstances we'd have to spend more time at smaller venues, maki
 But we already know that these idols are going to become the saviours of the world,
 so it's not really our fault that the guards don't stand a chance against a powerful chop to the neck.
 As our group approaches the stage, a famous idol unit slowly comes into view.
-/It's them./
+It's them./
 /The most popular idols in all of Shin Japan./
 They aren't like the idols we've met before. Their overwhelming presence is felt immediately from across the corridor.
 What's worse is that they know why our unit is here.
@@ -144,7 +144,7 @@ The leader of the group, without breaking eye contact with our idols, tightens t
 boss_04_1:: "It's no bother, I could use a warm up before this evening's performance."
 This one pats her mouth gently with a tissue. It appears we're not the first to challenge them today.
 ### boss_04_3 enter, from right, into right
-boss_04_3:: "These ones don't even /look/ like idols."
+boss_04_3:: "These ones don't even look like idols."
 ...
 Unforgivable.
 We can't rush this. That they are still hungry for battle is testament to their strength.
