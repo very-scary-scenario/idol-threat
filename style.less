@@ -384,6 +384,7 @@ a {
   position: fixed;
   bottom: 0;
   left: 0;
+  padding-bottom: env(safe-area-inset-bottom);
   background-color: fade(@fg, 90%);
   color: @bg;
 
@@ -581,6 +582,7 @@ a {
     max-width: 30em;
     bottom: 0;
     left: 0;
+    padding-bottom: env(safe-area-inset-bottom);
 
     blockquote {
       padding-top: .5em;
@@ -868,6 +870,7 @@ body.in-battle {
     #player-idols {
       position: fixed;
       bottom: 0;
+      padding-bottom: env(safe-area-inset-bottom);
     }
 
     .portrait {
@@ -989,6 +992,7 @@ body.overlay {
 
 #catalog {
   overflow-x: hidden;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 body.icon {
@@ -1309,6 +1313,7 @@ body.nothing-scanned {
   #signature {
     position: absolute;
     bottom: 0;
+    margin-bottom: env(safe-area-inset-bottom);
     width: 100vw;
     padding: .1em 0 .3em;
     background: radial-gradient(circle farthest-corner, fade(@title-bg, 70%) 5em, fade(@title-bg, 0%) 10em) !important;
@@ -1487,6 +1492,7 @@ body.nothing-scanned {
     bottom: 0;
     left: 0;
     padding: 1em 1em 2em;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 2em);
     font-size: 1.5em;
     cursor: pointer;
     box-sizing: border-box;
@@ -1500,6 +1506,7 @@ body.nothing-scanned {
     &::after {
       position: absolute;
       bottom: 0;
+      bottom: env(safe-area-inset-bottom);
       right: 0;
       margin: 0.8em;
       font-size: 1.5em;
