@@ -457,7 +457,7 @@ boss_10_2:: NO I DON'T WANT TO
 boss_10_2:: NO, YOU CAN'T TELL ME WHAT TO DO
 You know what? Fine. I'll handle the idols myself.
 
-#### 0-0: end
+#### 0-0: goto end
 
 # part eleven
 
@@ -498,7 +498,7 @@ Those people are still arguing...
 ...
 Your head hurts...
 
-#### 0-1: end
+#### 0-1: goto end
 
 # part twelve
 
@@ -543,7 +543,7 @@ These memories...
 You haven't thought about them in a long time.
 Your head hurts...
 
-#### 0-2: end
+#### 0-2: goto end
 
 # part thirteen
 
@@ -587,7 +587,7 @@ boss_ex3_dapper_1, boss_ex3_dapper_2, boss_ex3_dapper_3:: "...re..r..."
 ...please stop.
 Your head hurts...
 
-#### 0-3: end
+#### 0-3: goto end
 
 # part fourteen
 
@@ -638,7 +638,7 @@ boss_ex2_hell_1, boss_ex2_hell_2, boss_ex2_hell_3:: /"Remember?"/
 ...
 I remember.
 
-#### 0-4: end
+#### 0-4: goto end
 
 # part fifteen
 
@@ -777,7 +777,7 @@ Ahem.
 
 <full-screen image with 'THE END' in larger font, slowly disappearing over time>
 
-#### 0-9: restart
+#### 0-8: restart
 
 # part sixteen
 
@@ -811,9 +811,9 @@ Give it your best!
 Thank you for playing!
 You can stop now.
 
-#### restart
+#### always: restart
 
-# part end
+# end
 
 ## earth_blur
 

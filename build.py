@@ -193,15 +193,20 @@ def build_animations():
 
 
 def build_campaign():
-    campaign = []
+    chapters = []
+    last_loop_referenced = 0
+
     with open(os.path.join(HERE, 'idol campaign.txt')) as f:
         for line in (l.strip() for l in f.readlines() if l.strip()):
             if line.startswith('# '):
-                current_chapter = []
-                campaign.append(current_chapter)
+                current_chapter = {
+                    'name': line.lstrip('# '),
+                    'contents': [],
+                }
+                chapters.append(current_chapter)
 
             elif line.startswith('## '):
-                current_chapter.append({
+                current_chapter['contents'].append({
                     'kind': 'setting',
                     'value': line.lstrip('# '),
                 })
@@ -223,19 +228,39 @@ def build_campaign():
                 else:
                     direction['verb'] = content
 
-                current_chapter.append(direction)
+                current_chapter['contents'].append(direction)
+
+            elif line.startswith('#### '):
+                condition, target = line.lstrip('# ').split(': ')
+                loop_range = None
+
+                if condition != 'always':
+                    loop_range = [int(i) for i in condition.split('-')]
+                    if max(loop_range) > last_loop_referenced:
+                        last_loop_referenced = max(loop_range)
+
+                if 'redirect' in current_chapter:
+                    raise RuntimeError('{name!r} has more than one redirect'
+                                       .format(**current_chapter))
+
+                current_chapter['redirect'] = {
+                    'kind': 'redirect',
+                    'loop_range': loop_range,
+                    'target': target,
+                }
 
             elif line.startswith('> battle '):
                 meta, bosses_string = line.split(':', 1)
                 _, _, strength_string = meta.split(' ', 2)
 
-                current_chapter.append({
+                current_chapter['contents'].append({
                     'kind': 'battle',
                     'strength': int(strength_string),
                     'bosses': [
                         b.strip() for b in bosses_string.split(',')
                     ]
                 })
+
             else:
                 speaker_match = re.match(r'^([\w, ]+):: (.+)$', line)
                 if speaker_match:
@@ -251,14 +276,62 @@ def build_campaign():
                 else:
                     em = False
 
-                current_chapter.append({
+                current_chapter['contents'].append({
                     'kind': 'text',
                     'text': words,
                     'speakers': speakers,
                     'em': em,
                 })
 
-    return campaign
+    chapter_contents_by_name = {
+        chapter['name']: chapter['contents'] for chapter in chapters
+    }
+    ordered_names = [chapter['name'] for chapter in chapters]
+
+    initial_chapter_order = []
+    final_loop_order = []
+
+    def add_loop_for_index(loop_index, chapter_order):
+        chapter_index = 0
+
+        while True:
+            try:
+                chapter = chapters[chapter_index]
+            except IndexError:
+                break
+
+            chapter_order.append(chapter['name'])
+
+            redirect = chapter.get('redirect')
+
+            if (
+                redirect is not None and (
+                    (redirect['loop_range'] is None) or (
+                        redirect['loop_range'][0] <=
+                        loop_index <=
+                        redirect['loop_range'][1]
+                    )
+                )
+            ):
+                if redirect['target'] == 'restart':
+                    break
+
+                target_name = redirect['target'].replace('goto ', '')
+                chapter_index = ordered_names.index(target_name)
+
+            else:
+                chapter_index += 1
+
+    for loop_index in range(last_loop_referenced + 1):
+        add_loop_for_index(loop_index, initial_chapter_order)
+
+    add_loop_for_index(last_loop_referenced + 1, final_loop_order)
+
+    # print('\n'.join(initial_chapter_order))
+    # print('\n -- and then, indefinitely:\n')
+    # print('\n'.join(final_loop_order))
+
+    return chapter_contents_by_name, initial_chapter_order, final_loop_order
 
 
 def build_icon():
@@ -383,13 +456,18 @@ def write_parts():
                 json.dumps(skin_colours),
                 json.dumps(hair_colours),
             )
-        ),
+        )
+
+        p.write(
+            'CHAPTERS = {}; INITIAL_CHAPTER_ORDER = {}; FINAL_LOOP_ORDER();'
+            .format(*(json.dumps(c) for c in build_campaign()))
+        )
+
         p.write('BOSS_NAMES = {};'.format(json.dumps(build_bosses())))
         p.write('BIOS = {};'.format(json.dumps(build_bios())))
         p.write('ABILITIES = {};'.format(json.dumps(build_abilities())))
         p.write('QUOTES = {};'.format(json.dumps(build_quotes())))
         p.write('ANIMATIONS = {};'.format(json.dumps(build_animations())))
-        p.write('CAMPAIGN = {};'.format(json.dumps(build_campaign())))
         p.write('UNIT_NAMES = {};'.format(json.dumps(build_unit_names())))
         p.write('KANA = {};'.format(json.dumps(build_kana())))
         p.write('BARCODES = {};'.format(json.dumps(build_barcodes())))
