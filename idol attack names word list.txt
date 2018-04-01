@@ -181,7 +181,7 @@ plain
 regular
 relaxing
 +remarkable
-rhythm
+rhythmic
 -rowdy
 --salty
 -scary
@@ -347,6 +347,7 @@ punch
 rage
 rainbow
 ray
+rhythm
 rush
 scratch
 scream
