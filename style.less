@@ -1224,9 +1224,29 @@ body.batch {
     }
   }
 
+  #agency-close, #sort-close {
+    opacity: 0;
+    transition: opacity .3s;
+    position: absolute;
+    left: .5em;
+    z-index: 2;
+  }
+
+  #agency-name, #sort-name {
+    transition: opacity .3s;
+  }
+
   &.sort-visible #sort-button, &.upgrade-visible #agency-summary {
     border-color: fade(@fg, 50%);
     background-color: @mid;
+  }
+
+  &.sort-visible #sort-close, &.upgrade-visible #agency-close {
+    opacity: 1;
+  }
+
+  &.sort-visible #sort-name, &.upgrade-visible #agency-name {
+    opacity: 0;
   }
 
   &.sort-visible {

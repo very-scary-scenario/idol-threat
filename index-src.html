@@ -85,6 +85,7 @@
         <a href="#" id="agency-summary">
           <div id="agency-level-progress" style="width: {{levelProgressPercent}}%"></div>
           <span id="agency-name">The Agency</span>
+          <span id="agency-close">close</span>
           <span id="agency-level">
             <span>lv</span><strong>{{levelFloor}}</strong>
           </span>
@@ -106,7 +107,10 @@
           <li class="meta"><a id="load-backup" href="#" class="needsclick">Load saved backup&hellip;</a></li>
         </ul>
 
-        <a href="#" id="sort-button">sort…</a>
+        <a href="#" id="sort-button">
+          <span id="sort-name">sort…</span>
+          <span id="sort-close">close</span>
+        </a>
         <ul id="sort-list">
           {{#each sortOrders}}
             <li>
