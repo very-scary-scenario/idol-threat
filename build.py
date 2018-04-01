@@ -459,7 +459,7 @@ def write_parts():
         )
 
         p.write(
-            'CHAPTERS = {}; INITIAL_CHAPTER_ORDER = {}; FINAL_LOOP_ORDER();'
+            'CHAPTERS = {}; INITIAL_CHAPTER_ORDER = {}; FINAL_LOOP_ORDER = {};'
             .format(*(json.dumps(c) for c in build_campaign()))
         )
 

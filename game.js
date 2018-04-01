@@ -35,6 +35,8 @@ var RARITIES = [
 var BASE_RARITY = 300;
 var RARITY_CURVE = 0.6;
 
+var CHAPTER_DIFFICULTY_INCREASE = 50;
+
 var SHINY_CHANCE = 1/4096;
 
 var MAXIMUM_CATALOG_SIZE = 50;
@@ -98,8 +100,6 @@ var LETTER_DELAYS = {
 };
 
 var NEGATIVE_STAT_EFFECT = 2;
-
-var PRESTIGE_DIFFICULTY_INCREASE = 600;
 
 var RECENT_FIRING_MEMORY = 20;
 
@@ -860,9 +860,7 @@ function Agency() {
   this.sortOrder = 'date';
 
   this.experience = 0;
-  this.storyChapter = 0;
-  this.storyGeneration = 0;
-  this.totalStoryChaptersBeaten = 0;
+  this.storyChaptersBeaten = 0;
 
   this.storyActors = {};
 }
@@ -896,7 +894,6 @@ Agency.prototype.renderCatalog = function() {
   catalogElement.innerHTML = catalogTemplate({
     'hasNeverScannedAnything': (this.catalog.length === 0) && document.body.classList.contains('nothing-scanned'),
     'catalog': sortedCatalog,
-    'hasStoryRemaining': CAMPAIGN[this.storyChapter] !== undefined,
     'canFeed': this.canFeed(),
     'levelFloor': this.levelFloor(),
     'levelProgressPercent': Math.floor(this.levelProgress() * 100),
@@ -1133,10 +1130,12 @@ Agency.prototype.canFeed = function() {
   return this.catalog.length >= 2;
 };
 Agency.prototype.doStory = function(pageNumber) {
-  if (pageNumber === undefined) pageNumber = 0;
-  var chapter = CAMPAIGN[this.storyChapter];
-  var page = chapter[pageNumber];
   var self = this;
+
+  if (pageNumber === undefined) pageNumber = 0;
+
+  var chapter = this.getStoryChapter();
+  var page = chapter[pageNumber];
   var letterTimeout;
   var actorElement;
 
@@ -1190,9 +1189,8 @@ Agency.prototype.doStory = function(pageNumber) {
 
   if (page === undefined) {
     theatreElement.innerHTML = '';
-    this.storyChapter++;
-    this.totalStoryChaptersBeaten++;
-    this.grantExperience(this.totalStoryChaptersBeaten);
+    this.storyChaptersBeaten++;
+    this.grantExperience(this.storyChaptersBeaten);
     rerender();
   } else if (page.kind === 'setting') {
     this.storySetting = page.value;
@@ -1261,8 +1259,7 @@ Agency.prototype.doStory = function(pageNumber) {
     for (var ei = 0; ei < page.bosses.length; ei++) {
       var enemyIdol = getBoss(page.bosses[ei]);
       for (var si = 0; si < STATS.length; si++) {
-        enemyIdol[STATS[si]] = enemyIdol[STATS[si]] + page.strength + (
-          PRESTIGE_DIFFICULTY_INCREASE * agency.storyGeneration);
+        enemyIdol[STATS[si]] = enemyIdol[STATS[si]] + (CHAPTER_DIFFICULTY_INCREASE * this.storyChaptersBeaten);
       }
       enemyIdols.push(new BattleIdol(enemyIdol, 'ai'));
     }
@@ -1281,15 +1278,26 @@ Agency.prototype.doStory = function(pageNumber) {
     battle.loop();
   }
 };
+Agency.prototype.getStoryChapter = function() {
+  var chapterName;
+
+  chapterName = INITIAL_CHAPTER_ORDER[this.storyChaptersBeaten];
+
+  if (chapterName === undefined) {
+    var progressBeyond = this.storyChaptersBeaten - INITIAL_CHAPTER_ORDER.length;
+    var index = progressBeyond % FINAL_LOOP_ORDER.length;
+    chapterName = FINAL_LOOP_ORDER[index];
+  }
+
+  return CHAPTERS[chapterName];
+};
 Agency.prototype.dump = function() {
   var agencyDump = {
     i: [],
     u: [],
     x: this.experience,
     p: this.upgrades,
-    c: this.storyChapter,
-    g: this.storyGeneration,
-    b: this.totalStoryChaptersBeaten,
+    b: this.storyChaptersBeaten,
     f: this.recentlyFired,
     o: this.sortOrder
   };
@@ -1305,9 +1313,7 @@ Agency.prototype.dump = function() {
 Agency.prototype.load = function(agencyDump) {
   if (agencyDump.o !== undefined) this.sortOrder = agencyDump.o;
   this.experience = agencyDump.x || 0;
-  this.storyChapter = agencyDump.c || 0;
-  this.storyGeneration = agencyDump.g || 0;
-  this.totalStoryChaptersBeaten = agencyDump.b || 0;
+  this.storyChaptersBeaten = agencyDump.b || 0;
   this.recentlyFired = agencyDump.f || [];
   this.upgrades = agencyDump.p || this.upgrades;
 
@@ -1482,19 +1488,6 @@ function rerender() {
     } else {
       askUser('You need an idol in your unit to progress in the story.');
     }
-  });
-
-  var prestigeButton = document.getElementById('prestige-story');
-  if (prestigeButton) prestigeButton.addEventListener('click', function(e) {
-    askUser('Do you want to reset story progress and make it harder? Your idols will stay with you.', [
-      ['I am ready', function() {
-        agency.storyGeneration++;
-        agency.storyChapter = 0;
-        rerender();
-        agency.doStory();
-      }],
-      ['Not yet', null]
-    ]);
   });
 
   var randomFightButton = document.getElementById('random-fight');

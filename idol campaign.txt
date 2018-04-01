@@ -116,7 +116,7 @@ boss_03_3:: "You know, for the emotional trauma you've caused us today."
 To win the help of this suit, our idols must demonstrate what the opportunity means to them.
 The two groups dust down their clothes, assume their fighting stances and prepare for battle.
 
-> battle 100: boss_03_2, boss_03_3, boss_03_1
+> battle 50: boss_03_2, boss_03_3, boss_03_1
 
 With the battle won, our idols are one step closer to conquering the world.
 With love, sparkles and all that good stuff.
@@ -153,7 +153,7 @@ Don't back down.
 Don't give up.
 Show them your appeal!
 
-> battle 150: boss_04_1, boss_04_2, boss_04_3
+> battle 50: boss_04_1, boss_04_2, boss_04_3
 
 We're unstoppable.
 With the power of Shin Japan's greatest idols, few can stand a chance against our unit.
@@ -198,7 +198,7 @@ However, as dangerous as it may be, consuming the experiences of an idol unit of
 We need to win now, when it really counts. Let's show them the power of Shin Japanese audio engineering.
 ...for the sake of the world!
 
-> battle 200: boss_05_1, boss_05_2, boss_05_3
+> battle 50: boss_05_1, boss_05_2, boss_05_3
 
 With the IIA representatives for Asia defeated, our idols are now the strongest in the entire continent.
 All of it! Even the small, boring parts.
@@ -252,7 +252,7 @@ The European IIA's attempt to lull our heroes into a false sense of security has
 We know we're in Europe, not Norway.
 Insulted by this cheap trick, our idols prepare for combat.
 
-> battle 250: boss_06_1, boss_06_2, boss_06_3
+> battle 50: boss_06_1, boss_06_2, boss_06_3
 
 A lot of time was wasted in the battle with the European representatives.
 With that in mind, it's imperative that the American IIA representatives are found as soon as possible.
@@ -296,7 +296,7 @@ But we were not prepared for them to speak such a bizarre language. The talks ar
 We must be cautious, however. This is our biggest hurdle thus far.
 End them, and our heroes will be the strongest idol unit in the world!
 
-> battle 300: boss_07_1, boss_07_2, boss_07_3
+> battle 50: boss_07_1, boss_07_2, boss_07_3
 
 Victory is ours!
 We are the strongest idol unit in the world!
@@ -335,7 +335,7 @@ boss_08_1:: "We'll bring you down with us..."
 I have no idea what they're talking about and honestly I'm both shocked and appalled. 
 It's time to end this, once and for all.
 
-> battle 350: boss_08_1, boss_08_2, boss_08_3
+> battle 50: boss_08_1, boss_08_2, boss_08_3
 
 If there was any doubt about the abilities of the world's strongest idol unit, just remember
 /they just killed three ghosts./
@@ -383,7 +383,7 @@ You've done me a great service, taking care of the only idol groups that would h
 For that, you have my thanks.
 It's time we make idols an extinct species, starting with your precious little group!
 
-> battle 400: boss_09_1, boss_09_2, boss_09_3
+> battle 50: boss_09_1, boss_09_2, boss_09_3
 
 No! This cannot be!
 Have I... Have I created a monster unit?
@@ -431,7 +431,7 @@ boss_10_1:: ALL NON-COMBATANTS SHOULD RETREAT TO A DISTANCE OF 20 LIGHT YEARS
 boss_10_3:: PREPARE TO BE ANNIHILATED
 boss_10_1, boss_10_2, boss_10_3:: WITH LOVE
 
-> battle 500: boss_10_1, boss_10_2, boss_10_3
+> battle 100: boss_10_1, boss_10_2, boss_10_3
 
 ...how? 
 How can this be?
@@ -488,7 +488,7 @@ boss_ex1_maid_3:: "You made us wait on your every demand."
 boss_ex1_maid_2:: "You made us."
 boss_ex1_maid_1, boss_ex1_maid_2, boss_ex1_maid_3:: "...m..er..."
 
-> battle 550: boss_ex1_maid_1, boss_ex1_maid_2, boss_ex1_maid_3
+> battle 50: boss_ex1_maid_1, boss_ex1_maid_2, boss_ex1_maid_3
 
 ## earth_blur
 
@@ -533,7 +533,7 @@ boss_ex4_lmusic_2:: "You made us."
 boss_ex4_lmusic_1, boss_ex4_lmusic_2, boss_ex4_lmusic_3:: "...m..er..."
 boss_ex4_lmusic_1, boss_ex4_lmusic_2, boss_ex4_lmusic_3:: "...re..r..."
 
-> battle 600: boss_ex4_lmusic_1, boss_ex4_lmusic_2, boss_ex4_lmusic_3
+> battle 50: boss_ex4_lmusic_1, boss_ex4_lmusic_2, boss_ex4_lmusic_3
 
 ## earth_blur
 
@@ -578,7 +578,7 @@ boss_ex3_dapper_2:: "You made us."
 boss_ex3_dapper_1, boss_ex3_dapper_2, boss_ex3_dapper_3:: "...m..er..."
 boss_ex3_dapper_1, boss_ex3_dapper_2, boss_ex3_dapper_3:: "...re..r..."
 
-> battle 650: boss_ex3_dapper_1, boss_ex3_dapper_2, boss_ex3_dapper_3
+> battle 50: boss_ex3_dapper_1, boss_ex3_dapper_2, boss_ex3_dapper_3
 
 ## earth_blur
 
@@ -629,7 +629,7 @@ boss_ex2_hell_2:: "No. You didn't kill us."
 boss_ex2_hell_1, boss_ex2_hell_2, boss_ex2_hell_3:: "You became us."
 boss_ex2_hell_1, boss_ex2_hell_2, boss_ex2_hell_3:: /"Remember?"/
 
-> battle 700: boss_ex2_hell_1, boss_ex2_hell_2, boss_ex2_hell_3
+> battle 50: boss_ex2_hell_1, boss_ex2_hell_2, boss_ex2_hell_3
 
 ## earth_blur
 
@@ -758,7 +758,7 @@ boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: What you have is a gif
 boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: ...and if you can't change your mind about this.
 boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: /We'll change your mind./
 
-> battle 750: boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3
+> battle 50: boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3
 
 ## office_bloom
 
@@ -804,7 +804,7 @@ Even though you're still going to be dead after this.
 Sorry about that. 
 Give it your best!
 
-> battle 850: boss_ex_santa_1, boss_ex_santa_2, boss_ex_santa_3
+> battle 100: boss_ex_santa_1, boss_ex_santa_2, boss_ex_santa_3
 
 ## earth_blur
 ### celebrate
