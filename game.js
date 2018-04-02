@@ -1187,17 +1187,27 @@ Agency.prototype.doStory = function(pageNumber) {
     if (page.adjectives.into) actorElement.setAttribute('data-position', page.adjectives.into);
   }
 
+  function handleSetpieceClick(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    self.doStory(pageNumber + 1);
+    theatreElement.removeEventListener(handleSetpieceClick);
+  }
+
   if (page === undefined) {
     theatreElement.innerHTML = '';
     this.storyChaptersBeaten++;
     this.grantExperience(this.storyChaptersBeaten);
     rerender();
+
   } else if (page.kind === 'setting') {
     this.storySetting = page.value;
     renderSetting();
     this.doStory(pageNumber + 1);
+
   } else if (page.kind === 'text') {
     if (!theatreElement.innerHTML) renderSetting();
+    stage = document.getElementById('stage').classList.remove('setpiece');
     if (theatreElement.classList.contains('em') !== Boolean(page.em)) theatreElement.classList.toggle('em');
 
     var currentlySpeakingIdolElements = theatreElement.querySelectorAll('.speaking');
@@ -1215,6 +1225,15 @@ Agency.prototype.doStory = function(pageNumber) {
       visibleScriptElement.textContent = '';
       graduallyShowScript(visibleScriptElement, invisibleScriptElement);
     }
+
+  } else if (page.kind === 'setpiece') {
+    if (!theatreElement.innerHTML) renderSetting();
+    theatreElement.addEventListener('click', handleSetpieceClick);
+    document.getElementById('setpiece').outerHTML = document.getElementById('setpiece').outerHTML;
+    document.getElementById('setpiece').innerText = page.text;
+
+    document.getElementById('stage').classList.add('setpiece');
+
   } else if (page.kind === 'direction') {
     if (page.actor !== undefined) {
       var actor = getBoss(page.actor);
@@ -1245,6 +1264,7 @@ Agency.prototype.doStory = function(pageNumber) {
     }
 
     this.doStory(pageNumber + 1);
+
   } else if (page.kind === 'battle') {
     isSkipping = false;
     theatreElement.innerHTML = '';

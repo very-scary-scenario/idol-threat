@@ -261,6 +261,12 @@ def build_campaign():
                     ]
                 })
 
+            elif line.startswith('! '):
+                current_chapter['contents'].append({
+                    'kind': 'setpiece',
+                    'text': line.lstrip('! '),
+                })
+
             else:
                 speaker_match = re.match(r'^([\w, ]+):: (.+)$', line)
                 if speaker_match:

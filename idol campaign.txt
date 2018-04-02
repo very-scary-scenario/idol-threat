@@ -775,7 +775,7 @@ Let's see this to its conclusion. I've seen this enough to know what I have to s
 Ahem.
 "What's this? Another fledgling idol group to cut down?"
 
-<full-screen image with 'THE END' in larger font, slowly disappearing over time>
+! THE END
 
 #### 0-8: restart
 
@@ -826,7 +826,7 @@ boss_10_2:: HUMANS... MUST BE PROTECTED
 boss_10_2:: STAY GENKI
 NOOOOOOOOOOOOOOOOOOOOOOOOOO
 
-<full-screen image with 'SARABADA' in larger font, slowly disappearing over time>
+! SARABADA
 
 The alien threat has been thwarted once again.
 It came at the great cost of our lives.

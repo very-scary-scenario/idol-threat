@@ -54,6 +54,17 @@
   50% { background: @lfg; }
 }
 
+@keyframes setpiece {
+  from {
+    opacity: 1;
+    transform: scale(1.3) rotate(5deg);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.8) rotate(-5deg);
+  }
+}
+
 @font-face {
   font-family: 'Rum Raisin';
   font-style: normal;
@@ -1537,6 +1548,37 @@ body.nothing-scanned {
       &::after {
         color: @fg;
       }
+    }
+  }
+
+  #setpiece {
+    display: none;
+  }
+
+  &.setpiece {
+    #backdrop {
+      height: 100vh;
+    }
+
+    #setpiece {
+      display: block;
+      width: 100%;
+      position: absolute;
+      left: 0;
+      top: 30vh;
+      font-size: 15vw;
+      text-align: center;
+      color: @bg;
+      text-shadow: 0 0 .3em @fg;
+
+      opacity: 0;
+      transform-origin: center;
+      animation-duration: 7s;
+      animation-name: setpiece;
+    }
+
+    #script {
+      display: none;
     }
   }
 }
