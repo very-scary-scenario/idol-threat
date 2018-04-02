@@ -108,6 +108,7 @@ var HAIR_COLOURS;
 var SKIN_COLOURS;
 
 var confettiTimeout;
+var letterTimeout;
 
 var cookieExpiryDate = new Date();
 cookieExpiryDate.setFullYear(cookieExpiryDate.getFullYear() + 50);
@@ -1136,7 +1137,6 @@ Agency.prototype.doStory = function(pageNumber) {
 
   var chapter = this.getStoryChapter();
   var page = chapter[pageNumber];
-  var letterTimeout;
   var actorElement;
 
   function graduallyShowScript(visibleScriptElement, invisibleScriptElement) {
@@ -1144,14 +1144,16 @@ Agency.prototype.doStory = function(pageNumber) {
       var nextLetter = invisibleScriptElement.textContent[0];
       visibleScriptElement.textContent += nextLetter;
       invisibleScriptElement.textContent = invisibleScriptElement.textContent.replace(/^./, '');
+      clearTimeout(letterTimeout);
 
-      if (invisibleScriptElement.textContent) {
-        var letterDelay = LETTER_DELAY * (LETTER_DELAYS[nextLetter] || 1);
-        if (page.em) letterDelay *= LETTER_EMPHASIS_MULTIPLIER;
-        letterTimeout = setTimeout(showNextLetter, letterDelay);
-      } else {
+      if (!invisibleScriptElement.textContent) {
         letterTimeout = undefined;
+        return;
       }
+
+      var letterDelay = LETTER_DELAY * (LETTER_DELAYS[nextLetter] || 1);
+      if (page.em) letterDelay *= LETTER_EMPHASIS_MULTIPLIER;
+      letterTimeout = setTimeout(showNextLetter, letterDelay);
     }
 
     letterTimeout = setTimeout(showNextLetter, 50);
@@ -1175,7 +1177,7 @@ Agency.prototype.doStory = function(pageNumber) {
 
   function renderSetting() {
     theatreElement.innerHTML = theatreTemplate({background: self.storySetting});
-    var skipElement = theatreElement.querySelector('#skip');
+    var skipButton = theatreElement.querySelector('#skip');
 
     function handleSkipClick(event) {
       event.stopPropagation();
