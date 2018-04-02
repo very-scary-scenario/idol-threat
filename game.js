@@ -1175,12 +1175,17 @@ Agency.prototype.doStory = function(pageNumber) {
 
   function renderSetting() {
     theatreElement.innerHTML = theatreTemplate({background: self.storySetting});
-    theatreElement.querySelector('#skip').addEventListener('click', function(event) {
+    var skipElement = theatreElement.querySelector('#skip');
+
+    function handleSkipClick(event) {
       event.stopPropagation();
       event.preventDefault();
       isSkipping = true;
       self.doStory(pageNumber + 1);
-    });
+      skipButton.removeEventListener('click', skipElement);
+    }
+
+    skipButton.addEventListener('click', handleSkipClick);
   }
 
   function goToDestination() {
@@ -1191,7 +1196,7 @@ Agency.prototype.doStory = function(pageNumber) {
     event.stopPropagation();
     event.preventDefault();
     self.doStory(pageNumber + 1);
-    theatreElement.removeEventListener(handleSetpieceClick);
+    theatreElement.removeEventListener('click', handleSetpieceClick);
   }
 
   if (page === undefined) {
