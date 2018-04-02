@@ -350,7 +350,7 @@ function Ability(idol, parts, animation, affinity) {
 
 function effectiveStatGetter(idol, stat) {
   return function() {
-    return idol[stat] + agency.upgrades[stat];
+    return idol[stat] + agency.upgradeFor[stat]();
   };
 }
 
@@ -852,6 +852,8 @@ hammerManager.on('swipeleft', showNextIdol);
 hammerManager.on('swiperight', showPrevIdol);
 
 function Agency() {
+  var self = this;
+
   this.catalog = [];
   this.unit = [];
   this.recentlyFired = [];
@@ -864,6 +866,18 @@ function Agency() {
   this.storyChaptersBeaten = 0;
 
   this.storyActors = {};
+
+  this.upgradeFor = {};
+
+  function upgradeGetter(stat) {
+    return function() {
+      return self.levelFloor() * self.upgrades[stat];
+    };
+  }
+  for (var i = 0; i < STATS.length; i++) {
+    var stat = STATS[i];
+    this.upgradeFor[stat] = upgradeGetter(stat);
+  }
 }
 Agency.prototype.full = function() {
   return this.catalog.length >= MAXIMUM_CATALOG_SIZE;
