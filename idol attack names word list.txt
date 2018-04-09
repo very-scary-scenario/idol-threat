@@ -117,7 +117,6 @@ daring
 +++heavenly
 +honest
 -icky
-++idol
 ++immaculate
 +impressive
 ++incredible
@@ -251,6 +250,7 @@ haunted
 -hellish
 hyper
 hypnotic
+++idol
 impressive
 jolly
 +kind
