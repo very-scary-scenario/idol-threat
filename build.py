@@ -451,8 +451,17 @@ def build_barcodes():
 
 
 def write_parts():
+    parts, poses, skin_colours, hair_colours = build_idols()
+
+    with open('parts.json', 'w') as j:
+        j.write(json.dumps({
+            'parts': parts,
+            'poses': poses,
+            'skinColours': skin_colours,
+            'hairColours': hair_colours,
+        }, indent=2))
+
     with open('parts.js', 'w') as p:
-        parts, poses, skin_colours, hair_colours = build_idols()
         p.write(
             'PARTS = {}; POSES = {}; SKIN_COLOURS = {}; '
             'HAIR_COLOURS = {};'

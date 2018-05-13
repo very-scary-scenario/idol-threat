@@ -1,0 +1,473 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1C1619E220A89B5A0025B63C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C1619E120A89B5A0025B63C /* Assets.xcassets */; };
+		1C1619E920A89B5A0025B63C /* Idol Threat stickers MessagesExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1C1619E820A89B5A0025B63C /* Idol Threat stickers MessagesExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		1C1619EE20A89B5A0025B63C /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C1619ED20A89B5A0025B63C /* Messages.framework */; };
+		1C1619F120A89B5A0025B63C /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1619F020A89B5A0025B63C /* MessagesViewController.swift */; };
+		1C1619F420A89B5A0025B63C /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C1619F220A89B5A0025B63C /* MainInterface.storyboard */; };
+		1C1619F620A89B5B0025B63C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C1619F520A89B5B0025B63C /* Assets.xcassets */; };
+		1C504E7920A8E250003F8967 /* idols in Resources */ = {isa = PBXBuildFile; fileRef = 1CBFD68320A8E14000967915 /* idols */; };
+		1C504E7A20A8E260003F8967 /* idols in Resources */ = {isa = PBXBuildFile; fileRef = 1CBFD68320A8E14000967915 /* idols */; };
+		1C8EBAC820A8BE16000FB815 /* IdolThreatStickerBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8EBAC720A8BE16000FB815 /* IdolThreatStickerBrowserViewController.swift */; };
+		1C8EBACE20A8BFC5000FB815 /* parts.json in Resources */ = {isa = PBXBuildFile; fileRef = 1C8EBACD20A8BFC5000FB815 /* parts.json */; };
+		1CBFD68220A8C86E00967915 /* IdolFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CBFD68120A8C86E00967915 /* IdolFactory.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1C1619EA20A89B5A0025B63C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1C1619D820A89B580025B63C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1C1619E720A89B5A0025B63C;
+			remoteInfo = "Idol Threat stickers MessagesExtension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1C1619FD20A89B5B0025B63C /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				1C1619E920A89B5A0025B63C /* Idol Threat stickers MessagesExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1C1619DE20A89B590025B63C /* Idol Threat stickers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Idol Threat stickers.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C1619E120A89B5A0025B63C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1C1619E320A89B5A0025B63C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1C1619E820A89B5A0025B63C /* Idol Threat stickers MessagesExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Idol Threat stickers MessagesExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C1619ED20A89B5A0025B63C /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = System/Library/Frameworks/Messages.framework; sourceTree = SDKROOT; };
+		1C1619F020A89B5A0025B63C /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
+		1C1619F320A89B5A0025B63C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		1C1619F520A89B5B0025B63C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1C1619F720A89B5B0025B63C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1C8EBAC720A8BE16000FB815 /* IdolThreatStickerBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdolThreatStickerBrowserViewController.swift; sourceTree = "<group>"; };
+		1C8EBACD20A8BFC5000FB815 /* parts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = parts.json; path = ../../../parts.json; sourceTree = "<group>"; };
+		1CBFD68120A8C86E00967915 /* IdolFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdolFactory.swift; sourceTree = "<group>"; };
+		1CBFD68320A8E14000967915 /* idols */ = {isa = PBXFileReference; lastKnownFileType = folder; name = idols; path = ../../idols; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1C1619E520A89B5A0025B63C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1C1619EE20A89B5A0025B63C /* Messages.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1C1619D720A89B580025B63C = {
+			isa = PBXGroup;
+			children = (
+				1C1619E020A89B590025B63C /* Idol Threat stickers */,
+				1C1619EF20A89B5A0025B63C /* Idol Threat stickers MessagesExtension */,
+				1C1619EC20A89B5A0025B63C /* Frameworks */,
+				1C1619DF20A89B590025B63C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1C1619DF20A89B590025B63C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1C1619DE20A89B590025B63C /* Idol Threat stickers.app */,
+				1C1619E820A89B5A0025B63C /* Idol Threat stickers MessagesExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1C1619E020A89B590025B63C /* Idol Threat stickers */ = {
+			isa = PBXGroup;
+			children = (
+				1C1619E120A89B5A0025B63C /* Assets.xcassets */,
+				1C1619E320A89B5A0025B63C /* Info.plist */,
+			);
+			path = "Idol Threat stickers";
+			sourceTree = "<group>";
+		};
+		1C1619EC20A89B5A0025B63C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1C1619ED20A89B5A0025B63C /* Messages.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1C1619EF20A89B5A0025B63C /* Idol Threat stickers MessagesExtension */ = {
+			isa = PBXGroup;
+			children = (
+				1C8EBACD20A8BFC5000FB815 /* parts.json */,
+				1C1619F020A89B5A0025B63C /* MessagesViewController.swift */,
+				1C8EBAC720A8BE16000FB815 /* IdolThreatStickerBrowserViewController.swift */,
+				1CBFD68120A8C86E00967915 /* IdolFactory.swift */,
+				1C1619F220A89B5A0025B63C /* MainInterface.storyboard */,
+				1CBFD68320A8E14000967915 /* idols */,
+				1C1619F520A89B5B0025B63C /* Assets.xcassets */,
+				1C1619F720A89B5B0025B63C /* Info.plist */,
+			);
+			path = "Idol Threat stickers MessagesExtension";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1C1619DD20A89B580025B63C /* Idol Threat stickers */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1C1619FE20A89B5B0025B63C /* Build configuration list for PBXNativeTarget "Idol Threat stickers" */;
+			buildPhases = (
+				1C1619DC20A89B580025B63C /* Resources */,
+				1C1619FD20A89B5B0025B63C /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1C1619EB20A89B5A0025B63C /* PBXTargetDependency */,
+			);
+			name = "Idol Threat stickers";
+			productName = "Idol Threat stickers";
+			productReference = 1C1619DE20A89B590025B63C /* Idol Threat stickers.app */;
+			productType = "com.apple.product-type.application.messages";
+		};
+		1C1619E720A89B5A0025B63C /* Idol Threat stickers MessagesExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1C1619FA20A89B5B0025B63C /* Build configuration list for PBXNativeTarget "Idol Threat stickers MessagesExtension" */;
+			buildPhases = (
+				1C1619E420A89B5A0025B63C /* Sources */,
+				1C1619E520A89B5A0025B63C /* Frameworks */,
+				1C1619E620A89B5A0025B63C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Idol Threat stickers MessagesExtension";
+			productName = "Idol Threat stickers MessagesExtension";
+			productReference = 1C1619E820A89B5A0025B63C /* Idol Threat stickers MessagesExtension.appex */;
+			productType = "com.apple.product-type.app-extension.messages";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1C1619D820A89B580025B63C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0940;
+				LastUpgradeCheck = 0940;
+				ORGANIZATIONNAME = "Very Scary Scenario";
+				TargetAttributes = {
+					1C1619DD20A89B580025B63C = {
+						CreatedOnToolsVersion = 9.4;
+					};
+					1C1619E720A89B5A0025B63C = {
+						CreatedOnToolsVersion = 9.4;
+					};
+				};
+			};
+			buildConfigurationList = 1C1619DB20A89B580025B63C /* Build configuration list for PBXProject "Idol Threat stickers" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1C1619D720A89B580025B63C;
+			productRefGroup = 1C1619DF20A89B590025B63C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1C1619DD20A89B580025B63C /* Idol Threat stickers */,
+				1C1619E720A89B5A0025B63C /* Idol Threat stickers MessagesExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1C1619DC20A89B580025B63C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1C504E7A20A8E260003F8967 /* idols in Resources */,
+				1C1619E220A89B5A0025B63C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1C1619E620A89B5A0025B63C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1C504E7920A8E250003F8967 /* idols in Resources */,
+				1C8EBACE20A8BFC5000FB815 /* parts.json in Resources */,
+				1C1619F620A89B5B0025B63C /* Assets.xcassets in Resources */,
+				1C1619F420A89B5A0025B63C /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1C1619E420A89B5A0025B63C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1C1619F120A89B5A0025B63C /* MessagesViewController.swift in Sources */,
+				1CBFD68220A8C86E00967915 /* IdolFactory.swift in Sources */,
+				1C8EBAC820A8BE16000FB815 /* IdolThreatStickerBrowserViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1C1619EB20A89B5A0025B63C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1C1619E720A89B5A0025B63C /* Idol Threat stickers MessagesExtension */;
+			targetProxy = 1C1619EA20A89B5A0025B63C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		1C1619F220A89B5A0025B63C /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1C1619F320A89B5A0025B63C /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1C1619F820A89B5B0025B63C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		1C1619F920A89B5B0025B63C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		1C1619FB20A89B5B0025B63C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R3T38ZA38U;
+				INFOPLIST_FILE = "Idol Threat stickers MessagesExtension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.rkh.co.vscary.idol-threat.stickers.Idol-Threat-stickers.MessagesExtension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1C1619FC20A89B5B0025B63C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R3T38ZA38U;
+				INFOPLIST_FILE = "Idol Threat stickers MessagesExtension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.rkh.co.vscary.idol-threat.stickers.Idol-Threat-stickers.MessagesExtension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		1C1619FF20A89B5B0025B63C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R3T38ZA38U;
+				INFOPLIST_FILE = "Idol Threat stickers/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.rkh.co.vscary.idol-threat.stickers";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1C161A0020A89B5B0025B63C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R3T38ZA38U;
+				INFOPLIST_FILE = "Idol Threat stickers/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.rkh.co.vscary.idol-threat.stickers";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1C1619DB20A89B580025B63C /* Build configuration list for PBXProject "Idol Threat stickers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1C1619F820A89B5B0025B63C /* Debug */,
+				1C1619F920A89B5B0025B63C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1C1619FA20A89B5B0025B63C /* Build configuration list for PBXNativeTarget "Idol Threat stickers MessagesExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1C1619FB20A89B5B0025B63C /* Debug */,
+				1C1619FC20A89B5B0025B63C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1C1619FE20A89B5B0025B63C /* Build configuration list for PBXNativeTarget "Idol Threat stickers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1C1619FF20A89B5B0025B63C /* Debug */,
+				1C161A0020A89B5B0025B63C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1C1619D820A89B580025B63C /* Project object */;
+}

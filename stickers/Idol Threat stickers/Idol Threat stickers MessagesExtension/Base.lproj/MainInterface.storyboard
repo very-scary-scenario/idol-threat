@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14111" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ObA-dk-sSI">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Messages View Controller-->
+        <scene sceneID="7MM-of-jgj">
+            <objects>
+                <viewController id="ObA-dk-sSI" customClass="MessagesViewController" customModule="Idol_Threat_stickers_MessagesExtension" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="zMn-AG-sqS">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tp4-mT-pPd">
+                                <rect key="frame" x="16" y="20" width="288" height="508"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="urU-kV-F8B">
+                                        <rect key="frame" x="0.0" y="8" width="288" height="30"/>
+                                        <state key="normal" title="Re-roll"/>
+                                        <connections>
+                                            <action selector="reroll:" destination="ObA-dk-sSI" eventType="touchUpInside" id="DR0-CF-Tez"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BO0-CS-aKb">
+                                        <rect key="frame" x="0.0" y="46" width="288" height="462"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="urU-kV-F8B" firstAttribute="leading" secondItem="Tp4-mT-pPd" secondAttribute="leading" id="2No-up-Y9z"/>
+                                    <constraint firstItem="BO0-CS-aKb" firstAttribute="leading" secondItem="Tp4-mT-pPd" secondAttribute="leading" id="9wg-oZ-RXt"/>
+                                    <constraint firstItem="urU-kV-F8B" firstAttribute="top" secondItem="Tp4-mT-pPd" secondAttribute="top" constant="8" id="DI0-l8-pbr"/>
+                                    <constraint firstAttribute="bottom" secondItem="BO0-CS-aKb" secondAttribute="bottom" id="bAg-nk-NdD"/>
+                                    <constraint firstItem="BO0-CS-aKb" firstAttribute="top" secondItem="urU-kV-F8B" secondAttribute="bottom" constant="8" id="hCe-Vt-mC1"/>
+                                    <constraint firstAttribute="trailing" secondItem="urU-kV-F8B" secondAttribute="trailing" id="kWP-yN-8EH"/>
+                                    <constraint firstAttribute="trailing" secondItem="BO0-CS-aKb" secondAttribute="trailing" id="opq-N0-nTh"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="Tp4-mT-pPd" firstAttribute="leading" secondItem="LDy-ih-0nr" secondAttribute="leading" constant="16" id="37a-Yn-Id7"/>
+                            <constraint firstItem="LDy-ih-0nr" firstAttribute="trailing" secondItem="Tp4-mT-pPd" secondAttribute="trailing" constant="16" id="EgH-fQ-0cf"/>
+                            <constraint firstItem="Tp4-mT-pPd" firstAttribute="top" secondItem="LDy-ih-0nr" secondAttribute="top" id="IRs-HA-B3f"/>
+                            <constraint firstItem="LDy-ih-0nr" firstAttribute="bottom" secondItem="Tp4-mT-pPd" secondAttribute="bottom" id="fZB-tb-Ef1"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="LDy-ih-0nr"/>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="528"/>
+                    <connections>
+                        <outlet property="browserViewContainer" destination="BO0-CS-aKb" id="VsQ-zA-0iB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="X47-rx-isc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="32" y="33.283358320839582"/>
+        </scene>
+    </scenes>
+    <color key="tintColor" red="0.91372549020000005" green="0.45098039220000002" blue="0.50980392159999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+</document>
