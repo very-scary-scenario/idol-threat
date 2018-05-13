@@ -13,8 +13,7 @@
 		1C1619F120A89B5A0025B63C /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1619F020A89B5A0025B63C /* MessagesViewController.swift */; };
 		1C1619F420A89B5A0025B63C /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C1619F220A89B5A0025B63C /* MainInterface.storyboard */; };
 		1C1619F620A89B5B0025B63C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C1619F520A89B5B0025B63C /* Assets.xcassets */; };
-		1C504E7920A8E250003F8967 /* idols in Resources */ = {isa = PBXBuildFile; fileRef = 1CBFD68320A8E14000967915 /* idols */; };
-		1C504E7A20A8E260003F8967 /* idols in Resources */ = {isa = PBXBuildFile; fileRef = 1CBFD68320A8E14000967915 /* idols */; };
+		1C504E7C20A8FB62003F8967 /* idol-thumbs in Resources */ = {isa = PBXBuildFile; fileRef = 1C504E7B20A8FB62003F8967 /* idol-thumbs */; };
 		1C8EBAC820A8BE16000FB815 /* IdolThreatStickerBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8EBAC720A8BE16000FB815 /* IdolThreatStickerBrowserViewController.swift */; };
 		1C8EBACE20A8BFC5000FB815 /* parts.json in Resources */ = {isa = PBXBuildFile; fileRef = 1C8EBACD20A8BFC5000FB815 /* parts.json */; };
 		1CBFD68220A8C86E00967915 /* IdolFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CBFD68120A8C86E00967915 /* IdolFactory.swift */; };
@@ -54,10 +53,10 @@
 		1C1619F320A89B5A0025B63C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		1C1619F520A89B5B0025B63C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1C1619F720A89B5B0025B63C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1C504E7B20A8FB62003F8967 /* idol-thumbs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "idol-thumbs"; path = "../../../idol-thumbs"; sourceTree = "<group>"; };
 		1C8EBAC720A8BE16000FB815 /* IdolThreatStickerBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdolThreatStickerBrowserViewController.swift; sourceTree = "<group>"; };
 		1C8EBACD20A8BFC5000FB815 /* parts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = parts.json; path = ../../../parts.json; sourceTree = "<group>"; };
 		1CBFD68120A8C86E00967915 /* IdolFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdolFactory.swift; sourceTree = "<group>"; };
-		1CBFD68320A8E14000967915 /* idols */ = {isa = PBXFileReference; lastKnownFileType = folder; name = idols; path = ../../idols; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,12 +110,12 @@
 		1C1619EF20A89B5A0025B63C /* Idol Threat stickers MessagesExtension */ = {
 			isa = PBXGroup;
 			children = (
+				1C504E7B20A8FB62003F8967 /* idol-thumbs */,
 				1C8EBACD20A8BFC5000FB815 /* parts.json */,
 				1C1619F020A89B5A0025B63C /* MessagesViewController.swift */,
 				1C8EBAC720A8BE16000FB815 /* IdolThreatStickerBrowserViewController.swift */,
 				1CBFD68120A8C86E00967915 /* IdolFactory.swift */,
 				1C1619F220A89B5A0025B63C /* MainInterface.storyboard */,
-				1CBFD68320A8E14000967915 /* idols */,
 				1C1619F520A89B5B0025B63C /* Assets.xcassets */,
 				1C1619F720A89B5B0025B63C /* Info.plist */,
 			);
@@ -202,7 +201,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1C504E7A20A8E260003F8967 /* idols in Resources */,
 				1C1619E220A89B5A0025B63C /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -211,10 +209,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1C504E7920A8E250003F8967 /* idols in Resources */,
 				1C8EBACE20A8BFC5000FB815 /* parts.json in Resources */,
 				1C1619F620A89B5B0025B63C /* Assets.xcassets in Resources */,
 				1C1619F420A89B5A0025B63C /* MainInterface.storyboard in Resources */,
+				1C504E7C20A8FB62003F8967 /* idol-thumbs in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

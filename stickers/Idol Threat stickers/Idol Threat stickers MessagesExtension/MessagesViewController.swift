@@ -25,8 +25,9 @@ class MessagesViewController: MSMessagesAppViewController {
 
         browserViewController.stickerBrowserView.reloadData()
     }
-    
+
     @IBAction func reroll(_ sender: Any) {
+        browserViewController.refresh()
         browserViewController.stickerBrowserView.reloadData()
     }
 

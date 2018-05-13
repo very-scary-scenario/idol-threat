@@ -28,6 +28,8 @@ let LAYERS = [
 
 struct IdolPart: Codable {
     var path: String
+    var thumbPath: String
+    var medPath: String
     var bodytype: String
     var layer: String
     var number: String
@@ -97,18 +99,35 @@ class IdolFactory {
 
     func getIdolImage() -> CIImage {
         let idolParts = self.getParts()
-        var image = CIImage(contentsOf: URL(fileURLWithPath: "\(Bundle.main.bundlePath)/\(idolParts[0].path)"))!
+        var image = CIImage(contentsOf: URL(fileURLWithPath: "\(Bundle.main.bundlePath)/\(idolParts[0].medPath)"))!
 
         for idolPart in idolParts[1...] {
-            image = CIImage(contentsOf: URL(fileURLWithPath: "\(Bundle.main.bundlePath)/\(idolPart.path)"))!.composited(over: image)
+            image = CIImage(contentsOf: URL(fileURLWithPath: "\(Bundle.main.bundlePath)/\(idolPart.medPath)"))!.composited(over: image)
         }
-        // let image = CIImage(contentsOf: URL(fileURLWithPath: "\(Bundle.main.bundlePath)/1_hbe_1_5.png"))!
+        
         return image
     }
 
     func getIdolImageURL() -> URL {
-        let fileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("\(UUID().uuidString).png")
-        try! context.writePNGRepresentation(of: self.getIdolImage(), to:fileURL, format: kCIFormatRGBA8, colorSpace: CGColorSpace(name: CGColorSpace.sRGB)!)
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID().uuidString).png")
+        print(fileURL)
+
+        do {
+           try FileManager.default.removeItem(at: fileURL)
+        } catch {
+            print(error)
+        }
+
+        try! context.writePNGRepresentation(of: self.getIdolImage(), to: fileURL, format: kCIFormatRGBA8, colorSpace: CGColorSpace(name: CGColorSpace.sRGB)!)
+
+        do {
+            //return [FileAttributeKey : Any]
+            let attr = try FileManager.default.attributesOfItem(atPath: fileURL.path)
+            print("the file is: \(attr[FileAttributeKey.size] as! UInt64)")
+        } catch {
+            print("Error: \(error)")
+        }
+
         return fileURL
     }
 }
