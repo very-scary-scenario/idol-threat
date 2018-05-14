@@ -104,19 +104,25 @@ class IdolFactory {
         for idolPart in idolParts[1...] {
             image = CIImage(contentsOf: URL(fileURLWithPath: "\(Bundle.main.bundlePath)/\(idolPart.medPath)"))!.composited(over: image)
         }
-        
+
+        let cgImage = context.createCGImage(image, from: image.extent)!
+        let mask = CIImage(contentsOf: URL(fileURLWithPath: "\(Bundle.main.bundlePath)/greygrad.png"))!
+        let cgMask = context.createCGImage(mask, from: mask.extent, format: kCIFormatL16, colorSpace: CGColorSpaceCreateDeviceGray(), deferred: false)!
+        let masked = cgImage.masking(cgMask)!
+        image = CIImage(cgImage: masked)
         return image
     }
 
     func getIdolImageURL() -> URL {
         let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID().uuidString).png")
-        print(fileURL)
 
+        /* only necessary if we're gonna go back to persisting the latest idol
         do {
            try FileManager.default.removeItem(at: fileURL)
         } catch {
             print(error)
         }
+         */
 
         try! context.writePNGRepresentation(of: self.getIdolImage(), to: fileURL, format: kCIFormatRGBA8, colorSpace: CGColorSpace(name: CGColorSpace.sRGB)!)
 
