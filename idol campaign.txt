@@ -415,11 +415,11 @@ That's right,
 We had them all along!
 Watch in amazement as they appeal, excite and destroy you and your stupid planet!
 ### boss_10_2 enter, from left, into middle
+boss_10_2:: RUNNING IDOL PROTOCOL 3.29
+boss_10_2:: CODENAME: KIRA KIRA KILLA
 ### boss_10_1 enter, from left, into left
-### boss_10_3 enter, from right, into right
-boss_10_1, boss_10_2, boss_10_3:: RUNNING IDOL PROTOCOL 3.29
-boss_10_1, boss_10_2, boss_10_3:: CODENAME: KIRA KIRA KILLA
 boss_10_1:: WARNING. CRITICAL UPDATE IS REQUIRED
+### boss_10_3 enter, from right, into right
 boss_10_3:: PLEASE ENSURE THAT YOUR IDOL IS PLUGGED INTO A POWER SOURCE BEFORE CONTINUING
 boss_10_2:: REBOOTING
 ...
@@ -429,7 +429,7 @@ boss_10_1, boss_10_2, boss_10_3:: RUNNING IDOL PROTOCOL 3.30
 boss_10_1, boss_10_2, boss_10_3:: CODENAME: KIRA KIRA KILLLA
 boss_10_1:: ALL NON-COMBATANTS SHOULD RETREAT TO A DISTANCE OF 20 LIGHT YEARS
 boss_10_3:: PREPARE TO BE ANNIHILATED
-boss_10_1, boss_10_2, boss_10_3:: WITH LOVE
+boss_10_1, boss_10_2, boss_10_3:: /WITH LOVE/
 
 > battle 100: boss_10_1, boss_10_2, boss_10_3
 

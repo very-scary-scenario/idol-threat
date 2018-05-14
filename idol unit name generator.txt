@@ -7,6 +7,7 @@ Angel|Angelic
 Adorable
 Baby|Babyish
 Bad
+Blue
 Cheeky
 Cheer|Cheery|Cheerful
 Cherry
@@ -32,6 +33,7 @@ Imagine
 Joyful
 Jumping
 Little|Littlest
+London
 Love
 Lovely
 Lyrical
@@ -81,6 +83,7 @@ Angel|Angels
 Apple
 Asterisk
 Blessed
+Blue
 Cat|Cats|Kitten|Kittens
 Clover
 Club
@@ -110,6 +113,7 @@ Kiss
 Ladies
 Life
 Lips
+London
 Magic
 Parade
 Parfait
