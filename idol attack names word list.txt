@@ -31,7 +31,6 @@ average
 +blushing
 -boring
 --bossy
-+brave
 ++brilliant
 -bruising
 +bubbly
@@ -41,7 +40,6 @@ average
 +carefree
 ++caring
 +charming
--cheap
 +cheerful|cheery
 -childish
 +clever
@@ -54,7 +52,6 @@ average
 -creepy
 crying
 +cuddly
-++cute
 --dangerous
 daring
 ++darling
@@ -99,7 +96,6 @@ daring
 +frizzy|fuzzy
 +fruity
 -gaseous
-+gentle
 +glamorous
 +gleaming
 +gleeful
@@ -147,21 +143,16 @@ daring
 +miracle
 +modest
 moist
-moon
 -monstrous
 ++motherly
 -naughty
 -nefarious
-+nice
-normal
 -noxious
--odd
 +outrageous
 parfait
 ++passionate
 +peaceful
 +++perfect
-petal
 plain
 +platinum
 +pleasant
@@ -191,7 +182,6 @@ secret
 ++serene
 +serious
 -shameful
-+sharp
 +shiny
 -shoddy
 +silky
@@ -203,7 +193,6 @@ simple
 +spicy
 +splendid
 standard
-star
 -sticky
 +stunning
 +stupendous
@@ -217,7 +206,6 @@ star
 tenacious
 ++terrific
 +thoughtful
-tickle
 ++treasured
 +trustworthy
 +++ultimate
@@ -232,21 +220,30 @@ wiggle|wiggly
 
 # P2 (first part of an attack name)
 
+-angry
+-bitter
 +brave
 +bright
+calm
 -candid
 -caustic
+-cheap
 +cool
+++cute
 +delightful
 +dream
+eager
 explosion
 fancy
+fashion
 fresh
++gentle
 giga
 +glitter
 glowy
 -harsh
 haunted
++heart
 -hellish
 hyper
 hypnotic
@@ -258,14 +255,25 @@ lonely
 +love
 magic
 mega
+moon
+nice
+-normal
+-odd
+petal
 playful
 -prickle
 -rough
+sharp
 smooth
 +sparkle
+star
+style
+sugar
+sun
 super
 sweet
 -tepid
+tickle
 tough
 ultra
 +warm
