@@ -293,6 +293,8 @@ function bindHoverDetail(idol, idolElement) {
 
   var endEvents = ['touchleave', 'touchend', 'touchcancel'];
   for (var ei = 0; ei < endEvents.length; ei++) idolElement.addEventListener(endEvents[ei], hideHoverDetail);
+
+  idolElement.addEventListener('contextmenu', function(e) { e.preventDefault(); e.stopPropagation(); });
 }
 
 Battle.prototype.render = function() {
