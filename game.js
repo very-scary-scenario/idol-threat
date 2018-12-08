@@ -1198,7 +1198,7 @@ Agency.prototype.doStory = function(pageNumber) {
       event.preventDefault();
       isSkipping = true;
       self.doStory(pageNumber + 1);
-      skipButton.removeEventListener('click', skipElement);
+      skipButton.removeEventListener('click', skipButton);
     }
 
     skipButton.addEventListener('click', handleSkipClick);
