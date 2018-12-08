@@ -865,6 +865,7 @@ function Agency() {
 
   this.experience = 0;
   this.storyChaptersBeaten = 0;
+  this.quickBattleRanking = 0;
 
   this.storyActors = {};
 
@@ -913,6 +914,7 @@ Agency.prototype.renderCatalog = function() {
     'canFeed': this.canFeed(),
     'levelFloor': this.levelFloor(),
     'levelProgressPercent': Math.floor(this.levelProgress() * 100),
+    'quickBattleRanking': this.quickBattleRanking + 1,
     'spendableLevels': this.spendableLevels(),
     'upgrades': upgrades,
     'sortOrder': this.sortOrder,
@@ -1343,6 +1345,7 @@ Agency.prototype.dump = function() {
     x: this.experience,
     p: this.upgrades,
     b: this.storyChaptersBeaten,
+    q: this.quickBattleRanking,
     f: this.recentlyFired,
     o: this.sortOrder
   };
@@ -1359,6 +1362,7 @@ Agency.prototype.load = function(agencyDump) {
   if (agencyDump.o !== undefined) this.sortOrder = agencyDump.o;
   this.experience = agencyDump.x || 0;
   this.storyChaptersBeaten = agencyDump.b || 0;
+  this.quickBattleRanking = agencyDump.q || 0;
   this.recentlyFired = agencyDump.f || [];
   this.upgrades = agencyDump.p || this.upgrades;
 
@@ -1510,9 +1514,14 @@ function rerender() {
         for (var pi = 0; pi < this.playerIdols.length; pi++) {
           this.playerIdols[pi].idol.giveBonus(enemyIdols.length);
         }
+
+        agency.quickBattleRanking += battle.numberOfLivingMembers(battle.playerIdols);
+
         rerender();
       }, function() {
+        agency.quickBattleRanking -= battle.numberOfLivingMembers(battle.enemyIdols);
         askUser('You lose :<', [['Aww, beans…', null]]);
+        rerender();
       });
 
       battle.loop();
