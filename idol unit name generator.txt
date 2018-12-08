@@ -7,7 +7,7 @@ Angel|Angelic
 Adorable
 Baby|Babyish
 Bad
-Blue
+Blue|Red|Pink|Green|Purple
 Cheeky
 Cheer|Cheery|Cheerful
 Cherry
@@ -33,7 +33,7 @@ Imagine
 Joyful
 Jumping
 Little|Littlest
-London
+London|Paris|Tokyo
 Love
 Lovely
 Lyrical
@@ -45,7 +45,6 @@ Neo
 No
 Peach
 Phantom
-Pink
 Pretty
 Project
 Real
@@ -83,7 +82,6 @@ Angel|Angels
 Apple
 Asterisk
 Blessed
-Blue
 Cat|Cats|Kitten|Kittens
 Clover
 Club
@@ -113,7 +111,6 @@ Kiss
 Ladies
 Life
 Lips
-London
 Magic
 Parade
 Parfait
