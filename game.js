@@ -117,6 +117,7 @@ var cookieSliceSize = 2000;
 var endString = 'end';
 
 var isSkipping = false;
+var unbindScriptClick;
 
 var idolSorters = {
   date: function(a, b) { return b.recruitedAt - a.recruitedAt; },
@@ -1187,6 +1188,8 @@ Agency.prototype.doStory = function(pageNumber) {
       }
     }
     theatreElement.addEventListener('click', handleScriptClick);
+    function unbindScriptClick() { theatreElement.removeEventListener('click', handleScriptClick); }
+    return unbindScriptClick;
   }
 
   function renderSetting() {
@@ -1197,8 +1200,9 @@ Agency.prototype.doStory = function(pageNumber) {
       event.stopPropagation();
       event.preventDefault();
       isSkipping = true;
-      self.doStory(pageNumber + 1);
+      unbindScriptClick();
       skipButton.removeEventListener('click', skipButton);
+      self.doStory(pageNumber + 1);
     }
 
     skipButton.addEventListener('click', handleSkipClick);
@@ -1244,7 +1248,7 @@ Agency.prototype.doStory = function(pageNumber) {
       }
       invisibleScriptElement.textContent = page.text;
       visibleScriptElement.textContent = '';
-      graduallyShowScript(visibleScriptElement, invisibleScriptElement);
+      unbindScriptClick = graduallyShowScript(visibleScriptElement, invisibleScriptElement);
     }
 
   } else if (page.kind === 'setpiece') {
