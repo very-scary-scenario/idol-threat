@@ -1018,6 +1018,8 @@ Agency.prototype.renderCatalog = function() {
   if (footerLoad) footerLoad.addEventListener('click', triggerLoad);
 
   function toggleCredits(event) {
+    if (event.target.classList.contains('credited-homepage')) return;
+
     event.stopPropagation();
     event.preventDefault();
 
