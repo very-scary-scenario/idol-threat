@@ -147,11 +147,21 @@
       <div id="signature">
         <a id="vscary-link" href="https://vscary.co/" target="_blank"><img alt="a Very Scary Scenario project" src="vss-logo.svg"/></a>
         <ul>
-          <li><a href="https://vscary.co/" target="_blank">vscary.co</a></li>
+          <li><a id="credits-button" href="#" target="_blank">credits</a></li>
           <li><a href="https://github.com/very-scary-scenario/idol-threat" target="_blank">help &amp; source</a></li>
           {{#if hasNeverScannedAnything}}
             <li><a id="footer-load" class="needsclick" href="#">load save</a></li>
           {{/if}}
+        </ul>
+      </div>
+
+      <div id="credits">
+        <h1>Idol Threat</h1>
+        <p>A <a target="_blank" href="https://vscary.co/">Very Scary Scenario</a> project, by:</p>
+        <ul>
+          {{#each credits}}
+            <li><a target="_blank" href="{{url}}">{{name}}</a></li>
+          {{/each}}
         </ul>
       </div>
     </script>

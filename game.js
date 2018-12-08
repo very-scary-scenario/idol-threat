@@ -925,7 +925,8 @@ Agency.prototype.renderCatalog = function() {
     'upgrades': upgrades,
     'sortOrder': this.sortOrder,
     'sortOrders': sortOrders,
-    'backupUrl': 'data:application/x-idol-threat-save;charset=utf-8,' + encodeURIComponent(btoa(JSON.stringify(this.dump())))
+    'backupUrl': 'data:application/x-idol-threat-save;charset=utf-8,' + encodeURIComponent(btoa(JSON.stringify(this.dump()))),
+    'credits': getCredits()
   });
 
   function setSortOrder(event) {
@@ -1015,6 +1016,15 @@ Agency.prototype.renderCatalog = function() {
   document.getElementById('load-backup').addEventListener('click', triggerLoad);
   var footerLoad = document.getElementById('footer-load');
   if (footerLoad) footerLoad.addEventListener('click', triggerLoad);
+
+  function toggleCredits(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    document.getElementById('credits').classList.toggle('shown');
+  }
+  document.getElementById('credits').addEventListener('click', toggleCredits);
+  document.getElementById('credits-button').addEventListener('click', toggleCredits);
 };
 Agency.prototype.sortedCatalog = function() {
   var sortedCatalog = [];
@@ -1417,6 +1427,34 @@ function addNewIdolFromImage(data) {
   idol = new Idol(numFromString(data.codeResult.code));
   idol.applyRecruitmentBonuses();
   agency.addIdol(idol, true);
+}
+
+function getCredits() {
+  // please don't mock my very bad shuffle
+
+  var folks = [
+    ['Alexander Rennerfelt', 'https://twitter.com/okand'],
+    ['Chris Walden', 'https://twitter.com/euricaeris'],
+    ['DiGiKerot', 'https://twitter.com/digikerot'],
+    ['Peter Shillito', 'https://twitter.com/theshillito'],
+    ['William Rennerfelt', 'http://william.rennerfelt.org'],
+    ['colons', 'https://colons.co/']
+  ];
+  pickedFolkIndices = [];
+
+  var shuffledFolks = [];
+  while (pickedFolkIndices.length < folks.length) {
+    var folkIndex = Math.floor(Math.random() * folks.length);
+    if (pickedFolkIndices.indexOf(folkIndex) !== -1) continue;
+    pickedFolkIndices.push(folkIndex);
+    var folk = folks[folkIndex];
+    shuffledFolks.push({
+      'name': folk[0],
+      'url': folk[1]
+    });
+  }
+
+  return shuffledFolks;
 }
 
 barcodeImage.addEventListener('change', function(e) {
