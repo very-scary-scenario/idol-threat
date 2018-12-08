@@ -120,7 +120,7 @@ The two groups dust down their clothes, assume their fighting stances and prepar
 
 With the battle won, our idols are one step closer to conquering the world.
 With love, sparkles and all that good stuff.
-Business suit seems irritated that the other unit didn't try to learn their name,
+Business Suit seems irritated that the other unit didn't try to learn their name,
 but concludes that we are probably the kinder of the two and might learn it eventually.
 With the dreams and aspirations of three rival idol units inside them, it's time to head to the Shin Nippon Budokan. 
 
@@ -128,7 +128,7 @@ With the dreams and aspirations of three rival idol units inside them, it's time
 
 ## budokan_glow
 
-Business suit proves to be a great asset almost immediately, gaining the idols access to the Shin Nippon Budokan.
+Business Suit proves to be a great asset almost immediately, gaining the idols access to the Shin Nippon Budokan.
 Under regular circumstances we'd have to spend more time at smaller venues, making a name for ourselves.
 But we already know that these idols are going to become the saviours of the world,
 so it's not really our fault that the guards don't stand a chance against a powerful chop to the neck.
@@ -209,7 +209,7 @@ Europe.
 America and Europe.
 Our idols can't obtain their dream of uniting the world while there are members of the IIA still around to stop them.
 We must bring the fight to them.
-Business suit schedules a flight, marking the beginning of our search for the European IIA representatives.
+Business Suit schedules a flight, marking the beginning of our search for the European IIA representatives.
 
 # part six
 
@@ -686,7 +686,7 @@ boss_01_2:: "It's not that easy. We won't make it that easy."
 boss_02_2:: "You killed us. You killed us all."
 ### clear
 ### boss_03_2 enter, from left, into middle
-boss_03_2:: "You stole business suit from us, and you don't even know where you left them."
+boss_03_2:: "You stole Business Suit from us, and you don't even know where you left them."
 ### clear
 ### boss_04_2 enter, from left, into middle
 boss_04_2:: "We worked so hard to be the most popular idols in Shin Japan. And for what?"
