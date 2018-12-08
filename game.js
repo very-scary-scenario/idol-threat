@@ -475,6 +475,12 @@ Idol.prototype.applyRecruitmentBonuses = function() {
 
   this.shiny = Math.random() <= SHINY_CHANCE;
 };
+Idol.prototype.applyQuickBattleRankingBonuses = function() {
+  for (var i = 0; i < STATS.length; i++) {
+    var statName = STATS[i];
+    this[statName] += (10 * agency.quickBattleRanking);
+  }
+};
 Idol.prototype.deferRendering = function(mode, callback) {
   var self = this;
   mode = mode || 'med';
@@ -1495,7 +1501,9 @@ function rerender() {
 
       var enemyIdols = [];
       for (var ei = maxUnitSize; ei > 0; ei--) {
-        enemyIdols.push(new BattleIdol(new Idol(Math.random()), 'ai'));
+        var enemyIdol = new Idol(Math.random());
+        enemyIdol.applyQuickBattleRankingBonuses();
+        enemyIdols.push(new BattleIdol(enemyIdol, 'ai'));
       }
 
       var battle = new Battle(playerIdols, enemyIdols, function(battle) {
