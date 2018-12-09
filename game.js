@@ -351,7 +351,12 @@ function Ability(idol, parts, animation, affinity) {
 
 function effectiveStatGetter(idol, stat) {
   return function() {
-    return idol[stat] + agency.upgradeFor[stat]();
+    if (agency.catalog.indexOf(idol) !== -1) {
+      // only grant agency bonus if this idol is in our agency
+      return idol[stat] + agency.upgradeFor[stat]();
+    } else {
+      return idol[stat];
+    }
   };
 }
 
