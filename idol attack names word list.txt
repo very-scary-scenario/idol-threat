@@ -7,7 +7,7 @@
 // no symbol means damage is calculated in the same way as a regular attack
 
 
-# P1 (adjectives)
+# P1 (first word of the attack)
 
 ++adorable
 +acclaimed
@@ -34,9 +34,9 @@ average
 ++brilliant
 -bruising
 +bubbly
-+bustling
+bustling
 +buttery
--calamitous
+--calamitous
 +carefree
 ++caring
 +charming
@@ -44,10 +44,11 @@ average
 -childish
 +clever
 -clumsy
+-cold
 +colourful|colorful
 -confusing
 +courageous
-+crazy|crazed
++crazy
 +creamy
 -creepy
 crying
@@ -56,7 +57,7 @@ crying
 daring
 ++darling
 ++dazzling
--deadly
+--deadly
 +delicious
 +delightful
 -dirty
@@ -68,7 +69,7 @@ daring
 +++emotional
 +enchanting|enchanted
 +energetic|energising
--evil
+--evil
 +excellent
 +exemplary
 ++exciting
@@ -84,6 +85,7 @@ daring
 +feline
 -filthy
 +flashy
+-flawed
 ++flawless
 ++flowery
 +fluffy
@@ -117,7 +119,7 @@ daring
 +impressive
 ++incredible
 -infamous
-+infatuated|infatuating
++infatuating
 +infinite
 ++innocent
 -jealous
@@ -135,7 +137,7 @@ daring
 +luxurious
 +magnificent
 ++majestic
--maniacal
+--maniacal
 +marvelous
 -meddling
 +mellow
@@ -143,10 +145,10 @@ daring
 +miracle
 +modest
 moist
--monstrous
+--monstrous
 ++motherly
 -naughty
--nefarious
+--nefarious
 -noxious
 +outrageous
 parfait
@@ -191,7 +193,7 @@ simple
 +sparkling
 ++spectacular
 +spicy
-+spinning
+spinning
 +splendid
 standard
 -sticky
@@ -216,10 +218,10 @@ tenacious
 +++very scary
 +vibrant
 +wonder|wonderful|wondrous
-wiggle|wiggly
+wiggly
 +youthful
 
-# P2 (first part of an attack name)
+# P2 (second word of the attack, if a three-worder)
 
 -angry
 -bitter
@@ -258,7 +260,7 @@ magic
 mega
 moon
 nice
--normal
+normal
 -odd
 petal
 playful
@@ -268,7 +270,7 @@ sharp
 smooth
 +sparkle
 star
-style
++style
 sugar
 sun
 super
@@ -279,7 +281,7 @@ tough
 ultra
 +warm
 
-# P3 (second part of an attack name)
+# P3 (last word of the attack)
 
 +appeal
 arrow
@@ -324,7 +326,7 @@ drop
 dropkick
 dunk
 elbow
-embrace
++embrace
 finale
 fireball
 fist
@@ -353,7 +355,7 @@ headbutt
 heel
 hit
 hook
-hug
++hug
 inferno
 interview
 jab
@@ -383,6 +385,7 @@ press
 pulse
 pummel
 punch
+quake
 rage
 rainbow
 ram
@@ -405,6 +408,7 @@ smash
 +solo
 +song
 spear
+spike
 spin
 splash
 spray
@@ -433,3 +437,5 @@ waft
 wave
 whip
 wind
+yell
+zap
