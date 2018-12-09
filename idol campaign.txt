@@ -184,7 +184,7 @@ boss_05_2:: "We are the IIA representatives for Asia."
 ### boss_05_3 enter, from left, into left
 boss_05_3:: "We have been watching, and we have decided to stop you here."
 ### boss_05_1 enter, from right, into right
-boss_05_1:: "As representatives as the IIA."
+boss_05_1:: "As representatives of the IIA."
 boss_05_3:: "Basically we're a big deal."
 It's not clear what the IIA is, but-
 boss_05_1:: "We're the..."
