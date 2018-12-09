@@ -1476,13 +1476,6 @@ body.nothing-scanned {
       transition: left 2s ease-in-out, transform 1s, opacity 1s;
       z-index: 0;
 
-      &.speaking {
-        animation-duration: 1s;
-        animation-name: speak;
-        animation-iteration-count: infinite;
-        z-index: 1;
-      }
-
       &.exited { opacity: 0; }
 
       &[data-position="middle"] { left: 50%; }
@@ -1515,6 +1508,15 @@ body.nothing-scanned {
         animation-name: bob-bottom;
         animation-iteration-count: infinite;
       }
+
+      &.speaking {
+        // override ghost bobbing
+        animation-duration: 1s !important;
+        animation-name: speak !important;
+        animation-iteration-count: infinite !important;
+        z-index: 1;
+      }
+
     }
   }
 
