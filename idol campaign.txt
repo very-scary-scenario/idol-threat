@@ -817,7 +817,7 @@ You can stop now.
 
 ## earth_blur
 
-### boss_10_2 enter, appear middle
+### boss_10_2 enter, from left, into middle
 boss_10_2:: THREAT TO PROTECTED SPECIES DETECTED
 Excuse me?
 boss_10_2:: THREAT TO PROTECTED SPECIES DETECTED
