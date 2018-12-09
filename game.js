@@ -1412,8 +1412,8 @@ Agency.prototype.load = function(agencyDump) {
 function numFromString(str) {
   var total = 0;
   for(var i = 0, n = str.length; i < n; i++) {
-      var c = str.charCodeAt(i);
-      total += ((255 * Math.pow(2, i)) * c);
+    var c = str.charCodeAt(i);
+    total += (Math.pow(255, i) * c);
   }
   return total;
 }
