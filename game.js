@@ -757,7 +757,7 @@ Idol.prototype.audition = function() {
   var self = this;
   var layerTimeout = 400;
   var currentLayer = 0;
-  var hugeImages;
+  var auditionLayers;
 
   auditionSpace.innerHTML = auditionTemplate(this);
   setTimeout(function() {
@@ -768,7 +768,7 @@ Idol.prototype.audition = function() {
     var portraitElement = document.querySelector('#audition .portrait');
     if (!portraitElement) return;
 
-    var part = hugeImages[currentLayer];
+    var part = auditionLayers[currentLayer];
     if (!part) return;
 
     portraitElement.appendChild(part);
@@ -778,12 +778,12 @@ Idol.prototype.audition = function() {
   }
 
   function showLayersGradually() {
-    hugeImages = self.loadedImages.huge;
+    auditionLayers = self.loadedImages.med;
     setTimeout(addLayerToAuditionPortrait, layerTimeout);
   }
 
   setTimeout(function() {
-    self.deferRendering('huge', showLayersGradually);
+    self.deferRendering('med', showLayersGradually);
   }, 1);
 
   document.getElementById('catch-button').addEventListener('click', function(e) {
