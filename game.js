@@ -87,6 +87,7 @@ var BOSSES = {};
 function getBoss(name) {
   if (BOSS_NAMES.indexOf(name) === -1) throw name + ' is not a real boss';
   boss = new Idol(numFromString(name));
+  boss.actorName = name;
   var path = 'bosses/' + name + '.png';
   boss.parts = [{path: path, medPath: path, thumbPath: path}];
   return boss;
@@ -1186,10 +1187,51 @@ Agency.prototype.canFeed = function() {
 };
 Agency.prototype.doStory = function(pageNumber) {
   var self = this;
-
-  if (pageNumber === undefined) pageNumber = 0;
-
   var chapter = this.getStoryChapter();
+
+  function renderSetting() {
+    theatreElement.innerHTML = theatreTemplate({background: self.storySetting});
+    var skipButton = theatreElement.querySelector('#skip');
+
+    function handleSkipClick(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      isSkipping = true;
+      unbindScriptClick();
+      skipButton.removeEventListener('click', skipButton);
+      self.doStory(pageNumber + 1);
+    }
+
+    skipButton.addEventListener('click', handleSkipClick);
+  }
+
+  function getActorElement(actor) {
+    var element = theatreElement.querySelector('#boards .actor[data-actor-name="' + actor.actorName + '"]');
+    if (!element) {
+      actor.actorName = actor.actorName;
+      element = document.createElement('div');
+      element.setAttribute('data-actor-name', actor.actorName);
+      element.classList.add('actor');
+      element.innerHTML = actor.hugeSpriteHTML();
+      theatreElement.querySelector('#boards').appendChild(element);
+    }
+    return element
+  }
+
+  if (pageNumber === undefined) {
+    pageNumber = 0;
+    renderSetting(); // make boards
+    for (var pi = 0; pi < chapter.length; pi++) {
+      // preload any idols
+      if (chapter[pi].actor !== undefined) {
+        console.log('hopefully preloading');
+        console.log(chapter[pi])
+        var actor = getBoss(chapter[pi].actor);
+        getActorElement(actor);
+      }
+    }
+  };
+
   var page = chapter[pageNumber];
   var actorElement;
 
@@ -1229,22 +1271,6 @@ Agency.prototype.doStory = function(pageNumber) {
     theatreElement.addEventListener('click', handleScriptClick);
     function unbindScriptClick() { theatreElement.removeEventListener('click', handleScriptClick); }
     return unbindScriptClick;
-  }
-
-  function renderSetting() {
-    theatreElement.innerHTML = theatreTemplate({background: self.storySetting});
-    var skipButton = theatreElement.querySelector('#skip');
-
-    function handleSkipClick(event) {
-      event.stopPropagation();
-      event.preventDefault();
-      isSkipping = true;
-      unbindScriptClick();
-      skipButton.removeEventListener('click', skipButton);
-      self.doStory(pageNumber + 1);
-    }
-
-    skipButton.addEventListener('click', handleSkipClick);
   }
 
   function goToDestination() {
@@ -1301,15 +1327,7 @@ Agency.prototype.doStory = function(pageNumber) {
   } else if (page.kind === 'direction') {
     if (page.actor !== undefined) {
       var actor = getBoss(page.actor);
-      actorElement = theatreElement.querySelector('#boards .actor[data-actor-name="' + page.actor + '"]');
-      if (!actorElement) {
-        actor.actorName = page.actor;
-        actorElement = document.createElement('div');
-        actorElement.setAttribute('data-actor-name', page.actor);
-        actorElement.classList.add('actor');
-        actorElement.innerHTML = actor.hugeSpriteHTML();
-        theatreElement.querySelector('#boards').appendChild(actorElement);
-      }
+      actorElement = getActorElement(actor);
       actorElement.classList.remove('exited');
 
       if (page.adjectives.rotated) actorElement.setAttribute('data-rotated', page.adjectives.rotated);
