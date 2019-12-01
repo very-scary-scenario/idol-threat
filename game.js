@@ -1566,8 +1566,6 @@ function rerender() {
       }
 
       var battle = new Battle(playerIdols, enemyIdols, function(battle) {
-        askUser('You win! Your unit gets bonuses~', [['Yay!', null]]);
-
         var experienceGained = 0;
 
         experienceGained += 5 * (maxUnitSize - battle.playerIdols.length);
@@ -1582,12 +1580,16 @@ function rerender() {
           this.playerIdols[pi].idol.giveBonus(enemyIdols.length);
         }
 
-        agency.quickBattleRanking += battle.numberOfLivingMembers(battle.playerIdols);
+        var ranksUp = battle.numberOfLivingMembers(battle.playerIdols)
+        agency.quickBattleRanking += ranksUp;
 
         rerender();
+
+        askUser('You win! Your agency ranks up by ' + ranksUp.toString(10) + ' (one for each of your surviving idols), and you get ' + experienceGained.toString(10) + ' experience points.', [['Yay!', null]]);
       }, function() {
-        agency.quickBattleRanking -= battle.numberOfLivingMembers(battle.enemyIdols);
-        askUser('You lose :<', [['Aww, beans…', null]]);
+        var ranksDown = battle.numberOfLivingMembers(battle.enemyIdols);
+        agency.quickBattleRanking -= ranksDown;
+        askUser(':< You lose, and rank down by ' + ranksDown.toString(10) + " (one for each of the enemy's surviving idols)." [['Aww, beans…', null]]);
         rerender();
       });
 
