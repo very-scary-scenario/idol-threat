@@ -250,7 +250,7 @@
           {{#each enemyIdols}}
             <li data-index="{{@index}}" class="affinity-{{affinity}}">
               <label>
-                <input required type="radio" name="target" value="{{@index}}"></input>
+                <input type="radio" name="target" value="{{@index}}"></input>
                 <div class="portrait">
                   {{{thumbSpriteHTML}}}
                 </div>
@@ -294,14 +294,14 @@
       <ul>
         {{#each abilities}}
           <li>
-            <label class="affinity-{{affinity}}"><input required type="radio" name="move" value="{{@index}}"/>{{name}}</label>
+            <label class="affinity-{{affinity}}"><input type="radio" name="move" value="{{@index}}"/>{{name}}</label>
           </li>
         {{/each}}
 
         <input type="hidden" name="move" value="{{@index}}"/>
       </ul>
 
-      <p>Also, pick a target from the enemy unit.</p>
+      <p>Pick a target from the enemy unit.</p>
 
       <button data-affinity="{{affinity}}" type="submit">Fight!</button>
       <a href="#" id="flee">Flee</a>
