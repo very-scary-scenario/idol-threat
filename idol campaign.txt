@@ -133,8 +133,8 @@ Under regular circumstances we'd have to spend more time at smaller venues, maki
 But we already know that these idols are going to become the saviours of the world,
 so it's not really our fault that the guards don't stand a chance against a powerful chop to the neck.
 As our group approaches the stage, a famous idol unit slowly comes into view.
-/It's them./
-/The most popular idols in all of Shin Japan./
+It's them.
+The most popular idols in all of Shin Japan.
 They aren't like the idols we've met before. Their overwhelming presence is felt immediately from across the corridor.
 What's worse is that they know why our unit is here.
 ### boss_04_2 enter, from left, into middle
@@ -157,7 +157,7 @@ Show them your appeal!
 
 We're unstoppable.
 With the power of Shin Japan's greatest idols, few can stand a chance against our unit.
-/You will be entertained./
+You will be entertained.
 However, this is raw, untamed power. 
 We may have conquered Japan, but the whole world is currently out of the question.
 With her dying breath, one of the Budokan idols begins to speak.
@@ -273,7 +273,7 @@ The traffic was awful though, which put a slight dampener on the mood.
 Our idols have had time to come to terms with the reality of their situation.
 They had a humble beginning on the streets of Shin Tokyo, performing here and there to make a few Shin bucks. 
 Now, as far as the plot is concerned, they're number two in the entire world.
-/The entire world./
+The entire world.
 They've learned all that there is to learn. Right now, the American IIA members are a mere roadblock on their inevitable rise to the top.
 It's time to solve this.
 
@@ -318,7 +318,7 @@ Like, hurry up though because we've got to have celebrations and stuff.
 To mark the defeat of the IIA and a revolution in worldwide idoling, we're holding a celebratory live performance.
 A grand stage has been constructed especially. Finally, a good use of taxpayer's money.
 It also comes equipped with speakers the size of small nations, just to make sure that everyone can hear the idols sing.
-/Dead or alive./
+Dead or alive.
 Perhaps this explains the appearance of three ghosts, who seem slightly concerned about something.
 They look scary, but they were polite enough to wait until we were done admiring the stage.
 ### boss_08_2 enter, from left, into middle
@@ -338,7 +338,7 @@ It's time to end this, once and for all.
 > battle 50: boss_08_1, boss_08_2, boss_08_3
 
 If there was any doubt about the abilities of the world's strongest idol unit, just remember
-/they just killed three ghosts./
+they just killed three ghosts.
 To celebrate this moment, we should have our idols raise their glowsticks in the air.
 You know, because it seems like an idol-y thing to do.
 And it might make for a good album cover or something.
@@ -361,7 +361,7 @@ Finally, my plan is complete!
 With the world's strongest idols defeated, I'm free to conquer Earth.
 That's right, it's me! The narrator!
 You may have thought that you'd won the previous war, but the truth is...
-/we let you win./
+we let you win.
 With the world in this weakened state, we have been free to build a super weapon.
 A weapon unlike anything you've ever seen before!
 ### boss_09_2 enter, from left, into middle
@@ -378,7 +378,7 @@ boss_09_3:: "I too am a weapon, but you may recognise me from the 1997 hit comed
 boss_09_3:: "The pleasure's all mine."
 How do you like that! I bet you can't help but be shocked!
 These weapons have the power to wipe out your planet before you can even say goodbye to it.
-/And there's literally nothing you can do about it./
+And there's literally nothing you can do about it.
 You've done me a great service, taking care of the only idol groups that would have posed us much of a threat.
 For that, you have my thanks.
 It's time we make idols an extinct species, starting with your precious little group!
@@ -387,7 +387,7 @@ It's time we make idols an extinct species, starting with your precious little g
 
 No! This cannot be!
 Have I... Have I created a monster unit?
-/The Strongest Idols in the Universe™?/
+The Strongest Idols in the Universe™?
 ...
 ...
 ...
@@ -411,7 +411,7 @@ It's pretty funny really. Like, it's super obvious.
 Look at it. It's a ball of fire. That's just weird.
 Inside this ship is our super weapon.
 That's right,
-/The Strongest Idols in the Universe™./
+The Strongest Idols in the Universe™.
 We had them all along!
 Watch in amazement as they appeal, excite and destroy you and your stupid planet!
 ### boss_10_2 enter, from left, into middle
@@ -429,7 +429,7 @@ boss_10_1, boss_10_2, boss_10_3:: RUNNING IDOL PROTOCOL 3.30
 boss_10_1, boss_10_2, boss_10_3:: CODENAME: KIRA KIRA KILLLA
 boss_10_1:: ALL NON-COMBATANTS SHOULD RETREAT TO A DISTANCE OF 20 LIGHT YEARS
 boss_10_3:: PREPARE TO BE ANNIHILATED
-boss_10_1, boss_10_2, boss_10_3:: /WITH LOVE/
+boss_10_1, boss_10_2, boss_10_3:: WITH LOVE
 
 > battle 100: boss_10_1, boss_10_2, boss_10_3
 
@@ -453,7 +453,7 @@ Destroy that planet right this minute young lady.
 boss_10_2:: NO
 Don't make me ask you again!
 boss_10_2:: NO I DON'T WANT TO
-/That's enough. Bed without supper./
+That's enough. Bed without supper.
 boss_10_2:: NO, YOU CAN'T TELL ME WHAT TO DO
 You know what? Fine. I'll handle the idols myself.
 
@@ -619,7 +619,7 @@ boss_ex2_hell_1:: "You wanted to be successful."
 ### boss_ex2_hell_3 enter, from right, into right
 boss_ex2_hell_3:: "To be the superstar you always wanted to be."
 ### boss_ex2_hell_2 enter, from left, into middle
-boss_ex2_hell_2:: /"The superstars we were."/
+boss_ex2_hell_2:: "The superstars we were."
 boss_ex2_hell_1:: "You always got what you wanted."
 boss_ex2_hell_3:: "No matter what anyone else wants."
 boss_ex2_hell_2:: "And so you got what you wanted."
@@ -627,7 +627,7 @@ boss_ex2_hell_1:: "You were not an idol."
 boss_ex2_hell_3:: "So you killed us."
 boss_ex2_hell_2:: "No. You didn't kill us."
 boss_ex2_hell_1, boss_ex2_hell_2, boss_ex2_hell_3:: "You became us."
-boss_ex2_hell_1, boss_ex2_hell_2, boss_ex2_hell_3:: /"Remember?"/
+boss_ex2_hell_1, boss_ex2_hell_2, boss_ex2_hell_3:: "Remember?"
 
 > battle 50: boss_ex2_hell_1, boss_ex2_hell_2, boss_ex2_hell_3
 
@@ -698,7 +698,7 @@ boss_05_3:: "Idol!"
 ### boss_05_1 enter, from right, into right
 boss_05_1:: "Association!"
 ### celebrate
-boss_05_1, boss_05_2, boss_05_3:: /"We hate you."/
+boss_05_1, boss_05_2, boss_05_3:: "We hate you."
 ### clear
 ### boss_06_2 enter, from left, into middle
 boss_06_2:: "We welcomed you to our country, knowing what you had done."
@@ -738,17 +738,17 @@ boss_ex3_dapper_2:: "I kinda liked working at the cafe, so I don't really have m
 ### boss_ex2_hell_2 enter, from left, into middle
 boss_ex2_hell_2:: "You took our lives from us. We became nothing."
 ### clear
-/Why should you get to sweep that all away?/
-/Live with what you've done./
-/Don't regret what was necessary./
-/You'd do it all again./
-/We would know./
+Why should you get to sweep that all away?
+Live with what you've done.
+Don't regret what was necessary.
+You'd do it all again.
+We would know.
 
 ### boss_ex5_myunit_2 enter, from left, into middle
 ### boss_ex5_myunit_1 enter, from left, into left
 ### boss_ex5_myunit_3 enter, from right, into right
 
-boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: /Because we are you./
+boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: Because we are you.
 boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: Why should you have to give up your power?
 boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: Your life?
 boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: Your power allows you to live life the way you want to.
@@ -756,7 +756,7 @@ boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: No fear of repercussio
 boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: No fear of anything.
 boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: What you have is a gift.
 boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: ...and if you can't change your mind about this.
-boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: /We'll change your mind./
+boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3:: We'll change your mind.
 
 > battle 50: boss_ex5_myunit_1, boss_ex5_myunit_2, boss_ex5_myunit_3
 
