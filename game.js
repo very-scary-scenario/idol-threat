@@ -657,6 +657,8 @@ Idol.prototype.showDetail = function() {
       var foodIdol = catalogWithoutSelf[parseInt(event.currentTarget.getAttribute('data-index'), 10)];
       var negativeStats = {};
       var summedStats = {};
+      var diffedStats = {};
+      var totalChange = 0;
 
       for (var i = 0; i < STATS.length; i++) {
         var stat = STATS[i];
@@ -665,14 +667,19 @@ Idol.prototype.showDetail = function() {
           increaseBy /= NEGATIVE_STAT_EFFECT;
           negativeStats[stat] = true;
         }
-        summedStats[stat] = self[stat] + Math.ceil(increaseBy);
+        diffedStats[stat] = Math.ceil(increaseBy);
+        totalChange += diffedStats[stat];
+        summedStats[stat] = self[stat] + diffedStats[stat];
       }
 
       canteenElement.innerHTML = canteenConfirmTemplate({
         idol: self,
         food: foodIdol,
+        diffedStats: diffedStats,
         summedStats: summedStats,
-        negativeStats: negativeStats
+        negativeStats: negativeStats,
+        totalChange: totalChange,
+        changeIsBeneficial: totalChange >= 0
       });
 
       canteenElement.querySelector('.no').addEventListener('click', showFeedingUI);

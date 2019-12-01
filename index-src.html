@@ -355,13 +355,38 @@
         <h2>Are you sure you want {{idol.name}} to “train with” {{food.name}}?</h2>
         <p>{{food.name}} will go on, uhh, “holiday”, and {{idol.name}}'s base stats will be changed as follows:</p>
         <dl>
-          <dt>Attack</dt>
-          <dd>{{idol.attack}} + {{food.attack}}{{#if negativeStats.attack}}/2{{/if}} = <strong>{{summedStats.attack}}</strong></dd>
-          <dt>Defense</dt>
-          <dd>{{idol.defense}} + {{food.defense}}{{#if negativeStats.defense}}/2{{/if}} = <strong>{{summedStats.defense}}</strong></dd>
-          <dt>Speed</dt>
-          <dd>{{idol.speed}} + {{food.speed}}{{#if negativeStats.speed}}/2{{/if}} = <strong>{{summedStats.speed}}</strong></dd>
+          <dt>
+            Attack
+            <strong class="diff {{#if negativeStats.attack}}negative{{else}}positive{{/if}}">{{diffedStats.attack}}</strong>
+          </dt>
+          <dd>
+            {{idol.attack}}
+            <span class="change">+ {{food.attack}}{{#if negativeStats.attack}}/2{{/if}} =</span>
+            <strong>{{summedStats.attack}}</strong>
+          </dd>
+
+          <dt>
+            Defense
+            <strong class="diff {{#if negativeStats.defense}}negative{{else}}positive{{/if}}">{{diffedStats.defense}}</strong>
+          </dt>
+          <dd>
+            {{idol.defense}}
+            <span class="change">+ {{food.defense}}{{#if negativeStats.defense}}/2{{/if}} =</span>
+            <strong>{{summedStats.defense}}</strong>
+          </dd>
+
+          <dt>
+            Speed
+            <strong class="diff {{#if negativeStats.speed}}negative{{else}}positive{{/if}}">{{diffedStats.speed}}</strong>
+          </dt>
+          <dd>
+            {{idol.speed}}
+            <span class="change">+ {{food.speed}}{{#if negativeStats.speed}}/2{{/if}} =</span>
+            <strong>{{summedStats.speed}}</strong>
+          </dd>
         </dl>
+
+        <p class="total">Total <strong class="diff {{#if changeIsBeneficial}}positive{{else}}negative{{/if}}">{{totalChange}}</strong></p>
 
         <p class="actions"><a href="#" class="yes">Yes, “train”</a> <a href="#" class="no">No, it's okay</a></p>
       </div>
