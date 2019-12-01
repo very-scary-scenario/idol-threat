@@ -2,6 +2,7 @@
 
 from bs4 import BeautifulSoup
 
+from datetime import datetime
 import hashlib
 import json
 import os
@@ -417,6 +418,10 @@ def build_html():
             print(element[attr], file=mf)
 
         print('NETWORK:\n/', file=mf)
+
+    soup.select('body')[0]['data-built-at'] = re.sub(
+        r'\.\d+$', '', datetime.now().isoformat(),
+    )
 
     return str(soup)
 
