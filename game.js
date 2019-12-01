@@ -201,6 +201,7 @@ var loadGame = document.getElementById('load-game');
 var detailElement = document.getElementById('idol-detail');
 var catalogElement = document.getElementById('catalog');
 var unitElement = document.getElementById('unit');
+var unitDetailElement = document.getElementById('unit-detail');
 var battleElement = document.getElementById('battle');
 var promptArea = document.getElementById('prompt-area');
 var auditionSpace = document.getElementById('audition-space');
@@ -211,6 +212,7 @@ var xpIndicatorsElement = document.getElementById('xp-indicators');
 var spriteTemplate = Handlebars.compile(document.getElementById('sprite-template').innerHTML);
 var catalogTemplate = Handlebars.compile(document.getElementById('catalog-template').innerHTML);
 var unitTemplate = Handlebars.compile(document.getElementById('unit-template').innerHTML);
+var unitDetailTemplate = Handlebars.compile(document.getElementById('unit-detail-template').innerHTML);
 var idolDetailTemplate = Handlebars.compile(document.getElementById('idol-detail-template').innerHTML);
 var battleTemplate = Handlebars.compile(document.getElementById('battle-template').innerHTML);
 var idolDeetsTemplate = Handlebars.compile(document.getElementById('idol-deets-template').innerHTML);
@@ -1087,6 +1089,17 @@ Agency.prototype.renderUnit = function() {
   for (var ei = 0; ei < unitElements.length; ei++) {
     unitElements[ei].addEventListener('click', handleUnitClick);
   }
+
+  unitDetailElement.innerHTML = unitDetailTemplate(this);
+
+  function toggleUnitDetailDisplay(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    unitDetailElement.classList.toggle('hidden');
+  }
+
+  document.getElementById('dismiss-unit-details').addEventListener('click', toggleUnitDetailDisplay);
+  document.getElementById('show-unit-details').addEventListener('click', toggleUnitDetailDisplay);
 };
 Agency.prototype.level = function() {
   var level = 0;

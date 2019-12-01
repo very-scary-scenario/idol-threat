@@ -51,6 +51,9 @@
     <section id="unit" class="empty">
     </section>
 
+    <section id="unit-detail" class="hidden">
+    </section>
+
     <section id="idol-detail">
     </section>
 
@@ -218,7 +221,9 @@
     </script>
 
     <script id="unit-template" type="text/x-handlebars-template">
-      <h2>{{unitName}}</h2>
+      <a id="show-unit-details" href="#">
+        <h2>{{unitName}}</h2>
+      </a>
       <ul class="unit">
         {{#each unit}}
           <li class="needsclick" data-index="{{@index}}">
@@ -228,6 +233,26 @@
           </li>
         {{/each}}
       </ul>
+    </script>
+
+    <script id="unit-detail-template" type="text/x-handlebars-template">
+      <div>
+        <a id="dismiss-unit-details" href="#">
+          <h1>{{unitName}}</h1>
+        </a>
+        <ul class="unit">
+          {{#each unit}}
+            <li class="affinity-{{affinity}}">
+              <h2 class="affinity-{{affinity}}">{{name}}</h2>
+              <p>{{bio}}</p>
+              <blockquote>“{{quote}}”</blockquote>
+              <div class="portrait">
+                {{{hugeSpriteHTML}}}
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
     </script>
 
     <script id="sprite-template" type="text/x-handlebars-template">
