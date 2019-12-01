@@ -96,20 +96,23 @@
           </span>
         </a>
         <ul id="upgrade-list">
-          <li class="points-count"><a>points available: <strong id="spendable-levels">{{spendableLevels}}</strong></a></li>
+          <li class="points-count"><div>points available: <strong id="spendable-levels">{{spendableLevels}}</strong></div></li>
           {{#each upgrades}}
-            <li><a class="upgrade-link" data-upgrade-name="{{name}}" href="#">
+            <li><div class="upgrade">
               <div class="upgrade-meta">
                 <p class="upgrade-name">{{verboseName}}</p>
                 <p class="upgrade-description">{{description}}</p>
               </div>
               <div class="upgrade-status">
-                <span class="current-level">{{currentLevel}}</span>
+                <span class="current-level">
+                  <a class="upgrade-button" data-upgrade-name="{{name}}" href="#">level up</a>
+                  <span class="level-counter">{{currentLevel}}</span>
+                </span>
               </div>
-            </a></li>
+            </div></li>
           {{/each}}
-          <li class="meta"><a id="save-backup" href="{{backupUrl}}" download="idol-threat.save">Download backup</a></li>
-          <li class="meta"><a id="load-backup" href="#" class="needsclick">Load saved backup&hellip;</a></li>
+          <li class="meta"><div><a id="save-backup" href="{{backupUrl}}" download="idol-threat.save">Download backup</a></div></li>
+          <li class="meta"><div><a id="load-backup" href="#" class="needsclick">Load saved backup&hellip;</a></div></li>
         </ul>
 
         <a href="#" id="sort-button">

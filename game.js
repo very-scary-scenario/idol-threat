@@ -995,7 +995,7 @@ Agency.prototype.renderCatalog = function() {
 
     var upgradeName = event.currentTarget.getAttribute('data-upgrade-name');
     agency.upgrades[upgradeName] += 1;
-    event.currentTarget.querySelector('.current-level').innerText = agency.upgrades[upgradeName].toString(10);
+    event.currentTarget.parentElement.querySelector('.level-counter').innerText = agency.upgrades[upgradeName].toString(10);
     document.getElementById('spendable-levels').innerText = agency.spendableLevels();
     if (agency.spendableLevels() === 0) document.getElementById('agency-meta').classList.remove('spendable-levels');
     saveGame();

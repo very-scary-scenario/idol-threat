@@ -260,29 +260,32 @@ a {
 }
 
 .menu() {
-  li a {
-    display: block;
-    padding: 1em 1em;
-    background-color: @mid;
-    border-bottom: 1px solid fade(@fg, 30%);
-    color: fade(@fg, 50%);
+  li {
+    border-bottom: 1px solid darken(@bg, 40%);
 
-    &[href] {
-      background-color: @hl;
-      color: @fg;
+    &:last-child {
+      border-bottom: none;
+    }
 
-      &:hover, &:focus {
-        color: @bg;
+    > a, > div {
+      display: block;
+      padding: 1em 1em;
+      background-color: @mid;
+      color: fade(@fg, 50%);
+
+      &[href] {
+        background-color: @hl;
+        color: @fg;
+
+        &:hover, &:focus {
+          color: @bg;
+        }
       }
     }
-  }
 
-  li:last-child a {
-    border-bottom: none;
-  }
-
-  li.meta a {
-    background-color: @mid;
+    &.meta > a, &.meta > div {
+      background-color: @mid;
+    }
   }
 }
 
@@ -1168,7 +1171,7 @@ body.batch {
     .points-count {
       text-align: right;
       
-      a { color: @fg; }
+      div { color: @fg; }
       strong { font-weight: normal; }
     }
 
@@ -1176,7 +1179,7 @@ body.batch {
     left: -22em;
     transition: left .5s;
 
-    li a.upgrade-link {
+    li > .upgrade {
       display: table-row;
 
       .upgrade-meta, .upgrade-status {
@@ -1186,7 +1189,9 @@ body.batch {
       }
 
       .upgrade-meta {
+        color: @fg;
         padding-right: 0 !important;
+
         .upgrade-description {
           font-size: .8em;
           text-shadow: none;
@@ -1195,50 +1200,40 @@ body.batch {
 
       .upgrade-status {
         width: 6em;
+
         .current-level {
           display: block;
           float: right;
 
-          &::before {
+          .upgrade-button {
             opacity: 0;
             transition: opacity .5s;
             display: inline-block;
             text-shadow: none;
             color: @bg;
             padding: .1em .5em;
-            margin: -.1em 1em -1em 0;
+            margin: -.1em 0 -1em;
             background-color: darken(@hl, 20%);
             border-radius: @button-radius;
-            content: "level up";
-          }
-        }
-      }
 
-      &:hover {
-        .current-level::before {
-          background-color: @bg;
-          color: @hl;
+            &:hover {
+              background-color: @bg;
+              color: @hl;
+            }
+          }
+
+          .level-counter {
+            display: inline-block;
+            text-align: right;
+            width: 1.5em;
+          }
         }
       }
     }
   }
 
   &.spendable-levels {
-    &::after {
-      z-index: 36;
-      content: ' ';
-      position: absolute;
-      top: .7em;
-      left: .3em;
-      background-color: red;
-      width: .5em;
-      height: .5em;
-      border: .15em solid @bg;
-      pointer-events: none;
-      border-radius: 50%;
-    }
-
-    #upgrade-list li a .upgrade-status .current-level::before {
+    #upgrade-list li .upgrade-status .current-level .upgrade-button {
       opacity: 1;
     }
   }
