@@ -1607,7 +1607,7 @@ function rerender() {
       }, function() {
         var ranksDown = battle.numberOfLivingMembers(battle.enemyIdols);
         agency.quickBattleRanking -= ranksDown;
-        askUser(':< You lose, and rank down by ' + ranksDown.toString(10) + " (one for each of the enemy's surviving idols)." [['Aww, beans…', null]]);
+        askUser(':< You lose, and rank down by ' + ranksDown.toString(10) + " (one for each of the enemy's surviving idols).", [['Aww, beans…', null]]);
         rerender();
       });
 
