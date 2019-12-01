@@ -958,7 +958,7 @@ body.in-battle {
     width: 96vw;
     border-radius: @button-radius;
     box-sizing: border-box;
-    padding: 2vw;
+    padding: .7em 1em;
     color: @bg;
     transition: opacity .5s, background-color .5s;
 
@@ -972,6 +972,10 @@ body.in-battle {
       }
     }
 
+    dl, p, blockquote {
+      margin-top: .5em;
+    }
+
     dl {
       dt {
         clear: both;
@@ -983,10 +987,6 @@ body.in-battle {
     &[data-affinity="rock"] { background-color: @rock-colour; h2::after { content: @rock } }
     &[data-affinity="paper"] { background-color: @paper-colour; h2::after { content: @paper } }
     &[data-affinity="scissors"] { background-color: @scissors-colour; h2::after { content: @scissors } }
-
-    dl {
-      
-    }
 
     &.visible {
       opacity: 1;

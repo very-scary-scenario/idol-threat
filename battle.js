@@ -288,10 +288,10 @@ function bindHoverDetail(idol, idolElement) {
     deetsSpace.classList.remove('visible');
   }
 
-  var startEvents = ['touchenter', 'touchstart'];
+  var startEvents = ['touchenter', 'touchstart', 'mouseenter'];
   for (var si = 0; si < startEvents.length; si++) idolElement.addEventListener(startEvents[si], showHoverDetail);
 
-  var endEvents = ['touchleave', 'touchend', 'touchcancel'];
+  var endEvents = ['touchleave', 'touchend', 'touchcancel', 'mouseleave', 'click'];
   for (var ei = 0; ei < endEvents.length; ei++) idolElement.addEventListener(endEvents[ei], hideHoverDetail);
 
   idolElement.addEventListener('contextmenu', function(e) { e.preventDefault(); e.stopPropagation(); });
