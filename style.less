@@ -18,9 +18,14 @@
 @paper: '✋';
 @scissors: '✌️';
 
-@rock-colour: hsl(0, 0.6, 0.6);
-@paper-colour: hsl(240, 0.6, 0.6);
-@scissors-colour: hsl(120, 0.5, 0.55);
+@red: hsl(0, 0.6, 0.6);
+@blue: hsl(240, 0.6, 0.6);
+@green: hsl(120, 0.5, 0.55);
+
+@rock-colour: @red;
+@paper-colour: @blue;
+@scissors-colour: @green;
+
 
 @keyframes bob {
   from, to {top: -1em}
@@ -1417,6 +1422,20 @@ body.nothing-scanned {
         vertical-align: -7%;
         font-size: 1.5em;
       }
+    }
+  }
+
+  .diff {
+    font-size: 1.2em;
+    margin-left: .3em;
+
+    &.positive {
+      color: @green;
+      &::before { content: '+'; }
+    }
+
+    &.negative {
+      color: @red;
     }
   }
 

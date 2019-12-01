@@ -392,11 +392,13 @@ def build_html():
     with open('index-src.html') as f:
         soup = BeautifulSoup(f, 'html5lib')
 
-    with open('index-src.html') as f:
-        soup = BeautifulSoup(f, 'html5lib')
+        f.seek(0)
+        index_checksum = hashlib.sha256()
+        index_checksum.update(f.read().encode())
 
     with open('idol-threat.manifest', 'wt') as mf:
         print('CACHE MANIFEST', file=mf)
+        print('# {}'.format(index_checksum.hexdigest()[:8]), file=mf)
         print('fonts/rumraisin.woff', file=mf)
         print('vss-logo.svg', file=mf)
 
