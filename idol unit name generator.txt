@@ -12,7 +12,7 @@ Cheeky
 Cheer|Cheery|Cheerful
 Cherry
 Cool|Kool
-Cute|Cutey|Cutesy
+Cute|Cutey|Cutesy|Cutie
 Dare|Daring
 Diamond
 Double
@@ -22,6 +22,7 @@ Fairy
 Fancy
 Fluff|Fluffy
 Fun
+Girl|Girly
 Glitter|Glittery
 Gold|Golden
 Green
@@ -31,6 +32,7 @@ Hello!
 Hyper
 Idol
 Imagine
+Intergalactic
 Joy|Joyful
 Jumping
 Little|Littlest
@@ -41,8 +43,9 @@ Lyrical
 Magic|Magical
 Mahou Shoujo
 Morning
-Musical
+Music|Musical
 Neo
+Neon
 No
 Peach
 Phantom
@@ -53,6 +56,7 @@ Purple
 Real
 Red
 Rose
+Saint
 Sakura
 Scary
 School|After School
@@ -71,10 +75,11 @@ Triple
 Tokyo Girls'
 Totally
 Ultra
+Unstoppable
 Vanilla
 Vape|Vapour
 Very
-We Are
+We Are|We're The
 Yes
 
 
@@ -98,6 +103,8 @@ Dust
 Factory
 Family
 Fantasy
+Force
+Friends
 Fun
 Galactic
 Garden
@@ -117,6 +124,7 @@ Life
 Lips
 Love
 Magic
+Meow
 Parade
 Parfait
 Party
