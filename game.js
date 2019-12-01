@@ -938,6 +938,7 @@ Agency.prototype.renderCatalog = function() {
     'sortOrder': this.sortOrder,
     'sortOrders': sortOrders,
     'backupUrl': 'data:application/x-idol-threat-save;charset=utf-8,' + encodeURIComponent(btoa(JSON.stringify(this.dump()))),
+    'builtAt': document.body.getAttribute('data-built-at'),
     'credits': getCredits()
   });
 
