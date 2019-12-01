@@ -937,7 +937,7 @@ Agency.prototype.renderCatalog = function() {
     'upgrades': upgrades,
     'sortOrder': this.sortOrder,
     'sortOrders': sortOrders,
-    'backupUrl': 'data:application/x-idol-threat-save;charset=utf-8,' + encodeURIComponent(btoa(JSON.stringify(this.dump()))),
+    'backupUrl': 'data:application/x-idol-threat-save;name=idol-threat.save;charset=utf-8,' + encodeURIComponent(btoa(JSON.stringify(this.dump()))),
     'builtAt': document.body.getAttribute('data-built-at'),
     'credits': getCredits()
   });
@@ -1027,6 +1027,12 @@ Agency.prototype.renderCatalog = function() {
     loadGame.click();
   }
   document.getElementById('load-backup').addEventListener('click', triggerLoad);
+  function triggerSave(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    window.open(event.currentTarget.getAttribute('href'), 'downloadTarget');
+  }
+  document.getElementById('save-backup').addEventListener('click', triggerSave);
   var footerLoad = document.getElementById('footer-load');
   if (footerLoad) footerLoad.addEventListener('click', triggerLoad);
 
