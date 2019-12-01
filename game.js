@@ -718,26 +718,37 @@ Idol.prototype.showDetail = function() {
       return;
     }
 
+    function graduate() {
+      hideIdolDetail();
+      agency.removeIdol(self);
+      var graduationBonus = choice(GRADUATION_BONUSES, Math.random());
+      bonus = graduationBonus[0] + agency.upgrades.graduation;
+      template = graduationBonus[1];
+
+      for (var i = 0; i < agency.catalog.length; i++) {
+        agency.catalog[i].giveBonus(bonus);
+      }
+
+      askUser(
+        template.replace('<idol>', self.name) +
+        ' The other idols in your agency get ' + bonus.toString(10) + ' bonus stat point' + ((bonus === 1) ? '' : 's') + ' each.'
+      );
+
+      agency.grantExperience(5);
+      celebrate(graduationBonus[0]);
+      rerender();
+    }
+
     askUser('Do you want ' + self.name + ' to graduate? She will leave your agency and every other idol will get a stat bonus by attending the graduation party.', [
       ['Graduate', function() {
-        hideIdolDetail();
-        agency.removeIdol(self);
-        var graduationBonus = choice(GRADUATION_BONUSES, Math.random());
-        bonus = graduationBonus[0] + agency.upgrades.graduation;
-        template = graduationBonus[1];
-
-        for (var i = 0; i < agency.catalog.length; i++) {
-          agency.catalog[i].giveBonus(bonus);
+        if (self.shiny) {
+          askUser('Are you absolutely sure? This is a pretty sweet idol you have here.', [
+            ['Yes, graduate', graduate],
+            ['No, she should stay', function() {}]
+          ]);
+        } else {
+          graduate();
         }
-
-        askUser(
-          template.replace('<idol>', self.name) +
-          ' The other idols in your agency get ' + bonus.toString(10) + ' bonus stat point' + ((bonus === 1) ? '' : 's') + ' each.'
-        );
-
-        agency.grantExperience(5);
-        celebrate(graduationBonus[0]);
-        rerender();
       }],
       ['Keep', function() {}]
     ]);
