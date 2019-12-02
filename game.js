@@ -1798,7 +1798,7 @@ function resetVh() {
   document.documentElement.style.setProperty('--vh', (window.innerHeight * .01).toString(10) + 'px');
 }
 
-window.addEventListener('resize', resetVh);
+window.addEventListener('resize', resetVh)
 resetVh();
 
 if (batchMatch) {

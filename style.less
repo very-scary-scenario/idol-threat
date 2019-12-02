@@ -86,18 +86,23 @@
   }
 }
 
-html {
-  min-height: 100%;
-}
-
 .height-vh(@count) {
   height: 1vh * @count;
   height: calc(var(--vh, 1vh) * @count);
 }
 
+.min-height-vh(@count) {
+  min-height: 1vh * @count;
+  min-height: calc(var(--vh, 1vh) * @count);
+}
+
 .border-bottom-vh(@count) {
   border-bottom-width: 1vh * @count;
   border-bottom-width: calc(var(--vh, 1vh) * @count);
+}
+
+html {
+  .min-height-vh(100);
 }
 
 .stats-dl() {
@@ -470,7 +475,7 @@ a {
   top: 0;
   opacity: 1;
   width: 100%;
-  min-height: 100%;
+  .min-height-vh(100);
 
   > div {
     background-color: @bg;
@@ -527,7 +532,7 @@ a {
         }
       }
 
-      @media (max-height: 35em) {
+      @media (max-height: 40em) {
         .meta .bio {
           display: none;
         }
@@ -600,7 +605,7 @@ a {
   top: 0;
   overflow: hidden;
   width: 100%;
-  min-height: 100%;
+  .min-height-vh(100);
   opacity: 0;
   transition: opacity .5s;
   pointer-events: none;
@@ -1431,7 +1436,7 @@ body.batch {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  .height-vh(100);
   z-index: 1000;
   text-align: center;
 
@@ -1465,7 +1470,7 @@ body.nothing-scanned {
   background-repeat: no-repeat;
   background-color: @title-bg;
 
-  height: 100%;
+  .height-vh(100);
 
   #title {
     display: none;
@@ -1535,7 +1540,7 @@ body.nothing-scanned {
   color: @bg;
   position: fixed;
   width: 100%;
-  height: 100%;
+  .height-vh(100);
   overflow: scroll;
   top: 0;
   left: 0;
@@ -1607,7 +1612,7 @@ body.nothing-scanned {
   left: 0;
   z-index: 30;
   width: 100%;
-  height: 100%;
+  .height-vh(100);
 
   #skip {
     .button();
@@ -1618,7 +1623,7 @@ body.nothing-scanned {
   }
 
   #backdrop {
-    height: 70vh;
+    .height-vh(70vh);
     width: 100%;
     top: 0;
     left: 0;
@@ -1631,13 +1636,13 @@ body.nothing-scanned {
     position: absolute;
     top: 0;
     left: 0;
-    height: 110vh;
+    .height-vh(110);
     width: 100vw;
 
     .actor {
       margin-left: -20vh;
       position: absolute;
-      height: 78vh;
+      .height-vh(78);
       bottom: 0;
       transform-origin: 70% bottom;
       transition: left 2s ease-in-out, transform 1s, opacity 1s;
@@ -1652,7 +1657,7 @@ body.nothing-scanned {
       &[data-position="right-offstage"] { left: 120%; }
 
       .sprite {
-        height: 50vh;
+        .height-vh(50);
         width: 40vh;
         transform-origin: bottom center;
 
@@ -1688,7 +1693,7 @@ body.nothing-scanned {
   }
 
   #script {
-    min-height: 30vh;
+    .min-height-vh(30);
     position: absolute;
     background-color: @bg;
     bottom: 0;
@@ -1728,7 +1733,7 @@ body.nothing-scanned {
 
   &.setpiece {
     #backdrop {
-      height: 100vh;
+      .height-vh(100);
     }
 
     #setpiece {
@@ -1769,7 +1774,7 @@ body.nothing-scanned {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  .height-vh(100);
   animation-duration: 2s;
   animation-name: pulse-audition-bg;
   animation-iteration-count: infinite;
@@ -1829,7 +1834,7 @@ body.nothing-scanned {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  .height-vh(100);
   background-color: @fg;
   z-index: 4000;
 
@@ -1850,7 +1855,7 @@ body.nothing-scanned {
 
 #xp-indicators {
   position: fixed;
-  height: 100%;
+  .height-vh(100);
   width: 100%;
   top: 0;
   left: 0;
@@ -1893,7 +1898,7 @@ body.nothing-scanned {
   z-index: 35;
   left: 0;
   width: 100%;
-  height: 100%;
+  .height-vh(100);
   background-color: @bg;
   color: @fg;
 
