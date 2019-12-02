@@ -1676,7 +1676,7 @@ function rerender() {
 
         rerender();
 
-        askUser('You win! Your agency ranks up by ' + ranksUp.toString(10) + ' (one for each of your surviving idols), and you get ' + experienceGained.toString(10) + ' experience points.', [['Yay!', null]]);
+        askUser('You win! You can now challenge the rank ' + ranksUp.toString(10) + ' higher up in the Idol Threatstival, an increase of one for each of your surviving idols. Your agency also receives ' + experienceGained.toString(10) + ' experience.', [['Yay!', null]]);
       }, function() {
         var ranksDown = battle.numberOfLivingMembers(battle.enemyIdols);
         agency.quickBattleRanking -= ranksDown;
