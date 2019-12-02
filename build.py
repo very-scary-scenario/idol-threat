@@ -408,7 +408,11 @@ def build_html():
             for e in soup.select('[{}]'.format(a))
         ]:
             parsed = urlparse(element[attr])
-            if parsed.netloc or parsed.path.startswith('/'):
+            if (
+                parsed.netloc or
+                parsed.path.startswith('/') or
+                element[attr] == '#'
+            ):
                 continue
 
             checksum = hashlib.sha256()

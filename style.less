@@ -1824,6 +1824,30 @@ body.nothing-scanned {
   &.affinity-scissors #catch-button { background-color: @scissors-colour }
 }
 
+#quagga-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: @fg;
+  z-index: 4000;
+
+  #cancel-scanning {
+    position: fixed;
+    background-color: @bg;
+    top: .5em;
+    right: .5em;
+    padding: .2em .3em;
+    font-size: 1.5em;
+    border-radius: .2em;
+  }
+
+  &.hidden {
+    display: none;
+  }
+}
+
 #xp-indicators {
   position: fixed;
   height: 100%;

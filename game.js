@@ -42,6 +42,11 @@ var SHINY_CHANCE = 1/4096;
 var MAXIMUM_CATALOG_SIZE = 50;
 var CATALOG_FULL = "Your agency is full! You'll have to graduate or train with some of them before you can recruit any more.";
 
+var QUAGGA_READERS = [
+  'ean_reader',
+  'upc_reader',
+];
+
 var SEED_OVERRIDE_HANDLERS = {
   shadow: function(idol) {
     idol.firstName = 'Jack';
@@ -68,6 +73,8 @@ var SEED_OVERRIDE_HANDLERS = {
 };
 for (var overrideName in SEED_OVERRIDE_HANDLERS) SEED_OVERRIDE_HANDLERS[overrideName].overrideName = overrideName;
 var SEED_OVERRIDES = {};
+
+var CAMERA_DENIED = false;
 
 function parsePresetBarcodes() {
   // cache what overrides we need to apply for a given seed
@@ -197,6 +204,8 @@ function getStateCookie() {
 }
 
 var barcodeImage = document.getElementById('barcode-image');
+var quaggaOverlay = document.getElementById('quagga-overlay');
+var cancelScanningElement = document.getElementById('cancel-scanning');
 var loadGame = document.getElementById('load-game');
 var detailElement = document.getElementById('idol-detail');
 var catalogElement = document.getElementById('catalog');
@@ -1150,6 +1159,8 @@ Agency.prototype.unitName = function() {
   return choice(choice(UNIT_NAMES[0], rng()), rng()) + ' ' + choice(choice(UNIT_NAMES[1], rng()), rng());
 };
 Agency.prototype.addIdol = function(idol, interactive) {
+  var blocked = false;
+
   if ((this.catalog.length === 0) && document.body.classList.contains('nothing-scanned')) {
     document.body.removeChild(document.getElementById('title'));
     document.body.classList.remove('nothing-scanned');
@@ -1164,9 +1175,12 @@ Agency.prototype.addIdol = function(idol, interactive) {
           ['Okay', null]
         ]
       );
+      blocked = true;
       return;
     }
   }
+
+  if (blocked) return;
 
   if (this.recentlyFired.indexOf(idol.seed) !== -1) {
     askUser(idol.name + " recently left your agency. Try recruiting some other idols before attempting to recruit her again.");
@@ -1528,20 +1542,7 @@ barcodeImage.addEventListener('change', function(e) {
 
   Quagga.decodeSingle({
     src: window.URL.createObjectURL(barcodeImage.files[0]),
-    decoder: {
-      readers: [
-        'code_128_reader',
-        'ean_reader',
-        'ean_8_reader',
-        'code_39_reader',
-        'code_39_vin_reader',
-        'codabar_reader',
-        'upc_reader',
-        'upc_e_reader',
-        'i2of5_reader'
-      ]
-    },
-    debug: true
+    decoder: { readers: QUAGGA_READERS },
   }, addNewIdolFromImage);
 });
 
@@ -1576,6 +1577,54 @@ loadGame.addEventListener('change', function(e) {
 
 var agency = new Agency();
 
+function recruit() {
+  if (CAMERA_DENIED) {
+    barcodeImage.click();
+    return;
+  }
+
+  quaggaOverlay.classList.remove('hidden');
+
+  // try to use a live video feed
+  Quagga.init({
+    inputStream: {
+      name: 'Live',
+      type: 'LiveStream',
+      target: document.getElementById('quagga-overlay')
+    },
+    locator: {
+      debug: {
+        showCanvas: true,
+        showPatches: true,
+        showFoundPatches: true,
+        showSkeleton: true,
+        showLabels: true,
+        showPatchLabels: true,
+        showRemainingPatchLabels: true,
+        boxFromPatches: {
+          showTransformed: true,
+          showTransformedBox: true,
+          showBB: true
+        }
+      }
+    },
+    decoder: { readers: QUAGGA_READERS }
+  }, function(err) {
+    if(err) {
+      console.log(err)
+      // just use a static image
+      CAMERA_DENIED = true;
+      quaggaOverlay.classList.add('hidden');
+      askUser('Without camera access, you will need to provide a static image', [
+        ['Okay', function(e) { barcodeImage.click(); }]
+      ])
+    } else {
+      console.log('starting barcode scan');
+      Quagga.start();
+    }
+  });
+}
+
 function rerender() {
   if (document.body.classList.contains('in-battle')) return;  // there's no need to rerender when in battle
 
@@ -1587,7 +1636,7 @@ function rerender() {
     e.preventDefault();
 
     if (agency.full()) askUser(CATALOG_FULL);
-    else barcodeImage.click();
+    else recruit();
   });
 
   var fightButton = document.getElementById('fight');
@@ -1712,6 +1761,18 @@ function initGame() {
   FastClick.attach(document.body);
   document.getElementById('loading').innerText = '';
   parsePresetBarcodes();
+
+  Quagga.onDetected(function(result) {
+    console.log(result);
+    Quagga.stop();
+    quaggaOverlay.classList.add('hidden');
+    addNewIdolFromImage(result);
+  })
+
+  cancelScanningElement.addEventListener('click', function() {
+    Quagga.stop();
+    quaggaOverlay.classList.add('hidden');
+  });
 
   try {
     var savedStateString = getStateCookie();
