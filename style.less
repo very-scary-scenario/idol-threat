@@ -90,6 +90,16 @@ html {
   min-height: 100%;
 }
 
+.height-vh(@count) {
+  height: 1vh * @count;
+  height: calc(var(--vh, 1vh) * @count);
+}
+
+.border-bottom-vh(@count) {
+  border-bottom-width: 1vh * @count;
+  border-bottom-width: calc(var(--vh, 1vh) * @count);
+}
+
 .stats-dl() {
   dt {
     font-weight: bold;
@@ -459,7 +469,6 @@ a {
   z-index: 50;
   top: 0;
   opacity: 1;
-  overflow: hidden;
   width: 100%;
   min-height: 100%;
 
@@ -473,36 +482,55 @@ a {
 
     #dismiss-unit-details {
       position: absolute;
-      top: 0;
+      bottom: 0;
       right: 0;
       background-color: @bg;
-      border-radius: 0 0 0 .5em;
+      border-radius: .5em 0 0 0;
       z-index: 40;
 
       h1 {
+        font-size: 1.1em;
         margin: .2em .4em;
 
         &::before {
           content: '⌄';
+          padding-right: .2em;
         }
       }
     }
 
     ul li {
+      .height-vh(32);
+      .border-bottom-vh(2);
+      border-bottom-style: solid;
+      border-bottom-color: @bg;
       color: @bg;
-      height: 32vh;
-      border-bottom: 2vh solid @bg;
       position: relative;
       overflow: hidden;
       text-align: right;
 
-      > h2, > p, > blockquote {
+      .meta {
+        padding-top: 3vh;
         padding-left: 5vw;
         padding-right: 25vh;
+
+        h2 { 
+          font-size: 1.4em;
+        }
+
+        .bio {
+          padding: .5em 0;
+        }
+
+        blockquote {
+          font-size: 1.1em;
+        }
       }
 
-      > h2 {
-        margin-top: 3vh;
+      @media (max-height: 35em) {
+        .meta .bio {
+          display: none;
+        }
       }
 
       &.affinity-rock { background-color: @rock-colour }
@@ -529,7 +557,7 @@ a {
         height: 40vh;
         position: absolute;
         z-index: 20;
-        right: -5vh;
+        right: -10vh;
         top: 0;
         transform: rotate(-10deg);
       }
@@ -537,7 +565,7 @@ a {
       &:nth-child(2n+1) {
         text-align: left;
 
-        > h2, > p, > blockquote {
+        .meta {
           padding-left: 25vh;
           padding-right: 5vw;
         }

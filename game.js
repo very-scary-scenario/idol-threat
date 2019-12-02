@@ -1733,6 +1733,13 @@ function iconHTML(idol) {
 
 var batchMatch = window.location.hash.match(/#batch-(\d+)/);
 
+function resetVh() {
+  document.documentElement.style.setProperty('--vh', (window.innerHeight * .01).toString(10) + 'px');
+}
+
+window.addEventListener('resize', resetVh);
+resetVh();
+
 if (batchMatch) {
   document.body.classList.remove('nothing-scanned');
   document.body.innerHTML = '';

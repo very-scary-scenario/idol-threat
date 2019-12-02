@@ -243,9 +243,11 @@
         <ul class="unit">
           {{#each unit}}
             <li class="affinity-{{affinity}}">
-              <h2 class="affinity-{{affinity}}">{{name}}</h2>
-              <p>{{bio}}</p>
-              <blockquote>“{{quote}}”</blockquote>
+              <div class="meta">
+                <h2 class="affinity-{{affinity}}">{{name}}</h2>
+                <p class="bio">{{bio}}</p>
+                <blockquote>“{{quote}}”</blockquote>
+              </div>
               <div class="portrait">
                 {{{hugeSpriteHTML}}}
               </div>
