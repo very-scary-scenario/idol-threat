@@ -1482,15 +1482,20 @@ body.nothing-scanned {
     #menu {
       margin-top: 45vh;
 
-      li a {
-        background: radial-gradient(circle farthest-corner, fade(@title-bg, 50%) 6em, fade(@title-bg, 0%) 12em) !important;
-        text-weight: normal;
-        color: @bg;
-        .linkish-shadow(@fg);
+      li {
+        border-bottom: 3px solid rgba(0, 0, 0, 0);
+        &:last-child { border-bottom: none; }
 
-        &:hover {
-          color: @fg;
-          .linkish-shadow(@bg);
+        a {
+          background: radial-gradient(circle farthest-corner, fade(@title-bg, 50%) 6em, fade(@title-bg, 0%) 12em) !important;
+          text-weight: normal;
+          color: @bg;
+          .linkish-shadow(@fg);
+
+          &:hover {
+            color: @fg;
+            .linkish-shadow(@bg);
+          }
         }
       }
     }
