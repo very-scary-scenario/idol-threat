@@ -487,10 +487,12 @@ a {
 
     #dismiss-unit-details {
       position: absolute;
+      left: 0;
       bottom: 0;
-      right: 0;
+      bottom: env(safe-area-inset-bottom);
+
       background-color: @bg;
-      border-radius: .5em 0 0 0;
+      border-radius: 0 .5em .5em 0;
       z-index: 40;
 
       h1 {
