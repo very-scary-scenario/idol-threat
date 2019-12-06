@@ -44,6 +44,7 @@ var CATALOG_FULL = "Your agency is full! You'll have to graduate or train with s
 
 var QUAGGA_READERS = [
   'ean_reader',
+  'ean_8_reader',
   'upc_reader',
 ];
 
