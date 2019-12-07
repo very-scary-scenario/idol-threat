@@ -1677,11 +1677,11 @@ function rerender() {
 
         rerender();
 
-        askUser('You win! You can now challenge the rank ' + ranksUp.toString(10) + ' higher up in the Idol Threatstival, an increase of one for each of your surviving idols. Your agency also receives ' + experienceGained.toString(10) + ' experience.', [['Yay!', null]]);
+        askUser('You win! The Idol Threatstival has ranked up by ' + ranksUp.toString(10) + ' (one for each of your surviving idols). Your agency also receives ' + experienceGained.toString(10) + ' experience.', [['Yay!', null]]);
       }, function() {
         var ranksDown = battle.numberOfLivingMembers(battle.enemyIdols);
         agency.quickBattleRanking -= ranksDown;
-        askUser(':< You lose, and rank down by ' + ranksDown.toString(10) + " (one for each of the enemy's surviving idols).", [['Aww, beans…', null]]);
+        askUser(':< You lose. The Idol Threatsival has ranked down by ' + ranksDown.toString(10) + " (one for each of the enemy's surviving idols).", [['Aww, beans…', null]]);
         rerender();
       });
 
