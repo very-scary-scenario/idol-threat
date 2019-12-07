@@ -5,6 +5,8 @@ var BASIC_ABILITY_DAMAGE = 15;
 var animationDuration = 1000;
 var anims = {};
 
+var hoverDetailTimeout;
+
 function loadAnimations() {
   for(var i = 0; i < ANIMATIONS.length; i++) {
     var name = ANIMATIONS[i];
@@ -284,12 +286,18 @@ function bindHoverDetail(idol, idolElement) {
     deetsSpace.classList.add('visible');
   }
 
+  function showHoverDetailSoon() {
+    clearTimeout(hoverDetailTimeout);
+    hoverDetailTimeout(setTimeout(showHoverDetail, 700));
+  }
+
   function hideHoverDetail() {
+    clearTimeout(hoverDetailTimeout);
     deetsSpace.classList.remove('visible');
   }
 
   var startEvents = ['touchenter', 'touchstart', 'mouseenter'];
-  for (var si = 0; si < startEvents.length; si++) idolElement.addEventListener(startEvents[si], showHoverDetail);
+  for (var si = 0; si < startEvents.length; si++) idolElement.addEventListener(startEvents[si], showHoverDetailSoon);
 
   var endEvents = ['touchleave', 'touchend', 'touchcancel', 'mouseleave', 'click'];
   for (var ei = 0; ei < endEvents.length; ei++) idolElement.addEventListener(endEvents[ei], hideHoverDetail);
