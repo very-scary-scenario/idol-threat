@@ -288,7 +288,7 @@ function bindHoverDetail(idol, idolElement) {
 
   function showHoverDetailSoon() {
     clearTimeout(hoverDetailTimeout);
-    hoverDetailTimeout(setTimeout(showHoverDetail, 700));
+    hoverDetailTimeout = setTimeout(showHoverDetail, 700);
   }
 
   function hideHoverDetail() {
