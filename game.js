@@ -1593,22 +1593,6 @@ function recruit() {
       type: 'LiveStream',
       target: document.getElementById('quagga-overlay')
     },
-    locator: {
-      debug: {
-        showCanvas: true,
-        showPatches: true,
-        showFoundPatches: true,
-        showSkeleton: true,
-        showLabels: true,
-        showPatchLabels: true,
-        showRemainingPatchLabels: true,
-        boxFromPatches: {
-          showTransformed: true,
-          showTransformedBox: true,
-          showBB: true
-        }
-      }
-    },
     decoder: { readers: QUAGGA_READERS }
   }, function(err) {
     if(err) {
