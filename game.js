@@ -1254,7 +1254,7 @@ Agency.prototype.doStory = function(pageNumber) {
       element.innerHTML = actor.hugeSpriteHTML();
       theatreElement.querySelector('#boards').appendChild(element);
     }
-    return element
+    return element;
   }
 
   if (pageNumber === undefined) {
@@ -1264,12 +1264,12 @@ Agency.prototype.doStory = function(pageNumber) {
       // preload any idols
       if (chapter[pi].actor !== undefined) {
         console.log('hopefully preloading');
-        console.log(chapter[pi])
+        console.log(chapter[pi]);
         var actor = getBoss(chapter[pi].actor);
         getActorElement(actor);
       }
     }
-  };
+  }
 
   var page = chapter[pageNumber];
   var actorElement;
@@ -1365,8 +1365,8 @@ Agency.prototype.doStory = function(pageNumber) {
 
   } else if (page.kind === 'direction') {
     if (page.actor !== undefined) {
-      var actor = getBoss(page.actor);
-      actorElement = getActorElement(actor);
+      var bossActor = getBoss(page.actor);
+      actorElement = getActorElement(bossActor);
       actorElement.classList.remove('exited');
 
       if (page.adjectives.rotated) actorElement.setAttribute('data-rotated', page.adjectives.rotated);
@@ -1391,8 +1391,8 @@ Agency.prototype.doStory = function(pageNumber) {
     theatreElement.innerHTML = '';
     var playerIdols = [];
 
-    for (var pi = 0; pi < self.unit.length; pi++) {
-      playerIdols.push(new BattleIdol(self.unit[pi], 'player'));
+    for (var pii = 0; pii < self.unit.length; pii++) {
+      playerIdols.push(new BattleIdol(self.unit[pii], 'player'));
     }
 
     var enemyIdols = [];
@@ -1612,13 +1612,13 @@ function recruit() {
     decoder: { readers: QUAGGA_READERS }
   }, function(err) {
     if(err) {
-      console.log(err)
+      console.log(err);
       // just use a static image
       CAMERA_DENIED = true;
       quaggaOverlay.classList.add('hidden');
       askUser('Without camera access, you will need to provide a static image', [
         ['Okay', function(e) { barcodeImage.click(); }]
-      ])
+      ]);
     } else {
       console.log('starting barcode scan');
       Quagga.start();
@@ -1672,7 +1672,7 @@ function rerender() {
           this.playerIdols[pi].idol.giveBonus(enemyIdols.length);
         }
 
-        var ranksUp = battle.numberOfLivingMembers(battle.playerIdols)
+        var ranksUp = battle.numberOfLivingMembers(battle.playerIdols);
         agency.quickBattleRanking += ranksUp;
 
         rerender();
@@ -1772,7 +1772,7 @@ function initGame() {
     Quagga.stop();
     quaggaOverlay.classList.add('hidden');
     addNewIdolFromImage(result);
-  })
+  });
 
   cancelScanningElement.addEventListener('click', function() {
     Quagga.stop();
@@ -1800,10 +1800,10 @@ function iconHTML(idol) {
 var batchMatch = window.location.hash.match(/#batch-(\d+)/);
 
 function resetVh() {
-  document.documentElement.style.setProperty('--vh', (window.innerHeight * .01).toString(10) + 'px');
+  document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01).toString(10) + 'px');
 }
 
-window.addEventListener('resize', resetVh)
+window.addEventListener('resize', resetVh);
 resetVh();
 
 if (batchMatch) {
