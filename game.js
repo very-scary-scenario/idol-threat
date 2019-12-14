@@ -1677,15 +1677,21 @@ function rerender() {
 
         rerender();
 
-        askUser('You win! The Idol Threatstival has ranked up by ' + ranksUp.toString(10) + ' (one for each of your surviving idols). Your agency also receives ' + experienceGained.toString(10) + ' experience.', [['Yay!', null]]);
+        askUser('You win! The Idol Threatstival has ranked up to ' + (agency.quickBattleRanking + 1).toString(10) + '.', [['Yay!', null]]);
       }, function() {
         var ranksDown = battle.numberOfLivingMembers(battle.enemyIdols);
         agency.quickBattleRanking -= ranksDown;
-        askUser(':< You lose. The Idol Threatsival has ranked down by ' + ranksDown.toString(10) + " (one for each of the enemy's surviving idols).", [['Aww, beans…', null]]);
+        askUser(':< You lose. The Idol Threatsival has ranked down to ' + (agency.quickBattleRanking + 1).toString(10) + '.', [['Aww, beans…', null]]);
         rerender();
       }, function() { 
         var deadPlayerIdols = battle.playerIdols.length - battle.numberOfLivingMembers(battle.playerIdols);
         agency.quickBattleRanking -= deadPlayerIdols;
+
+        if (deadPlayerIdols) {
+          askUser('You fled. Some of your idols died, though, so the Idol Threatsival has ranked down to ' + (agency.quickBattleRanking + 1).toString(10) + '.', [['Aww, beans…', null]]);
+        } else {
+          askUser('You fled. Nobody died, so your rank does not change.', [['Aww, beans…', null]]);
+        }
         rerender();
       });
 
