@@ -123,12 +123,13 @@ BattleIdol.prototype.healthBar = function() {
   return healthBarTemplate(this);
 };
 
-function Battle(playerIdols, enemyIdols, victoryCallback, lossCallback) {
+function Battle(playerIdols, enemyIdols, victoryCallback, lossCallback, fleeCallback) {
   this.playerIdols = playerIdols;
   this.enemyIdols = enemyIdols;
 
   this.victoryCallback = victoryCallback;
   this.lossCallback = lossCallback;
+  this.fleeCallback = fleeCallback;
 
   this.render();
 
@@ -158,7 +159,12 @@ Battle.prototype.hide = function() {
 
 Battle.prototype.flee = function() {
   this.hide();
-  askUser('You ran away.');
+
+  if (this.fleeCallback) {
+    this.fleeCallback();
+  } else {
+    askUser('You ran away.');
+  }
 };
 
 Battle.prototype.determinePlayerMove = function(idol) {

@@ -1683,6 +1683,10 @@ function rerender() {
         agency.quickBattleRanking -= ranksDown;
         askUser(':< You lose. The Idol Threatsival has ranked down by ' + ranksDown.toString(10) + " (one for each of the enemy's surviving idols).", [['Aww, beans…', null]]);
         rerender();
+      }, function() { 
+        var deadPlayerIdols = battle.playerIdols.length - battle.numberOfLivingMembers(battle.playerIdols);
+        agency.quickBattleRanking -= deadPlayerIdols;
+        rerender();
       });
 
       battle.loop();
