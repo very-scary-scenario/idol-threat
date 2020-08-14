@@ -207,6 +207,13 @@ Battle.prototype.determinePlayerMove = function(idol) {
   return;
 };
 
+Battle.prototype.tookDamage = function(team) {
+  for (var i = 0; i < team.length; i++) {
+    if (team[i].hp !== team[i].maxHp) return true;
+  }
+  return false;
+};
+
 Battle.prototype.stillHasLivingMembers = function(team) {
   return this.numberOfLivingMembers(team) > 0;
 };

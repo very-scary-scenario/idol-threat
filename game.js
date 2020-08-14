@@ -1662,6 +1662,8 @@ function rerender() {
         }
 
         var ranksUp = battle.numberOfLivingMembers(battle.playerIdols);
+        if (!battle.tookDamage(battle.playerIdols)) ranksUp += 2;
+
         agency.quickBattleRanking += ranksUp;
 
         rerender();
@@ -1669,6 +1671,7 @@ function rerender() {
         askUser('You win! The Idol Threatstival has ranked up to ' + (agency.quickBattleRanking + 1).toString(10) + '.', [['Yay!', null]]);
       }, function() {
         var ranksDown = battle.numberOfLivingMembers(battle.enemyIdols);
+        if (!battle.tookDamage(battle.enemyIdols)) ranksDownp += 2;
         agency.quickBattleRanking -= ranksDown;
         askUser(':< You lose. The Idol Threatsival has ranked down to ' + (agency.quickBattleRanking + 1).toString(10) + '.', [['Aww, beans…', null]]);
         rerender();
