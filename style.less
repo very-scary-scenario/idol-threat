@@ -341,6 +341,22 @@ a {
       }
     }
 
+    .portrait-stats {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: fade(@fg, 85%);
+      border-radius: 0 0 .5em 0;
+      padding: 0 .3em .2em;
+      line-height: 1;
+
+      > span {
+        display: block;
+        &.positive { color: @green; }
+        &.negative { color: @red; }
+      }
+    }
+
     .input {
       .checkbox();
       position: absolute;
@@ -357,7 +373,7 @@ a {
     &.favourite {
       &::after {
         .star();
-        background-color: @fg;
+        background-color: fade(@fg, 85%);
         text-shadow: none !important;
 
         position: absolute;

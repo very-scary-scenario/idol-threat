@@ -45,7 +45,7 @@ var CATALOG_FULL = "Your agency is full! You'll have to graduate or train with s
 var QUAGGA_READERS = [
   'ean_reader',
   'ean_8_reader',
-  'upc_reader',
+  'upc_reader'
 ];
 
 var SEED_OVERRIDE_HANDLERS = {
@@ -894,6 +894,11 @@ var hammerManager = new Hammer(document.body);
 hammerManager.on('swipeleft', showNextIdol);
 hammerManager.on('swiperight', showPrevIdol);
 
+Handlebars.registerHelper('ifPositive', function(a, options) {
+  if (a >= 0) return options.fn(this);
+  else return options.inverse(this);
+});
+
 function Agency() {
   var self = this;
 
@@ -1543,7 +1548,7 @@ barcodeImage.addEventListener('change', function(e) {
 
   Quagga.decodeSingle({
     src: window.URL.createObjectURL(barcodeImage.files[0]),
-    decoder: { readers: QUAGGA_READERS },
+    decoder: { readers: QUAGGA_READERS }
   }, addNewIdolFromImage);
 });
 
