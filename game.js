@@ -1768,7 +1768,10 @@ function initGame() {
   document.getElementById('loading').innerText = '';
   parsePresetBarcodes();
 
+  var hints = new Map();
+  hints.set(ZXing.DecodeHintType.TRY_HARDER, true);
   codeReader = new ZXing.BrowserBarcodeReader();
+  codeReader.hints = hints;
 
   cancelScanningElement.addEventListener('click', function() {
     codeReader.stopAsyncDecode();
