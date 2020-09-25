@@ -256,6 +256,14 @@ function seededRandom(seed) {
   return rand;
 }
 
+function stringContainsBadWord(string) {
+  var lowerCaseString = string.toLowerCase();
+  for (var bi = 0; bi < BADWORDS.length; bi++) {
+    if (lowerCaseString.indexOf(BADWORDS[bi].toLowerCase()) !== -1) return true;
+  }
+  return false;
+}
+
 function celebrate(density) {
   confetti.setDensity(density);
   if (!confettiTimeout) confetti.restart();
@@ -473,6 +481,7 @@ Idol.prototype.generateName = function() {
     kanaCount--;
   }
   name = name[0].toUpperCase() + name.slice(1);
+  if (stringContainsBadWord(name)) return this.generateName();
   return name;
 };
 Idol.prototype.cacheName = function() {

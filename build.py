@@ -198,7 +198,7 @@ def build_campaign():
     last_loop_referenced = 0
 
     with open(os.path.join(HERE, 'idol campaign.txt')) as f:
-        for line in (l.strip() for l in f.readlines() if l.strip()):
+        for line in (line.strip() for line in f.readlines() if line.strip()):
             if line.startswith('# '):
                 current_chapter = {
                     'name': line.lstrip('# '),
@@ -384,7 +384,7 @@ def build_kana():
             kana.append((letters, freq))
 
     return [
-        (l, c / total_frequency) for l, c in kana
+        (k, c / total_frequency) for k, c in kana
     ]
 
 
@@ -444,6 +444,13 @@ def build_graduation_bonuses():
     return graduation_bonuses
 
 
+def build_badwords():
+    with open(os.path.join(HERE, 'wordfilter', 'lib', 'badwords.json')) as bwf:
+        slurs = json.load(bwf)
+    # there may be other kana-constructible words to worry about, but:
+    return slurs + ['rape']
+
+
 def build_barcodes():
     barcodes = {}
 
@@ -456,8 +463,8 @@ def build_barcodes():
             if line.startswith('# '):
                 section = line[2:]
             else:
-                l = barcodes.setdefault(section, [])
-                l.append(line)
+                codes = barcodes.setdefault(section, [])
+                codes.append(line)
 
     return barcodes
 
@@ -497,6 +504,7 @@ def write_parts():
         p.write('ANIMATIONS = {};'.format(json.dumps(build_animations())))
         p.write('UNIT_NAMES = {};'.format(json.dumps(build_unit_names())))
         p.write('KANA = {};'.format(json.dumps(build_kana())))
+        p.write('BADWORDS = {};'.format(json.dumps(build_badwords())))
         p.write('BARCODES = {};'.format(json.dumps(build_barcodes())))
         p.write('GRADUATION_BONUSES = {};'.format(
             json.dumps(build_graduation_bonuses())

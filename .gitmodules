@@ -1,0 +1,3 @@
+[submodule "wordfilter"]
+	path = wordfilter
+	url = https://github.com/dariusk/wordfilter.git
