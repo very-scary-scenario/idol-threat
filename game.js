@@ -1599,12 +1599,19 @@ function recruit() {
       recruitIdolFromBarcodeText(result.text);
     }).catch(function(err) {
       console.log(err);
+
       // just use a static image
-      CAMERA_DENIED = true;
       scannerOverlay.classList.add('hidden');
-      askUser('Without camera access, you will need to provide a static image', [
-        ['Okay', function(e) { barcodeImage.click(); }]
-      ]);
+      codeReader.reset();
+
+      // this is often spurious; we should try to specifically
+      if (err.name === "NotAllowedError") {
+        CAMERA_DENIED = true;
+        askUser('Without camera access, you will need to provide a static image', [
+            ['Okay', function(e) { barcodeImage.click(); }],
+            ['Never mind', null]
+        ]);
+      }
     });
   });
 
@@ -1764,6 +1771,7 @@ function initGame() {
   codeReader = new ZXing.BrowserBarcodeReader();
 
   cancelScanningElement.addEventListener('click', function() {
+    codeReader.stopAsyncDecode();
     codeReader.reset();
     scannerOverlay.classList.add('hidden');
   });
