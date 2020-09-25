@@ -42,12 +42,6 @@ var SHINY_CHANCE = 1/4096;
 var MAXIMUM_CATALOG_SIZE = 50;
 var CATALOG_FULL = "Your agency is full! You'll have to graduate or train with some of them before you can recruit any more.";
 
-var QUAGGA_READERS = [
-  'ean_reader',
-  'ean_8_reader',
-  'upc_reader'
-];
-
 var SEED_OVERRIDE_HANDLERS = {
   shadow: function(idol) {
     idol.firstName = 'Jack';
@@ -76,6 +70,7 @@ for (var overrideName in SEED_OVERRIDE_HANDLERS) SEED_OVERRIDE_HANDLERS[override
 var SEED_OVERRIDES = {};
 
 var CAMERA_DENIED = false;
+var codeReader;
 
 function parsePresetBarcodes() {
   // cache what overrides we need to apply for a given seed
@@ -205,7 +200,7 @@ function getStateCookie() {
 }
 
 var barcodeImage = document.getElementById('barcode-image');
-var quaggaOverlay = document.getElementById('quagga-overlay');
+var scannerOverlay = document.getElementById('scanner-overlay');
 var cancelScanningElement = document.getElementById('cancel-scanning');
 var loadGame = document.getElementById('load-game');
 var detailElement = document.getElementById('idol-detail');
@@ -1494,20 +1489,8 @@ function numFromString(str) {
   return total;
 }
 
-function addNewIdolFromImage(data) {
-  barcodeImage.value = '';
-
-  if ((!data) || (!data.codeResult)) {
-    askUser(
-      "Sorry, we couldn't read a barcode in that picture, please try a clearer photo.",
-      [
-        ['Try again', function() { barcodeImage.click(); }],
-        ['Cancel', null]
-      ]
-    );
-    return;
-  }
-  idol = new Idol(numFromString(data.codeResult.code));
+function recruitIdolFromBarcodeText(text) {
+  var idol = new Idol(numFromString(text));
   idol.applyRecruitmentBonuses();
   agency.addIdol(idol, true);
 }
@@ -1546,10 +1529,18 @@ barcodeImage.addEventListener('change', function(e) {
     return;
   }
 
-  Quagga.decodeSingle({
-    src: window.URL.createObjectURL(barcodeImage.files[0]),
-    decoder: { readers: QUAGGA_READERS }
-  }, addNewIdolFromImage);
+  codeReader.decodeFromImage(null, window.URL.createObjectURL(barcodeImage.files[0])).then(function(result) {
+    recruitIdolFromBarcodeText(result.text);
+  }).catch(function(err) {
+    console.log(err);
+    askUser(
+      "Sorry, we couldn't read a barcode in that picture, please try a clearer photo.",
+      [
+        ['Try again', function() { barcodeImage.click(); }],
+        ['Cancel', null]
+      ]
+    );
+  });
 });
 
 function complainAboutBadSaveFile() {
@@ -1589,30 +1580,26 @@ function recruit() {
     return;
   }
 
-  quaggaOverlay.classList.remove('hidden');
+  scannerOverlay.classList.remove('hidden');
 
   // try to use a live video feed
-  Quagga.init({
-    inputStream: {
-      name: 'Live',
-      type: 'LiveStream',
-      target: document.getElementById('quagga-overlay')
-    },
-    decoder: { readers: QUAGGA_READERS }
-  }, function(err) {
-    if(err) {
+  codeReader.listVideoInputDevices().then(function(devices) {
+    codeReader.decodeOnceFromVideoDevice(null, 'scanner-viewfinder').then(function(result) {
+      codeReader.reset();
+      scannerOverlay.classList.add('hidden');
+      recruitIdolFromBarcodeText(result.text);
+    }).catch(function(err) {
       console.log(err);
       // just use a static image
       CAMERA_DENIED = true;
-      quaggaOverlay.classList.add('hidden');
+      scannerOverlay.classList.add('hidden');
       askUser('Without camera access, you will need to provide a static image', [
         ['Okay', function(e) { barcodeImage.click(); }]
       ]);
-    } else {
-      console.log('starting barcode scan');
-      Quagga.start();
-    }
+    });
   });
+
+  return;
 }
 
 function rerender() {
@@ -1765,16 +1752,11 @@ function initGame() {
   document.getElementById('loading').innerText = '';
   parsePresetBarcodes();
 
-  Quagga.onDetected(function(result) {
-    console.log(result);
-    Quagga.stop();
-    quaggaOverlay.classList.add('hidden');
-    addNewIdolFromImage(result);
-  });
+  codeReader = new ZXing.BrowserBarcodeReader();
 
   cancelScanningElement.addEventListener('click', function() {
-    Quagga.stop();
-    quaggaOverlay.classList.add('hidden');
+    codeReader.reset();
+    scannerOverlay.classList.add('hidden');
   });
 
   try {

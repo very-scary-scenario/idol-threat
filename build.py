@@ -421,6 +421,7 @@ def build_html():
                 checksum.update(cf.read())
 
             element[attr] += '?v={}'.format(checksum.hexdigest()[:8])
+
             print(element[attr], file=mf)
 
         print('NETWORK:\n/', file=mf)
