@@ -71,6 +71,11 @@
   }
 }
 
+@keyframes ability-annotation {
+  from, to { transform: scale(1) rotate(-5deg) }
+  50% { transform: scale(0.8) rotate(5deg) }
+}
+
 @font-face {
   font-family: 'Rum Raisin';
   font-style: normal;
@@ -1078,6 +1083,29 @@ body.in-battle {
         left: 0;
         width: 100%;
         height: 100%;
+        z-index: 1;
+      }
+
+      &::before {
+        display: inline-block;
+        position: absolute;
+        content: none;
+        color: @bg;
+        text-shadow: 0 0 .2em @fg;
+        font-size: 2em;
+        top: 30%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        z-index: 2;
+
+        transform-origin: center;
+        animation-duration: 1s;
+        animation-name: ability-annotation;
+      }
+
+      &[data-ability-name]::before {
+        content: attr(data-ability-name);
       }
     }
   }

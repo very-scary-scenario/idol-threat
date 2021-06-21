@@ -107,7 +107,7 @@ BattleIdol.prototype.doMove = function(moveIndex, target) {
   target.doDamage(abilityStrength);
   console.log(this.idol.name + ' did ' + abilityStrength.toString(10) + ' damage to ' + target.idol.name + ', bringing her HP to ' + target.hp.toString(10) + '/' + target.maxHp.toString(10));
 
-  playAnimationCanvas(self.abilities[moveIndex].animation, target.element);
+  playAnimationCanvas(self.abilities[moveIndex], target.element);
 
   setTimeout(function() {
     self.element.classList.remove('fighting');
@@ -334,12 +334,12 @@ Battle.prototype.render = function() {
   }
 };
 
-function playAnimationCanvas(animationName, element) {
+function playAnimationCanvas(ability, element) {
   var portraitDiv = element.querySelector('.portrait');
-
   var currentImage = 0;
-
   var animationCanvas = document.createElement('Canvas');
+
+  portraitDiv.setAttribute("data-ability-name", ability.name);
   animationCanvas.style.position = "absolute";
   animationCanvas.style.display = "inline";
   animationCanvas.style.left = 2;
@@ -353,7 +353,7 @@ function playAnimationCanvas(animationName, element) {
 
   var animationID = setInterval(function () {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    ctx.drawImage(anims[animationName], 0, (-256 * currentImage));
+    ctx.drawImage(anims[ability.animation], 0, (-256 * currentImage));
     currentImage++;
   }, (animationDuration / 14));
 
@@ -361,5 +361,6 @@ function playAnimationCanvas(animationName, element) {
     clearInterval(animationID);
 
     portraitDiv.removeChild(animationCanvas);
+    portraitDiv.removeAttribute("data-ability-name");
   }, animationDuration);
 }
