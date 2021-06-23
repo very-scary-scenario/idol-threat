@@ -709,7 +709,7 @@ Idol.prototype.showDetail = function() {
         agency.removeIdol(foodIdol);
         canteenElement.innerHTML = '';
         self.showDetail();
-        askUser('Training successful!');
+        askUser('Training complete!');
         agency.grantExperience(5);
         celebrate();
       });
