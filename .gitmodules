@@ -1,3 +1,0 @@
-[submodule "src/vendor/wordfilter"]
-	path = src/vendor/wordfilter
-	url = https://github.com/dariusk/wordfilter.git

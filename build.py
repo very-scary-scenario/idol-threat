@@ -14,14 +14,18 @@ from urllib.parse import urlparse
 
 
 HERE = os.path.realpath(os.path.dirname(__file__))
+SRC = os.path.join(HERE, 'src')
+BUILD = os.path.join(HERE, 'build')
 ICON_SIZE = 256
+TEXT = os.path.join(SRC, 'text')
 IDOL_DIRNAME = 'idols'
-IDOLS_DIR = os.path.join(HERE, IDOL_DIRNAME)
+IMG = os.path.join(SRC, 'img')
+IDOLS_DIR = os.path.join(IMG, IDOL_DIRNAME)
 BOSSES_DIRNAME = 'bosses'
-BOSSES_DIR = os.path.join(HERE, BOSSES_DIRNAME)
+BOSSES_DIR = os.path.join(IMG, BOSSES_DIRNAME)
 THUMBS_DIRNAME = 'idol-thumbs'
-THUMBS_DIR = os.path.join(HERE, 'idol-thumbs')
-ICON_PATH = os.path.join(HERE, 'icon.png')
+THUMBS_DIR = os.path.join(BUILD, 'idol-thumbs')
+ICON_PATH = os.path.join(BUILD, 'icon.png')
 POSES = set()
 SKIN_COLOURS = set()
 HAIR_COLOURS = set()
@@ -126,7 +130,7 @@ def build_bosses():
 def build_bios():
     bios = []
 
-    with open(os.path.join(HERE, 'idol bios.txt')) as f:
+    with open(os.path.join(TEXT, 'idol bios.txt')) as f:
         for bio in f.readlines():
             bio = bio.strip()
             if bio:
@@ -138,7 +142,7 @@ def build_bios():
 def build_abilities():
     parts = []
 
-    with open(os.path.join(HERE, 'idol attack names word list.txt')) as f:
+    with open(os.path.join(TEXT, 'idol attack names word list.txt')) as f:
         for line in f.readlines():
             line = line.strip()
 
@@ -177,7 +181,7 @@ def build_abilities():
 def build_quotes():
     quotes = []
 
-    with open(os.path.join(HERE, 'idol quotes.txt')) as f:
+    with open(os.path.join(TEXT, 'idol quotes.txt')) as f:
         for line in f.readlines():
             line = line.strip()
             if line:
@@ -188,7 +192,7 @@ def build_quotes():
 
 def build_animations():
     return sorted([
-        f for f in os.listdir(os.path.join(HERE, 'anim'))
+        f for f in os.listdir(os.path.join(IMG, 'anim'))
         if f.endswith('.png')
     ])
 
@@ -197,7 +201,7 @@ def build_campaign():
     chapters = []
     last_loop_referenced = 0
 
-    with open(os.path.join(HERE, 'idol campaign.txt')) as f:
+    with open(os.path.join(TEXT, 'idol campaign.txt')) as f:
         for line in (line.strip() for line in f.readlines() if line.strip()):
             if line.startswith('# '):
                 current_chapter = {
@@ -346,7 +350,7 @@ def build_icon():
 
     driver = PhantomJS(service_log_path=mkstemp()[1])
     driver.set_window_size(ICON_SIZE, ICON_SIZE)
-    url = 'file://{}#icon'.format(os.path.join(HERE, 'index.html'))
+    url = 'file://{}#icon'.format(os.path.join(BUILD, 'index.html'))
     driver.get(url)
     sleep(3)
 
@@ -357,7 +361,7 @@ def build_icon():
 def build_unit_names():
     parts = []
 
-    with open(os.path.join(HERE, 'idol unit name generator.txt')) as f:
+    with open(os.path.join(TEXT, 'idol unit name generator.txt')) as f:
         for line in f.readlines():
             words = line.strip().split('|')
 
@@ -373,7 +377,7 @@ def build_kana():
     kana = []
     total_frequency = 0
 
-    with open(os.path.join(HERE, 'kana.txt')) as f:
+    with open(os.path.join(TEXT, 'kana.txt')) as f:
         for line in f.readlines():
             if line.startswith('//'):
                 continue
@@ -389,14 +393,14 @@ def build_kana():
 
 
 def build_html():
-    with open('index-src.html') as f:
+    with open(os.path.join(SRC, 'index-src.html')) as f:
         soup = BeautifulSoup(f, 'html5lib')
 
         f.seek(0)
         index_checksum = hashlib.sha256()
         index_checksum.update(f.read().encode())
 
-    with open('idol-threat.manifest', 'wt') as mf:
+    with open(os.path.join(BUILD, 'idol-threat.manifest'), 'wt') as mf:
         print('CACHE MANIFEST', file=mf)
         print('# {}'.format(index_checksum.hexdigest()[:8]), file=mf)
         print('fonts/rumraisin.woff', file=mf)
@@ -418,6 +422,7 @@ def build_html():
             checksum = hashlib.sha256()
 
             with open(parsed.path, 'rb') as cf:
+                # XXX these will 404
                 checksum.update(cf.read())
 
             element[attr] += '?v={}'.format(checksum.hexdigest()[:8])
@@ -436,7 +441,7 @@ def build_html():
 def build_graduation_bonuses():
     graduation_bonuses = []
 
-    with open(os.path.join(HERE, 'idol graduation bonuses.txt')) as f:
+    with open(os.path.join(TEXT, 'idol graduation bonuses.txt')) as f:
         for line in f.readlines():
             bonus_str, template = line.strip().split(maxsplit=1)
             graduation_bonuses.append((int(bonus_str), template))
@@ -445,7 +450,7 @@ def build_graduation_bonuses():
 
 
 def build_badwords():
-    with open(os.path.join(HERE, 'wordfilter', 'lib', 'badwords.json')) as bwf:
+    with open(os.path.join(HERE, 'node_modules', 'wordfilter', 'lib', 'badwords.json')) as bwf:
         slurs = json.load(bwf)
     # there may be other kana-constructible words to worry about, but:
     return slurs + ['rape']
@@ -454,7 +459,7 @@ def build_badwords():
 def build_barcodes():
     barcodes = {}
 
-    with open(os.path.join(HERE, 'barcodes.txt')) as f:
+    with open(os.path.join(TEXT, 'barcodes.txt')) as f:
         for line in f.readlines():
             line = line.strip()
             if not line:
@@ -472,7 +477,7 @@ def build_barcodes():
 def write_parts():
     parts, poses, skin_colours, hair_colours = build_idols()
 
-    with open('parts.json', 'w') as j:
+    with open('build/parts.json', 'w') as j:
         j.write(json.dumps({
             'parts': parts,
             'poses': poses,
@@ -480,7 +485,7 @@ def write_parts():
             'hairColours': hair_colours,
         }, indent=2))
 
-    with open('parts.js', 'w') as p:
+    with open('build/parts.js', 'w') as p:
         p.write(
             'PARTS = {}; POSES = {}; SKIN_COLOURS = {}; '
             'HAIR_COLOURS = {};'
@@ -518,13 +523,13 @@ if __name__ == '__main__':
         if '--no-parts' not in sys.argv:
             write_parts()
 
-        with open('style.css', 'wb') as c:
-            c.write(subprocess.check_output(['lessc', 'style.less']))
+        with open(os.path.join(BUILD, 'style.css'), 'wb') as c:
+            c.write(subprocess.check_output(['npx', 'lessc', os.path.join(SRC, 'style.less')]))
 
         if not os.path.exists(ICON_PATH):
             build_icon()
 
-        with open('index.html', 'w') as h:
+        with open(os.path.join(BUILD, 'index.html'), 'w') as h:
             h.write(build_html())
 
     if '--no-icon' not in sys.argv:
