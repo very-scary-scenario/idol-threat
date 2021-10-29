@@ -1,5 +1,5 @@
 {
-  "name": "Idol Threat",
+  "name": "idol-threat",
   "version": "0.0.0",
   "scripts": {
     "build": "tsc; browserify game.js -o game.bundle.js"
