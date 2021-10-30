@@ -1,5 +1,6 @@
 import * as Handlebars from 'handlebars'
 import { Affinity, AffinityType, AFFINITIES, Battle, BattleIdol } from './battle'
+import { Animation, Part } from './parts'
 import { askUser } from './util'
 import { BrowserQRCodeReader } from '@zxing/browser'
 import { DecodeHintType } from '@zxing/library'
@@ -53,7 +54,7 @@ var SEED_OVERRIDE_HANDLERS = {
     idol.cacheName();
 
     for (var stat in Stat) {
-      idol.stats[stat] = 100;
+      idol.stats.set(stat, 100);
     }
 
     idol.bio = "Somebody tried to kill her. She lied to her wife for three years. Didn't give them her PhD.";
@@ -356,8 +357,13 @@ export class Idol {
   firstName: string;
   lastName: string;
   name: string;
+  bio: string;
+  quote: string;
+  abilities: Ability[];
   stats = new Map<string, number>();
-  effective = new Map<string, number>();
+  effective = new Map<string, () => number>();
+  affinity: AffinityType;
+  parts: Part[];
 
   constructor(seed: number) {
     this.seed = seed;
@@ -370,7 +376,7 @@ export class Idol {
     // build stats
     for(var stat in Stat) {
       this.stats.set(stat, Math.floor(rand(-100, 100)));
-      this.effective.set(stat, effectiveStatGetter(self, stat));
+      this.effective.set(stat, effectiveStatGetter(this, stat));
     }
 
     this.abilities = [];
@@ -390,6 +396,8 @@ export class Idol {
       if (part.hairColour && part.hairColour !== hairColour) return false;
       return true;
     }
+
+    this.parts = [];
 
     while (partsMissing) {
       partsMissing = false;
