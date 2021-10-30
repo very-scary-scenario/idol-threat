@@ -1,4 +1,7 @@
 import * as Handlebars from 'handlebars'
+import {
+  ANIMATIONS,
+} from './parts'
 import { askUser } from './util'
 import { Idol } from './game'
 

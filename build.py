@@ -15,6 +15,8 @@ from typing import Dict, List, Optional, Set, Tuple, TypedDict
 from urllib.parse import urlparse
 
 
+INDENT = 2
+
 HERE = os.path.realpath(os.path.dirname(__file__))
 SRC = os.path.join(HERE, 'src')
 BUILD = os.path.join(HERE, 'build')
@@ -549,33 +551,33 @@ def write_parts() -> None:
             'hairColours': hair_colours,
         }, indent=2))
 
-    with open('build/parts.js', 'w') as p:
+    with open('src/parts.ts', 'w') as p:
         p.write(
-            'PARTS = {}; POSES = {}; SKIN_COLOURS = {}; '
-            'HAIR_COLOURS = {};'
+            'export const PARTS = {}\nexport const POSES = {}\nexport const SKIN_COLOURS = {}\n'
+            'export const HAIR_COLOURS = {}\n'
             .format(
-                json.dumps(parts),
-                json.dumps(poses),
-                json.dumps(skin_colours),
-                json.dumps(hair_colours),
+                json.dumps(parts, indent=INDENT),
+                json.dumps(poses, indent=INDENT),
+                json.dumps(skin_colours, indent=INDENT),
+                json.dumps(hair_colours, indent=INDENT),
             )
         )
 
         p.write(
-            'CHAPTERS = {}; INITIAL_CHAPTER_ORDER = {}; FINAL_LOOP_ORDER = {};'
-            .format(*(json.dumps(c) for c in build_campaign()))
+            'export const CHAPTERS = {}\nexport const INITIAL_CHAPTER_ORDER = {}\nexport const FINAL_LOOP_ORDER = {};'
+            .format(*(json.dumps(c, indent=INDENT) for c in build_campaign()))
         )
 
-        p.write('BOSS_NAMES = {};'.format(json.dumps(build_bosses())))
-        p.write('BIOS = {};'.format(json.dumps(build_bios())))
-        p.write('ABILITIES = {};'.format(json.dumps(build_abilities())))
-        p.write('QUOTES = {};'.format(json.dumps(build_quotes())))
-        p.write('ANIMATIONS = {};'.format(json.dumps(build_animations())))
-        p.write('UNIT_NAMES = {};'.format(json.dumps(build_unit_names())))
-        p.write('KANA = {};'.format(json.dumps(build_kana())))
-        p.write('BARCODES = {};'.format(json.dumps(build_barcodes())))
-        p.write('GRADUATION_BONUSES = {};'.format(
-            json.dumps(build_graduation_bonuses())
+        p.write('export const BOSS_NAMES = {}\n'.format(json.dumps(build_bosses(), indent=INDENT)))
+        p.write('export const BIOS = {}\n'.format(json.dumps(build_bios(), indent=INDENT)))
+        p.write('export const ABILITIES = {}\n'.format(json.dumps(build_abilities(), indent=INDENT)))
+        p.write('export const QUOTES = {}\n'.format(json.dumps(build_quotes(), indent=INDENT)))
+        p.write('export const ANIMATIONS = {}\n'.format(json.dumps(build_animations(), indent=INDENT)))
+        p.write('export const UNIT_NAMES = {}\n'.format(json.dumps(build_unit_names(), indent=INDENT)))
+        p.write('export const KANA = {}\n'.format(json.dumps(build_kana(), indent=INDENT)))
+        p.write('export const BARCODES = {}\n'.format(json.dumps(build_barcodes(), indent=INDENT)))
+        p.write('export const GRADUATION_BONUSES = {}\n'.format(
+            json.dumps(build_graduation_bonuses(), indent=INDENT)
         ))
 
 

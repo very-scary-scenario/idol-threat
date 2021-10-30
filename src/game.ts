@@ -1,6 +1,18 @@
 import * as Handlebars from 'handlebars'
+import {
+  ABILITIES,
+  ANIMATIONS,
+  BARCODES,
+  BIOS,
+  HAIR_COLOURS,
+  KANA,
+  PARTS,
+  POSES,
+  QUOTES,
+  SKIN_COLOURS,
+  UNIT_NAMES,
+} from './parts'
 import { Affinity, AffinityType, AFFINITIES, Battle, BattleIdol } from './battle'
-import { Animation, Part } from './parts'
 import { askUser } from './util'
 import { BrowserQRCodeReader } from '@zxing/browser'
 import { DecodeHintType } from '@zxing/library'
@@ -363,7 +375,6 @@ export class Idol {
   stats = new Map<string, number>();
   effective = new Map<string, () => number>();
   affinity: AffinityType;
-  parts: Part[];
 
   constructor(seed: number) {
     this.seed = seed;
