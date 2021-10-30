@@ -529,7 +529,7 @@ if __name__ == '__main__':
         os.mkdir(imgdir)
         for subdir in ['anim', 'backgrounds', 'bosses', 'logo']:
             shutil.copytree(os.path.join(IMG, subdir), os.path.join(imgdir, subdir))
-        for fn in ['placeholder-flat.png', 'splash.jpg', 'vss-logo.svg']:
+        for fn in ['placeholder.png', 'placeholder-flat.png', 'splash.jpg', 'vss-logo.svg']:
             shutil.copy(os.path.join(IMG, fn), os.path.join(imgdir, fn))
 
         for subdir in ['fonts']:

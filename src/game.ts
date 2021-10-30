@@ -522,7 +522,7 @@ Idol.prototype.deferRendering = function(mode, callback) {
 Idol.prototype.getSprite = function(mode) {
   if (typeof(mode) !== 'string') mode = undefined;
   this.deferRendering(mode);
-  return 'placeholder.png';
+  return 'img/placeholder.png';
 };
 Idol.prototype.getThumbSprite = function() { return this.getSprite('thumb'); };
 Idol.prototype.getHugeSprite = function() { return this.getSprite('huge'); };
@@ -594,8 +594,8 @@ Idol.prototype.isInUnit = function() {
 Idol.prototype.totalStats = function() {
   var total = 0;
 
-  for (var i = 0; i < STATS.length; i++) {
-    total += this[STATS[i]];
+  for (var stat in Stat) {
+    total += this.stats.get(stat)
   }
 
   return total;
@@ -631,7 +631,12 @@ Idol.prototype.showDetail = function() {
   currentlyShowingDetail = this;
 
   document.body.classList.add('overlay');
-  detailElement.innerHTML = idolDetailTemplate(this);
+  detailElement.innerHTML = idolDetailTemplate(this, {allowedProtoMethods: {
+    hugeSpriteHTML: true,
+    isInUnit: true,
+    rarity: true,
+    canFeed: true
+  }});
   detailElement.setAttribute('data-affinity', this.affinity);
   detailElement.classList.add('shown');
 	detailElement.querySelector('.close').addEventListener('click', hideIdolDetail);
@@ -960,6 +965,11 @@ Agency.prototype.renderCatalog = function() {
     'backupUrl': 'data:application/x-idol-threat-save;name=idol-threat.save;charset=utf-8,' + encodeURIComponent(btoa(JSON.stringify(this.dump()))),
     'builtAt': document.body.getAttribute('data-built-at'),
     'credits': getCredits()
+  }, {
+    allowedProtoMethods: {
+      isInUnit: true,
+      thumbSpriteHTML: true
+    }
   });
 
   function setSortOrder(event) {
@@ -1077,7 +1087,10 @@ Agency.prototype.sortedCatalog = function() {
 };
 Agency.prototype.renderUnit = function() {
   var self = this;
-  content = unitTemplate(this, {allowedProtoMethods: {unitName: true}});
+  var content = unitTemplate(this, {allowedProtoMethods: {
+    unitName: true,
+    thumbSpriteHTML: true
+  }});
 
   if ((this.unit.length === 0) ^ unitElement.classList.contains('empty')) {
     unitElement.classList.toggle('empty');
@@ -1096,7 +1109,11 @@ Agency.prototype.renderUnit = function() {
     unitElements[ei].addEventListener('click', handleUnitClick);
   }
 
-  unitDetailElement.innerHTML = unitDetailTemplate(this, {allowedProtoMethods: {unitName: true}});
+  unitDetailElement.innerHTML = unitDetailTemplate(this, {allowedProtoMethods: {
+    unitName: true,
+    hugeSpriteHTML: true,
+    thumbSpriteHTML: true
+  }});
 
   function toggleUnitDetailDisplay(e) {
     e.stopPropagation();
