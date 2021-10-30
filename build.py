@@ -11,6 +11,7 @@ import shutil
 import subprocess
 from tempfile import mkstemp
 from time import sleep
+from typing import Dict, List, Optional, Set, Tuple, TypedDict
 from urllib.parse import urlparse
 
 
@@ -27,45 +28,56 @@ BOSSES_DIR = os.path.join(IMG, BOSSES_DIRNAME)
 THUMBS_DIRNAME = 'idol-thumbs'
 THUMBS_DIR = os.path.join(BUILD, 'idol-thumbs')
 ICON_PATH = os.path.join(BUILD, 'icon.png')
-POSES = set()
-SKIN_COLOURS = set()
-HAIR_COLOURS = set()
-LAYERS = []
+POSES: Set[str] = set()
+SKIN_COLOURS: Set[str] = set()
+HAIR_COLOURS: Set[str] = set()
+LAYERS: List[str] = []
 
 if not os.path.isdir(THUMBS_DIR):
     os.mkdir(THUMBS_DIR)
 
 
-def part(
-    path, thumb_path, med_path, bodytype, layer, colour, number,
-    pose=None,
-):
-    attrs = {
-        'path': path,
-        'thumbPath': thumb_path,
-        'medPath': med_path,
-        'bodytype': bodytype,
-        'layer': layer,
-        'number': number,
-        'pose': pose,
-    }
+class Part(TypedDict):
+    path: str
+    thumbPath: str
+    medPath: str
+    bodyType: str
+    layer: str
+    number: str
+    pose: str
+    skinColour: str
+    hairColour: str
 
+
+def part(
+    path: str, thumb_path: str, med_path: str, bodytype: str, layer: str, colour: str, number: str, pose=None,
+) -> Part:
     LAYERS.append(layer)
 
     if pose is not None:
         POSES.add(pose)
     if layer in ('hd', 'bd'):
-        attrs['skinColour'] = colour
+        skin_colour = colour
         SKIN_COLOURS.add(colour)
     elif layer in ('hbe', 'hb', 'hf', 'hfe', 'ah'):
-        attrs['hairColour'] = colour
+        hair_colour = colour
         HAIR_COLOURS.add(colour)
 
-    return attrs
+    return Part(
+        path=path,
+        thumbPath=thumb_path,
+        medPath=med_path,
+        bodyType=bodytype,
+        layer=layer,
+        number=number,
+        pose=pose,
+        skinColour=skin_colour,
+        hairColour=hair_colour,
+    )
 
 
-def build_idols():
-    parts = {}
+def build_idols() -> Tuple[Dict[str, List[Part]], List[str], List[str], List[str]]:
+    parts: Dict[str, List[Part]] = {}
 
     for d in sorted(
         os.scandir(IDOLS_DIR),
@@ -114,7 +126,7 @@ def build_idols():
     return parts, sorted(POSES), sorted(SKIN_COLOURS), sorted(HAIR_COLOURS)
 
 
-def build_bosses():
+def build_bosses() -> List[str]:
     bosses = []
 
     for fn in sorted(
@@ -128,7 +140,7 @@ def build_bosses():
     return bosses
 
 
-def build_bios():
+def build_bios() -> List[str]:
     bios = []
 
     with open(os.path.join(TEXT, 'idol bios.txt')) as f:
@@ -140,7 +152,13 @@ def build_bios():
     return bios
 
 
-def build_abilities():
+class Ability(TypedDict):
+    bonus: int
+    healing: bool
+    words: List[str]
+
+
+def build_abilities() -> List[List[Ability]]:
     parts = []
 
     with open(os.path.join(TEXT, 'idol attack names word list.txt')) as f:
@@ -151,7 +169,7 @@ def build_abilities():
                 continue
 
             elif line.startswith('#'):
-                subparts = []
+                subparts: List[Ability] = []
                 parts.append(subparts)
                 continue
 
@@ -179,7 +197,7 @@ def build_abilities():
     return parts
 
 
-def build_quotes():
+def build_quotes() -> List[str]:
     quotes = []
 
     with open(os.path.join(TEXT, 'idol quotes.txt')) as f:
@@ -191,50 +209,99 @@ def build_quotes():
     return quotes
 
 
-def build_animations():
+def build_animations() -> List[str]:
     return sorted([
         f'img/anim/{f}' for f in os.listdir(os.path.join(IMG, 'anim'))
         if f.endswith('.png')
     ])
 
 
-def build_campaign():
+class ChapterEvent(TypedDict):
+    kind: str
+
+
+class Redirect(ChapterEvent):
+    loop_range: Optional[List[int]]
+    target: str
+
+
+class Chapter(TypedDict):
+    name: str
+    contents: List[ChapterEvent]  # XXX this should be more specific
+    redirect: Optional[Redirect]
+
+
+class Setting(ChapterEvent):
+    value: str
+
+
+class StageDirection(ChapterEvent):
+    adjectives: Optional[Dict[str, str]]
+    actor: Optional[str]
+    verb: Optional[str]
+
+
+class Battle(ChapterEvent):
+    strength: int
+    bosses: List[str]
+
+
+class Setpiece(ChapterEvent):
+    text: str
+
+
+class Text(ChapterEvent):
+    text: str
+    speakers: List[str]
+    em: bool
+
+
+def build_campaign() -> List[Chapter]:
     chapters = []
     last_loop_referenced = 0
 
     with open(os.path.join(TEXT, 'idol campaign.txt')) as f:
         for line in (line.strip() for line in f.readlines() if line.strip()):
             if line.startswith('# '):
-                current_chapter = {
-                    'name': line.lstrip('# '),
-                    'contents': [],
-                }
+                current_chapter = Chapter(
+                    name=line.lstrip('# '),
+                    contents=[],
+                    redirect=None,
+                )
                 chapters.append(current_chapter)
 
             elif line.startswith('## '):
-                current_chapter['contents'].append({
-                    'kind': 'setting',
-                    'value': line.lstrip('# '),
-                })
+                current_chapter['contents'].append(Setting(
+                    kind='setting',
+                    value=line.lstrip('# '),
+                ))
 
             elif line.startswith('### '):
-                direction = {'kind': 'direction'}
                 content = line[4:]
+                adjectives: Optional[Dict[str, str]]
+                actor: Optional[str]
 
                 if ' ' in content:
-                    direction['actor'], instructions_raw = (
+                    actor, instructions_raw = (
                         content.split(' ', 1))
-                    direction['verb'], adjectives_raw = (
+                    verb, adjectives_raw = (
                         instructions_raw.split(', ', 1))
-                    direction['adjectives'] = {
+                    adjectives = {
                         k: v for k, v in (
                             a.split(' ') for a in adjectives_raw.split(', ')
                         )
                     }
                 else:
-                    direction['verb'] = content
+                    verb = content
+                    adjectives = None
+                    actor = None
 
-                current_chapter['contents'].append(direction)
+                current_chapter['contents'].append(StageDirection(
+                    kind='direction',
+                    verb=verb,
+                    adjectives=adjectives,
+                    actor=actor,
+                ))
 
             elif line.startswith('#### '):
                 condition, target = line.lstrip('# ').split(': ')
@@ -249,29 +316,29 @@ def build_campaign():
                     raise RuntimeError('{name!r} has more than one redirect'
                                        .format(**current_chapter))
 
-                current_chapter['redirect'] = {
-                    'kind': 'redirect',
-                    'loop_range': loop_range,
-                    'target': target,
-                }
+                current_chapter['redirect'] = Redirect(
+                    kind='redirect',
+                    loop_range=loop_range,
+                    target=target,
+                )
 
             elif line.startswith('> battle '):
                 meta, bosses_string = line.split(':', 1)
                 _, _, strength_string = meta.split(' ', 2)
 
-                current_chapter['contents'].append({
-                    'kind': 'battle',
-                    'strength': int(strength_string),
-                    'bosses': [
+                current_chapter['contents'].append(Battle(
+                    kind='battle',
+                    strength=int(strength_string),
+                    bosses=[
                         b.strip() for b in bosses_string.split(',')
-                    ]
-                })
+                    ],
+                ))
 
             elif line.startswith('! '):
-                current_chapter['contents'].append({
-                    'kind': 'setpiece',
-                    'text': line.lstrip('! '),
-                })
+                current_chapter['contents'].append(Setpiece(
+                    kind='setpiece',
+                    text=line.lstrip('! '),
+                ))
 
             else:
                 speaker_match = re.match(r'^([\w, ]+):: (.+)$', line)
@@ -288,12 +355,12 @@ def build_campaign():
                 else:
                     em = False
 
-                current_chapter['contents'].append({
-                    'kind': 'text',
-                    'text': words,
-                    'speakers': speakers,
-                    'em': em,
-                })
+                current_chapter['contents'].append(Text(
+                    kind='text',
+                    text=words,
+                    speakers=speakers,
+                    em=em,
+                ))
 
     chapter_contents_by_name = {
         chapter['name']: chapter['contents'] for chapter in chapters

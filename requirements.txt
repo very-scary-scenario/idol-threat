@@ -1,0 +1,7 @@
+beautifulsoup4
+html5lib
+mypy
+selenium
+types-beautifulsoup4
+types-html5lib
+types-selenium
