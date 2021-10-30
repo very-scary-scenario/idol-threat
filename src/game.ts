@@ -1,5 +1,6 @@
 import * as Handlebars from 'handlebars'
 import { Affinity, AffinityType, AFFINITIES, Battle, BattleIdol } from './battle'
+import { askUser } from './util'
 import { BrowserQRCodeReader } from '@zxing/browser'
 import { DecodeHintType } from '@zxing/library'
 import { FastClick } from 'fastclick'
@@ -210,7 +211,6 @@ var detailElement = document.getElementById('idol-detail')!;
 var catalogElement = document.getElementById('catalog')!;
 var unitElement = document.getElementById('unit')!;
 var unitDetailElement = document.getElementById('unit-detail')!;
-var promptArea = document.getElementById('prompt-area')!;
 var auditionSpace = document.getElementById('audition-space')!;
 var canteenElement = document.getElementById('canteen')!;
 var theatreElement = document.getElementById('theatre')!;
@@ -221,9 +221,6 @@ var catalogTemplate = Handlebars.compile(document.getElementById('catalog-templa
 var unitTemplate = Handlebars.compile(document.getElementById('unit-template')!.innerHTML);
 var unitDetailTemplate = Handlebars.compile(document.getElementById('unit-detail-template')!.innerHTML);
 var idolDetailTemplate = Handlebars.compile(document.getElementById('idol-detail-template')!.innerHTML);
-var idolDeetsTemplate = Handlebars.compile(document.getElementById('idol-deets-template')!.innerHTML);
-var abilityPromptTemplate = Handlebars.compile(document.getElementById('ability-prompt-template')!.innerHTML);
-var promptTemplate = Handlebars.compile(document.getElementById('prompt-template')!.innerHTML);
 var auditionTemplate = Handlebars.compile(document.getElementById('audition-template')!.innerHTML);
 var canteenTemplate = Handlebars.compile(document.getElementById('canteen-template')!.innerHTML);
 var canteenConfirmTemplate = Handlebars.compile(document.getElementById('canteen-confirm-template')!.innerHTML);
@@ -306,28 +303,6 @@ function initSparkle(sparkleCanvas) {
   }
   
   drawSparkle();
-}
-
-function askUser(question, answers) {
-  if (answers === undefined) answers = [['Okay', null]];
-
-  promptArea.innerHTML = promptTemplate({
-    'question': question,
-    'answers': answers
-  });
-
-  function doAnswer(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    var answerIndex = parseInt(event.currentTarget.getAttribute('data-answer-index'), 10);
-    promptArea.innerHTML = '';
-    var func = answers[answerIndex][1];
-    if (func) func();
-  }
-
-  for (var i = 0; i < answers.length; i++) {
-    promptArea.querySelector('a[data-answer-index="' + i.toString() + '"]').addEventListener('click', doAnswer);
-  }
 }
 
 function getRarity(stats) {
@@ -898,7 +873,7 @@ var keyHandlers = {
 };
 
 document.addEventListener('keydown', function(event) {
-  handler = keyHandlers[event.key];
+  var handler = keyHandlers[event.key];
   if (handler) {
     event.preventDefault();
     event.stopPropagation();

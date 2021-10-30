@@ -1,4 +1,5 @@
 import * as Handlebars from 'handlebars'
+import { askUser } from './util'
 import { Idol } from './game'
 
 export enum Affinity { rock, paper, scissors }
@@ -33,8 +34,8 @@ function loadAnimations() {
 loadAnimations();
 
 function effectiveness(attackAffinity: AffinityType, targetAffinity: AffinityType) {
-  attackIndex = AFFINITIES.indexOf(attackAffinity);
-  targetIndex = AFFINITIES.indexOf(targetAffinity);
+  var attackIndex = AFFINITIES.indexOf(attackAffinity);
+  var targetIndex = AFFINITIES.indexOf(targetAffinity);
   var effectivenessIdentifier = ((attackIndex + AFFINITIES.length) - targetIndex) % 3;
   return {
     0: 1,  // the attack is the same type as the defense
@@ -97,7 +98,7 @@ BattleIdol.prototype.doMove = function(moveIndex, target) {
   var self = this;
   self.element.classList.add('fighting');
 
-  ability = self.abilities[moveIndex];
+  var ability = self.abilities[moveIndex];
 
   var baseStrength = (this.attack / target.defense) * BASIC_ABILITY_DAMAGE;
   var abilityStrength = baseStrength + ((baseStrength/5) * ability.strength);
@@ -189,8 +190,8 @@ Battle.prototype.determinePlayerMove = function(idol) {
 
     document.getElementById('battle-form').removeEventListener('submit', pickMove);
 
-    targetIndex = parseInt(targetInput.getAttribute('value'), 10);
-    abilityIndex = parseInt(moveInput.getAttribute('value'), 10);
+    var targetIndex = parseInt(targetInput.getAttribute('value'), 10);
+    var abilityIndex = parseInt(moveInput.getAttribute('value'), 10);
 
     abilityPromptElement.innerHTML = '';
     idol.element.classList.remove('focussed');
