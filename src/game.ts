@@ -1,9 +1,12 @@
 import * as Handlebars from 'handlebars'
+import { BrowserQRCodeReader } from '@zxing/browser'
+import { DecodeHintType } from '@zxing/library'
 const wordfilter = require('wordfilter')
 
 var VOWELS = 'aeiou';
 var N = 'n';
 enum Stat { attack, speed, defense };
+type StatType = keyof typeof Stat
 var LAYERS = [
   'hbe',
   'hb',
@@ -20,6 +23,7 @@ var LAYERS = [
   'eb'
 ];
 enum Affinity { rock, paper, scissors }
+type AffinityType = keyof typeof Affinity
 var RARITIES = [
   'Charred',
   'Well done',
@@ -47,8 +51,8 @@ var SEED_OVERRIDE_HANDLERS = {
     idol.lastName = 'Ryan';
     idol.cacheName();
 
-    for (var i = 0; i < Stat.length; i++) {
-      idol[STATS[i]] = 100;
+    for (var stat in Stat) {
+      idol.stats[stat] = 100;
     }
 
     idol.bio = "Somebody tried to kill her. She lied to her wife for three years. Didn't give them her PhD.";
@@ -69,7 +73,10 @@ for (var overrideName in SEED_OVERRIDE_HANDLERS) SEED_OVERRIDE_HANDLERS[override
 var SEED_OVERRIDES = {};
 
 var CAMERA_DENIED = false;
-var codeReader;
+var hints = new Map();
+hints.set(DecodeHintType.TRY_HARDER, true);
+var codeReader = new BrowserQRCodeReader();
+codeReader.hints = hints;
 
 function parsePresetBarcodes() {
   // cache what overrides we need to apply for a given seed
@@ -383,6 +390,8 @@ class Idol {
   rand: (min?: number, max?: number) => number;
   firstName: string;
   lastName: string;
+  stats = new Map<StatType, number>();
+  effective = new Map<StatType, number>();
 
   constructor(seed: number) {
     this.seed = seed;
@@ -392,11 +401,9 @@ class Idol {
     this.rand = seededRandom(seed);
 
     // build stats
-    this.effective = {};
-
-    for(var i = 0, n = STATS.length; i < n; i++) {
-      this[STATS[i]] = Math.floor(this.rand(-100, 100));
-      this.effective[STATS[i]] = effectiveStatGetter(self, STATS[i]);
+    for(var stat in Stat) {
+      this.stats.set(stat, Math.floor(this.rand(-100, 100)));
+      this.effective.set(stat, effectiveStatGetter(self, stat));
     }
 
     this.abilities = [];
@@ -1774,11 +1781,6 @@ function initGame() {
   FastClick.attach(document.body);
   document.getElementById('loading').innerText = '';
   parsePresetBarcodes();
-
-  var hints = new Map();
-  hints.set(ZXing.DecodeHintType.TRY_HARDER, true);
-  codeReader = new ZXing.BrowserBarcodeReader();
-  codeReader.hints = hints;
 
   cancelScanningElement.addEventListener('click', function() {
     codeReader.stopAsyncDecode();
