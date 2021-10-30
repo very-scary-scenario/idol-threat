@@ -15,7 +15,7 @@ function loadAnimations() {
   for(var i = 0; i < ANIMATIONS.length; i++) {
     var name = ANIMATIONS[i];
     var img = new Image();
-    img.src = 'anim/' + name;
+    img.src = name;
     anims[name] = img;
   }
 }

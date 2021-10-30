@@ -7,6 +7,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import subprocess
 from tempfile import mkstemp
 from time import sleep
@@ -192,7 +193,7 @@ def build_quotes():
 
 def build_animations():
     return sorted([
-        f for f in os.listdir(os.path.join(IMG, 'anim'))
+        f'img/anim/{f}' for f in os.listdir(os.path.join(IMG, 'anim'))
         if f.endswith('.png')
     ])
 
@@ -522,8 +523,19 @@ if __name__ == '__main__':
         except subprocess.CalledProcessError:
             pass
 
-        if not os.path.exists(ICON_PATH):
-            build_icon()
+        imgdir = os.path.join(BUILD, 'img')
+        if os.path.exists(imgdir):
+            shutil.rmtree(imgdir)
+        os.mkdir(imgdir)
+        for subdir in ['anim', 'backgrounds', 'bosses', 'logo']:
+            shutil.copytree(os.path.join(IMG, subdir), os.path.join(imgdir, subdir))
+        for fn in ['placeholder-flat.png', 'splash.jpg', 'vss-logo.svg']:
+            shutil.copy(os.path.join(IMG, fn), os.path.join(imgdir, fn))
+
+        for subdir in ['fonts']:
+            if os.path.exists(os.path.join(BUILD, subdir)):
+                shutil.rmtree(os.path.join(BUILD, subdir))
+            shutil.copytree(os.path.join(SRC, subdir), os.path.join(BUILD, subdir))
 
         with open(os.path.join(BUILD, 'index.html'), 'w') as h:
             h.write(build_html())
