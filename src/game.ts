@@ -477,17 +477,16 @@ export class Idol {
 Idol.prototype.applyRecruitmentBonuses = function() {
   var multiplier = 1 + (agency.upgrades.recruitment / 10);
 
-  for (var i = 0; i < STATS.length; i++) {
-    var statName = STATS[i];
-    this[statName] = Math.floor(this[statName] * multiplier);
+  for (var stat in Stat) {
+    this.stats.set(stat, Math.floor(this.stats.get(stat)! * multiplier));
   }
 
   this.shiny = Math.random() <= SHINY_CHANCE;
 };
 Idol.prototype.applyQuickBattleRankingBonuses = function() {
-  for (var i = 0; i < STATS.length; i++) {
-    var statName = STATS[i];
-    this[statName] += (10 * agency.quickBattleRanking);
+  for (var stat in Stat) {
+    var currentStat = this.stats.get(stat)!
+    this.stats.set(stat, currentStat + (10 * agency.quickBattleRanking));
   }
 };
 Idol.prototype.deferRendering = function(mode, callback) {
