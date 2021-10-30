@@ -92,9 +92,6 @@ function parsePresetBarcodes() {
   }
 }
 
-var BOSSES = {};
-var BOSS_NAMES: string[];
-
 function getBoss(name: string) {
   if (BOSS_NAMES.indexOf(name) === -1) throw name + ' is not a real boss';
   var boss = new Idol(numFromString(name));
