@@ -93,7 +93,7 @@ def build_idols():
             med_path = os.path.join(THUMBS_DIR, med_name)
 
             this_part = part(
-                '/'.join([IDOL_DIRNAME, d.name, entry.name]),
+                '/'.join(['img', IDOL_DIRNAME, d.name, entry.name]),
                 '/'.join([THUMBS_DIRNAME, thumb_name]),
                 '/'.join([THUMBS_DIRNAME, med_name]),
                 *fn.split('_')
@@ -531,6 +531,8 @@ if __name__ == '__main__':
             shutil.copytree(os.path.join(IMG, subdir), os.path.join(imgdir, subdir))
         for fn in ['placeholder.png', 'placeholder-flat.png', 'splash.jpg', 'vss-logo.svg']:
             shutil.copy(os.path.join(IMG, fn), os.path.join(imgdir, fn))
+
+        os.symlink(os.path.join('..', '..', 'src', 'img', 'idols'), os.path.join(imgdir, 'idols'))
 
         for subdir in ['fonts']:
             if os.path.exists(os.path.join(BUILD, subdir)):
