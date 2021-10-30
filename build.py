@@ -256,7 +256,7 @@ class Text(ChapterEvent):
     em: bool
 
 
-def build_campaign() -> List[Chapter]:
+def build_campaign() -> Tuple[Dict[str, List[ChapterEvent]], List[Chapter], List[Chapter]]:
     chapters = []
     last_loop_referenced = 0
 
@@ -367,8 +367,8 @@ def build_campaign() -> List[Chapter]:
     }
     ordered_names = [chapter['name'] for chapter in chapters]
 
-    initial_chapter_order = []
-    final_loop_order = []
+    initial_chapter_order: List[Chapter] = []
+    final_loop_order: List[Chapter] = []
 
     def add_loop_for_index(loop_index, chapter_order):
         chapter_index = 0
@@ -413,7 +413,7 @@ def build_campaign() -> List[Chapter]:
     return chapter_contents_by_name, initial_chapter_order, final_loop_order
 
 
-def build_icon():
+def build_icon() -> None:
     from selenium.webdriver import PhantomJS
 
     driver = PhantomJS(service_log_path=mkstemp()[1])
@@ -426,8 +426,8 @@ def build_icon():
     subprocess.check_call(['optipng', ICON_PATH])
 
 
-def build_unit_names():
-    parts = []
+def build_unit_names() -> List[List[List[str]]]:
+    parts: List[List[List[str]]] = []
 
     with open(os.path.join(TEXT, 'idol unit name generator.txt')) as f:
         for line in f.readlines():
@@ -441,7 +441,7 @@ def build_unit_names():
     return parts
 
 
-def build_kana():
+def build_kana() -> List[Tuple[str, float]]:
     kana = []
     total_frequency = 0
 
@@ -460,7 +460,7 @@ def build_kana():
     ]
 
 
-def build_html():
+def build_html() -> str:
     with open(os.path.join(SRC, 'index-src.html')) as f:
         soup = BeautifulSoup(f, 'html5lib')
 
@@ -479,7 +479,9 @@ def build_html():
             for a in ('src', 'href')
             for e in soup.select('[{}]'.format(a))
         ]:
-            parsed = urlparse(element[attr])
+            url_str = element[attr]
+            assert isinstance(url_str, str), url_str
+            parsed = urlparse(url_str)
             if (
                 parsed.netloc or
                 parsed.path.startswith('/') or
@@ -492,7 +494,7 @@ def build_html():
             with open(os.path.join(BUILD, parsed.path), 'rb') as cf:
                 checksum.update(cf.read())
 
-            element[attr] += '?v={}'.format(checksum.hexdigest()[:8])
+            element[attr] = url_str + '?v={}'.format(checksum.hexdigest()[:8])
 
             print(element[attr], file=mf)
 
@@ -505,7 +507,7 @@ def build_html():
     return str(soup)
 
 
-def build_graduation_bonuses():
+def build_graduation_bonuses() -> List[Tuple[int, str]]:
     graduation_bonuses = []
 
     with open(os.path.join(TEXT, 'idol graduation bonuses.txt')) as f:
@@ -516,8 +518,8 @@ def build_graduation_bonuses():
     return graduation_bonuses
 
 
-def build_barcodes():
-    barcodes = {}
+def build_barcodes() -> Dict[str, List[str]]:
+    barcodes: Dict[str, List[str]] = {}
 
     with open(os.path.join(TEXT, 'barcodes.txt')) as f:
         for line in f.readlines():
@@ -534,7 +536,7 @@ def build_barcodes():
     return barcodes
 
 
-def write_parts():
+def write_parts() -> None:
     parts, poses, skin_colours, hair_colours = build_idols()
 
     with open('build/parts.json', 'w') as j:
