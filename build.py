@@ -45,14 +45,16 @@ class Part(TypedDict):
     layer: str
     number: str
     pose: str
-    skinColour: str
-    hairColour: str
+    skinColour: Optional[str]
+    hairColour: Optional[str]
 
 
 def part(
     path: str, thumb_path: str, med_path: str, bodytype: str, layer: str, colour: str, number: str, pose=None,
 ) -> Part:
     LAYERS.append(layer)
+    skin_colour: Optional[str] = None
+    hair_colour: Optional[str] = None
 
     if pose is not None:
         POSES.add(pose)
@@ -312,7 +314,7 @@ def build_campaign() -> Tuple[Dict[str, List[ChapterEvent]], List[Chapter], List
                     if max(loop_range) > last_loop_referenced:
                         last_loop_referenced = max(loop_range)
 
-                if 'redirect' in current_chapter:
+                if current_chapter['redirect'] is not None:
                     raise RuntimeError('{name!r} has more than one redirect'
                                        .format(**current_chapter))
 
