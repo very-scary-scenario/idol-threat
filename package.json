@@ -2,9 +2,10 @@
   "name": "idol-threat",
   "version": "0.0.0",
   "scripts": {
-    "build": "cd src; tsc; browserify game.js -o game.bundle.js"
+    "build": "cd src; tsc; cd ../build; browserify game.js -o game.bundle.js"
   },
   "devDependencies": {
+    "@types/fastclick": "^1.0.30",
     "@types/node": "^16.11.6",
     "@zxing/browser": "0.0.9",
     "@zxing/library": "^0.18.6",

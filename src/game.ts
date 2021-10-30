@@ -1,6 +1,7 @@
 import * as Handlebars from 'handlebars'
 import { BrowserQRCodeReader } from '@zxing/browser'
 import { DecodeHintType } from '@zxing/library'
+import { FastClick } from 'fastclick'
 const wordfilter = require('wordfilter')
 
 var VOWELS = 'aeiou';
@@ -128,7 +129,7 @@ var cookieSliceSize = 2000;
 var endString = 'end';
 
 var isSkipping = false;
-var unbindScriptClick?: function;
+var unbindScriptClick;
 
 var idolSorters = {
   date: function(a, b) { return b.recruitedAt - a.recruitedAt; },
@@ -390,6 +391,7 @@ class Idol {
   rand: (min?: number, max?: number) => number;
   firstName: string;
   lastName: string;
+  name: string;
   stats = new Map<StatType, number>();
   effective = new Map<StatType, number>();
 
@@ -398,11 +400,12 @@ class Idol {
     this.recruitedAt = new Date().getTime();
     this.favourite = false;
     this.identifier = seed.toString(10);
-    this.rand = seededRandom(seed);
+    const rand = seededRandom(seed);
+    this.rand = rand;
 
     // build stats
     for(var stat in Stat) {
-      this.stats.set(stat, Math.floor(this.rand(-100, 100)));
+      this.stats.set(stat, Math.floor(rand(-100, 100)));
       this.effective.set(stat, effectiveStatGetter(self, stat));
     }
 
@@ -411,96 +414,99 @@ class Idol {
     // build name
     this.firstName = this.generateName();
     this.lastName = this.generateName();
-    this.cacheName();
+    this.name = this.cacheName();
 
     // build portrait
     var partsMissing = true;
     var pose, skinColour, hairColour;
-  }
 
-  function partIsAllowed(part) {
-    if (part.pose && part.pose !== pose) return false;
-    if (part.skinColour && part.skinColour !== skinColour) return false;
-    if (part.hairColour && part.hairColour !== hairColour) return false;
-    return true;
-  }
+    function partIsAllowed(part) {
+      if (part.pose && part.pose !== pose) return false;
+      if (part.skinColour && part.skinColour !== skinColour) return false;
+      if (part.hairColour && part.hairColour !== hairColour) return false;
+      return true;
+    }
 
-  while (partsMissing) {
-    partsMissing = false;
-    pose = choice(POSES, this.rand());
-    skinColour = choice(SKIN_COLOURS, this.rand());
-    hairColour = choice(HAIR_COLOURS, this.rand());
+    while (partsMissing) {
+      partsMissing = false;
+      pose = choice(POSES, rand());
+      skinColour = choice(SKIN_COLOURS, rand());
+      hairColour = choice(HAIR_COLOURS, rand());
 
-    this.parts = [];
+      this.parts = [];
 
-    for(var li = 0, ln = LAYERS.length; li < ln; li++) {
-      var options = PARTS[LAYERS[li]].filter(partIsAllowed);
-      if (options.length === 0) {
-        partsMissing = true;
-      } else {
-        this.parts.push(choice(options, this.rand()));
+      for(var li = 0, ln = LAYERS.length; li < ln; li++) {
+        var options = PARTS[LAYERS[li]].filter(partIsAllowed);
+        if (options.length === 0) {
+          partsMissing = true;
+        } else {
+          this.parts.push(choice(options, rand()));
+        }
       }
     }
-  }
 
-  this.loadedImages = {};
+    this.loadedImages = {};
 
-  // build bio
-  var bioParts = [];
-  while(bioParts.length < 3) {
-    var part = choice(BIOS, this.rand());
-    if (bioParts.indexOf(part) === -1) {
-      bioParts.push(part);
+    // build bio
+    var bioParts = [];
+    while(bioParts.length < 3) {
+      var part = choice(BIOS, rand());
+      if (bioParts.indexOf(part) === -1) {
+        bioParts.push(part);
+      }
     }
+    this.bio = bioParts.join(' ');
+    this.quote = choice(QUOTES, rand());
+
+    // build moveset
+    while (this.abilities.length < 4) {
+      var abilityParts = [];
+
+      abilityParts.push(choice(ABILITIES[0], rand()));
+      if (rand() > 0.8) abilityParts.push(choice(ABILITIES[1], rand()));
+      abilityParts.push(choice(ABILITIES[2], rand()));
+
+      this.abilities.push(new Ability(this, abilityParts, choice(ANIMATIONS, rand()), choice(AFFINITIES, rand())));
+    }
+
+    // build affinity
+    this.affinity = choice(AFFINITIES, rand());
+
+    this.handleOverrides();
   }
-  this.bio = bioParts.join(' ');
-  this.quote = choice(QUOTES, this.rand());
 
-  // build moveset
-  while (this.abilities.length < 4) {
-    var abilityParts = [];
+  generateName(): string {
+    var name = '';
+    var kanaCount = Math.floor(this.rand(4, 2));
+    while (kanaCount > 0) {
+      var targetDepth = this.rand();
+      var currentDepth = 0;
+      var nextKana;
 
-    abilityParts.push(choice(ABILITIES[0], this.rand()));
-    if (this.rand() > 0.8) abilityParts.push(choice(ABILITIES[1], this.rand()));
-    abilityParts.push(choice(ABILITIES[2], this.rand()));
+      for (var ki = 0; ki < KANA.length; ki++) {
+        var item = KANA[ki];
+        nextKana = item[0];
+        currentDepth += item[1];
+        if (currentDepth >= targetDepth) {
+          break;
+        }
+      }
 
-    this.abilities.push(new Ability(this, abilityParts, choice(ANIMATIONS, this.rand()), choice(AFFINITIES, this.rand())));
+      name += nextKana;
+      if (this.rand() > 0.9) name += N;
+
+      kanaCount--;
+    }
+    name = name[0].toUpperCase() + name.slice(1);
+    if (wordfilter.blacklisted(name)) return this.generateName();
+    return name;
   }
 
-  // build affinity
-  this.affinity = choice(AFFINITIES, this.rand());
-
-  this.handleOverrides();
+  cacheName(): string {
+    this.name = [this.firstName, this.lastName].join(' ');
+    return this.name
+  }
 }
-Idol.prototype.generateName = function() {
-  var name = '';
-  var kanaCount = Math.floor(this.rand(4, 2));
-  while (kanaCount > 0) {
-    var targetDepth = this.rand();
-    var currentDepth = 0;
-    var nextKana;
-
-    for (var ki = 0; ki < KANA.length; ki++) {
-      var item = KANA[ki];
-      nextKana = item[0];
-      currentDepth += item[1];
-      if (currentDepth >= targetDepth) {
-        break;
-      }
-    }
-
-    name += nextKana;
-    if (this.rand() > 0.9) name += N;
-
-    kanaCount--;
-  }
-  name = name[0].toUpperCase() + name.slice(1);
-  if (wordfilter.blacklisted(name)) return this.generateName();
-  return name;
-};
-Idol.prototype.cacheName = function() {
-  this.name = [this.firstName, this.lastName].join(' ');
-};
 Idol.prototype.applyRecruitmentBonuses = function() {
   var multiplier = 1 + (agency.upgrades.recruitment / 10);
 
@@ -908,9 +914,10 @@ document.addEventListener('keydown', function(event) {
   }
 });
 
-var hammerManager = new Hammer(document.body);
-hammerManager.on('swipeleft', showNextIdol);
-hammerManager.on('swiperight', showPrevIdol);
+// XXX reinstate these gestures
+// var hammerManager = new Hammer(document.body);
+// hammerManager.on('swipeleft', showNextIdol);
+// hammerManager.on('swiperight', showPrevIdol);
 
 Handlebars.registerHelper('ifPositive', function(a, options) {
   if (a >= 0) return options.fn(this);
@@ -941,8 +948,7 @@ function Agency() {
       return self.levelFloor() * self.upgrades[stat];
     };
   }
-  for (var i = 0; i < STATS.length; i++) {
-    var stat = STATS[i];
+  for (var stat in Stat) {
     this.upgradeFor[stat] = upgradeGetter(stat);
   }
 }
@@ -1422,8 +1428,8 @@ Agency.prototype.doStory = function(pageNumber) {
 
     for (var ei = 0; ei < page.bosses.length; ei++) {
       var enemyIdol = getBoss(page.bosses[ei]);
-      for (var si = 0; si < STATS.length; si++) {
-        enemyIdol[STATS[si]] = enemyIdol[STATS[si]] + (CHAPTER_DIFFICULTY_INCREASE * this.storyChaptersBeaten);
+      for (var stat in Stat) {
+        enemyIdol.stats.set(stat, enemyIdol.stats.get(stat) + (CHAPTER_DIFFICULTY_INCREASE * this.storyChaptersBeaten));
       }
       enemyIdols.push(new BattleIdol(enemyIdol, 'ai'));
     }
