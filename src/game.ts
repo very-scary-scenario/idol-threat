@@ -828,10 +828,10 @@ Idol.prototype.dump = function() {
     f: this.favourite,
     i: this.seed,
     r: this.shiny,
-    s: []
+    s: {},
   };
-  for(var i = 0, n = STATS.length; i < n; i++) {
-    idolDump.s.push(this[STATS[i]]);
+  for(var stat in Stat) {
+    idolDump.s[stat] = this.stats.get(stat);
   }
   return idolDump;
 };
@@ -1441,7 +1441,7 @@ Agency.prototype.dump = function() {
   };
 
   for(var i = 0, n = this.catalog.length; i < n; i++) {
-    idol = this.catalog[i];
+    var idol = this.catalog[i];
     agencyDump.i.push(idol.dump());
     agencyDump.u.push(Number(idol.isInUnit()));
   }
@@ -1464,8 +1464,8 @@ Agency.prototype.load = function(agencyDump) {
     idol.favourite = idolDump.f;
     idol.shiny = Boolean(idolDump.r);
 
-    for(var si = 0, sn = STATS.length; si < sn; si++) {
-      idol[STATS[si]] = idolDump.s[si];
+    for(var stat in Stat) {
+      idol.stats.set(stat, idolDump.s[stat]);
     }
 
     this.addIdol(idol);
@@ -1816,4 +1816,8 @@ if (batchMatch) {
     // document.getElementById('progress-story').click();
     // agency.addIdol(new Idol(Math.random()), true);
   });
+}
+
+window.executeInScope = function(thingToExecute: string) {
+  eval(thingToExecute)
 }
