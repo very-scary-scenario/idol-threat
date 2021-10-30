@@ -2,11 +2,13 @@
   "name": "idol-threat",
   "version": "0.0.0",
   "scripts": {
-    "build": "cd src; tsc; browserify game.js battle.js -o game.bundle.js"
+    "build": "cd src; tsc; browserify game.js -o game.bundle.js"
   },
   "devDependencies": {
+    "@types/node": "^16.11.6",
     "browserify": "^17.0.0",
     "fastclick": "^1.0.6",
+    "handlebars": "^4.7.7",
     "less": "^4.1.2",
     "typescript": "^4.4.3",
     "wordfilter": "^0.2.6"

@@ -421,8 +421,7 @@ def build_html():
 
             checksum = hashlib.sha256()
 
-            with open(parsed.path, 'rb') as cf:
-                # XXX these will 404
+            with open(os.path.join(BUILD, parsed.path), 'rb') as cf:
                 checksum.update(cf.read())
 
             element[attr] += '?v={}'.format(checksum.hexdigest()[:8])
@@ -447,13 +446,6 @@ def build_graduation_bonuses():
             graduation_bonuses.append((int(bonus_str), template))
 
     return graduation_bonuses
-
-
-def build_badwords():
-    with open(os.path.join(HERE, 'node_modules', 'wordfilter', 'lib', 'badwords.json')) as bwf:
-        slurs = json.load(bwf)
-    # there may be other kana-constructible words to worry about, but:
-    return slurs + ['rape']
 
 
 def build_barcodes():
@@ -509,7 +501,6 @@ def write_parts():
         p.write('ANIMATIONS = {};'.format(json.dumps(build_animations())))
         p.write('UNIT_NAMES = {};'.format(json.dumps(build_unit_names())))
         p.write('KANA = {};'.format(json.dumps(build_kana())))
-        p.write('BADWORDS = {};'.format(json.dumps(build_badwords())))
         p.write('BARCODES = {};'.format(json.dumps(build_barcodes())))
         p.write('GRADUATION_BONUSES = {};'.format(
             json.dumps(build_graduation_bonuses())
@@ -525,6 +516,11 @@ if __name__ == '__main__':
 
         with open(os.path.join(BUILD, 'style.css'), 'wb') as c:
             c.write(subprocess.check_output(['npx', 'lessc', os.path.join(SRC, 'style.less')]))
+
+        try:
+            subprocess.check_call(['npm', 'run', 'build'])
+        except subprocess.CalledProcessError:
+            pass
 
         if not os.path.exists(ICON_PATH):
             build_icon()

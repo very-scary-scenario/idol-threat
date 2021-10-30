@@ -1,10 +1,9 @@
+import * as Handlebars from 'handlebars'
+const wordfilter = require('wordfilter')
+
 var VOWELS = 'aeiou';
 var N = 'n';
-var STATS = [
-  'attack',
-  'speed',
-  'defense'
-];
+enum Stat { attack, speed, defense };
 var LAYERS = [
   'hbe',
   'hb',
@@ -20,7 +19,7 @@ var LAYERS = [
   'ey',
   'eb'
 ];
-var AFFINITIES = ['rock', 'paper', 'scissors'];
+enum Affinity { rock, paper, scissors }
 var RARITIES = [
   'Charred',
   'Well done',
@@ -43,25 +42,25 @@ var MAXIMUM_CATALOG_SIZE = 50;
 var CATALOG_FULL = "Your agency is full! You'll have to graduate or train with some of them before you can recruit any more.";
 
 var SEED_OVERRIDE_HANDLERS = {
-  shadow: function(idol) {
+  shadow: function(idol: Idol) {
     idol.firstName = 'Jack';
     idol.lastName = 'Ryan';
     idol.cacheName();
 
-    for (var i = 0; i < STATS.length; i++) {
+    for (var i = 0; i < Stat.length; i++) {
       idol[STATS[i]] = 100;
     }
 
     idol.bio = "Somebody tried to kill her. She lied to her wife for three years. Didn't give them her PhD.";
     idol.quote = "Now, talk me through your very scary scenario.";
 
-    function makeSpecialAbility(name, affinity) {
+    function makeSpecialAbility(name: string, affinity: Affinity) {
       return new Ability(idol, [{words: [name], bonus: 3}], choice(ANIMATIONS, idol.rand()), affinity);
     }
     idol.abilities = [
-      makeSpecialAbility('play rough', AFFINITIES[0]),
-      makeSpecialAbility('geopolitics', AFFINITIES[1]),
-      makeSpecialAbility('american directness', AFFINITIES[2]),
+      makeSpecialAbility('play rough', Affinity.rock),
+      makeSpecialAbility('geopolitics', Affinity.paper),
+      makeSpecialAbility('american directness', Affinity.scissors),
       makeSpecialAbility('very scary scenario', idol.affinity)
     ];
   }
@@ -86,10 +85,11 @@ function parsePresetBarcodes() {
 }
 
 var BOSSES = {};
+var BOSS_NAMES: string[];
 
-function getBoss(name) {
+function getBoss(name: string) {
   if (BOSS_NAMES.indexOf(name) === -1) throw name + ' is not a real boss';
-  boss = new Idol(numFromString(name));
+  var boss = new Idol(numFromString(name));
   boss.actorName = name;
   var path = 'bosses/' + name + '.png';
   boss.parts = [{path: path, medPath: path, thumbPath: path}];
@@ -111,8 +111,8 @@ var POSES;
 var HAIR_COLOURS;
 var SKIN_COLOURS;
 
-var confettiTimeout;
-var letterTimeout;
+var confettiTimeout: number;
+var letterTimeout: number;
 
 var cookieExpiryDate = new Date();
 cookieExpiryDate.setFullYear(cookieExpiryDate.getFullYear() + 50);
@@ -121,7 +121,7 @@ var cookieSliceSize = 2000;
 var endString = 'end';
 
 var isSkipping = false;
-var unbindScriptClick;
+var unbindScriptClick?: function;
 
 var idolSorters = {
   date: function(a, b) { return b.recruitedAt - a.recruitedAt; },
@@ -131,7 +131,7 @@ var idolSorters = {
   unitMembership: function(a, b) { return (Number(b.isInUnit()) - Number(a.isInUnit())); },
   allStats: function(a, b) { return b.totalStats() - a.totalStats(); },
   affinity: function(a, b) { return (
-    (AFFINITIES.indexOf(a.affinity) - AFFINITIES.indexOf(b.affinity)) +
+    (a.affinity - b.affinity) +
     (idolSorters.allStats(a, b) / 10000)
   ); }
 };
@@ -214,34 +214,34 @@ var canteenElement = document.getElementById('canteen');
 var theatreElement = document.getElementById('theatre');
 var xpIndicatorsElement = document.getElementById('xp-indicators');
 
-var spriteTemplate = Handlebars.compile(document.getElementById('sprite-template').innerHTML);
-var catalogTemplate = Handlebars.compile(document.getElementById('catalog-template').innerHTML);
-var unitTemplate = Handlebars.compile(document.getElementById('unit-template').innerHTML);
-var unitDetailTemplate = Handlebars.compile(document.getElementById('unit-detail-template').innerHTML);
-var idolDetailTemplate = Handlebars.compile(document.getElementById('idol-detail-template').innerHTML);
-var battleTemplate = Handlebars.compile(document.getElementById('battle-template').innerHTML);
-var idolDeetsTemplate = Handlebars.compile(document.getElementById('idol-deets-template').innerHTML);
-var healthBarTemplate = Handlebars.compile(document.getElementById('health-bar-template').innerHTML);
-var abilityPromptTemplate = Handlebars.compile(document.getElementById('ability-prompt-template').innerHTML);
-var promptTemplate = Handlebars.compile(document.getElementById('prompt-template').innerHTML);
-var auditionTemplate = Handlebars.compile(document.getElementById('audition-template').innerHTML);
-var canteenTemplate = Handlebars.compile(document.getElementById('canteen-template').innerHTML);
-var canteenConfirmTemplate = Handlebars.compile(document.getElementById('canteen-confirm-template').innerHTML);
-var theatreTemplate = Handlebars.compile(document.getElementById('theatre-template').innerHTML);
+var spriteTemplate = Handlebars.compile(document.getElementById('sprite-template')!.innerHTML);
+var catalogTemplate = Handlebars.compile(document.getElementById('catalog-template')!.innerHTML);
+var unitTemplate = Handlebars.compile(document.getElementById('unit-template')!.innerHTML);
+var unitDetailTemplate = Handlebars.compile(document.getElementById('unit-detail-template')!.innerHTML);
+var idolDetailTemplate = Handlebars.compile(document.getElementById('idol-detail-template')!.innerHTML);
+var battleTemplate = Handlebars.compile(document.getElementById('battle-template')!.innerHTML);
+var idolDeetsTemplate = Handlebars.compile(document.getElementById('idol-deets-template')!.innerHTML);
+var healthBarTemplate = Handlebars.compile(document.getElementById('health-bar-template')!.innerHTML);
+var abilityPromptTemplate = Handlebars.compile(document.getElementById('ability-prompt-template')!.innerHTML);
+var promptTemplate = Handlebars.compile(document.getElementById('prompt-template')!.innerHTML);
+var auditionTemplate = Handlebars.compile(document.getElementById('audition-template')!.innerHTML);
+var canteenTemplate = Handlebars.compile(document.getElementById('canteen-template')!.innerHTML);
+var canteenConfirmTemplate = Handlebars.compile(document.getElementById('canteen-confirm-template')!.innerHTML);
+var theatreTemplate = Handlebars.compile(document.getElementById('theatre-template')!.innerHTML);
 
 var maxUnitSize = 3;
-var rerenderTimeout;
-var checkSaveTimeout;
+var rerenderTimeout: number;
+var checkSaveTimeout: number;
 
-var currentlyShowingDetail;
+var currentlyShowingDetail: Idol;
 
-function choice(list, slice) {
+function choice<T>(list: T[], slice: number): T {
   var result = list[Math.floor(slice * list.length)];
   return result;
 }
 
-function seededRandom(seed) {
-  function rand(max, min) {
+function seededRandom(seed: number): (max?: number, min?: number) => number {
+  function rand(max?: number, min?: number) {
     max = max || 1;
     min = min || 0;
 
@@ -254,14 +254,6 @@ function seededRandom(seed) {
   rand();
 
   return rand;
-}
-
-function stringContainsBadWord(string) {
-  var lowerCaseString = string.toLowerCase();
-  for (var bi = 0; bi < BADWORDS.length; bi++) {
-    if (lowerCaseString.indexOf(BADWORDS[bi].toLowerCase()) !== -1) return true;
-  }
-  return false;
 }
 
 function celebrate(density) {
@@ -344,25 +336,32 @@ function getRarity(stats) {
   return RARITIES[rarityIndex] || RARITIES[RARITIES.length - 1];
 }
 
-function Ability(idol, parts, animation, affinity) {
-  this.strength = 0;
-  this.healing = false;
-  this.affinity = affinity;
+class Ability {
+  strength: number;
+  healing: boolean;
+  affinity: Affinity;
+  name: string;
 
-  var partNames = [];
+  constructor(idol: Idol, parts, animation, affinity: Affinity) {
+    this.strength = 0;
+    this.healing = false;
+    this.affinity = affinity;
 
-  for(var i = 0, n = parts.length; i < n; i++) {
-    var part = parts[i];
-    partNames.push(choice(part.words, idol.rand()));
-    this.strength += part.bonus;
-    if (part.healing) {
-      this.healing = true;
+    var partNames = [];
+
+    for(var i = 0, n = parts.length; i < n; i++) {
+      var part = parts[i];
+      partNames.push(choice(part.words, idol.rand()));
+      this.strength += part.bonus;
+      if (part.healing) {
+        this.healing = true;
+      }
     }
+
+    this.name = partNames.join(' ');
+
+    this.animation = animation;
   }
-
-  this.name = partNames.join(' ');
-
-  this.animation = animation;
 }
 
 function effectiveStatGetter(idol, stat) {
@@ -376,33 +375,41 @@ function effectiveStatGetter(idol, stat) {
   };
 }
 
-function Idol(seed) {
-  var self = this;
+class Idol {
+  seed: number;
+  recruitedAt: number;
+  favourite: boolean;
+  identifier: string;
+  rand: (min?: number, max?: number) => number;
+  firstName: string;
+  lastName: string;
 
-  this.recruitedAt = new Date().getTime();
-  this.favourite = false;
-  this.seed = seed;
-  this.identifier = seed.toString(10);
-  this.rand = seededRandom(seed);
+  constructor(seed: number) {
+    this.seed = seed;
+    this.recruitedAt = new Date().getTime();
+    this.favourite = false;
+    this.identifier = seed.toString(10);
+    this.rand = seededRandom(seed);
 
-  // build stats
-  this.effective = {};
+    // build stats
+    this.effective = {};
 
-  for(var i = 0, n = STATS.length; i < n; i++) {
-    this[STATS[i]] = Math.floor(this.rand(-100, 100));
-    this.effective[STATS[i]] = effectiveStatGetter(self, STATS[i]);
+    for(var i = 0, n = STATS.length; i < n; i++) {
+      this[STATS[i]] = Math.floor(this.rand(-100, 100));
+      this.effective[STATS[i]] = effectiveStatGetter(self, STATS[i]);
+    }
+
+    this.abilities = [];
+
+    // build name
+    this.firstName = this.generateName();
+    this.lastName = this.generateName();
+    this.cacheName();
+
+    // build portrait
+    var partsMissing = true;
+    var pose, skinColour, hairColour;
   }
-
-  this.abilities = [];
-
-  // build name
-  this.firstName = this.generateName();
-  this.lastName = this.generateName();
-  this.cacheName();
-
-  // build portrait
-  var partsMissing = true;
-  var pose, skinColour, hairColour;
 
   function partIsAllowed(part) {
     if (part.pose && part.pose !== pose) return false;
@@ -481,7 +488,7 @@ Idol.prototype.generateName = function() {
     kanaCount--;
   }
   name = name[0].toUpperCase() + name.slice(1);
-  if (stringContainsBadWord(name)) return this.generateName();
+  if (wordfilter.blacklisted(name)) return this.generateName();
   return name;
 };
 Idol.prototype.cacheName = function() {
@@ -1489,7 +1496,7 @@ Agency.prototype.load = function(agencyDump) {
   }
 };
 
-function numFromString(str) {
+function numFromString(str: string): number {
   var total = 0;
   for(var i = 0, n = str.length; i < n; i++) {
     var c = str.charCodeAt(i);
@@ -1498,7 +1505,7 @@ function numFromString(str) {
   return total;
 }
 
-function recruitIdolFromBarcodeText(text) {
+function recruitIdolFromBarcodeText(text: string): Idol {
   var idol = new Idol(numFromString(text));
   idol.applyRecruitmentBonuses();
   agency.addIdol(idol, true);

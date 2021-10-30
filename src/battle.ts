@@ -5,7 +5,7 @@ var BASIC_ABILITY_DAMAGE = 15;
 var animationDuration = 1000;
 var anims = {};
 
-var hoverDetailTimeout;
+var hoverDetailTimeout: number;
 
 function loadAnimations() {
   for(var i = 0; i < ANIMATIONS.length; i++) {
