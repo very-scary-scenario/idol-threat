@@ -4,6 +4,7 @@ import {
   ANIMATIONS,
   BARCODES,
   BIOS,
+  BOSS_NAMES,
   HAIR_COLOURS,
   KANA,
   PARTS,
@@ -13,11 +14,13 @@ import {
   UNIT_NAMES,
 } from './parts'
 import { Affinity, AffinityType, AFFINITIES, Battle, BattleIdol } from './battle'
-import { askUser } from './util'
+import { askUser, Part } from './util'
 import { BrowserQRCodeReader } from '@zxing/browser'
 import { DecodeHintType } from '@zxing/library'
 import { FastClick } from 'fastclick'
 const wordfilter = require('wordfilter')
+
+type BarcodeOverrideType = keyof typeof BARCODES
 
 var VOWELS = 'aeiou';
 var N = 'n';
@@ -59,32 +62,31 @@ var SHINY_CHANCE = 1/4096;
 var MAXIMUM_CATALOG_SIZE = 50;
 var CATALOG_FULL = "Your agency is full! You'll have to graduate or train with some of them before you can recruit any more.";
 
-var SEED_OVERRIDE_HANDLERS = {
-  shadow: function(idol: Idol) {
-    idol.firstName = 'Jack';
-    idol.lastName = 'Ryan';
-    idol.cacheName();
+type SeedOverrideType = keyof typeof BARCODES
+var SEED_OVERRIDE_HANDLERS: Map<SeedOverrideType, (idol: Idol) => void> = new Map()
+SEED_OVERRIDE_HANDLERS.set('shadow', function(idol: Idol) {
+  idol.firstName = 'Jack';
+  idol.lastName = 'Ryan';
+  idol.cacheName();
 
-    for (var stat in Stat) {
-      idol.stats.set(stat, 100);
-    }
-
-    idol.bio = "Somebody tried to kill her. She lied to her wife for three years. Didn't give them her PhD.";
-    idol.quote = "Now, talk me through your very scary scenario.";
-
-    function makeSpecialAbility(name: string, affinity: Affinity) {
-      return new Ability(idol, [{words: [name], bonus: 3}], choice(ANIMATIONS, idol.rand()), affinity);
-    }
-    idol.abilities = [
-      makeSpecialAbility('play rough', Affinity.rock),
-      makeSpecialAbility('geopolitics', Affinity.paper),
-      makeSpecialAbility('american directness', Affinity.scissors),
-      makeSpecialAbility('very scary scenario', idol.affinity)
-    ];
+  for (var stat in Stat) {
+    idol.stats.set(stat, 100);
   }
-};
-for (var overrideName in SEED_OVERRIDE_HANDLERS) SEED_OVERRIDE_HANDLERS[overrideName].overrideName = overrideName;
-var SEED_OVERRIDES = {};
+
+  idol.bio = "Somebody tried to kill her. She lied to her wife for three years. Didn't give them her PhD.";
+  idol.quote = "Now, talk me through your very scary scenario.";
+
+  function makeSpecialAbility(name: string, affinity: AffinityType) {
+    return new Ability(idol, [{words: [name], bonus: 3}], choice(ANIMATIONS, idol.rand()), affinity);
+  }
+  idol.abilities = [
+    makeSpecialAbility('play rough', 'rock'),
+    makeSpecialAbility('geopolitics', 'paper'),
+    makeSpecialAbility('american directness', 'scissors'),
+    makeSpecialAbility('very scary scenario', idol.affinity)
+  ];
+});
+var SEED_OVERRIDES: Map<number, (idol: Idol) => void> = new Map()
 
 var CAMERA_DENIED = false;
 var hints = new Map();
@@ -97,10 +99,10 @@ function parsePresetBarcodes() {
   var overrideList;
 
   for (var override in BARCODES) {
-    overrideList = BARCODES[override];
+    overrideList = BARCODES[override as BarcodeOverrideType];
 
     for (var i = 0; i < overrideList.length; i++) {
-      SEED_OVERRIDES[numFromString(overrideList[i])] = SEED_OVERRIDE_HANDLERS[override];
+      SEED_OVERRIDES.set(numFromString(overrideList[i]), SEED_OVERRIDE_HANDLERS.get(override as BarcodeOverrideType)!);
     }
   }
 }
@@ -138,13 +140,13 @@ var isSkipping = false;
 var unbindScriptClick;
 
 var idolSorters = {
-  date: function(a, b) { return b.recruitedAt - a.recruitedAt; },
-  statSpeed: function(a, b) { return b.speed - a.speed; },
-  statAttack: function(a, b) { return b.attack - a.attack; },
-  statDefense: function(a, b) { return b.defense - a.defense; },
-  unitMembership: function(a, b) { return (Number(b.isInUnit()) - Number(a.isInUnit())); },
-  allStats: function(a, b) { return b.totalStats() - a.totalStats(); },
-  affinity: function(a, b) { return (
+  date: function(a: Idol, b: Idol) { return b.recruitedAt - a.recruitedAt; },
+  statSpeed: function(a: Idol, b: Idol) { return b.speed - a.speed; },
+  statAttack: function(a: Idol, b: Idol) { return b.attack - a.attack; },
+  statDefense: function(a: Idol, b: Idol) { return b.defense - a.defense; },
+  unitMembership: function(a: Idol, b: Idol) { return (Number(b.isInUnit()) - Number(a.isInUnit())); },
+  allStats: function(a: Idol, b: Idol) { return b.totalStats() - a.totalStats(); },
+  affinity: function(a: Idol, b: Idol) { return (
     (a.affinity - b.affinity) +
     (idolSorters.allStats(a, b) / 10000)
   ); }
@@ -324,10 +326,10 @@ function getRarity(stats) {
 class Ability {
   strength: number;
   healing: boolean;
-  affinity: Affinity;
+  affinity: AffinityType;
   name: string;
 
-  constructor(idol: Idol, parts, animation, affinity: Affinity) {
+  constructor(idol: Idol, parts, animation: string, affinity: AffinityType) {
     this.strength = 0;
     this.healing = false;
     this.affinity = affinity;
@@ -375,6 +377,7 @@ export class Idol {
   stats = new Map<string, number>();
   effective = new Map<string, () => number>();
   affinity: AffinityType;
+  actorName?: string;
 
   constructor(seed: number) {
     this.seed = seed;
@@ -1225,7 +1228,7 @@ Agency.prototype.addIdol = function(idol, interactive) {
     idol.audition();
   }
 };
-Agency.prototype.removeIdol = function(idol) {
+Agency.prototype.removeIdol = function(idol: Idol) {
   if (idol.isInUnit()) idol.toggleUnitMembership();
   agency.catalog.splice(agency.catalog.indexOf(idol), 1);
 
@@ -1239,7 +1242,7 @@ Agency.prototype.removeIdol = function(idol) {
 
   deferRerender();
 };
-Agency.prototype.addToUnit = function(idol, interactive) {
+Agency.prototype.addToUnit = function(idol: Idol, interactive: boolean) {
   if (this.unit.length >= maxUnitSize) {
     if (interactive !== undefined) {
       askUser("Your unit is full; you'll need to remove someone before you can add " + idol.name + ".");
@@ -1252,7 +1255,7 @@ Agency.prototype.addToUnit = function(idol, interactive) {
 Agency.prototype.canFeed = function() {
   return this.catalog.length >= 2;
 };
-Agency.prototype.doStory = function(pageNumber) {
+Agency.prototype.doStory = function(pageNumber: number) {
   var self = this;
   var chapter = this.getStoryChapter();
 
@@ -1280,7 +1283,7 @@ Agency.prototype.doStory = function(pageNumber) {
       element.setAttribute('data-actor-name', actor.actorName);
       element.classList.add('actor');
       element.innerHTML = actor.hugeSpriteHTML();
-      theatreElement.querySelector('#boards').appendChild(element);
+      theatreElement.querySelector('#boards')!.appendChild(element);
     }
     return element;
   }
