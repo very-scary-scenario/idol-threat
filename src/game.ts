@@ -115,10 +115,6 @@ var NEGATIVE_STAT_EFFECT = 2;
 
 var RECENT_FIRING_MEMORY = 20;
 
-var POSES;
-var HAIR_COLOURS;
-var SKIN_COLOURS;
-
 var confettiTimeout: number;
 var letterTimeout: number;
 
@@ -180,8 +176,8 @@ var upgradeNames = {
 function getStateCookie() {
   var cookieStrings = document.cookie.split(';');
 
-  indices = [];
-  fragments = {};
+  var indices: number[] = [];
+  var fragments = new Map<number, string>();
 
   for(var i = 0, n = cookieStrings.length; i < n; i++) {
     var matches = cookieStrings[i].match(/(?:state_(\d+)+=)(.*)/);
@@ -191,7 +187,7 @@ function getStateCookie() {
     var index = parseInt(matches[1], 10);
     var fragment = matches[2];
     indices.push(index);
-    fragments[index] = fragment;
+    fragments.set(index, fragment);
   }
   
   indices.sort(function(a, b) { return a - b; });
@@ -199,7 +195,7 @@ function getStateCookie() {
   var stateString = '';
 
   for (var f = 0; f < indices.length; f++) {
-    var thisFragment = fragments[indices[f]];
+    var thisFragment = fragments.get(indices[f]);
     if (thisFragment === endString) break;
     stateString += thisFragment;
   }
@@ -372,13 +368,13 @@ class Ability {
   }
 }
 
-function effectiveStatGetter(idol, stat) {
+function effectiveStatGetter(idol: Idol, stat: string): () => number {
   return function() {
     if (agency.catalog.indexOf(idol) !== -1) {
       // only grant agency bonus if this idol is in our agency
-      return idol[stat] + agency.upgradeFor[stat]();
+      return idol.stats.get(stat) + agency.upgradeFor[stat]();
     } else {
-      return idol[stat];
+      return idol.stats.get(stat);
     }
   };
 }
@@ -392,8 +388,8 @@ class Idol {
   firstName: string;
   lastName: string;
   name: string;
-  stats = new Map<StatType, number>();
-  effective = new Map<StatType, number>();
+  stats = new Map<string, number>();
+  effective = new Map<string, number>();
 
   constructor(seed: number) {
     this.seed = seed;
@@ -1023,7 +1019,7 @@ Agency.prototype.renderCatalog = function() {
 
   var agency = this;
 
-  inputs = document.querySelectorAll('#catalog li.idol .input');
+  var inputs = document.querySelectorAll('#catalog li.idol .input');
 
   function toggleMembership(event) {
     event.stopPropagation();
@@ -1110,14 +1106,14 @@ Agency.prototype.sortedCatalog = function() {
 };
 Agency.prototype.renderUnit = function() {
   var self = this;
-  content = unitTemplate(this);
+  content = unitTemplate(this, {allowedProtoMethods: {unitName: true}});
 
   if ((this.unit.length === 0) ^ unitElement.classList.contains('empty')) {
     unitElement.classList.toggle('empty');
   }
 
   unitElement.innerHTML = content;
-  unitElements = unitElement.querySelectorAll('.unit li');
+  var unitElements = unitElement.querySelectorAll('.unit li');
 
   function handleUnitClick(e) {
     e.stopPropagation();
@@ -1129,7 +1125,7 @@ Agency.prototype.renderUnit = function() {
     unitElements[ei].addEventListener('click', handleUnitClick);
   }
 
-  unitDetailElement.innerHTML = unitDetailTemplate(this);
+  unitDetailElement.innerHTML = unitDetailTemplate(this, {allowedProtoMethods: {unitName: true}});
 
   function toggleUnitDetailDisplay(e) {
     e.stopPropagation();
@@ -1535,7 +1531,7 @@ function getCredits() {
     ['William Rennerfelt', 'http://william.rennerfelt.org'],
     ['colons', 'https://colons.co/']
   ];
-  pickedFolkIndices = [];
+  var pickedFolkIndices = [];
 
   var shuffledFolks = [];
   while (pickedFolkIndices.length < folks.length) {
