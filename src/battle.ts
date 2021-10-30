@@ -1,3 +1,7 @@
+export enum Affinity { rock, paper, scissors }
+export type AffinityType = keyof typeof Affinity
+export const AFFINITIES: AffinityType[] = ['rock', 'paper', 'scissors']
+
 var SAME_TYPE_ATTACK_BONUS = 1.5;
 var SUPER_EFFECTIVE_ATTACK_BONUS = 2;
 var BASIC_ABILITY_DAMAGE = 15;
@@ -18,16 +22,7 @@ function loadAnimations() {
 
 loadAnimations();
 
-function assertIsAffinity(affinity) {
-  if (AFFINITIES.indexOf(affinity) === -1) {
-    console.log(affinity);
-    throw 'that is not an affinity';
-  }
-}
-
-function effectiveness(attackAffinity, targetAffinity) {
-  assertIsAffinity(attackAffinity);
-  assertIsAffinity(targetAffinity);
+function effectiveness(attackAffinity: AffinityType, targetAffinity: AffinityType) {
   attackIndex = AFFINITIES.indexOf(attackAffinity);
   targetIndex = AFFINITIES.indexOf(targetAffinity);
   var effectivenessIdentifier = ((attackIndex + AFFINITIES.length) - targetIndex) % 3;
@@ -38,7 +33,7 @@ function effectiveness(attackAffinity, targetAffinity) {
   }[effectivenessIdentifier];
 }
 
-function BattleIdol(idol, control) {
+export function BattleIdol(idol, control) {
   var self = this;
 
   self.isDead = false;
@@ -123,7 +118,7 @@ BattleIdol.prototype.healthBar = function() {
   return healthBarTemplate(this);
 };
 
-function Battle(playerIdols, enemyIdols, victoryCallback, lossCallback, fleeCallback) {
+export function Battle(playerIdols, enemyIdols, victoryCallback, lossCallback, fleeCallback) {
   this.playerIdols = playerIdols;
   this.enemyIdols = enemyIdols;
 

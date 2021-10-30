@@ -1,4 +1,5 @@
 import * as Handlebars from 'handlebars'
+import { Affinity, AffinityType, AFFINITIES, Battle, BattleIdol } from './battle'
 import { BrowserQRCodeReader } from '@zxing/browser'
 import { DecodeHintType } from '@zxing/library'
 import { FastClick } from 'fastclick'
@@ -23,8 +24,6 @@ var LAYERS = [
   'ey',
   'eb'
 ];
-enum Affinity { rock, paper, scissors }
-type AffinityType = keyof typeof Affinity
 var RARITIES = [
   'Charred',
   'Well done',
