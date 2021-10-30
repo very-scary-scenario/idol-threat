@@ -202,29 +202,26 @@ function getStateCookie() {
   return atob(stateString);
 }
 
-var barcodeImage = document.getElementById('barcode-image');
-var scannerOverlay = document.getElementById('scanner-overlay');
-var cancelScanningElement = document.getElementById('cancel-scanning');
-var loadGame = document.getElementById('load-game');
-var detailElement = document.getElementById('idol-detail');
-var catalogElement = document.getElementById('catalog');
-var unitElement = document.getElementById('unit');
-var unitDetailElement = document.getElementById('unit-detail');
-var battleElement = document.getElementById('battle');
-var promptArea = document.getElementById('prompt-area');
-var auditionSpace = document.getElementById('audition-space');
-var canteenElement = document.getElementById('canteen');
-var theatreElement = document.getElementById('theatre');
-var xpIndicatorsElement = document.getElementById('xp-indicators');
+var barcodeImage = document.getElementById('barcode-image')!;
+var scannerOverlay = document.getElementById('scanner-overlay')!;
+var cancelScanningElement = document.getElementById('cancel-scanning')!;
+var loadGame = document.getElementById('load-game')!;
+var detailElement = document.getElementById('idol-detail')!;
+var catalogElement = document.getElementById('catalog')!;
+var unitElement = document.getElementById('unit')!;
+var unitDetailElement = document.getElementById('unit-detail')!;
+var promptArea = document.getElementById('prompt-area')!;
+var auditionSpace = document.getElementById('audition-space')!;
+var canteenElement = document.getElementById('canteen')!;
+var theatreElement = document.getElementById('theatre')!;
+var xpIndicatorsElement = document.getElementById('xp-indicators')!;
 
 var spriteTemplate = Handlebars.compile(document.getElementById('sprite-template')!.innerHTML);
 var catalogTemplate = Handlebars.compile(document.getElementById('catalog-template')!.innerHTML);
 var unitTemplate = Handlebars.compile(document.getElementById('unit-template')!.innerHTML);
 var unitDetailTemplate = Handlebars.compile(document.getElementById('unit-detail-template')!.innerHTML);
 var idolDetailTemplate = Handlebars.compile(document.getElementById('idol-detail-template')!.innerHTML);
-var battleTemplate = Handlebars.compile(document.getElementById('battle-template')!.innerHTML);
 var idolDeetsTemplate = Handlebars.compile(document.getElementById('idol-deets-template')!.innerHTML);
-var healthBarTemplate = Handlebars.compile(document.getElementById('health-bar-template')!.innerHTML);
 var abilityPromptTemplate = Handlebars.compile(document.getElementById('ability-prompt-template')!.innerHTML);
 var promptTemplate = Handlebars.compile(document.getElementById('prompt-template')!.innerHTML);
 var auditionTemplate = Handlebars.compile(document.getElementById('audition-template')!.innerHTML);
@@ -378,7 +375,7 @@ function effectiveStatGetter(idol: Idol, stat: string): () => number {
   };
 }
 
-class Idol {
+export class Idol {
   seed: number;
   recruitedAt: number;
   favourite: boolean;

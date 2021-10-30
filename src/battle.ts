@@ -1,6 +1,16 @@
+import * as Handlebars from 'handlebars'
+import { Idol } from './game'
+
 export enum Affinity { rock, paper, scissors }
 export type AffinityType = keyof typeof Affinity
 export const AFFINITIES: AffinityType[] = ['rock', 'paper', 'scissors']
+
+var battleElement = document.getElementById('battle')!;
+
+var abilityPromptTemplate = Handlebars.compile(document.getElementById('ability-prompt-template')!.innerHTML);
+var battleTemplate = Handlebars.compile(document.getElementById('battle-template')!.innerHTML);
+var healthBarTemplate = Handlebars.compile(document.getElementById('health-bar-template')!.innerHTML);
+var idolDeetsTemplate = Handlebars.compile(document.getElementById('idol-deets-template')!.innerHTML);
 
 var SAME_TYPE_ATTACK_BONUS = 1.5;
 var SUPER_EFFECTIVE_ATTACK_BONUS = 2;
@@ -33,7 +43,7 @@ function effectiveness(attackAffinity: AffinityType, targetAffinity: AffinityTyp
   }[effectivenessIdentifier];
 }
 
-export function BattleIdol(idol, control) {
+export function BattleIdol(idol: Idol, control) {
   var self = this;
 
   self.isDead = false;
@@ -54,9 +64,9 @@ export function BattleIdol(idol, control) {
     return Math.ceil(mod * Math.pow(statModifier, stat));
   }
 
-  self.attack = modStat(idol.effective.attack(), 100);
-  self.defense = modStat(idol.effective.defense(), 100);
-  self.speed = modStat(idol.effective.speed(), 20);
+  self.attack = modStat(idol.effective.get('attack'), 100);
+  self.defense = modStat(idol.effective.get('defense'), 100);
+  self.speed = modStat(idol.effective.get('speed'), 20);
 
   self.maxHp = 50;
   self.hp = self.maxHp;
@@ -115,7 +125,7 @@ BattleIdol.prototype.healthPercent = function() {
 };
 
 BattleIdol.prototype.healthBar = function() {
-  return healthBarTemplate(this);
+  return healthBarTemplate(this, {allowedProtoMethods: {healthPercent: true}});
 };
 
 export function Battle(playerIdols, enemyIdols, victoryCallback, lossCallback, fleeCallback) {
@@ -314,7 +324,7 @@ function bindHoverDetail(idol, idolElement) {
 }
 
 Battle.prototype.render = function() {
-  battleElement.innerHTML = battleTemplate(this);
+  battleElement.innerHTML = battleTemplate(this, {allowedProtoMethods: {healthBar: true}});
 
   var playerIdolElements = battleElement.querySelectorAll('#player-idols > li');
   for (var pi = 0; pi < this.playerIdols.length; pi++) {
