@@ -496,383 +496,390 @@ export class Idol {
     this.name = [this.firstName, this.lastName].join(' ');
     return this.name
   }
-}
-Idol.prototype.applyRecruitmentBonuses = function() {
-  var multiplier = 1 + (agency.upgrades.recruitment / 10);
 
-  for (var stat in Stat) {
-    this.stats.set(stat, Math.floor(this.stats.get(stat)! * multiplier));
+  applyRecruitmentBonuses() {
+    var multiplier = 1 + (agency.upgrades.recruitment / 10);
+
+    for (var stat in Stat) {
+      this.stats.set(stat, Math.floor(this.stats.get(stat)! * multiplier));
+    }
+
+    this.shiny = Math.random() <= SHINY_CHANCE;
   }
 
-  this.shiny = Math.random() <= SHINY_CHANCE;
-};
-Idol.prototype.applyQuickBattleRankingBonuses = function() {
-  for (var stat in Stat) {
-    var currentStat = this.stats.get(stat)!
-    this.stats.set(stat, currentStat + (10 * agency.quickBattleRanking));
-  }
-};
-Idol.prototype.deferRendering = function(mode, callback) {
-  var self = this;
-  mode = mode || 'med';
-
-  if (this.loadedImages[mode] !== undefined) return;  // we're already loading
-
-  var loaded = 0;
-  var images = [];
-  this.loadedImages[mode] = images;
-
-  function renderIfLoaded() {
-    loaded++;
-    if (loaded === self.parts.length) {
-      if (callback !== undefined) callback();
-      self.renderSprite(mode);
+  applyQuickBattleRankingBonuses() {
+    for (var stat in Stat) {
+      var currentStat = this.stats.get(stat)!
+        this.stats.set(stat, currentStat + (10 * agency.quickBattleRanking));
     }
   }
 
-  for (var pi = 0; pi < this.parts.length; pi++) {
-    var chosenPart = this.parts[pi];
-    var img = new Image();
+  deferRendering(mode, callback) {
+    var self = this;
+    mode = mode || 'med';
 
-    images.push(img);
-    var attr = mode + 'Path';
-    if (mode === 'huge') attr = 'path';
-    img.src = chosenPart[attr];
-    img.addEventListener('load', renderIfLoaded);
-  }
-};
-Idol.prototype.getSprite = function(mode) {
-  if (typeof(mode) !== 'string') mode = undefined;
-  this.deferRendering(mode);
-  return 'img/placeholder.png';
-};
-Idol.prototype.getThumbSprite = function() { return this.getSprite('thumb'); };
-Idol.prototype.getHugeSprite = function() { return this.getSprite('huge'); };
-Idol.prototype.canFeed = function() { return this.agency.canFeed(); };
-Idol.prototype.renderSprite = function(mode) {
-  if (mode === undefined) mode = 'med';
+    if (this.loadedImages[mode] !== undefined) return;  // we're already loading
 
-  var images = this.loadedImages[mode];
+    var loaded = 0;
+    var images = [];
+    this.loadedImages[mode] = images;
 
-  var offscreenCanvasElement = document.createElement('canvas');
-  var offscreenCanvas = offscreenCanvasElement.getContext('2d');
-
-  offscreenCanvas.canvas.width = images[0].naturalWidth;
-  offscreenCanvas.canvas.height = images[0].naturalHeight;
-
-  offscreenCanvas.clearRect(0, 0, offscreenCanvas.canvas.width, offscreenCanvas.canvas.height);
-
-  for (var i = 0; i < images.length; i++) {
-    offscreenCanvas.drawImage(images[i], 0, 0);
-  }
-
-  // masking, for a fade at the bottom
-  offscreenCanvas.globalCompositeOperation = 'destination-in';
-  var gradient = offscreenCanvas.createLinearGradient(0, 0, 0, offscreenCanvas.canvas.height);
-  gradient.addColorStop(0.9, 'rgba(0, 0, 0, 1)');
-  gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-  offscreenCanvas.fillStyle = gradient;
-  offscreenCanvas.fillRect(0, 0, offscreenCanvas.canvas.width, offscreenCanvas.canvas.height);
-
-  var subbableImages = document.querySelectorAll('.sprite img[data-sprite-' + mode + '-id="' + this.identifier + '"]');
-  var dataURL = offscreenCanvasElement.toDataURL();
-
-  for (var si = 0; si < subbableImages.length; si++) {
-    subbableImages[si].src = dataURL;
-  }
-
-  if (mode === 'thumb') {
-    this.loadedThumbSprite = dataURL;
-  }
-
-  this.loadedImages[mode] = undefined;  // free up some memory?
-};
-Idol.prototype.spriteHTML = function(mode) {
-  if (mode === undefined || typeof(mode) !== 'string') mode = 'med';
-  var sprite;
-
-  if (mode === 'med') {
-    sprite = this.getSprite();
-  } else if (mode === 'thumb') {
-    sprite = this.loadedThumbSprite || this.getThumbSprite();
-  } else if (mode === 'huge') {
-    sprite = this.getHugeSprite();
-  } else {
-    throw 'what is ' + mode;
-  }
-
-  return spriteTemplate({
-    mode: mode,
-    identifier: this.identifier,
-    shiny: this.shiny,
-    sprite: sprite
-  });
-};
-Idol.prototype.thumbSpriteHTML = function() { return this.spriteHTML('thumb'); };
-Idol.prototype.hugeSpriteHTML = function() { return this.spriteHTML('huge'); };
-Idol.prototype.isInUnit = function() {
-  return agency.unit.indexOf(this) !== -1;
-};
-Idol.prototype.totalStats = function() {
-  var total = 0;
-
-  for (var stat in Stat) {
-    total += this.stats.get(stat)
-  }
-
-  return total;
-};
-Idol.prototype.rarity = function() {
-  return getRarity(this.totalStats());
-};
-Idol.prototype.toggleUnitMembership = function() {
-  if (this.isInUnit()) {
-    agency.unit.splice(agency.unit.indexOf(this), 1);
-    if (this.catalogElement !== undefined) {
-      this.catalogElement.classList.remove('active');
-    }
-  } else {
-    agency.addToUnit(this, true);
-  }
-
-  agency.renderUnit();
-  saveGame();
-};
-Idol.prototype.giveBonus = function(count) {
-  if (count === undefined) count = 1;
-
-  while (count > 0) {
-    count--;
-    this[choice(STATS, Math.random())]++;
-  }
-
-  deferRerender();
-};
-Idol.prototype.showDetail = function() {
-  var self = this;
-  currentlyShowingDetail = this;
-
-  document.body.classList.add('overlay');
-  detailElement.innerHTML = idolDetailTemplate(this, {allowedProtoMethods: {
-    hugeSpriteHTML: true,
-    isInUnit: true,
-    rarity: true,
-    canFeed: true
-  }});
-  detailElement.setAttribute('data-affinity', this.affinity);
-  detailElement.classList.add('shown');
-	detailElement.querySelector('.close').addEventListener('click', hideIdolDetail);
-
-  function showFeedingUI(event) {
-    event.stopPropagation();
-    event.preventDefault();
-
-    var catalogWithoutSelf = self.agency.sortedCatalog();
-    catalogWithoutSelf.splice(catalogWithoutSelf.indexOf(self), 1);
-
-    canteenElement.innerHTML = canteenTemplate({
-      idol: self,
-      catalog: catalogWithoutSelf
-    });
-
-    canteenElement.querySelector('.cancel').addEventListener('click', function(event) {
-      event.stopPropagation();
-      event.preventDefault();
-      canteenElement.innerHTML = '';
-    });
-
-    function requestFeeding(event) {
-      event.stopPropagation();
-      event.preventDefault();
-
-      var foodIdol = catalogWithoutSelf[parseInt(event.currentTarget.getAttribute('data-index'), 10)];
-      var negativeStats = {};
-      var summedStats = {};
-      var diffedStats = {};
-      var totalChange = 0;
-
-      for (var i = 0; i < STATS.length; i++) {
-        var stat = STATS[i];
-        var increaseBy = foodIdol[stat];
-        if (increaseBy < 0) {
-          increaseBy /= NEGATIVE_STAT_EFFECT;
-          negativeStats[stat] = true;
-        }
-        diffedStats[stat] = Math.ceil(increaseBy);
-        totalChange += diffedStats[stat];
-        summedStats[stat] = self[stat] + diffedStats[stat];
+    function renderIfLoaded() {
+      loaded++;
+      if (loaded === self.parts.length) {
+        if (callback !== undefined) callback();
+        self.renderSprite(mode);
       }
+    }
 
-      canteenElement.innerHTML = canteenConfirmTemplate({
+    for (var pi = 0; pi < this.parts.length; pi++) {
+      var chosenPart = this.parts[pi];
+      var img = new Image();
+
+      images.push(img);
+      var attr = mode + 'Path';
+      if (mode === 'huge') attr = 'path';
+      img.src = chosenPart[attr];
+      img.addEventListener('load', renderIfLoaded);
+    }
+  }
+
+  getSprite(mode) {
+    if (typeof(mode) !== 'string') mode = undefined;
+    this.deferRendering(mode);
+    return 'img/placeholder.png';
+  }
+
+  getThumbSprite() { return this.getSprite('thumb'); }
+  getHugeSprite() { return this.getSprite('huge'); }
+  canFeed() { return this.agency.canFeed(); }
+  renderSprite(mode) {
+    if (mode === undefined) mode = 'med';
+
+    var images = this.loadedImages[mode];
+
+    var offscreenCanvasElement = document.createElement('canvas');
+    var offscreenCanvas = offscreenCanvasElement.getContext('2d');
+
+    offscreenCanvas.canvas.width = images[0].naturalWidth;
+    offscreenCanvas.canvas.height = images[0].naturalHeight;
+
+    offscreenCanvas.clearRect(0, 0, offscreenCanvas.canvas.width, offscreenCanvas.canvas.height);
+
+    for (var i = 0; i < images.length; i++) {
+      offscreenCanvas.drawImage(images[i], 0, 0);
+    }
+
+    // masking, for a fade at the bottom
+    offscreenCanvas.globalCompositeOperation = 'destination-in';
+    var gradient = offscreenCanvas.createLinearGradient(0, 0, 0, offscreenCanvas.canvas.height);
+    gradient.addColorStop(0.9, 'rgba(0, 0, 0, 1)');
+    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    offscreenCanvas.fillStyle = gradient;
+    offscreenCanvas.fillRect(0, 0, offscreenCanvas.canvas.width, offscreenCanvas.canvas.height);
+
+    var subbableImages = document.querySelectorAll('.sprite img[data-sprite-' + mode + '-id="' + this.identifier + '"]');
+    var dataURL = offscreenCanvasElement.toDataURL();
+
+    for (var si = 0; si < subbableImages.length; si++) {
+      subbableImages[si].src = dataURL;
+    }
+
+    if (mode === 'thumb') {
+      this.loadedThumbSprite = dataURL;
+    }
+
+    this.loadedImages[mode] = undefined;  // free up some memory?
+  }
+
+  spriteHTML(mode) {
+    if (mode === undefined || typeof(mode) !== 'string') mode = 'med';
+    var sprite;
+
+    if (mode === 'med') {
+      sprite = this.getSprite();
+    } else if (mode === 'thumb') {
+      sprite = this.loadedThumbSprite || this.getThumbSprite();
+    } else if (mode === 'huge') {
+      sprite = this.getHugeSprite();
+    } else {
+      throw 'what is ' + mode;
+    }
+
+    return spriteTemplate({
+      mode: mode,
+      identifier: this.identifier,
+      shiny: this.shiny,
+      sprite: sprite
+    });
+  }
+
+  thumbSpriteHTML() { return this.spriteHTML('thumb'); }
+  hugeSpriteHTML() { return this.spriteHTML('huge'); }
+  isInUnit() { return agency.unit.indexOf(this) !== -1; }
+
+  totalStats() {
+    var total = 0;
+
+    for (var stat in Stat) {
+      total += this.stats.get(stat)
+    }
+
+    return total;
+  }
+
+  rarity() {
+    return getRarity(this.totalStats());
+  };
+  toggleUnitMembership() {
+    if (this.isInUnit()) {
+      agency.unit.splice(agency.unit.indexOf(this), 1);
+      if (this.catalogElement !== undefined) {
+        this.catalogElement.classList.remove('active');
+      }
+    } else {
+      agency.addToUnit(this, true);
+    }
+
+    agency.renderUnit();
+    saveGame();
+  };
+  giveBonus(count) {
+    if (count === undefined) count = 1;
+
+    while (count > 0) {
+      count--;
+      this[choice(STATS, Math.random())]++;
+    }
+
+    deferRerender();
+  };
+  showDetail() {
+    var self = this;
+    currentlyShowingDetail = this;
+
+    document.body.classList.add('overlay');
+    detailElement.innerHTML = idolDetailTemplate(this, {allowedProtoMethods: {
+      hugeSpriteHTML: true,
+      isInUnit: true,
+      rarity: true,
+      canFeed: true
+    }});
+    detailElement.setAttribute('data-affinity', this.affinity);
+    detailElement.classList.add('shown');
+    detailElement.querySelector('.close').addEventListener('click', hideIdolDetail);
+
+    function showFeedingUI(event) {
+      event.stopPropagation();
+      event.preventDefault();
+
+      var catalogWithoutSelf = self.agency.sortedCatalog();
+      catalogWithoutSelf.splice(catalogWithoutSelf.indexOf(self), 1);
+
+      canteenElement.innerHTML = canteenTemplate({
         idol: self,
-        food: foodIdol,
-        diffedStats: diffedStats,
-        summedStats: summedStats,
-        negativeStats: negativeStats,
-        totalChange: totalChange,
-        changeIsBeneficial: totalChange >= 0
+        catalog: catalogWithoutSelf
       });
 
-      canteenElement.querySelector('.no').addEventListener('click', showFeedingUI);
-      canteenElement.querySelector('.yes').addEventListener('click', function(event) {
+      canteenElement.querySelector('.cancel').addEventListener('click', function(event) {
         event.stopPropagation();
         event.preventDefault();
-        for (var stat in summedStats) {
-          self[stat] = summedStats[stat];
-        }
-        agency.removeIdol(foodIdol);
         canteenElement.innerHTML = '';
-        self.showDetail();
-        askUser('Training complete!');
-        agency.grantExperience(5);
-        celebrate();
       });
-    }
 
-    var idolElements = canteenElement.querySelectorAll('.idol.enabled');
+      function requestFeeding(event) {
+        event.stopPropagation();
+        event.preventDefault();
 
-    for (var i = 0; i < idolElements.length; i++) {
-      idolElements[i].addEventListener('click', requestFeeding);
-    }
-  }
+        var foodIdol = catalogWithoutSelf[parseInt(event.currentTarget.getAttribute('data-index'), 10)];
+        var negativeStats = {};
+        var summedStats = {};
+        var diffedStats = {};
+        var totalChange = 0;
 
-  var feedElement = detailElement.querySelector('.feed');
-  if (feedElement) feedElement.addEventListener('click', showFeedingUI);
+        for (var i = 0; i < STATS.length; i++) {
+          var stat = STATS[i];
+          var increaseBy = foodIdol[stat];
+          if (increaseBy < 0) {
+            increaseBy /= NEGATIVE_STAT_EFFECT;
+            negativeStats[stat] = true;
+          }
+          diffedStats[stat] = Math.ceil(increaseBy);
+          totalChange += diffedStats[stat];
+          summedStats[stat] = self[stat] + diffedStats[stat];
+        }
 
-  detailElement.querySelector('.graduate').addEventListener('click', function(event) {
-    event.stopPropagation();
-    event.preventDefault();
+        canteenElement.innerHTML = canteenConfirmTemplate({
+          idol: self,
+          food: foodIdol,
+          diffedStats: diffedStats,
+          summedStats: summedStats,
+          negativeStats: negativeStats,
+          totalChange: totalChange,
+          changeIsBeneficial: totalChange >= 0
+        });
 
-    if (self.favourite) {
-      askUser('You cannot graduate ' + self.name + ' while you have her marked as a favourite idol.');
-      return;
-    }
-
-    function graduate() {
-      hideIdolDetail();
-      agency.removeIdol(self);
-      var graduationBonus = choice(GRADUATION_BONUSES, Math.random());
-      bonus = graduationBonus[0] + agency.upgrades.graduation;
-      template = graduationBonus[1];
-
-      for (var i = 0; i < agency.catalog.length; i++) {
-        agency.catalog[i].giveBonus(bonus);
+        canteenElement.querySelector('.no').addEventListener('click', showFeedingUI);
+        canteenElement.querySelector('.yes').addEventListener('click', function(event) {
+          event.stopPropagation();
+          event.preventDefault();
+          for (var stat in summedStats) {
+            self[stat] = summedStats[stat];
+          }
+          agency.removeIdol(foodIdol);
+          canteenElement.innerHTML = '';
+          self.showDetail();
+          askUser('Training complete!');
+          agency.grantExperience(5);
+          celebrate();
+        });
       }
 
-      askUser(
-        template.replace('<idol>', self.name) +
-        ' The other idols in your agency get ' + bonus.toString(10) + ' bonus stat point' + ((bonus === 1) ? '' : 's') + ' each.'
-      );
+      var idolElements = canteenElement.querySelectorAll('.idol.enabled');
 
-      agency.grantExperience(5);
-      celebrate(graduationBonus[0]);
-      rerender();
+      for (var i = 0; i < idolElements.length; i++) {
+        idolElements[i].addEventListener('click', requestFeeding);
+      }
     }
 
-    askUser('Do you want ' + self.name + ' to graduate? She will leave your agency and every other idol will get a stat bonus by attending the graduation party.', [
-      ['Graduate', function() {
-        if (self.shiny) {
-          askUser('Are you absolutely sure? This is a pretty sweet idol you have here.', [
-            ['Yes, graduate', graduate],
-            ['No, she should stay', function() {}]
-          ]);
-        } else {
-          graduate();
+    var feedElement = detailElement.querySelector('.feed');
+    if (feedElement) feedElement.addEventListener('click', showFeedingUI);
+
+    detailElement.querySelector('.graduate').addEventListener('click', function(event) {
+      event.stopPropagation();
+      event.preventDefault();
+
+      if (self.favourite) {
+        askUser('You cannot graduate ' + self.name + ' while you have her marked as a favourite idol.');
+        return;
+      }
+
+      function graduate() {
+        hideIdolDetail();
+        agency.removeIdol(self);
+        var graduationBonus = choice(GRADUATION_BONUSES, Math.random());
+        bonus = graduationBonus[0] + agency.upgrades.graduation;
+        template = graduationBonus[1];
+
+        for (var i = 0; i < agency.catalog.length; i++) {
+          agency.catalog[i].giveBonus(bonus);
         }
-      }],
-      ['Keep', function() {}]
-    ]);
-  });
 
-  detailElement.querySelector('.membership .input').addEventListener('click', function(e) {
-    e.stopPropagation();
-    e.preventDefault();
+        askUser(
+          template.replace('<idol>', self.name) +
+          ' The other idols in your agency get ' + bonus.toString(10) + ' bonus stat point' + ((bonus === 1) ? '' : 's') + ' each.'
+        );
 
-    self.toggleUnitMembership();
-    if (self.isInUnit() ^ e.currentTarget.classList.contains('active')) e.currentTarget.classList.toggle('active');
-    deferRerender();
-  });
+        agency.grantExperience(5);
+        celebrate(graduationBonus[0]);
+        rerender();
+      }
 
-  detailElement.querySelector('a.favourite').addEventListener('click', function(e) {
-    e.stopPropagation();
-    e.preventDefault();
+      askUser('Do you want ' + self.name + ' to graduate? She will leave your agency and every other idol will get a stat bonus by attending the graduation party.', [
+        ['Graduate', function() {
+          if (self.shiny) {
+            askUser('Are you absolutely sure? This is a pretty sweet idol you have here.', [
+              ['Yes, graduate', graduate],
+              ['No, she should stay', function() {}]
+            ]);
+          } else {
+            graduate();
+          }
+        }],
+        ['Keep', function() {}]
+      ]);
+    });
 
-    self.favourite = !self.favourite;
-    e.target.classList.toggle('selected');
-    deferRerender();
-  });
-};
-Idol.prototype.next = function(mod) {
-  var sc = agency.sortedCatalog();
-  return sc[sc.indexOf(this) + (mod || 1)];
-};
-Idol.prototype.prev = function() { return this.next(-1); };
-Idol.prototype.audition = function() {
-  var self = this;
-  var layerTimeout = 400;
-  var currentLayer = 0;
-  var auditionLayers;
+    detailElement.querySelector('.membership .input').addEventListener('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
 
-  auditionSpace.innerHTML = auditionTemplate(this);
-  setTimeout(function() {
-    initSparkle(document.getElementById('sparkle-canvas')! as HTMLCanvasElement);
-  }, 1);
+      self.toggleUnitMembership();
+      if (self.isInUnit() ^ e.currentTarget.classList.contains('active')) e.currentTarget.classList.toggle('active');
+      deferRerender();
+    });
 
-  function addLayerToAuditionPortrait() {
-    var portraitElement = document.querySelector('#audition .portrait');
-    if (!portraitElement) return;
+    detailElement.querySelector('a.favourite').addEventListener('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
 
-    var part = auditionLayers[currentLayer];
-    if (!part) return;
-
-    portraitElement.appendChild(part);
-    setTimeout(function() { part.classList.add('visible'); }, 1);
-    currentLayer++;
-    setTimeout(addLayerToAuditionPortrait, layerTimeout);
-  }
-
-  function showLayersGradually() {
-    auditionLayers = self.loadedImages.med;
-    setTimeout(addLayerToAuditionPortrait, layerTimeout);
-  }
-
-  setTimeout(function() {
-    self.deferRendering('med', showLayersGradually);
-  }, 1);
-
-  document.getElementById('catch-button').addEventListener('click', function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    auditionSpace.innerHTML = '';
-    self.showDetail();
-    agency.grantExperience(5);
-  });
-};
-Idol.prototype.dump = function() {
-  var idolDump = {
-    a: this.recruitedAt,
-    b: [],
-    f: this.favourite,
-    i: this.seed,
-    r: this.shiny,
-    s: {},
+      self.favourite = !self.favourite;
+      e.target.classList.toggle('selected');
+      deferRerender();
+    });
   };
-  for(var stat in Stat) {
-    idolDump.s[stat] = this.stats.get(stat);
-  }
-  return idolDump;
-};
-Idol.prototype.handleOverrides = function() {
-  // look, we need _somewhere_ to hide our easter eggs
-  var override = SEED_OVERRIDES[this.seed];
-  if (override !== undefined) {
-    override(this);
-    this.seedOverride = override.overrideName;
-  }
-};
-Idol.prototype.isShadow = function() {
-  return this.seedOverride === 'shadow';
-};
+  next(mod) {
+    var sc = agency.sortedCatalog();
+    return sc[sc.indexOf(this) + (mod || 1)];
+  };
+  prev() { return this.next(-1); };
+  audition() {
+    var self = this;
+    var layerTimeout = 400;
+    var currentLayer = 0;
+    var auditionLayers;
+
+    auditionSpace.innerHTML = auditionTemplate(this);
+    setTimeout(function() {
+      initSparkle(document.getElementById('sparkle-canvas')! as HTMLCanvasElement);
+    }, 1);
+
+    function addLayerToAuditionPortrait() {
+      var portraitElement = document.querySelector('#audition .portrait');
+      if (!portraitElement) return;
+
+      var part = auditionLayers[currentLayer];
+      if (!part) return;
+
+      portraitElement.appendChild(part);
+      setTimeout(function() { part.classList.add('visible'); }, 1);
+      currentLayer++;
+      setTimeout(addLayerToAuditionPortrait, layerTimeout);
+    }
+
+    function showLayersGradually() {
+      auditionLayers = self.loadedImages.med;
+      setTimeout(addLayerToAuditionPortrait, layerTimeout);
+    }
+
+    setTimeout(function() {
+      self.deferRendering('med', showLayersGradually);
+    }, 1);
+
+    document.getElementById('catch-button').addEventListener('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      auditionSpace.innerHTML = '';
+      self.showDetail();
+      agency.grantExperience(5);
+    });
+  };
+  dump() {
+    var idolDump = {
+      a: this.recruitedAt,
+      b: [],
+      f: this.favourite,
+      i: this.seed,
+      r: this.shiny,
+      s: {},
+    };
+    for(var stat in Stat) {
+      idolDump.s[stat] = this.stats.get(stat);
+    }
+    return idolDump;
+  };
+  handleOverrides() {
+    // look, we need _somewhere_ to hide our easter eggs
+    var override = SEED_OVERRIDES[this.seed];
+    if (override !== undefined) {
+      override(this);
+      this.seedOverride = override.overrideName;
+    }
+  };
+  isShadow() {
+    return this.seedOverride === 'shadow';
+  };
+}
 
 function hideIdolDetail(event) {
   if (event) {
