@@ -927,602 +927,611 @@ Handlebars.registerHelper('ifPositive', function(a, options) {
   else return options.inverse(this);
 });
 
-function Agency() {
-  var self = this;
+class Agency {
+  catalog: Idol[]
+  unit: Idol[]
+  recentlyFired: Idol[]
+  experience: number
+  storyChaptersBeaten: number
+  quickBattleRanking: number
 
-  this.catalog = [];
-  this.unit = [];
-  this.recentlyFired = [];
-  this.upgrades = {};
-  for (var upgradeName in upgradeNames) this.upgrades[upgradeName] = 0;
+  constructor() {
+    var self = this
+    this.catalog = [];
+    this.unit = [];
+    this.recentlyFired = [];
+    this.upgrades = {};
+    for (var upgradeName in upgradeNames) this.upgrades[upgradeName] = 0;
 
-  this.sortOrder = 'date';
+    this.sortOrder = 'date';
 
-  this.experience = 0;
-  this.storyChaptersBeaten = 0;
-  this.quickBattleRanking = 0;
+    this.experience = 0;
+    this.storyChaptersBeaten = 0;
+    this.quickBattleRanking = 0;
 
-  this.storyActors = {};
+    this.storyActors = {};
 
-  this.upgradeFor = {};
+    this.upgradeFor = {};
 
-  function upgradeGetter(stat) {
-    return function() {
-      return self.levelFloor() * self.upgrades[stat];
-    };
-  }
-  for (var stat in Stat) {
-    this.upgradeFor[stat] = upgradeGetter(stat);
-  }
-}
-Agency.prototype.full = function() {
-  return this.catalog.length >= MAXIMUM_CATALOG_SIZE;
-};
-Agency.prototype.renderCatalog = function() {
-  var sortedCatalog = this.sortedCatalog();
-
-  var sortOrders = [];
-
-  for (var key in idolSortNames) {
-    var item = [key, idolSortNames[key]];
-    if (this.sortOrder === key) item.isSelectedOrder = true;
-    sortOrders.push(item);
+    function upgradeGetter(stat) {
+      return function() {
+        return self.levelFloor() * self.upgrades[stat];
+      };
+    }
+    for (var stat in Stat) {
+      this.upgradeFor[stat] = upgradeGetter(stat);
+    }
   }
 
-  sortOrders.sort();
+  full() {
+    return this.catalog.length >= MAXIMUM_CATALOG_SIZE;
+  };
+  renderCatalog() {
+    var sortedCatalog = this.sortedCatalog();
 
-  var upgrades = [];
+    var sortOrders = [];
 
-  for (var upgradeName in upgradeNames) {
-    upgrades.push({
-      name: upgradeName,
-      verboseName: upgradeNames[upgradeName].name,
-      description: upgradeNames[upgradeName].description,
-      currentLevel: this.upgrades[upgradeName]
+    for (var key in idolSortNames) {
+      var item = [key, idolSortNames[key]];
+      if (this.sortOrder === key) item.isSelectedOrder = true;
+      sortOrders.push(item);
+    }
+
+    sortOrders.sort();
+
+    var upgrades = [];
+
+    for (var upgradeName in upgradeNames) {
+      upgrades.push({
+        name: upgradeName,
+        verboseName: upgradeNames[upgradeName].name,
+        description: upgradeNames[upgradeName].description,
+        currentLevel: this.upgrades[upgradeName]
+      });
+    }
+
+    catalogElement.innerHTML = catalogTemplate({
+      'hasNeverScannedAnything': (this.catalog.length === 0) && document.body.classList.contains('nothing-scanned'),
+      'catalog': sortedCatalog,
+      'canFeed': this.canFeed(),
+      'levelFloor': this.levelFloor(),
+      'levelProgressPercent': Math.floor(this.levelProgress() * 100),
+      'quickBattleRanking': this.quickBattleRanking + 1,
+      'spendableLevels': this.spendableLevels(),
+      'upgrades': upgrades,
+      'sortOrder': this.sortOrder,
+      'sortOrders': sortOrders,
+      'backupUrl': 'data:application/x-idol-threat-save;name=idol-threat.save;charset=utf-8,' + encodeURIComponent(btoa(JSON.stringify(this.dump()))),
+      'builtAt': document.body.getAttribute('data-built-at'),
+      'credits': getCredits()
+    }, {
+      allowedProtoMethods: {
+        isInUnit: true,
+        thumbSpriteHTML: true
+      }
     });
-  }
 
-  catalogElement.innerHTML = catalogTemplate({
-    'hasNeverScannedAnything': (this.catalog.length === 0) && document.body.classList.contains('nothing-scanned'),
-    'catalog': sortedCatalog,
-    'canFeed': this.canFeed(),
-    'levelFloor': this.levelFloor(),
-    'levelProgressPercent': Math.floor(this.levelProgress() * 100),
-    'quickBattleRanking': this.quickBattleRanking + 1,
-    'spendableLevels': this.spendableLevels(),
-    'upgrades': upgrades,
-    'sortOrder': this.sortOrder,
-    'sortOrders': sortOrders,
-    'backupUrl': 'data:application/x-idol-threat-save;name=idol-threat.save;charset=utf-8,' + encodeURIComponent(btoa(JSON.stringify(this.dump()))),
-    'builtAt': document.body.getAttribute('data-built-at'),
-    'credits': getCredits()
-  }, {
-    allowedProtoMethods: {
-      isInUnit: true,
-      thumbSpriteHTML: true
-    }
-  });
-
-  function setSortOrder(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    agency.sortOrder = event.currentTarget.getAttribute('data-sort-order');
-    rerender();
-  }
-
-  document.getElementById('sort-button').addEventListener('click', function(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    document.getElementById('agency-meta').classList.remove('upgrade-visible');
-    document.getElementById('agency-meta').classList.toggle('sort-visible');
-  });
-
-  document.getElementById('agency-summary').addEventListener('click', function(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    document.getElementById('agency-meta').classList.remove('sort-visible');
-    document.getElementById('agency-meta').classList.toggle('upgrade-visible');
-  });
-
-  for (var sortKey in idolSortNames) {
-    var sortElement = document.querySelector('#sort-list a[data-sort-order="' + sortKey + '"]');
-    if (sortElement) sortElement.addEventListener('click', setSortOrder);
-  }
-
-  var agency = this;
-
-  var inputs = document.querySelectorAll('#catalog li.idol .input');
-
-  function toggleMembership(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    i = parseInt(event.currentTarget.getAttribute('data-index'), 10);
-    sortedCatalog[i].toggleUnitMembership();
-  }
-
-  for (var i = 0, n = inputs.length; i < n; i++) {
-    var element = inputs[i];
-    element.addEventListener('click', toggleMembership);
-  }
-
-  var upgradeButtons = document.querySelectorAll('#upgrade-list a[data-upgrade-name]');
-
-  function upgradeAgency(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    if (agency.spendableLevels() <= 0) {
-      askUser('You have no points to spend. Level up your agency some more and try again later.');
-      return;
-    }
-
-    var upgradeName = event.currentTarget.getAttribute('data-upgrade-name');
-    agency.upgrades[upgradeName] += 1;
-    event.currentTarget.parentElement.querySelector('.level-counter').innerText = agency.upgrades[upgradeName].toString(10);
-    document.getElementById('spendable-levels').innerText = agency.spendableLevels();
-    if (agency.spendableLevels() === 0) document.getElementById('agency-meta').classList.remove('spendable-levels');
-    saveGame();
-  }
-
-  for (var k = 0; k < upgradeButtons.length; k++) {
-    upgradeButtons[k].addEventListener('click', upgradeAgency);
-  }
-
-  var lis = document.querySelectorAll('#catalog li.idol');
-
-  function showDetail(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    i = parseInt(event.currentTarget.getAttribute('data-index'), 10);
-    sortedCatalog[i].showDetail();
-  }
-
-  for (var j = 0, m = lis.length; j < m; j++) {
-    var li = lis[j];
-    sortedCatalog[j].catalogElement = li;
-    li.addEventListener('click', showDetail);
-  }
-
-  function triggerLoad(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    loadGame.click();
-  }
-  document.getElementById('load-backup').addEventListener('click', triggerLoad);
-  function triggerSave(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    window.open(event.currentTarget.getAttribute('href'), 'downloadTarget');
-  }
-  document.getElementById('save-backup').addEventListener('click', triggerSave);
-  var footerLoad = document.getElementById('footer-load');
-  if (footerLoad) footerLoad.addEventListener('click', triggerLoad);
-
-  function toggleCredits(event) {
-    if (event.target.classList.contains('credited-homepage')) return;
-
-    event.stopPropagation();
-    event.preventDefault();
-
-    document.getElementById('credits').classList.toggle('shown');
-  }
-  document.getElementById('credits').addEventListener('click', toggleCredits);
-  document.getElementById('credits-button').addEventListener('click', toggleCredits);
-};
-Agency.prototype.sortedCatalog = function() {
-  var sortedCatalog = [];
-  for (var i = 0; i < this.catalog.length; i++) {
-    sortedCatalog.push(this.catalog[i]);
-  }
-  sortedCatalog.sort(idolSorters[this.sortOrder]);
-  return sortedCatalog;
-};
-Agency.prototype.renderUnit = function() {
-  var self = this;
-  var content = unitTemplate(this, {allowedProtoMethods: {
-    unitName: true,
-    thumbSpriteHTML: true
-  }});
-
-  if ((this.unit.length === 0) ^ unitElement.classList.contains('empty')) {
-    unitElement.classList.toggle('empty');
-  }
-
-  unitElement.innerHTML = content;
-  var unitElements = unitElement.querySelectorAll('.unit li');
-
-  function handleUnitClick(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    self.unit[parseInt(e.currentTarget.getAttribute('data-index'), 10)].showDetail();
-  }
-
-  for (var ei = 0; ei < unitElements.length; ei++) {
-    unitElements[ei].addEventListener('click', handleUnitClick);
-  }
-
-  unitDetailElement.innerHTML = unitDetailTemplate(this, {allowedProtoMethods: {
-    unitName: true,
-    hugeSpriteHTML: true,
-    thumbSpriteHTML: true
-  }});
-
-  function toggleUnitDetailDisplay(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    unitDetailElement.classList.toggle('hidden');
-  }
-
-  document.getElementById('dismiss-unit-details').addEventListener('click', toggleUnitDetailDisplay);
-  document.getElementById('show-unit-details').addEventListener('click', toggleUnitDetailDisplay);
-};
-Agency.prototype.level = function() {
-  var level = 0;
-  var xpRemainder = this.experience;
-  while (xpRemainder >= level) {
-    level++;
-    xpRemainder -= level;
-  }
-  return 1 + level + (xpRemainder / level);
-};
-Agency.prototype.spendableLevels = function() {
-  var spendableLevels = this.levelFloor();
-  for (var upgradeType in this.upgrades) {
-    spendableLevels -= this.upgrades[upgradeType];
-  }
-  return spendableLevels;
-};
-Agency.prototype.levelFloor = function() {
-  return Math.floor(this.level());
-};
-Agency.prototype.levelProgress = function() {
-  var level = this.level();
-  return level - Math.floor(level);
-};
-Agency.prototype.grantExperience = function(count) {
-  this.experience += count;
-  deferRerender();
-  if (!count) return;  // we don't need to congratulate them on this one i don't think
-
-  var indicator = document.createElement('div');
-  indicator.classList.add('xp-indicator');
-  indicator.innerHTML = count.toString(10) + 'xp';
-  indicator.style.left = ((Math.random() * 60) - 30).toString(10) + '%';
-  xpIndicatorsElement.appendChild(indicator);
-
-  setTimeout(function() {
-    xpIndicatorsElement.removeChild(indicator);
-  }, 4000);
-};
-Agency.prototype.unitName = function() {
-  var unitSeed = 0;
-
-  for (var ii = 0; ii < this.unit.length; ii++) {
-    unitSeed += this.unit[ii].seed;
-  }
-  
-  var rng = seededRandom(unitSeed);
-  return choice(choice(UNIT_NAMES[0], rng()), rng()) + ' ' + choice(choice(UNIT_NAMES[1], rng()), rng());
-};
-Agency.prototype.addIdol = function(idol, interactive) {
-  var blocked = false;
-
-  if ((this.catalog.length === 0) && document.body.classList.contains('nothing-scanned')) {
-    document.body.removeChild(document.getElementById('title'));
-    document.body.classList.remove('nothing-scanned');
-  }
-
-  for(var i = 0, n = this.catalog.length; i < n; i++) {
-    if (this.catalog[i].seed === idol.seed) {
-      var catalogIdol = this.catalog[i];
-      askUser("You recruited this idol already; it's " + idol.name + "!",
-        [
-          ['Show me', catalogIdol.showDetail.bind(catalogIdol)],
-          ['Okay', null]
-        ]
-      );
-      blocked = true;
-      return;
-    }
-  }
-
-  if (blocked) return;
-
-  if (this.recentlyFired.indexOf(idol.seed) !== -1) {
-    askUser(idol.name + " recently left your agency. Try recruiting some other idols before attempting to recruit her again.");
-    return;
-  }
-
-  this.catalog.push(idol);
-  idol.agency = this;
-  this.addToUnit(idol);
-  deferRerender();
-
-  if (interactive) {
-    idol.audition();
-  }
-};
-Agency.prototype.removeIdol = function(idol: Idol) {
-  if (idol.isInUnit()) idol.toggleUnitMembership();
-  agency.catalog.splice(agency.catalog.indexOf(idol), 1);
-
-  agency.recentlyFired.push(idol.seed);
-  if (agency.recentlyFired.length > RECENT_FIRING_MEMORY) {
-    agency.recentlyFired = agency.recentlyFired.splice(
-      agency.recentlyFired.length - RECENT_FIRING_MEMORY,
-      RECENT_FIRING_MEMORY
-    );
-  }
-
-  deferRerender();
-};
-Agency.prototype.addToUnit = function(idol: Idol, interactive: boolean) {
-  if (this.unit.length >= maxUnitSize) {
-    if (interactive !== undefined) {
-      askUser("Your unit is full; you'll need to remove someone before you can add " + idol.name + ".");
-    }
-  } else {
-    this.unit.push(idol);
-    if (idol.catalogElement !== undefined) idol.catalogElement.classList.add('active');
-  }
-};
-Agency.prototype.canFeed = function() {
-  return this.catalog.length >= 2;
-};
-Agency.prototype.doStory = function(pageNumber: number) {
-  var self = this;
-  var chapter = this.getStoryChapter();
-
-  function renderSetting() {
-    theatreElement.innerHTML = theatreTemplate({background: self.storySetting});
-    var skipButton = theatreElement.querySelector('#skip');
-
-    function handleSkipClick(event) {
+    function setSortOrder(event) {
       event.stopPropagation();
       event.preventDefault();
-      isSkipping = true;
-      unbindScriptClick();
-      skipButton.removeEventListener('click', skipButton);
-      self.doStory(pageNumber + 1);
+      agency.sortOrder = event.currentTarget.getAttribute('data-sort-order');
+      rerender();
     }
 
-    skipButton.addEventListener('click', handleSkipClick);
-  }
+    document.getElementById('sort-button').addEventListener('click', function(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      document.getElementById('agency-meta').classList.remove('upgrade-visible');
+      document.getElementById('agency-meta').classList.toggle('sort-visible');
+    });
 
-  function getActorElement(actor) {
-    var element = theatreElement.querySelector('#boards .actor[data-actor-name="' + actor.actorName + '"]');
-    if (!element) {
-      actor.actorName = actor.actorName;
-      element = document.createElement('div');
-      element.setAttribute('data-actor-name', actor.actorName);
-      element.classList.add('actor');
-      element.innerHTML = actor.hugeSpriteHTML();
-      theatreElement.querySelector('#boards')!.appendChild(element);
+    document.getElementById('agency-summary').addEventListener('click', function(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      document.getElementById('agency-meta').classList.remove('sort-visible');
+      document.getElementById('agency-meta').classList.toggle('upgrade-visible');
+    });
+
+    for (var sortKey in idolSortNames) {
+      var sortElement = document.querySelector('#sort-list a[data-sort-order="' + sortKey + '"]');
+      if (sortElement) sortElement.addEventListener('click', setSortOrder);
     }
-    return element;
-  }
 
-  if (pageNumber === undefined) {
-    pageNumber = 0;
-    renderSetting(); // make boards
-    for (var pi = 0; pi < chapter.length; pi++) {
-      // preload any idols
-      if (chapter[pi].actor !== undefined) {
-        console.log('hopefully preloading');
-        console.log(chapter[pi]);
-        var actor = getBoss(chapter[pi].actor);
-        getActorElement(actor);
-      }
+    var agency = this;
+
+    var inputs = document.querySelectorAll('#catalog li.idol .input');
+
+    function toggleMembership(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      i = parseInt(event.currentTarget.getAttribute('data-index'), 10);
+      sortedCatalog[i].toggleUnitMembership();
     }
-  }
 
-  var page = chapter[pageNumber];
-  var actorElement: Element;
+    for (var i = 0, n = inputs.length; i < n; i++) {
+      var element = inputs[i];
+      element.addEventListener('click', toggleMembership);
+    }
 
-  function graduallyShowScript(visibleScriptElement, invisibleScriptElement) {
-    function showNextLetter() {
-      var nextLetter = invisibleScriptElement.textContent[0];
-      visibleScriptElement.textContent += nextLetter;
-      invisibleScriptElement.textContent = invisibleScriptElement.textContent.replace(/^./, '');
-      clearTimeout(letterTimeout);
+    var upgradeButtons = document.querySelectorAll('#upgrade-list a[data-upgrade-name]');
 
-      if (!invisibleScriptElement.textContent) {
-        letterTimeout = undefined;
+    function upgradeAgency(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      if (agency.spendableLevels() <= 0) {
+        askUser('You have no points to spend. Level up your agency some more and try again later.');
         return;
       }
 
-      var letterDelay = LETTER_DELAY * (LETTER_DELAYS[nextLetter] || 1);
-      if (page.em) letterDelay *= LETTER_EMPHASIS_MULTIPLIER;
-      letterTimeout = setTimeout(showNextLetter, letterDelay);
+      var upgradeName = event.currentTarget.getAttribute('data-upgrade-name');
+      agency.upgrades[upgradeName] += 1;
+      event.currentTarget.parentElement.querySelector('.level-counter').innerText = agency.upgrades[upgradeName].toString(10);
+      document.getElementById('spendable-levels').innerText = agency.spendableLevels();
+      if (agency.spendableLevels() === 0) document.getElementById('agency-meta').classList.remove('spendable-levels');
+      saveGame();
     }
 
-    letterTimeout = setTimeout(showNextLetter, 50);
+    for (var k = 0; k < upgradeButtons.length; k++) {
+      upgradeButtons[k].addEventListener('click', upgradeAgency);
+    }
 
-    function handleScriptClick(e) {
+    var lis = document.querySelectorAll('#catalog li.idol');
+
+    function showDetail(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      i = parseInt(event.currentTarget.getAttribute('data-index'), 10);
+      sortedCatalog[i].showDetail();
+    }
+
+    for (var j = 0, m = lis.length; j < m; j++) {
+      var li = lis[j];
+      sortedCatalog[j].catalogElement = li;
+      li.addEventListener('click', showDetail);
+    }
+
+    function triggerLoad(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      loadGame.click();
+    }
+    document.getElementById('load-backup').addEventListener('click', triggerLoad);
+    function triggerSave(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      window.open(event.currentTarget.getAttribute('href'), 'downloadTarget');
+    }
+    document.getElementById('save-backup').addEventListener('click', triggerSave);
+    var footerLoad = document.getElementById('footer-load');
+    if (footerLoad) footerLoad.addEventListener('click', triggerLoad);
+
+    function toggleCredits(event) {
+      if (event.target.classList.contains('credited-homepage')) return;
+
+      event.stopPropagation();
+      event.preventDefault();
+
+      document.getElementById('credits').classList.toggle('shown');
+    }
+    document.getElementById('credits').addEventListener('click', toggleCredits);
+    document.getElementById('credits-button').addEventListener('click', toggleCredits);
+  };
+  sortedCatalog() {
+    var sortedCatalog = [];
+    for (var i = 0; i < this.catalog.length; i++) {
+      sortedCatalog.push(this.catalog[i]);
+    }
+    sortedCatalog.sort(idolSorters[this.sortOrder]);
+    return sortedCatalog;
+  };
+  renderUnit() {
+    var self = this;
+    var content = unitTemplate(this, {allowedProtoMethods: {
+      unitName: true,
+      thumbSpriteHTML: true
+    }});
+
+    if ((this.unit.length === 0) ^ unitElement.classList.contains('empty')) {
+      unitElement.classList.toggle('empty');
+    }
+
+    unitElement.innerHTML = content;
+    var unitElements = unitElement.querySelectorAll('.unit li');
+
+    function handleUnitClick(e) {
       e.stopPropagation();
       e.preventDefault();
-
-      if (letterTimeout === undefined) {
-        theatreElement.removeEventListener('click', handleScriptClick);
-        self.doStory(pageNumber + 1);
-      } else {
-        clearTimeout(letterTimeout);
-        letterTimeout = undefined;
-        visibleScriptElement.textContent += invisibleScriptElement.textContent;
-        invisibleScriptElement.textContent = '';
-      }
-    }
-    theatreElement.addEventListener('click', handleScriptClick);
-    function unbindScriptClick() { theatreElement.removeEventListener('click', handleScriptClick); }
-    return unbindScriptClick;
-  }
-
-  function goToDestination() {
-    if (page.adjectives.into) actorElement.setAttribute('data-position', page.adjectives.into);
-  }
-
-  function handleSetpieceClick(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    self.doStory(pageNumber + 1);
-    theatreElement.removeEventListener('click', handleSetpieceClick);
-  }
-
-  if (page === undefined) {
-    theatreElement.innerHTML = '';
-    this.storyChaptersBeaten++;
-    this.grantExperience(this.storyChaptersBeaten);
-    rerender();
-
-  } else if (page.kind === 'setting') {
-    this.storySetting = page.value;
-    renderSetting();
-    this.doStory(pageNumber + 1);
-
-  } else if (page.kind === 'text') {
-    if (!theatreElement.innerHTML) renderSetting();
-    stage = document.getElementById('stage').classList.remove('setpiece');
-    if (theatreElement.classList.contains('em') !== Boolean(page.em)) theatreElement.classList.toggle('em');
-
-    var currentlySpeakingIdolElements = theatreElement.querySelectorAll('.speaking');
-    for (var ci = 0; ci < currentlySpeakingIdolElements.length; ci++) currentlySpeakingIdolElements[ci].classList.remove('speaking');
-
-    if (isSkipping) {
-      this.doStory(pageNumber + 1);
-    } else {
-      var invisibleScriptElement = document.getElementById('invisible-script');
-      var visibleScriptElement = document.getElementById('visible-script');
-      for (var psi = 0; psi < page.speakers.length; psi++) {
-        theatreElement.querySelector('[data-actor-name="' + page.speakers[psi] + '"]').classList.add('speaking');
-      }
-      invisibleScriptElement.textContent = page.text;
-      visibleScriptElement.textContent = '';
-      unbindScriptClick = graduallyShowScript(visibleScriptElement, invisibleScriptElement);
+      self.unit[parseInt(e.currentTarget.getAttribute('data-index'), 10)].showDetail();
     }
 
-  } else if (page.kind === 'setpiece') {
-    if (!theatreElement.innerHTML) renderSetting();
-    theatreElement.addEventListener('click', handleSetpieceClick);
-    document.getElementById('setpiece').outerHTML = document.getElementById('setpiece').outerHTML;
-    document.getElementById('setpiece').innerText = page.text;
-
-    document.getElementById('stage').classList.add('setpiece');
-
-  } else if (page.kind === 'direction') {
-    if (page.actor !== undefined) {
-      var bossActor = getBoss(page.actor);
-      actorElement = getActorElement(bossActor);
-      actorElement.classList.remove('exited');
-
-      if (page.adjectives.rotated) actorElement.setAttribute('data-rotated', page.adjectives.rotated);
-
-      if (page.verb === 'enter' && page.adjectives.from) {
-        actorElement.setAttribute('data-position', page.adjectives.from + '-offstage');
-        setTimeout(goToDestination, 10);
-      } else {
-        goToDestination();
-      }
-    }
-    if (page.verb === 'celebrate') celebrate();
-    if (page.verb === 'clear') {
-      var actorElements = theatreElement.querySelectorAll('#boards .actor');
-      for (var aei = 0; aei < actorElements.length; aei++) actorElements[aei].classList.add('exited');
+    for (var ei = 0; ei < unitElements.length; ei++) {
+      unitElements[ei].addEventListener('click', handleUnitClick);
     }
 
-    this.doStory(pageNumber + 1);
+    unitDetailElement.innerHTML = unitDetailTemplate(this, {allowedProtoMethods: {
+      unitName: true,
+      hugeSpriteHTML: true,
+      thumbSpriteHTML: true
+    }});
 
-  } else if (page.kind === 'battle') {
-    isSkipping = false;
-    theatreElement.innerHTML = '';
-    var playerIdols = [];
-
-    for (var pii = 0; pii < self.unit.length; pii++) {
-      playerIdols.push(new BattleIdol(self.unit[pii], 'player'));
+    function toggleUnitDetailDisplay(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      unitDetailElement.classList.toggle('hidden');
     }
 
-    var enemyIdols = [];
-
-    for (var ei = 0; ei < page.bosses.length; ei++) {
-      var enemyIdol = getBoss(page.bosses[ei]);
-      for (var stat in Stat) {
-        enemyIdol.stats.set(stat, enemyIdol.stats.get(stat) + (CHAPTER_DIFFICULTY_INCREASE * this.storyChaptersBeaten));
-      }
-      enemyIdols.push(new BattleIdol(enemyIdol, 'ai'));
-    }
-
-    var battle = new Battle(playerIdols, enemyIdols, function() {
-      for (var pi = 0; pi < this.playerIdols.length; pi++) {
-        this.playerIdols[pi].idol.giveBonus(enemyIdols.length);
-      }
-
-      self.doStory(pageNumber + 1);
-    }, function() {
-      theatreElement.innerHTML = '';
-      askUser('You lost the battle. Train up your unit some more and try again!');
-    });
-
-    battle.loop();
-  }
-};
-Agency.prototype.getStoryChapter = function() {
-  var chapterName;
-
-  chapterName = INITIAL_CHAPTER_ORDER[this.storyChaptersBeaten];
-
-  if (chapterName === undefined) {
-    var progressBeyond = this.storyChaptersBeaten - INITIAL_CHAPTER_ORDER.length;
-    var index = progressBeyond % FINAL_LOOP_ORDER.length;
-    chapterName = FINAL_LOOP_ORDER[index];
-  }
-
-  return CHAPTERS[chapterName];
-};
-Agency.prototype.dump = function() {
-  var agencyDump = {
-    i: [],
-    u: [],
-    x: this.experience,
-    p: this.upgrades,
-    b: this.storyChaptersBeaten,
-    q: this.quickBattleRanking,
-    f: this.recentlyFired,
-    o: this.sortOrder
+    document.getElementById('dismiss-unit-details').addEventListener('click', toggleUnitDetailDisplay);
+    document.getElementById('show-unit-details').addEventListener('click', toggleUnitDetailDisplay);
   };
+  level() {
+    var level = 0;
+    var xpRemainder = this.experience;
+    while (xpRemainder >= level) {
+      level++;
+      xpRemainder -= level;
+    }
+    return 1 + level + (xpRemainder / level);
+  };
+  spendableLevels() {
+    var spendableLevels = this.levelFloor();
+    for (var upgradeType in this.upgrades) {
+      spendableLevels -= this.upgrades[upgradeType];
+    }
+    return spendableLevels;
+  };
+  levelFloor() {
+    return Math.floor(this.level());
+  };
+  levelProgress() {
+    var level = this.level();
+    return level - Math.floor(level);
+  };
+  grantExperience(count) {
+    this.experience += count;
+    deferRerender();
+    if (!count) return;  // we don't need to congratulate them on this one i don't think
 
-  for(var i = 0, n = this.catalog.length; i < n; i++) {
-    var idol = this.catalog[i];
-    agencyDump.i.push(idol.dump());
-    agencyDump.u.push(Number(idol.isInUnit()));
-  }
+    var indicator = document.createElement('div');
+    indicator.classList.add('xp-indicator');
+    indicator.innerHTML = count.toString(10) + 'xp';
+    indicator.style.left = ((Math.random() * 60) - 30).toString(10) + '%';
+    xpIndicatorsElement.appendChild(indicator);
 
-  return agencyDump;
-};
-Agency.prototype.load = function(agencyDump) {
-  if (agencyDump.o !== undefined) this.sortOrder = agencyDump.o;
-  this.experience = agencyDump.x || 0;
-  this.storyChaptersBeaten = agencyDump.b || 0;
-  this.quickBattleRanking = agencyDump.q || 0;
-  this.recentlyFired = agencyDump.f || [];
-  this.upgrades = agencyDump.p || this.upgrades;
+    setTimeout(function() {
+      xpIndicatorsElement.removeChild(indicator);
+    }, 4000);
+  };
+  unitName() {
+    var unitSeed = 0;
 
-  for(var i = 0, n = agencyDump.i.length; i < n; i++) {
-    var idolDump = agencyDump.i[i];
-    var idol = new Idol(idolDump.i);
-
-    idol.recruitedAt = idolDump.a;
-    idol.favourite = idolDump.f;
-    idol.shiny = Boolean(idolDump.r);
-
-    for(var stat in Stat) {
-      idol.stats.set(stat, idolDump.s[stat]);
+    for (var ii = 0; ii < this.unit.length; ii++) {
+      unitSeed += this.unit[ii].seed;
     }
 
-    this.addIdol(idol);
+    var rng = seededRandom(unitSeed);
+    return choice(choice(UNIT_NAMES[0], rng()), rng()) + ' ' + choice(choice(UNIT_NAMES[1], rng()), rng());
+  };
+  addIdol = function(idol, interactive) {
+    var blocked = false;
 
-    if (Boolean(agencyDump.u[i]) !== idol.isInUnit()) {
-      idol.toggleUnitMembership();
+    if ((this.catalog.length === 0) && document.body.classList.contains('nothing-scanned')) {
+      document.body.removeChild(document.getElementById('title'));
+      document.body.classList.remove('nothing-scanned');
     }
-  }
-};
+
+    for(var i = 0, n = this.catalog.length; i < n; i++) {
+      if (this.catalog[i].seed === idol.seed) {
+        var catalogIdol = this.catalog[i];
+        askUser("You recruited this idol already; it's " + idol.name + "!",
+          [
+            ['Show me', catalogIdol.showDetail.bind(catalogIdol)],
+            ['Okay', null]
+          ]
+        );
+        blocked = true;
+        return;
+      }
+    }
+
+    if (blocked) return;
+
+    if (this.recentlyFired.indexOf(idol.seed) !== -1) {
+      askUser(idol.name + " recently left your agency. Try recruiting some other idols before attempting to recruit her again.");
+      return;
+    }
+
+    this.catalog.push(idol);
+    idol.agency = this;
+    this.addToUnit(idol);
+    deferRerender();
+
+    if (interactive) {
+      idol.audition();
+    }
+  };
+  removeIdol(idol: Idol) {
+    if (idol.isInUnit()) idol.toggleUnitMembership();
+    agency.catalog.splice(agency.catalog.indexOf(idol), 1);
+
+    agency.recentlyFired.push(idol.seed);
+    if (agency.recentlyFired.length > RECENT_FIRING_MEMORY) {
+      agency.recentlyFired = agency.recentlyFired.splice(
+        agency.recentlyFired.length - RECENT_FIRING_MEMORY,
+        RECENT_FIRING_MEMORY
+      );
+    }
+
+    deferRerender();
+  };
+  addToUnit(idol: Idol, interactive: boolean) {
+    if (this.unit.length >= maxUnitSize) {
+      if (interactive !== undefined) {
+        askUser("Your unit is full; you'll need to remove someone before you can add " + idol.name + ".");
+      }
+    } else {
+      this.unit.push(idol);
+      if (idol.catalogElement !== undefined) idol.catalogElement.classList.add('active');
+    }
+  };
+  canFeed() {
+    return this.catalog.length >= 2;
+  };
+  doStory(pageNumber: number) {
+    var self = this;
+    var chapter = this.getStoryChapter();
+
+    function renderSetting() {
+      theatreElement.innerHTML = theatreTemplate({background: self.storySetting});
+      var skipButton = theatreElement.querySelector('#skip');
+
+      function handleSkipClick(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        isSkipping = true;
+        unbindScriptClick();
+        skipButton.removeEventListener('click', skipButton);
+        self.doStory(pageNumber + 1);
+      }
+
+      skipButton.addEventListener('click', handleSkipClick);
+    }
+
+    function getActorElement(actor) {
+      var element = theatreElement.querySelector('#boards .actor[data-actor-name="' + actor.actorName + '"]');
+      if (!element) {
+        actor.actorName = actor.actorName;
+        element = document.createElement('div');
+        element.setAttribute('data-actor-name', actor.actorName);
+        element.classList.add('actor');
+        element.innerHTML = actor.hugeSpriteHTML();
+        theatreElement.querySelector('#boards')!.appendChild(element);
+      }
+      return element;
+    }
+
+    if (pageNumber === undefined) {
+      pageNumber = 0;
+      renderSetting(); // make boards
+      for (var pi = 0; pi < chapter.length; pi++) {
+        // preload any idols
+        if (chapter[pi].actor !== undefined) {
+          console.log('hopefully preloading');
+          console.log(chapter[pi]);
+          var actor = getBoss(chapter[pi].actor);
+          getActorElement(actor);
+        }
+      }
+    }
+
+    var page = chapter[pageNumber];
+    var actorElement: Element;
+
+    function graduallyShowScript(visibleScriptElement, invisibleScriptElement) {
+      function showNextLetter() {
+        var nextLetter = invisibleScriptElement.textContent[0];
+        visibleScriptElement.textContent += nextLetter;
+        invisibleScriptElement.textContent = invisibleScriptElement.textContent.replace(/^./, '');
+        clearTimeout(letterTimeout);
+
+        if (!invisibleScriptElement.textContent) {
+          letterTimeout = undefined;
+          return;
+        }
+
+        var letterDelay = LETTER_DELAY * (LETTER_DELAYS[nextLetter] || 1);
+        if (page.em) letterDelay *= LETTER_EMPHASIS_MULTIPLIER;
+        letterTimeout = setTimeout(showNextLetter, letterDelay);
+      }
+
+      letterTimeout = setTimeout(showNextLetter, 50);
+
+      function handleScriptClick(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        if (letterTimeout === undefined) {
+          theatreElement.removeEventListener('click', handleScriptClick);
+          self.doStory(pageNumber + 1);
+        } else {
+          clearTimeout(letterTimeout);
+          letterTimeout = undefined;
+          visibleScriptElement.textContent += invisibleScriptElement.textContent;
+          invisibleScriptElement.textContent = '';
+        }
+      }
+      theatreElement.addEventListener('click', handleScriptClick);
+      function unbindScriptClick() { theatreElement.removeEventListener('click', handleScriptClick); }
+      return unbindScriptClick;
+    }
+
+    function goToDestination() {
+      if (page.adjectives.into) actorElement.setAttribute('data-position', page.adjectives.into);
+    }
+
+    function handleSetpieceClick(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      self.doStory(pageNumber + 1);
+      theatreElement.removeEventListener('click', handleSetpieceClick);
+    }
+
+    if (page === undefined) {
+      theatreElement.innerHTML = '';
+      this.storyChaptersBeaten++;
+      this.grantExperience(this.storyChaptersBeaten);
+      rerender();
+
+    } else if (page.kind === 'setting') {
+      this.storySetting = page.value;
+      renderSetting();
+      this.doStory(pageNumber + 1);
+
+    } else if (page.kind === 'text') {
+      if (!theatreElement.innerHTML) renderSetting();
+      stage = document.getElementById('stage').classList.remove('setpiece');
+      if (theatreElement.classList.contains('em') !== Boolean(page.em)) theatreElement.classList.toggle('em');
+
+      var currentlySpeakingIdolElements = theatreElement.querySelectorAll('.speaking');
+      for (var ci = 0; ci < currentlySpeakingIdolElements.length; ci++) currentlySpeakingIdolElements[ci].classList.remove('speaking');
+
+      if (isSkipping) {
+        this.doStory(pageNumber + 1);
+      } else {
+        var invisibleScriptElement = document.getElementById('invisible-script');
+        var visibleScriptElement = document.getElementById('visible-script');
+        for (var psi = 0; psi < page.speakers.length; psi++) {
+          theatreElement.querySelector('[data-actor-name="' + page.speakers[psi] + '"]').classList.add('speaking');
+        }
+        invisibleScriptElement.textContent = page.text;
+        visibleScriptElement.textContent = '';
+        unbindScriptClick = graduallyShowScript(visibleScriptElement, invisibleScriptElement);
+      }
+
+    } else if (page.kind === 'setpiece') {
+      if (!theatreElement.innerHTML) renderSetting();
+      theatreElement.addEventListener('click', handleSetpieceClick);
+      document.getElementById('setpiece').outerHTML = document.getElementById('setpiece').outerHTML;
+      document.getElementById('setpiece').innerText = page.text;
+
+      document.getElementById('stage').classList.add('setpiece');
+
+    } else if (page.kind === 'direction') {
+      if (page.actor !== undefined) {
+        var bossActor = getBoss(page.actor);
+        actorElement = getActorElement(bossActor);
+        actorElement.classList.remove('exited');
+
+        if (page.adjectives.rotated) actorElement.setAttribute('data-rotated', page.adjectives.rotated);
+
+        if (page.verb === 'enter' && page.adjectives.from) {
+          actorElement.setAttribute('data-position', page.adjectives.from + '-offstage');
+          setTimeout(goToDestination, 10);
+        } else {
+          goToDestination();
+        }
+      }
+      if (page.verb === 'celebrate') celebrate();
+      if (page.verb === 'clear') {
+        var actorElements = theatreElement.querySelectorAll('#boards .actor');
+        for (var aei = 0; aei < actorElements.length; aei++) actorElements[aei].classList.add('exited');
+      }
+
+      this.doStory(pageNumber + 1);
+
+    } else if (page.kind === 'battle') {
+      isSkipping = false;
+      theatreElement.innerHTML = '';
+      var playerIdols = [];
+
+      for (var pii = 0; pii < self.unit.length; pii++) {
+        playerIdols.push(new BattleIdol(self.unit[pii], 'player'));
+      }
+
+      var enemyIdols = [];
+
+      for (var ei = 0; ei < page.bosses.length; ei++) {
+        var enemyIdol = getBoss(page.bosses[ei]);
+        for (var stat in Stat) {
+          enemyIdol.stats.set(stat, enemyIdol.stats.get(stat) + (CHAPTER_DIFFICULTY_INCREASE * this.storyChaptersBeaten));
+        }
+        enemyIdols.push(new BattleIdol(enemyIdol, 'ai'));
+      }
+
+      var battle = new Battle(playerIdols, enemyIdols, function() {
+        for (var pi = 0; pi < this.playerIdols.length; pi++) {
+          this.playerIdols[pi].idol.giveBonus(enemyIdols.length);
+        }
+
+        self.doStory(pageNumber + 1);
+      }, function() {
+        theatreElement.innerHTML = '';
+        askUser('You lost the battle. Train up your unit some more and try again!');
+      });
+
+      battle.loop();
+    }
+  };
+  getStoryChapter() {
+    var chapterName;
+
+    chapterName = INITIAL_CHAPTER_ORDER[this.storyChaptersBeaten];
+
+    if (chapterName === undefined) {
+      var progressBeyond = this.storyChaptersBeaten - INITIAL_CHAPTER_ORDER.length;
+      var index = progressBeyond % FINAL_LOOP_ORDER.length;
+      chapterName = FINAL_LOOP_ORDER[index];
+    }
+
+    return CHAPTERS[chapterName];
+  };
+  dump() {
+    var agencyDump = {
+      i: [],
+      u: [],
+      x: this.experience,
+      p: this.upgrades,
+      b: this.storyChaptersBeaten,
+      q: this.quickBattleRanking,
+      f: this.recentlyFired,
+      o: this.sortOrder
+    };
+
+    for(var i = 0, n = this.catalog.length; i < n; i++) {
+      var idol = this.catalog[i];
+      agencyDump.i.push(idol.dump());
+      agencyDump.u.push(Number(idol.isInUnit()));
+    }
+
+    return agencyDump;
+  };
+  load(agencyDump) {
+    if (agencyDump.o !== undefined) this.sortOrder = agencyDump.o;
+    this.experience = agencyDump.x || 0;
+    this.storyChaptersBeaten = agencyDump.b || 0;
+    this.quickBattleRanking = agencyDump.q || 0;
+    this.recentlyFired = agencyDump.f || [];
+    this.upgrades = agencyDump.p || this.upgrades;
+
+    for(var i = 0, n = agencyDump.i.length; i < n; i++) {
+      var idolDump = agencyDump.i[i];
+      var idol = new Idol(idolDump.i);
+
+      idol.recruitedAt = idolDump.a;
+      idol.favourite = idolDump.f;
+      idol.shiny = Boolean(idolDump.r);
+
+      for(var stat in Stat) {
+        idol.stats.set(stat, idolDump.s[stat]);
+      }
+
+      this.addIdol(idol);
+
+      if (Boolean(agencyDump.u[i]) !== idol.isInUnit()) {
+        idol.toggleUnitMembership();
+      }
+    }
+  };
+}
 
 function numFromString(str: string): number {
   var total = 0;
