@@ -59,6 +59,8 @@ export class BattleIdol {
   hp: number
   abilities: Ability[]
   affinity: AffinityType
+  battle?: Battle
+  element?: Element
 
   constructor(idol: Idol, control: 'ai' | 'player') {
     this.idol = idol
@@ -142,8 +144,21 @@ export class BattleIdol {
   };
 }
 
-class Battle {
-  constructor(playerIdols, enemyIdols, victoryCallback, lossCallback, fleeCallback) {
+export class Battle {
+  playerIdols: BattleIdol[]
+  enemyIdols: BattleIdol[]
+  victoryCallback: () => void
+  lossCallback: () => void
+  fleeCallback: () => void
+  turnOrder: BattleIdol[]
+
+  constructor(
+    playerIdols: BattleIdol[],
+    enemyIdols: BattleIdol[],
+    victoryCallback: () => void,
+    lossCallback: () => void,
+    fleeCallback: () => void
+  ) {
     this.playerIdols = playerIdols;
     this.enemyIdols = enemyIdols;
 
@@ -154,6 +169,8 @@ class Battle {
     this.render();
 
     document.body.classList.add('in-battle');
+
+    this.turnOrder = [];
   }
 
   loop() {
@@ -187,11 +204,11 @@ class Battle {
     }
   };
 
-  determinePlayerMove(idol) {
+  determinePlayerMove(idol: BattleIdol) {
     var self = this;
-    var abilityPromptElement = document.getElementById('ability-prompt');
+    var abilityPromptElement = document.getElementById('ability-prompt')!;
 
-    function pickMove(e) {
+    function pickMove(e: Event) {
       e.stopPropagation();
       e.preventDefault();
 
@@ -202,10 +219,10 @@ class Battle {
         return;
       }
 
-      document.getElementById('battle-form').removeEventListener('submit', pickMove);
+      document.getElementById('battle-form')!.removeEventListener('submit', pickMove);
 
-      var targetIndex = parseInt(targetInput.getAttribute('value'), 10);
-      var abilityIndex = parseInt(moveInput.getAttribute('value'), 10);
+      var targetIndex = parseInt(targetInput.getAttribute('value')!, 10);
+      var abilityIndex = parseInt(moveInput.getAttribute('value')!, 10);
 
       abilityPromptElement.innerHTML = '';
       idol.element.classList.remove('focussed');
@@ -355,18 +372,18 @@ function bindHoverDetail(idol: BattleIdol, idolElement: Element) {
   idolElement.addEventListener('contextmenu', function(e) { e.preventDefault(); e.stopPropagation(); });
 }
 
-function playAnimationCanvas(ability, element) {
-  var portraitDiv = element.querySelector('.portrait');
+function playAnimationCanvas(ability: Ability, element: Element) {
+  var portraitDiv = element.querySelector('.portrait')!;
   var currentImage = 0;
-  var animationCanvas = document.createElement('Canvas');
+  var animationCanvas = document.createElement('Canvas') as HTMLCanvasElement;
 
   portraitDiv.setAttribute("data-ability-name", ability.name);
   animationCanvas.style.position = "absolute";
   animationCanvas.style.display = "inline";
-  animationCanvas.style.left = 2;
-  animationCanvas.style.zIndex = 3;
+  animationCanvas.style.left = "2"
+  animationCanvas.style.zIndex = "3"
 
-  var ctx = animationCanvas.getContext('2d');
+  var ctx = animationCanvas.getContext('2d')!;
   portraitDiv.appendChild(animationCanvas);
 
   ctx.canvas.width = 256;
@@ -374,7 +391,7 @@ function playAnimationCanvas(ability, element) {
 
   var animationID = setInterval(function () {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    ctx.drawImage(anims[ability.animation], 0, (-256 * currentImage));
+    ctx.drawImage(anims.get(ability.animation)!, 0, (-256 * currentImage));
     currentImage++;
   }, (animationDuration / 14));
 
