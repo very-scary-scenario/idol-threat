@@ -4,6 +4,12 @@ var promptArea = document.getElementById('prompt-area')!;
 
 var promptTemplate = Handlebars.compile(document.getElementById('prompt-template')!.innerHTML);
 
+export interface Part {
+  path: string
+  medPath: string
+  thumbPath: string
+}
+
 export interface Answer {
   command: string
   action?: () => void

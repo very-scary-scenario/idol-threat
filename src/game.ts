@@ -128,7 +128,7 @@ var NEGATIVE_STAT_EFFECT = 2;
 
 var RECENT_FIRING_MEMORY = 20;
 
-var confettiTimeout: number;
+var confettiTimeout: ReturnType<typeof setTimeout> | undefined;
 var letterTimeout: number;
 
 var cookieExpiryDate = new Date();
@@ -266,14 +266,15 @@ function seededRandom(seed: number): (max?: number, min?: number) => number {
   return rand;
 }
 
-function celebrate(density) {
+function celebrate(density: number) {
   confetti.setDensity(density);
-  if (!confettiTimeout) confetti.restart();
-
-  clearTimeout(confettiTimeout);
+  if (!confettiTimeout) {
+    confetti.restart();
+    clearTimeout(confettiTimeout);
+  }
   confettiTimeout = setTimeout(function() {
     confetti.stop();
-    clearTimeout(confettiTimeout);
+    if (confettiTimeout) clearTimeout(confettiTimeout);
     confettiTimeout = undefined;
   }, 3000);
 }
@@ -281,7 +282,7 @@ function celebrate(density) {
 var sparkleImage = new Image();
 sparkleImage.src = 'lib/sparkle/sparkle.png';
 
-function initSparkle(sparkleCanvas) {
+function initSparkle(sparkleCanvas: HTMLCanvasElement) {
   var sparkleContext = sparkleCanvas.getContext('2d');
   var sparkleEmitter = new SparkleEmitter(sparkleCanvas);
 
@@ -318,9 +319,9 @@ function initSparkle(sparkleCanvas) {
   drawSparkle();
 }
 
-function getRarity(stats) {
+function getRarity(stats: number): string {
   if (stats < 0) return RARITIES[0];
-  rarityIndex = Math.floor(Math.pow(stats/BASE_RARITY, RARITY_CURVE));
+  var rarityIndex = Math.floor(Math.pow(stats/BASE_RARITY, RARITY_CURVE));
   return RARITIES[rarityIndex] || RARITIES[RARITIES.length - 1];
 }
 
@@ -813,7 +814,7 @@ Idol.prototype.audition = function() {
 
   auditionSpace.innerHTML = auditionTemplate(this);
   setTimeout(function() {
-    initSparkle(document.getElementById('sparkle-canvas'));
+    initSparkle(document.getElementById('sparkle-canvas')! as HTMLCanvasElement);
   }, 1);
 
   function addLayerToAuditionPortrait() {
