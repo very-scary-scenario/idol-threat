@@ -241,8 +241,8 @@ var canteenConfirmTemplate = Handlebars.compile(document.getElementById('canteen
 var theatreTemplate = Handlebars.compile(document.getElementById('theatre-template')!.innerHTML);
 
 var maxUnitSize = 3;
-var rerenderTimeout: number;
-var checkSaveTimeout: number;
+var rerenderTimeout: ReturnType<typeof setTimeout> | undefined;
+var checkSaveTimeout: ReturnType<typeof setTimeout> | undefined;
 
 var currentlyShowingDetail: Idol;
 
@@ -1782,7 +1782,7 @@ function saveGame() {
 
   document.cookie = 'state_' + currentIndex.toString(10) + '=' + endString + cookieSuffix;
 
-  clearTimeout(checkSaveTimeout);
+  if (checkSaveTimeout) clearTimeout(checkSaveTimeout);
   checkSaveTimeout = setTimeout(function() {
     if (fullStateString !== getStateCookie()) {
       console.log(fullStateString);
@@ -1793,13 +1793,13 @@ function saveGame() {
 }
 
 function deferRerender() {
-  clearTimeout(rerenderTimeout);
+  if (rerenderTimeout) clearTimeout(rerenderTimeout);
   rerenderTimeout = setTimeout(rerender, 50);
 }
 
 function initGame() {
   FastClick.attach(document.body);
-  document.getElementById('loading').innerText = '';
+  document.getElementById('loading')!.innerText = '';
   parsePresetBarcodes();
 
   cancelScanningElement.addEventListener('click', function() {
@@ -1822,7 +1822,7 @@ function initGame() {
   rerender();
 }
 
-function iconHTML(idol) {
+function iconHTML(idol: Idol) {
   return '<div class="icon-container affinity-' + idol.affinity + '"><div class="portrait">' + idol.hugeSpriteHTML() + '</div></div>';
 }
 
