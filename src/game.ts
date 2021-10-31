@@ -245,7 +245,7 @@ var maxUnitSize = 3;
 var rerenderTimeout: ReturnType<typeof setTimeout> | undefined;
 var checkSaveTimeout: ReturnType<typeof setTimeout> | undefined;
 
-var currentlyShowingDetail: Idol;
+var currentlyShowingDetail: Idol | undefined;
 
 function choice<T>(list: T[], slice: number): T {
   var result = list[Math.floor(slice * list.length)];
@@ -646,7 +646,7 @@ export class Idol {
     agency.renderUnit();
     saveGame();
   };
-  giveBonus(count) {
+  giveBonus(count: number) {
     if (count === undefined) count = 1;
 
     while (count > 0) {
@@ -693,22 +693,22 @@ export class Idol {
         event.stopPropagation();
         event.preventDefault();
 
-        var foodIdol = catalogWithoutSelf[parseInt(event.currentTarget!.getAttribute('data-index'), 10)];
-        var negativeStats = {};
-        var summedStats = {};
-        var diffedStats = {};
+        var foodIdol = catalogWithoutSelf[parseInt(event.currentTarget!.getAttribute('data-index'), 10)] as Idol;
+        var negativeStats = new Map<StatType, boolean>()
+        var summedStats = new Map<StatType, number>()
+        var diffedStats = new Map<StatType, number>()
         var totalChange = 0;
 
-        for (var i = 0; i < STATS.length; i++) {
-          var stat = STATS[i];
-          var increaseBy = foodIdol[stat];
+        for (var stat in Stat) {
+          var increaseBy = foodIdol.stats.get(stat)!;
           if (increaseBy < 0) {
             increaseBy /= NEGATIVE_STAT_EFFECT;
-            negativeStats[stat] = true;
+            negativeStats.set(stat as StatType, true);
           }
-          diffedStats[stat] = Math.ceil(increaseBy);
-          totalChange += diffedStats[stat];
-          summedStats[stat] = self[stat] + diffedStats[stat];
+          var delta = Math.ceil(increaseBy)
+          diffedStats.set(stat as StatType, delta);
+          totalChange += delta;
+          summedStats.set(stat as StatType, self.stats.get(stat as StatType)! + delta);
         }
 
         canteenElement.innerHTML = canteenConfirmTemplate({
@@ -848,7 +848,7 @@ export class Idol {
       self.deferRendering('med', showLayersGradually);
     }, 1);
 
-    document.getElementById('catch-button').addEventListener('click', function(e) {
+    document.getElementById('catch-button')!.addEventListener('click', function(e) {
       e.stopPropagation();
       e.preventDefault();
       auditionSpace.innerHTML = '';
