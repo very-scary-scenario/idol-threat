@@ -475,8 +475,8 @@ export class Idol {
 
       for (var ki = 0; ki < KANA.length; ki++) {
         var item = KANA[ki];
-        nextKana = item[0];
-        currentDepth += item[1];
+        nextKana = item.kana;
+        currentDepth += item.weight;
         if (currentDepth >= targetDepth) {
           break;
         }

@@ -445,7 +445,12 @@ def build_unit_names() -> List[List[List[str]]]:
     return parts
 
 
-def build_kana() -> List[Tuple[str, float]]:
+class Kana(TypedDict):
+    kana: str
+    weight: float
+
+
+def build_kana() -> List[Kana]:
     kana = []
     total_frequency = 0
 
@@ -460,7 +465,7 @@ def build_kana() -> List[Tuple[str, float]]:
             kana.append((letters, freq))
 
     return [
-        (k, c / total_frequency) for k, c in kana
+        Kana(kana=k, weight=c / total_frequency) for k, c in kana
     ]
 
 
