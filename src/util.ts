@@ -14,12 +14,12 @@ export interface Part {
   path: string
   thumbPath: string
   medPath: string
-  bodyType: string
-  layer: string
-  number: string
-  pose: string
-  skinColour: string | null
-  hairColour: string | null
+  bodyType?: string
+  layer?: string
+  number?: string
+  pose?: string
+  skinColour?: string | null
+  hairColour?: string | null
 }
 
 export interface Answer {
