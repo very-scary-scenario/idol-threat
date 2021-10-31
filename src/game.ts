@@ -360,13 +360,13 @@ export class Ability {
   }
 }
 
-function effectiveStatGetter(idol: Idol, stat: string): () => number {
-  return function() {
+function effectiveStatGetter(idol: Idol, stat: StatType): () => number {
+  return function(): number {
     if (agency.catalog.indexOf(idol) !== -1) {
       // only grant agency bonus if this idol is in our agency
-      return idol.stats.get(stat) + agency.upgradeFor[stat]();
+      return idol.stats.get(stat)! + agency.upgradeFor.get(stat)!();
     } else {
-      return idol.stats.get(stat);
+      return idol.stats.get(stat)!;
     }
   };
 }
@@ -941,6 +941,7 @@ class Agency {
   quickBattleRanking: number
   upgrades = new Map<UpgradeType, number>()
   sortOrder: IdolSortOrder
+  upgradeFor = new Map<StatType, () => number>()
 
   constructor() {
     var self = this
@@ -957,15 +958,13 @@ class Agency {
 
     this.storyActors = {};
 
-    this.upgradeFor = {};
-
     function upgradeGetter(stat: StatType) {
-      return function() {
+      return function(): number {
         return self.levelFloor() * self.upgrades.get(stat)!;
       };
     }
     for (var stat in Stat) {
-      this.upgradeFor[stat] = upgradeGetter(stat as StatType);
+      this.upgradeFor.set(stat as StatType, upgradeGetter(stat as StatType));
     }
   }
 
@@ -978,7 +977,7 @@ class Agency {
     var sortOrders = [];
 
     for (var key in idolSortNames) {
-      var item = [key, idolSortNames[key]];
+      var item = [key, idolSortNames[key as IdolSortOrder]];
       if (this.sortOrder === key) item.isSelectedOrder = true;
       sortOrders.push(item);
     }
@@ -990,9 +989,9 @@ class Agency {
     for (var upgradeName in upgradeNames) {
       upgrades.push({
         name: upgradeName,
-        verboseName: upgradeNames[upgradeName].name,
-        description: upgradeNames[upgradeName].description,
-        currentLevel: this.upgrades[upgradeName]
+        verboseName: upgradeNames[upgradeName as UpgradeType].name,
+        description: upgradeNames[upgradeName as UpgradeType].description,
+        currentLevel: this.upgrades.get(upgradeName as UpgradeType)
       });
     }
 

@@ -21,7 +21,7 @@ var SUPER_EFFECTIVE_ATTACK_BONUS = 2;
 var BASIC_ABILITY_DAMAGE = 15;
 
 var animationDuration = 1000;
-var anims = {};
+var anims = new Map<string, HTMLImageElement>()
 
 var hoverDetailTimeout: number;
 
@@ -30,7 +30,7 @@ function loadAnimations() {
     var name = ANIMATIONS[i];
     var img = new Image();
     img.src = name;
-    anims[name] = img;
+    anims.set(name, img);
   }
 }
 
@@ -88,7 +88,7 @@ export class BattleIdol {
     this.affinity = idol.affinity;
   }
 
-  doDamage(damage) {
+  doDamage(damage: number) {
     var self = this;
     if (this.isDead) return;
     this.hp = this.hp - damage;
@@ -106,7 +106,7 @@ export class BattleIdol {
     this.element.querySelector('.health-bar-trail').style.width = this.healthPercent().toString(10) + '%';
   };
 
-  doMove(moveIndex, target) {
+  doMove(moveIndex: number, target: BattleIdol) {
     var self = this;
     self.element.classList.add('fighting');
 
@@ -133,174 +133,192 @@ export class BattleIdol {
     }, animationDuration);
   };
 
-  healthPercent() {
+  healthPercent(): number {
     return (this.hp / this.maxHp) * 100;
   };
 
-  healthBar() {
+  healthBar(): string {
     return healthBarTemplate(this, {allowedProtoMethods: {healthPercent: true}});
   };
 }
 
-export function Battle(playerIdols, enemyIdols, victoryCallback, lossCallback, fleeCallback) {
-  this.playerIdols = playerIdols;
-  this.enemyIdols = enemyIdols;
+class Battle {
+  constructor(playerIdols, enemyIdols, victoryCallback, lossCallback, fleeCallback) {
+    this.playerIdols = playerIdols;
+    this.enemyIdols = enemyIdols;
 
-  this.victoryCallback = victoryCallback;
-  this.lossCallback = lossCallback;
-  this.fleeCallback = fleeCallback;
+    this.victoryCallback = victoryCallback;
+    this.lossCallback = lossCallback;
+    this.fleeCallback = fleeCallback;
 
-  this.render();
+    this.render();
 
-  document.body.classList.add('in-battle');
-}
-
-Battle.prototype.loop = function() {
-  this.turnOrder = [];
-
-  Array.prototype.push.apply(this.turnOrder, this.playerIdols);
-  Array.prototype.push.apply(this.turnOrder, this.enemyIdols);
-
-  this.turnOrder.sort(function(a, b) {
-    return b.speed - a.speed;
-  });
-
-  for (var i = 0; i < this.turnOrder.length; i++) {
-    this.turnOrder[i].battle = this;
+    document.body.classList.add('in-battle');
   }
 
-  this.nextMove();
-};
+  loop() {
+    this.turnOrder = [];
 
-Battle.prototype.hide = function() {
-  document.body.classList.remove('in-battle');
-};
+    Array.prototype.push.apply(this.turnOrder, this.playerIdols);
+    Array.prototype.push.apply(this.turnOrder, this.enemyIdols);
 
-Battle.prototype.flee = function() {
-  this.hide();
+    this.turnOrder.sort(function(a, b) {
+      return b.speed - a.speed;
+    });
 
-  if (this.fleeCallback) {
-    this.fleeCallback();
-  } else {
-    askUser('You ran away.');
-  }
-};
+    for (var i = 0; i < this.turnOrder.length; i++) {
+      this.turnOrder[i].battle = this;
+    }
 
-Battle.prototype.determinePlayerMove = function(idol) {
-  var self = this;
-  var abilityPromptElement = document.getElementById('ability-prompt');
+    this.nextMove();
+  };
 
-  function pickMove(e) {
-    e.stopPropagation();
-    e.preventDefault();
+  hide() {
+    document.body.classList.remove('in-battle');
+  };
 
-    var targetInput = document.querySelector('input[name="target"]:checked');
-    var moveInput = document.querySelector('input[name="move"]:checked');
-    if ((!targetInput) || (!moveInput)) {
-      askUser('You have to pick both a target and a move');
+  flee() {
+    this.hide();
+
+    if (this.fleeCallback) {
+      this.fleeCallback();
+    } else {
+      askUser('You ran away.');
+    }
+  };
+
+  determinePlayerMove(idol) {
+    var self = this;
+    var abilityPromptElement = document.getElementById('ability-prompt');
+
+    function pickMove(e) {
+      e.stopPropagation();
+      e.preventDefault();
+
+      var targetInput = document.querySelector('input[name="target"]:checked');
+      var moveInput = document.querySelector('input[name="move"]:checked');
+      if ((!targetInput) || (!moveInput)) {
+        askUser('You have to pick both a target and a move');
+        return;
+      }
+
+      document.getElementById('battle-form').removeEventListener('submit', pickMove);
+
+      var targetIndex = parseInt(targetInput.getAttribute('value'), 10);
+      var abilityIndex = parseInt(moveInput.getAttribute('value'), 10);
+
+      abilityPromptElement.innerHTML = '';
+      idol.element.classList.remove('focussed');
+      targetInput.checked = false;
+      abilityPromptElement.innerHTML = '';
+      idol.doMove(abilityIndex, self.enemyIdols[targetIndex]);
+    }
+
+    idol.element.classList.add('focussed');
+    abilityPromptElement.innerHTML = abilityPromptTemplate(idol);
+
+    document.getElementById('battle-form').addEventListener('submit', pickMove);
+    document.getElementById('flee').addEventListener('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      self.flee();
+    });
+
+    return;
+  };
+
+  tookDamage(team) {
+    for (var i = 0; i < team.length; i++) {
+      if (team[i].hp !== team[i].maxHp) return true;
+    }
+    return false;
+  };
+
+  stillHasLivingMembers(team) {
+    return this.numberOfLivingMembers(team) > 0;
+  };
+
+  numberOfLivingMembers(team) {
+    var livingMemberCount = 0;
+
+    for (var i = 0; i < team.length; i++) {
+      if (!team[i].isDead) livingMemberCount++;
+    }
+
+    return livingMemberCount;
+  };
+
+  playerHasWon() {
+    return (!this.stillHasLivingMembers(this.enemyIdols));
+  };
+
+  enemyHasWon() {
+    return (!this.stillHasLivingMembers(this.playerIdols));
+  };
+
+  nextMove() {
+    var self = this;
+
+    if ((this.turnIndex === undefined) || (this.turnOrder[this.turnIndex] === undefined)) {
+      this.turnIndex = 0;
+    }
+
+    var idol = this.turnOrder[this.turnIndex];
+
+    if (this.playerHasWon() || this.enemyHasWon()) {
+      setTimeout(function() {
+        self.hide();
+
+        if (self.playerHasWon()) {
+          celebrate(self.numberOfLivingMembers(self.playerIdols));
+          self.victoryCallback(self);
+        } else if (self.enemyHasWon()) {
+          self.lossCallback(self);
+        }
+
+      }, animationDuration);
       return;
     }
 
-    document.getElementById('battle-form').removeEventListener('submit', pickMove);
+    this.turnIndex += 1;
 
-    var targetIndex = parseInt(targetInput.getAttribute('value'), 10);
-    var abilityIndex = parseInt(moveInput.getAttribute('value'), 10);
-
-    abilityPromptElement.innerHTML = '';
-    idol.element.classList.remove('focussed');
-    targetInput.checked = false;
-    abilityPromptElement.innerHTML = '';
-    idol.doMove(abilityIndex, self.enemyIdols[targetIndex]);
-  }
-
-  idol.element.classList.add('focussed');
-  abilityPromptElement.innerHTML = abilityPromptTemplate(idol);
-
-  document.getElementById('battle-form').addEventListener('submit', pickMove);
-  document.getElementById('flee').addEventListener('click', function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    self.flee();
-  });
-
-  return;
-};
-
-Battle.prototype.tookDamage = function(team) {
-  for (var i = 0; i < team.length; i++) {
-    if (team[i].hp !== team[i].maxHp) return true;
-  }
-  return false;
-};
-
-Battle.prototype.stillHasLivingMembers = function(team) {
-  return this.numberOfLivingMembers(team) > 0;
-};
-
-Battle.prototype.numberOfLivingMembers = function(team) {
-  var livingMemberCount = 0;
-
-  for (var i = 0; i < team.length; i++) {
-    if (!team[i].isDead) livingMemberCount++;
-  }
-
-  return livingMemberCount;
-};
-
-Battle.prototype.playerHasWon = function() {
-  return (!this.stillHasLivingMembers(this.enemyIdols));
-};
-
-Battle.prototype.enemyHasWon = function() {
-  return (!this.stillHasLivingMembers(this.playerIdols));
-};
-
-Battle.prototype.nextMove = function() {
-  var self = this;
-
-  if ((this.turnIndex === undefined) || (this.turnOrder[this.turnIndex] === undefined)) {
-    this.turnIndex = 0;
-  }
-
-  var idol = this.turnOrder[this.turnIndex];
-
-  if (this.playerHasWon() || this.enemyHasWon()) {
-    setTimeout(function() {
-      self.hide();
-
-      if (self.playerHasWon()) {
-        celebrate(self.numberOfLivingMembers(self.playerIdols));
-        self.victoryCallback(self);
-      } else if (self.enemyHasWon()) {
-        self.lossCallback(self);
+    if (idol.isDead) {
+      this.nextMove();
+    } else if (!idol.playerControlled) {
+      var livingPlayerIdols = [];
+      for (var i = 0; i < this.playerIdols.length; i++) {
+        if (!this.playerIdols[i].isDead) livingPlayerIdols.push(this.playerIdols[i]);
       }
 
-    }, animationDuration);
-    return;
-  }
+      idol.doMove(
+        Math.floor(Math.random() * idol.abilities.length),
+        livingPlayerIdols[Math.floor(Math.random() * livingPlayerIdols.length)]
+      );
+    } else {
+      this.determinePlayerMove(idol);
+    }
+  };
 
-  this.turnIndex += 1;
+  render() {
+    battleElement.innerHTML = battleTemplate(this, {allowedProtoMethods: {healthBar: true}});
 
-  if (idol.isDead) {
-    this.nextMove();
-  } else if (!idol.playerControlled) {
-    var livingPlayerIdols = [];
-    for (var i = 0; i < this.playerIdols.length; i++) {
-      if (!this.playerIdols[i].isDead) livingPlayerIdols.push(this.playerIdols[i]);
+    var playerIdolElements = battleElement.querySelectorAll('#player-idols > li');
+    for (var pi = 0; pi < this.playerIdols.length; pi++) {
+      this.playerIdols[pi].element = playerIdolElements[pi];
+      bindHoverDetail(this.playerIdols[pi], playerIdolElements[pi]);
     }
 
-    idol.doMove(
-      Math.floor(Math.random() * idol.abilities.length),
-      livingPlayerIdols[Math.floor(Math.random() * livingPlayerIdols.length)]
-    );
-  } else {
-    this.determinePlayerMove(idol);
-  }
-};
+    var enemyIdolElements = battleElement.querySelectorAll('#enemy-idols > li');
+    for (var ei = 0; ei < this.enemyIdols.length; ei++) {
+      this.enemyIdols[ei].element = enemyIdolElements[ei];
+      bindHoverDetail(this.enemyIdols[ei], enemyIdolElements[ei]);
+    }
+  };
+}
 
-function bindHoverDetail(idol, idolElement) {
+function bindHoverDetail(idol: BattleIdol, idolElement: Element) {
   var showing = false;
-  var deetsSpace = document.getElementById('deets-space');
+  var deetsSpace = document.getElementById('deets-space')!;
 
   function showHoverDetail() {
     if (showing) return;
@@ -336,22 +354,6 @@ function bindHoverDetail(idol, idolElement) {
 
   idolElement.addEventListener('contextmenu', function(e) { e.preventDefault(); e.stopPropagation(); });
 }
-
-Battle.prototype.render = function() {
-  battleElement.innerHTML = battleTemplate(this, {allowedProtoMethods: {healthBar: true}});
-
-  var playerIdolElements = battleElement.querySelectorAll('#player-idols > li');
-  for (var pi = 0; pi < this.playerIdols.length; pi++) {
-    this.playerIdols[pi].element = playerIdolElements[pi];
-    bindHoverDetail(this.playerIdols[pi], playerIdolElements[pi]);
-  }
-
-  var enemyIdolElements = battleElement.querySelectorAll('#enemy-idols > li');
-  for (var ei = 0; ei < this.enemyIdols.length; ei++) {
-    this.enemyIdols[ei].element = enemyIdolElements[ei];
-    bindHoverDetail(this.enemyIdols[ei], enemyIdolElements[ei]);
-  }
-};
 
 function playAnimationCanvas(ability, element) {
   var portraitDiv = element.querySelector('.portrait');
