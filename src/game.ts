@@ -190,6 +190,14 @@ var upgradeNames = {
     description: "Managers will have access to better leaving card designs, improving their ability to send idols home with a smile on their face."
   }
 };
+interface UpgradesRecord {
+  attack: number
+  speed: number
+  defense: number
+  recruitment: number
+  graduation: number
+}
+
 type UpgradeType = keyof typeof upgradeNames
 
 function getStateCookie() {
@@ -939,16 +947,16 @@ class Agency {
   experience: number
   storyChaptersBeaten: number
   quickBattleRanking: number
-  upgrades = new Map<UpgradeType, number>()
+  upgrades: UpgradesRecord = {attack: 0, defense: 0, speed: 0, recruitment: 0, graduation: 0}
   sortOrder: IdolSortOrder
   upgradeFor = new Map<StatType, () => number>()
 
   constructor() {
-    var self = this
+    var self = this;
     this.catalog = [];
     this.unit = [];
     this.recentlyFired = [];
-    for (var upgradeName in upgradeNames) this.upgrades.set(upgradeName as UpgradeType, 0);
+    for (var upgradeName in upgradeNames) this.upgrades[upgradeName as UpgradeType] = 0;
 
     this.sortOrder = 'date';
 
@@ -960,7 +968,7 @@ class Agency {
 
     function upgradeGetter(stat: StatType) {
       return function(): number {
-        return self.levelFloor() * self.upgrades.get(stat)!;
+        return self.levelFloor() * self.upgrades[stat]!;
       };
     }
     for (var stat in Stat) {
@@ -991,7 +999,7 @@ class Agency {
         name: upgradeName,
         verboseName: upgradeNames[upgradeName as UpgradeType].name,
         description: upgradeNames[upgradeName as UpgradeType].description,
-        currentLevel: this.upgrades.get(upgradeName as UpgradeType)
+        currentLevel: this.upgrades[upgradeName as UpgradeType]
       });
     }
 
@@ -1068,8 +1076,8 @@ class Agency {
         return;
       }
 
-      var upgradeName = event.currentTarget!.getAttribute('data-upgrade-name');
-      agency.upgrades.set(upgradeName, agency.upgrades.get(upgradeName)! + 1);
+      var upgradeName = event.currentTarget!.getAttribute('data-upgrade-name') as UpgradeType;
+      agency.upgrades[upgradeName] += 1;
       event.currentTarget!.parentElement.querySelector('.level-counter').innerText = agency.upgrades[upgradeName].toString(10);
       document.getElementById('spendable-levels')!.innerText = agency.spendableLevels().toString(10);
       if (agency.spendableLevels() === 0) document.getElementById('agency-meta')!.classList.remove('spendable-levels');
@@ -1085,7 +1093,7 @@ class Agency {
     function showDetail(event: Event) {
       event.stopPropagation();
       event.preventDefault();
-      i = parseInt(event.currentTarget.getAttribute('data-index'), 10);
+      i = parseInt(event.currentTarget!.getAttribute('data-index'), 10);
       sortedCatalog[i].showDetail();
     }
 
@@ -1179,8 +1187,8 @@ class Agency {
   };
   spendableLevels() {
     var spendableLevels = this.levelFloor();
-    for (var upgradeValue of this.upgrades.values()) {
-      spendableLevels -= upgradeValue;
+    for (var upgradeName in this.upgrades) {
+      spendableLevels -= this.upgrades[upgradeName as UpgradeType];
     }
     return spendableLevels;
   };
