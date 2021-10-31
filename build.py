@@ -516,13 +516,21 @@ def build_html() -> str:
     return str(soup)
 
 
-def build_graduation_bonuses() -> List[Tuple[int, str]]:
+class GraduationBonus(TypedDict):
+    bonus: int
+    template: str
+
+
+def build_graduation_bonuses() -> List[GraduationBonus]:
     graduation_bonuses = []
 
     with open(os.path.join(TEXT, 'idol graduation bonuses.txt')) as f:
         for line in f.readlines():
             bonus_str, template = line.strip().split(maxsplit=1)
-            graduation_bonuses.append((int(bonus_str), template))
+            graduation_bonuses.append(GraduationBonus(
+                bonus=int(bonus_str),
+                template=template,
+            ))
 
     return graduation_bonuses
 

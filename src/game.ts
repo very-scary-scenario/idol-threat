@@ -5,6 +5,7 @@ import {
   BARCODES,
   BIOS,
   BOSS_NAMES,
+  GRADUATION_BONUSES,
   HAIR_COLOURS,
   KANA,
   PARTS,
@@ -79,7 +80,7 @@ SEED_OVERRIDE_HANDLERS.set('shadow', function(idol: Idol) {
   idol.quote = "Now, talk me through your very scary scenario.";
 
   function makeSpecialAbility(name: string, affinity: AffinityType) {
-    return new Ability(idol, [{words: [name], bonus: 3}], choice(ANIMATIONS, idol.rand()), affinity);
+    return new Ability(idol, [{words: [name], bonus: 3, healing: false}], choice(ANIMATIONS, idol.rand()), affinity);
   }
   idol.abilities = [
     makeSpecialAbility('play rough', 'rock'),
@@ -759,8 +760,8 @@ export class Idol {
         hideIdolDetail(event);
         agency.removeIdol(self);
         var graduationBonus = choice(GRADUATION_BONUSES, Math.random());
-        bonus = graduationBonus[0] + agency.upgrades.graduation;
-        template = graduationBonus[1];
+        var bonus = graduationBonus.bonus + agency.upgrades.graduation;
+        var template = graduationBonus.template
 
         for (var i = 0; i < agency.catalog.length; i++) {
           agency.catalog[i].giveBonus(bonus);
@@ -772,7 +773,7 @@ export class Idol {
         );
 
         agency.grantExperience(5);
-        celebrate(graduationBonus[0]);
+        celebrate(graduationBonus.bonus);
         rerender();
       }
 
