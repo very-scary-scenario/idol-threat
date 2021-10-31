@@ -4,10 +4,22 @@ var promptArea = document.getElementById('prompt-area')!;
 
 var promptTemplate = Handlebars.compile(document.getElementById('prompt-template')!.innerHTML);
 
+export interface AbilityPart {
+  bonus: number
+  healing: boolean
+  words: string[]
+}
+
 export interface Part {
   path: string
-  medPath: string
   thumbPath: string
+  medPath: string
+  bodyType: string
+  layer: string
+  number: string
+  pose: string
+  skinColour: string | null
+  hairColour: string | null
 }
 
 export interface Answer {

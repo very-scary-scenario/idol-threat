@@ -14,7 +14,7 @@ import {
   UNIT_NAMES,
 } from './parts'
 import { Affinity, AffinityType, AFFINITIES, Battle, BattleIdol } from './battle'
-import { askUser, Part } from './util'
+import { askUser, AbilityPart, Part } from './util'
 import { BrowserQRCodeReader } from '@zxing/browser'
 import { DecodeHintType } from '@zxing/library'
 import { FastClick } from 'fastclick'
@@ -299,7 +299,7 @@ function initSparkle(sparkleCanvas: HTMLCanvasElement) {
 
   var size = sparkleCanvas.height/8;
 
-  sparkleEmitter.drawParticle = function(x, y, particle) {
+  sparkleEmitter.drawParticle = function(x: number, y: number, particle) {
     // this.context.setTransform(0, 0, 0, 0, particle.x, particle.y);
     // this.context.rotate(sparkleEmitter.getParticleAge(particle) / 100);
     this.context.globalAlpha = Math.max(particle.opacity * Math.sin(
@@ -330,8 +330,9 @@ class Ability {
   healing: boolean;
   affinity: AffinityType;
   name: string;
+  animation: string;
 
-  constructor(idol: Idol, parts, animation: string, affinity: AffinityType) {
+  constructor(idol: Idol, parts: AbilityPart[], animation: string, affinity: AffinityType) {
     this.strength = 0;
     this.healing = false;
     this.affinity = affinity;
@@ -405,9 +406,9 @@ export class Idol {
 
     // build portrait
     var partsMissing = true;
-    var pose, skinColour, hairColour;
+    var pose: string, skinColour: string, hairColour: string;
 
-    function partIsAllowed(part) {
+    function partIsAllowed(part: Part) {
       if (part.pose && part.pose !== pose) return false;
       if (part.skinColour && part.skinColour !== skinColour) return false;
       if (part.hairColour && part.hairColour !== hairColour) return false;
