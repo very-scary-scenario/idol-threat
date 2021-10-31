@@ -3,7 +3,7 @@ import {
   ANIMATIONS,
 } from './parts'
 import { askUser } from './util'
-import { Idol } from './game'
+import { Ability, Idol } from './game'
 
 export enum Affinity { rock, paper, scissors }
 export type AffinityType = keyof typeof Affinity
@@ -47,90 +47,100 @@ function effectiveness(attackAffinity: AffinityType, targetAffinity: AffinityTyp
   }[effectivenessIdentifier];
 }
 
-export function BattleIdol(idol: Idol, control) {
-  var self = this;
+export class BattleIdol {
+  isDead = false
+  idol: Idol
+  playerControlled: boolean
+  thumbSpriteHTML: string
+  attack: number
+  defense: number
+  speed: number
+  maxHp: number
+  hp: number
+  abilities: Ability[]
+  affinity: AffinityType
 
-  self.isDead = false;
+  constructor(idol: Idol, control: 'ai' | 'player') {
+    this.idol = idol
 
-  if (control === 'ai') {
-    this.playerControlled = false;
-  } else if (control == 'player') {
-    this.playerControlled = true;
-  } else {
-    throw 'you need to specify a control mode for a BattleIdol';
+    if (control === 'ai') {
+      this.playerControlled = false;
+    } else if (control == 'player') {
+      this.playerControlled = true;
+    } else {
+      throw 'you need to specify a control mode for a BattleIdol';
+    }
+
+    this.thumbSpriteHTML = idol.thumbSpriteHTML();
+    var statModifier = 1.01;
+    function modStat(stat: number, mod: number) {
+      return Math.ceil(mod * Math.pow(statModifier, stat));
+    }
+
+    this.attack = modStat(idol.effective.get('attack')!(), 100);
+    this.defense = modStat(idol.effective.get('defense')!(), 100);
+    this.speed = modStat(idol.effective.get('speed')!(), 20);
+
+    this.maxHp = 50;
+    this.hp = this.maxHp;
+
+    this.abilities = idol.abilities;
+    this.affinity = idol.affinity;
   }
 
-  self.idol = idol;
-  this.thumbSpriteHTML = idol.thumbSpriteHTML();
+  doDamage(damage) {
+    var self = this;
+    if (this.isDead) return;
+    this.hp = this.hp - damage;
 
-  var statModifier = 1.01;
-  function modStat(stat, mod) {
-    return Math.ceil(mod * Math.pow(statModifier, stat));
-  }
+    if (this.hp <= 0) {
+      this.isDead = true;
+      this.hp = 0;
 
-  self.attack = modStat(idol.effective.get('attack'), 100);
-  self.defense = modStat(idol.effective.get('defense'), 100);
-  self.speed = modStat(idol.effective.get('speed'), 20);
+      setTimeout(function() {
+        self.element.classList.add('dead');
+        if (!self.playerControlled) agency.grantExperience(1);
+      }, animationDuration);
+    }
+    this.element.querySelector('.health-bar-content').style.width = this.healthPercent().toString(10) + '%';
+    this.element.querySelector('.health-bar-trail').style.width = this.healthPercent().toString(10) + '%';
+  };
 
-  self.maxHp = 50;
-  self.hp = self.maxHp;
+  doMove(moveIndex, target) {
+    var self = this;
+    self.element.classList.add('fighting');
 
-  self.abilities = idol.abilities;
-  self.affinity = idol.affinity;
-}
+    var ability = self.abilities[moveIndex];
 
-BattleIdol.prototype.doDamage = function(damage) {
-  var self = this;
-  if (this.isDead) return;
-  this.hp = this.hp - damage;
+    var baseStrength = (this.attack / target.defense) * BASIC_ABILITY_DAMAGE;
+    var abilityStrength = baseStrength + ((baseStrength/5) * ability.strength);
 
-  if (this.hp <= 0) {
-    this.isDead = true;
-    this.hp = 0;
+    if (ability.affinity === self.affinity) {
+      abilityStrength = abilityStrength * SAME_TYPE_ATTACK_BONUS;
+    }
+
+    abilityStrength = abilityStrength * effectiveness(ability.affinity, target.affinity);
+    abilityStrength = Math.ceil(abilityStrength);
+
+    target.doDamage(abilityStrength);
+    console.log(this.idol.name + ' did ' + abilityStrength.toString(10) + ' damage to ' + target.idol.name + ', bringing her HP to ' + target.hp.toString(10) + '/' + target.maxHp.toString(10));
+
+    playAnimationCanvas(self.abilities[moveIndex], target.element);
 
     setTimeout(function() {
-      self.element.classList.add('dead');
-      if (!self.playerControlled) agency.grantExperience(1);
+      self.element.classList.remove('fighting');
+      self.battle.nextMove();
     }, animationDuration);
-  }
-  this.element.querySelector('.health-bar-content').style.width = this.healthPercent().toString(10) + '%';
-  this.element.querySelector('.health-bar-trail').style.width = this.healthPercent().toString(10) + '%';
-};
+  };
 
-BattleIdol.prototype.doMove = function(moveIndex, target) {
-  var self = this;
-  self.element.classList.add('fighting');
+  healthPercent() {
+    return (this.hp / this.maxHp) * 100;
+  };
 
-  var ability = self.abilities[moveIndex];
-
-  var baseStrength = (this.attack / target.defense) * BASIC_ABILITY_DAMAGE;
-  var abilityStrength = baseStrength + ((baseStrength/5) * ability.strength);
-
-  if (ability.affinity === self.affinity) {
-    abilityStrength = abilityStrength * SAME_TYPE_ATTACK_BONUS;
-  }
-
-  abilityStrength = abilityStrength * effectiveness(ability.affinity, target.affinity);
-  abilityStrength = Math.ceil(abilityStrength);
-
-  target.doDamage(abilityStrength);
-  console.log(this.idol.name + ' did ' + abilityStrength.toString(10) + ' damage to ' + target.idol.name + ', bringing her HP to ' + target.hp.toString(10) + '/' + target.maxHp.toString(10));
-
-  playAnimationCanvas(self.abilities[moveIndex], target.element);
-
-  setTimeout(function() {
-    self.element.classList.remove('fighting');
-    self.battle.nextMove();
-  }, animationDuration);
-};
-
-BattleIdol.prototype.healthPercent = function() {
-  return (this.hp / this.maxHp) * 100;
-};
-
-BattleIdol.prototype.healthBar = function() {
-  return healthBarTemplate(this, {allowedProtoMethods: {healthPercent: true}});
-};
+  healthBar() {
+    return healthBarTemplate(this, {allowedProtoMethods: {healthPercent: true}});
+  };
+}
 
 export function Battle(playerIdols, enemyIdols, victoryCallback, lossCallback, fleeCallback) {
   this.playerIdols = playerIdols;

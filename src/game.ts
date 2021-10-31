@@ -331,7 +331,7 @@ function getRarity(stats: number): string {
   return RARITIES[rarityIndex] || RARITIES[RARITIES.length - 1];
 }
 
-class Ability {
+export class Ability {
   strength: number;
   healing: boolean;
   affinity: AffinityType;
