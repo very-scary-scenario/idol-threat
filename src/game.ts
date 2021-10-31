@@ -25,7 +25,8 @@ type BarcodeOverrideType = keyof typeof BARCODES
 var VOWELS = 'aeiou';
 var N = 'n';
 enum Stat { attack, speed, defense };
-type StatType = keyof typeof Stat
+type StatType = keyof typeof Stat;
+type SpriteMode = 'med' | 'thumb' | 'huge'
 
 var LAYERS = [
   'hbe',
@@ -266,7 +267,7 @@ function seededRandom(seed: number): (max?: number, min?: number) => number {
   return rand;
 }
 
-function celebrate(density: number) {
+function celebrate(density: number = 1) {
   confetti.setDensity(density);
   if (!confettiTimeout) {
     confetti.restart();
@@ -382,6 +383,7 @@ export class Idol {
   affinity: AffinityType;
   actorName?: string;
   parts: Part[] = [];
+  shiny = false;
 
   constructor(seed: number) {
     this.seed = seed;
@@ -514,7 +516,7 @@ export class Idol {
     }
   }
 
-  deferRendering(mode, callback) {
+  deferRendering(mode: SpriteMode | undefined, callback: undefined | (() => void)) {
     var self = this;
     mode = mode || 'med';
 
@@ -544,22 +546,21 @@ export class Idol {
     }
   }
 
-  getSprite(mode) {
-    if (typeof(mode) !== 'string') mode = undefined;
-    this.deferRendering(mode);
+  getSprite(mode?: SpriteMode) {
+    this.deferRendering(mode, () => {});
     return 'img/placeholder.png';
   }
 
   getThumbSprite() { return this.getSprite('thumb'); }
   getHugeSprite() { return this.getSprite('huge'); }
   canFeed() { return this.agency.canFeed(); }
-  renderSprite(mode) {
+  renderSprite(mode?: SpriteMode) {
     if (mode === undefined) mode = 'med';
 
     var images = this.loadedImages[mode];
 
-    var offscreenCanvasElement = document.createElement('canvas');
-    var offscreenCanvas = offscreenCanvasElement.getContext('2d');
+    var offscreenCanvasElement = document.createElement('canvas')!;
+    var offscreenCanvas = offscreenCanvasElement.getContext('2d')!;
 
     offscreenCanvas.canvas.width = images[0].naturalWidth;
     offscreenCanvas.canvas.height = images[0].naturalHeight;
@@ -622,7 +623,7 @@ export class Idol {
     var total = 0;
 
     for (var stat in Stat) {
-      total += this.stats.get(stat)
+      total += this.stats.get(stat)!
     }
 
     return total;
@@ -667,9 +668,9 @@ export class Idol {
     }});
     detailElement.setAttribute('data-affinity', this.affinity);
     detailElement.classList.add('shown');
-    detailElement.querySelector('.close').addEventListener('click', hideIdolDetail);
+    detailElement.querySelector('.close')!.addEventListener('click', hideIdolDetail);
 
-    function showFeedingUI(event) {
+    function showFeedingUI(event: Event) {
       event.stopPropagation();
       event.preventDefault();
 
@@ -681,17 +682,17 @@ export class Idol {
         catalog: catalogWithoutSelf
       });
 
-      canteenElement.querySelector('.cancel').addEventListener('click', function(event) {
+      canteenElement.querySelector('.cancel')!.addEventListener('click', function(event) {
         event.stopPropagation();
         event.preventDefault();
         canteenElement.innerHTML = '';
       });
 
-      function requestFeeding(event) {
+      function requestFeeding(event: Event) {
         event.stopPropagation();
         event.preventDefault();
 
-        var foodIdol = catalogWithoutSelf[parseInt(event.currentTarget.getAttribute('data-index'), 10)];
+        var foodIdol = catalogWithoutSelf[parseInt(event.currentTarget!.getAttribute('data-index'), 10)];
         var negativeStats = {};
         var summedStats = {};
         var diffedStats = {};
@@ -719,8 +720,8 @@ export class Idol {
           changeIsBeneficial: totalChange >= 0
         });
 
-        canteenElement.querySelector('.no').addEventListener('click', showFeedingUI);
-        canteenElement.querySelector('.yes').addEventListener('click', function(event) {
+        canteenElement.querySelector('.no')!.addEventListener('click', showFeedingUI);
+        canteenElement.querySelector('.yes')!.addEventListener('click', function(event) {
           event.stopPropagation();
           event.preventDefault();
           for (var stat in summedStats) {
@@ -745,7 +746,7 @@ export class Idol {
     var feedElement = detailElement.querySelector('.feed');
     if (feedElement) feedElement.addEventListener('click', showFeedingUI);
 
-    detailElement.querySelector('.graduate').addEventListener('click', function(event) {
+    detailElement.querySelector('.graduate')!.addEventListener('click', function(event) {
       event.stopPropagation();
       event.preventDefault();
 
@@ -755,7 +756,7 @@ export class Idol {
       }
 
       function graduate() {
-        hideIdolDetail();
+        hideIdolDetail(event);
         agency.removeIdol(self);
         var graduationBonus = choice(GRADUATION_BONUSES, Math.random());
         bonus = graduationBonus[0] + agency.upgrades.graduation;
@@ -881,7 +882,7 @@ export class Idol {
   };
 }
 
-function hideIdolDetail(event) {
+function hideIdolDetail(event: Event) {
   if (event) {
     event.stopPropagation();
     event.preventDefault();
