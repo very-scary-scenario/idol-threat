@@ -26,6 +26,7 @@ var VOWELS = 'aeiou';
 var N = 'n';
 enum Stat { attack, speed, defense };
 type StatType = keyof typeof Stat
+
 var LAYERS = [
   'hbe',
   'hb',
@@ -137,13 +138,13 @@ var cookieSliceSize = 2000;
 var endString = 'end';
 
 var isSkipping = false;
-var unbindScriptClick;
+var unbindScriptClick: () => {};
 
 var idolSorters = {
   date: function(a: Idol, b: Idol) { return b.recruitedAt - a.recruitedAt; },
-  statSpeed: function(a: Idol, b: Idol) { return b.speed - a.speed; },
-  statAttack: function(a: Idol, b: Idol) { return b.attack - a.attack; },
-  statDefense: function(a: Idol, b: Idol) { return b.defense - a.defense; },
+  statSpeed: function(a: Idol, b: Idol) { return b.stats.get('speed')! - a.stats.get('speed')!; },
+  statAttack: function(a: Idol, b: Idol) { return b.stats.get('attack')! - a.stats.get('attack')!; },
+  statDefense: function(a: Idol, b: Idol) { return b.stats.get('defense')! - a.stats.get('defense')!; },
   unitMembership: function(a: Idol, b: Idol) { return (Number(b.isInUnit()) - Number(a.isInUnit())); },
   allStats: function(a: Idol, b: Idol) { return b.totalStats() - a.totalStats(); },
   affinity: function(a: Idol, b: Idol) { return (
@@ -378,6 +379,7 @@ export class Idol {
   effective = new Map<string, () => number>();
   affinity: AffinityType;
   actorName?: string;
+  parts: Part[] = [];
 
   constructor(seed: number) {
     this.seed = seed;
@@ -1303,7 +1305,7 @@ Agency.prototype.doStory = function(pageNumber: number) {
   }
 
   var page = chapter[pageNumber];
-  var actorElement;
+  var actorElement: Element;
 
   function graduallyShowScript(visibleScriptElement, invisibleScriptElement) {
     function showNextLetter() {

@@ -33,6 +33,3 @@ export function askUser(question: string, answers?: Answer[]): void {
     promptArea.querySelector('a[data-answer-index="' + i.toString() + '"]')!.addEventListener('click', doAnswer);
   }
 }
-
-export interface Part {
-}
