@@ -131,7 +131,7 @@ var NEGATIVE_STAT_EFFECT = 2;
 var RECENT_FIRING_MEMORY = 20;
 
 var confettiTimeout: ReturnType<typeof setTimeout> | undefined;
-var letterTimeout: number;
+var letterTimeout: ReturnType<typeof setTimeout> | undefined;
 
 var cookieExpiryDate = new Date();
 cookieExpiryDate.setFullYear(cookieExpiryDate.getFullYear() + 50);
@@ -164,6 +164,7 @@ var idolSortNames = {
   affinity: 'Affinity and stats',
   unitMembership: 'Unit membership'
 };
+type IdolSortOrder = keyof typeof idolSortNames
 
 var upgradeNames = {
   attack: {
@@ -187,6 +188,7 @@ var upgradeNames = {
     description: "Managers will have access to better leaving card designs, improving their ability to send idols home with a smile on their face."
   }
 };
+type UpgradeType = keyof typeof upgradeNames
 
 function getStateCookie() {
   var cookieStrings = document.cookie.split(';');
@@ -385,6 +387,7 @@ export class Idol {
   actorName?: string;
   parts: Part[] = [];
   shiny = false;
+  agency: Agency;
 
   constructor(seed: number) {
     this.seed = seed;
@@ -930,18 +933,19 @@ Handlebars.registerHelper('ifPositive', function(a, options) {
 class Agency {
   catalog: Idol[]
   unit: Idol[]
-  recentlyFired: Idol[]
+  recentlyFired: number[]
   experience: number
   storyChaptersBeaten: number
   quickBattleRanking: number
+  upgrades = new Map<UpgradeType, number>()
+  sortOrder: IdolSortOrder
 
   constructor() {
     var self = this
     this.catalog = [];
     this.unit = [];
     this.recentlyFired = [];
-    this.upgrades = {};
-    for (var upgradeName in upgradeNames) this.upgrades[upgradeName] = 0;
+    for (var upgradeName in upgradeNames) this.upgrades.set(upgradeName as UpgradeType, 0);
 
     this.sortOrder = 'date';
 
@@ -953,13 +957,13 @@ class Agency {
 
     this.upgradeFor = {};
 
-    function upgradeGetter(stat) {
+    function upgradeGetter(stat: StatType) {
       return function() {
-        return self.levelFloor() * self.upgrades[stat];
+        return self.levelFloor() * self.upgrades.get(stat)!;
       };
     }
     for (var stat in Stat) {
-      this.upgradeFor[stat] = upgradeGetter(stat);
+      this.upgradeFor[stat] = upgradeGetter(stat as StatType);
     }
   }
 
@@ -1011,25 +1015,25 @@ class Agency {
       }
     });
 
-    function setSortOrder(event) {
+    function setSortOrder(event: Event) {
       event.stopPropagation();
       event.preventDefault();
-      agency.sortOrder = event.currentTarget.getAttribute('data-sort-order');
+      agency.sortOrder = event.currentTarget!.getAttribute('data-sort-order');
       rerender();
     }
 
-    document.getElementById('sort-button').addEventListener('click', function(event) {
+    document.getElementById('sort-button')!.addEventListener('click', function(event) {
       event.stopPropagation();
       event.preventDefault();
-      document.getElementById('agency-meta').classList.remove('upgrade-visible');
-      document.getElementById('agency-meta').classList.toggle('sort-visible');
+      document.getElementById('agency-meta')!.classList.remove('upgrade-visible');
+      document.getElementById('agency-meta')!.classList.toggle('sort-visible');
     });
 
-    document.getElementById('agency-summary').addEventListener('click', function(event) {
+    document.getElementById('agency-summary')!.addEventListener('click', function(event) {
       event.stopPropagation();
       event.preventDefault();
-      document.getElementById('agency-meta').classList.remove('sort-visible');
-      document.getElementById('agency-meta').classList.toggle('upgrade-visible');
+      document.getElementById('agency-meta')!.classList.remove('sort-visible');
+      document.getElementById('agency-meta')!.classList.toggle('upgrade-visible');
     });
 
     for (var sortKey in idolSortNames) {
@@ -1041,10 +1045,10 @@ class Agency {
 
     var inputs = document.querySelectorAll('#catalog li.idol .input');
 
-    function toggleMembership(event) {
+    function toggleMembership(event: Event) {
       event.stopPropagation();
       event.preventDefault();
-      i = parseInt(event.currentTarget.getAttribute('data-index'), 10);
+      i = parseInt(event.currentTarget!.getAttribute('data-index'), 10);
       sortedCatalog[i].toggleUnitMembership();
     }
 
@@ -1055,7 +1059,7 @@ class Agency {
 
     var upgradeButtons = document.querySelectorAll('#upgrade-list a[data-upgrade-name]');
 
-    function upgradeAgency(event) {
+    function upgradeAgency(event: Event) {
       event.stopPropagation();
       event.preventDefault();
       if (agency.spendableLevels() <= 0) {
@@ -1063,11 +1067,11 @@ class Agency {
         return;
       }
 
-      var upgradeName = event.currentTarget.getAttribute('data-upgrade-name');
-      agency.upgrades[upgradeName] += 1;
-      event.currentTarget.parentElement.querySelector('.level-counter').innerText = agency.upgrades[upgradeName].toString(10);
-      document.getElementById('spendable-levels').innerText = agency.spendableLevels();
-      if (agency.spendableLevels() === 0) document.getElementById('agency-meta').classList.remove('spendable-levels');
+      var upgradeName = event.currentTarget!.getAttribute('data-upgrade-name');
+      agency.upgrades.set(upgradeName, agency.upgrades.get(upgradeName)! + 1);
+      event.currentTarget!.parentElement.querySelector('.level-counter').innerText = agency.upgrades[upgradeName].toString(10);
+      document.getElementById('spendable-levels')!.innerText = agency.spendableLevels().toString(10);
+      if (agency.spendableLevels() === 0) document.getElementById('agency-meta')!.classList.remove('spendable-levels');
       saveGame();
     }
 
@@ -1077,7 +1081,7 @@ class Agency {
 
     var lis = document.querySelectorAll('#catalog li.idol');
 
-    function showDetail(event) {
+    function showDetail(event: Event) {
       event.stopPropagation();
       event.preventDefault();
       i = parseInt(event.currentTarget.getAttribute('data-index'), 10);
@@ -1090,31 +1094,31 @@ class Agency {
       li.addEventListener('click', showDetail);
     }
 
-    function triggerLoad(event) {
+    function triggerLoad(event: Event) {
       event.stopPropagation();
       event.preventDefault();
       loadGame.click();
     }
-    document.getElementById('load-backup').addEventListener('click', triggerLoad);
-    function triggerSave(event) {
+    document.getElementById('load-backup')!.addEventListener('click', triggerLoad);
+    function triggerSave(event: Event) {
       event.stopPropagation();
       event.preventDefault();
-      window.open(event.currentTarget.getAttribute('href'), 'downloadTarget');
+      window.open(event.currentTarget!.getAttribute('href'), 'downloadTarget');
     }
-    document.getElementById('save-backup').addEventListener('click', triggerSave);
+    document.getElementById('save-backup')!.addEventListener('click', triggerSave);
     var footerLoad = document.getElementById('footer-load');
     if (footerLoad) footerLoad.addEventListener('click', triggerLoad);
 
-    function toggleCredits(event) {
-      if (event.target.classList.contains('credited-homepage')) return;
+    function toggleCredits(event: Event) {
+      if (event.target!.classList.contains('credited-homepage')) return;
 
       event.stopPropagation();
       event.preventDefault();
 
-      document.getElementById('credits').classList.toggle('shown');
+      document.getElementById('credits')!.classList.toggle('shown');
     }
-    document.getElementById('credits').addEventListener('click', toggleCredits);
-    document.getElementById('credits-button').addEventListener('click', toggleCredits);
+    document.getElementById('credits')!.addEventListener('click', toggleCredits);
+    document.getElementById('credits-button')!.addEventListener('click', toggleCredits);
   };
   sortedCatalog() {
     var sortedCatalog = [];
@@ -1131,17 +1135,17 @@ class Agency {
       thumbSpriteHTML: true
     }});
 
-    if ((this.unit.length === 0) ^ unitElement.classList.contains('empty')) {
+    if ((this.unit.length === 0) !== unitElement.classList.contains('empty')) {
       unitElement.classList.toggle('empty');
     }
 
     unitElement.innerHTML = content;
     var unitElements = unitElement.querySelectorAll('.unit li');
 
-    function handleUnitClick(e) {
+    function handleUnitClick(e: Event) {
       e.stopPropagation();
       e.preventDefault();
-      self.unit[parseInt(e.currentTarget.getAttribute('data-index'), 10)].showDetail();
+      self.unit[parseInt(e.currentTarget!.getAttribute('data-index'), 10)].showDetail();
     }
 
     for (var ei = 0; ei < unitElements.length; ei++) {
@@ -1160,8 +1164,8 @@ class Agency {
       unitDetailElement.classList.toggle('hidden');
     }
 
-    document.getElementById('dismiss-unit-details').addEventListener('click', toggleUnitDetailDisplay);
-    document.getElementById('show-unit-details').addEventListener('click', toggleUnitDetailDisplay);
+    document.getElementById('dismiss-unit-details')!.addEventListener('click', toggleUnitDetailDisplay);
+    document.getElementById('show-unit-details')!.addEventListener('click', toggleUnitDetailDisplay);
   };
   level() {
     var level = 0;
@@ -1174,8 +1178,8 @@ class Agency {
   };
   spendableLevels() {
     var spendableLevels = this.levelFloor();
-    for (var upgradeType in this.upgrades) {
-      spendableLevels -= this.upgrades[upgradeType];
+    for (var upgradeValue of this.upgrades.values()) {
+      spendableLevels -= upgradeValue;
     }
     return spendableLevels;
   };
@@ -1186,7 +1190,7 @@ class Agency {
     var level = this.level();
     return level - Math.floor(level);
   };
-  grantExperience(count) {
+  grantExperience(count: number) {
     this.experience += count;
     deferRerender();
     if (!count) return;  // we don't need to congratulate them on this one i don't think
@@ -1211,23 +1215,21 @@ class Agency {
     var rng = seededRandom(unitSeed);
     return choice(choice(UNIT_NAMES[0], rng()), rng()) + ' ' + choice(choice(UNIT_NAMES[1], rng()), rng());
   };
-  addIdol = function(idol, interactive) {
+  addIdol(idol: Idol, interactive: boolean) {
     var blocked = false;
 
     if ((this.catalog.length === 0) && document.body.classList.contains('nothing-scanned')) {
-      document.body.removeChild(document.getElementById('title'));
+      document.body.removeChild(document.getElementById('title')!);
       document.body.classList.remove('nothing-scanned');
     }
 
     for(var i = 0, n = this.catalog.length; i < n; i++) {
       if (this.catalog[i].seed === idol.seed) {
         var catalogIdol = this.catalog[i];
-        askUser("You recruited this idol already; it's " + idol.name + "!",
-          [
-            ['Show me', catalogIdol.showDetail.bind(catalogIdol)],
-            ['Okay', null]
-          ]
-        );
+        askUser("You recruited this idol already; it's " + idol.name + "!", [
+          {command: 'Show me', action: catalogIdol.showDetail.bind(catalogIdol)},
+          {command: 'Okay'}
+        ]);
         blocked = true;
         return;
       }
@@ -1242,7 +1244,7 @@ class Agency {
 
     this.catalog.push(idol);
     idol.agency = this;
-    this.addToUnit(idol);
+    this.addToUnit(idol, false);
     deferRerender();
 
     if (interactive) {
@@ -1265,7 +1267,7 @@ class Agency {
   };
   addToUnit(idol: Idol, interactive: boolean) {
     if (this.unit.length >= maxUnitSize) {
-      if (interactive !== undefined) {
+      if (interactive) {
         askUser("Your unit is full; you'll need to remove someone before you can add " + idol.name + ".");
       }
     } else {
@@ -1282,14 +1284,14 @@ class Agency {
 
     function renderSetting() {
       theatreElement.innerHTML = theatreTemplate({background: self.storySetting});
-      var skipButton = theatreElement.querySelector('#skip');
+      var skipButton = theatreElement.querySelector('#skip')!;
 
-      function handleSkipClick(event) {
+      function handleSkipClick(event: Event) {
         event.stopPropagation();
         event.preventDefault();
         isSkipping = true;
         unbindScriptClick();
-        skipButton.removeEventListener('click', skipButton);
+        skipButton.removeEventListener('click', handleSkipClick);
         self.doStory(pageNumber + 1);
       }
 
@@ -1331,7 +1333,7 @@ class Agency {
         var nextLetter = invisibleScriptElement.textContent[0];
         visibleScriptElement.textContent += nextLetter;
         invisibleScriptElement.textContent = invisibleScriptElement.textContent.replace(/^./, '');
-        clearTimeout(letterTimeout);
+        if (letterTimeout) clearTimeout(letterTimeout);
 
         if (!invisibleScriptElement.textContent) {
           letterTimeout = undefined;
@@ -1345,7 +1347,7 @@ class Agency {
 
       letterTimeout = setTimeout(showNextLetter, 50);
 
-      function handleScriptClick(e) {
+      function handleScriptClick(e: Event) {
         e.stopPropagation();
         e.preventDefault();
 
@@ -1368,7 +1370,7 @@ class Agency {
       if (page.adjectives.into) actorElement.setAttribute('data-position', page.adjectives.into);
     }
 
-    function handleSetpieceClick(event) {
+    function handleSetpieceClick(event: Event) {
       event.stopPropagation();
       event.preventDefault();
       self.doStory(pageNumber + 1);
@@ -1388,7 +1390,7 @@ class Agency {
 
     } else if (page.kind === 'text') {
       if (!theatreElement.innerHTML) renderSetting();
-      stage = document.getElementById('stage').classList.remove('setpiece');
+      stage = document.getElementById('stage')!.classList.remove('setpiece');
       if (theatreElement.classList.contains('em') !== Boolean(page.em)) theatreElement.classList.toggle('em');
 
       var currentlySpeakingIdolElements = theatreElement.querySelectorAll('.speaking');
@@ -1397,10 +1399,10 @@ class Agency {
       if (isSkipping) {
         this.doStory(pageNumber + 1);
       } else {
-        var invisibleScriptElement = document.getElementById('invisible-script');
-        var visibleScriptElement = document.getElementById('visible-script');
+        var invisibleScriptElement = document.getElementById('invisible-script')!;
+        var visibleScriptElement = document.getElementById('visible-script')!;
         for (var psi = 0; psi < page.speakers.length; psi++) {
-          theatreElement.querySelector('[data-actor-name="' + page.speakers[psi] + '"]').classList.add('speaking');
+          theatreElement.querySelector('[data-actor-name="' + page.speakers[psi] + '"]')!.classList.add('speaking');
         }
         invisibleScriptElement.textContent = page.text;
         visibleScriptElement.textContent = '';
@@ -1410,10 +1412,10 @@ class Agency {
     } else if (page.kind === 'setpiece') {
       if (!theatreElement.innerHTML) renderSetting();
       theatreElement.addEventListener('click', handleSetpieceClick);
-      document.getElementById('setpiece').outerHTML = document.getElementById('setpiece').outerHTML;
-      document.getElementById('setpiece').innerText = page.text;
+      document.getElementById('setpiece')!.outerHTML = document.getElementById('setpiece')!.outerHTML;
+      document.getElementById('setpiece')!.innerText = page.text;
 
-      document.getElementById('stage').classList.add('setpiece');
+      document.getElementById('stage')!.classList.add('setpiece');
 
     } else if (page.kind === 'direction') {
       if (page.actor !== undefined) {
@@ -1441,18 +1443,18 @@ class Agency {
     } else if (page.kind === 'battle') {
       isSkipping = false;
       theatreElement.innerHTML = '';
-      var playerIdols = [];
+      var playerIdols: BattleIdol[] = [];
 
       for (var pii = 0; pii < self.unit.length; pii++) {
         playerIdols.push(new BattleIdol(self.unit[pii], 'player'));
       }
 
-      var enemyIdols = [];
+      var enemyIdols: BattleIdol[] = [];
 
       for (var ei = 0; ei < page.bosses.length; ei++) {
         var enemyIdol = getBoss(page.bosses[ei]);
         for (var stat in Stat) {
-          enemyIdol.stats.set(stat, enemyIdol.stats.get(stat) + (CHAPTER_DIFFICULTY_INCREASE * this.storyChaptersBeaten));
+          enemyIdol.stats.set(stat, enemyIdol.stats.get(stat)! + (CHAPTER_DIFFICULTY_INCREASE * this.storyChaptersBeaten));
         }
         enemyIdols.push(new BattleIdol(enemyIdol, 'ai'));
       }
@@ -1524,7 +1526,7 @@ class Agency {
         idol.stats.set(stat, idolDump.s[stat]);
       }
 
-      this.addIdol(idol);
+      this.addIdol(idol, false);
 
       if (Boolean(agencyDump.u[i]) !== idol.isInUnit()) {
         idol.toggleUnitMembership();

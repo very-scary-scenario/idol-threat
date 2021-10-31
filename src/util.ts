@@ -27,11 +27,8 @@ export interface Answer {
   action?: () => void
 }
 
-export function askUser(question: string): void
 export function askUser(question: string, answers?: Answer[]): void {
-  if (answers === undefined) answers = [{
-    command: 'Okay',
-  }];
+  if (answers === undefined) answers = [{ command: 'Okay' }];  // XXX this cannot ever happen currently
 
   promptArea.innerHTML = promptTemplate({
     'question': question,
