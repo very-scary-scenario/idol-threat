@@ -29,9 +29,21 @@ var VOWELS = 'aeiou';
 var N = 'n';
 enum Stat { attack, speed, defense };
 type StatType = keyof typeof Stat;
+const STATS: StatType[] = ['attack', 'speed', 'defense'];
 type SpriteMode = 'med' | 'thumb' | 'huge'
 
-var LAYERS = [
+interface StatDump { attack?: number, speed?: number, defense?: number }
+interface IdolDump {
+  a: number  // recruited at
+  b: []  // XXX i am not sure what this is
+  f: boolean  // favourite
+  i: number  // seed
+  r: boolean  // shiny
+  s: StatDump
+};
+
+type LayerType = keyof typeof PARTS
+var LAYERS: LayerType[] = [
   'hbe',
   'hb',
   'bd',
@@ -46,6 +58,7 @@ var LAYERS = [
   'ey',
   'eb'
 ];
+
 var RARITIES = [
   'Charred',
   'Well done',
@@ -152,7 +165,7 @@ var idolSorters = {
   unitMembership: function(a: Idol, b: Idol) { return (Number(b.isInUnit()) - Number(a.isInUnit())); },
   allStats: function(a: Idol, b: Idol) { return b.totalStats() - a.totalStats(); },
   affinity: function(a: Idol, b: Idol) { return (
-    (a.affinity - b.affinity) +
+    (AFFINITIES.indexOf(a.affinity) - AFFINITIES.indexOf(b.affinity)) +
     (idolSorters.allStats(a, b) / 10000)
   ); }
 };
@@ -397,7 +410,11 @@ export class Idol {
   actorName?: string;
   parts: Part[] = [];
   shiny = false;
-  agency: Agency;
+  agency: Agency = agency;
+  catalogElement?: Element;
+  loadedImages = new Map<SpriteMode, HTMLImageElement[]>();
+  loadedThumbSprite?: string;
+  seedOverride?: string;
 
   constructor(seed: number) {
     this.seed = seed;
@@ -410,7 +427,7 @@ export class Idol {
     // build stats
     for(var stat in Stat) {
       this.stats.set(stat, Math.floor(rand(-100, 100)));
-      this.effective.set(stat, effectiveStatGetter(this, stat));
+      this.effective.set(stat, effectiveStatGetter(this, stat as StatType));
     }
 
     this.abilities = [];
@@ -442,7 +459,7 @@ export class Idol {
       this.parts = [];
 
       for(var li = 0, ln = LAYERS.length; li < ln; li++) {
-        var options = PARTS[LAYERS[li]].filter(partIsAllowed);
+        var options = (PARTS[LAYERS[li]] as Part[]).filter(partIsAllowed);
         if (options.length === 0) {
           partsMissing = true;
         } else {
@@ -450,8 +467,6 @@ export class Idol {
         }
       }
     }
-
-    this.loadedImages = {};
 
     // build bio
     var bioParts = [];
@@ -530,15 +545,15 @@ export class Idol {
     }
   }
 
-  deferRendering(mode: SpriteMode | undefined, callback: undefined | (() => void)) {
+  deferRendering(mode: SpriteMode, callback: undefined | (() => void)) {
     var self = this;
     mode = mode || 'med';
 
-    if (this.loadedImages[mode] !== undefined) return;  // we're already loading
+    if (this.loadedImages.get(mode) !== undefined) return;  // we're already loading
 
     var loaded = 0;
-    var images = [];
-    this.loadedImages[mode] = images;
+    var images: HTMLImageElement[] = [];
+    this.loadedImages.set(mode, images);
 
     function renderIfLoaded() {
       loaded++;
@@ -553,15 +568,18 @@ export class Idol {
       var img = new Image();
 
       images.push(img);
-      var attr = mode + 'Path';
+      var attr: 'thumbPath' | 'medPath' | 'path'
+      if (mode === 'thumb') attr = 'thumbPath';
+      if (mode === 'med') attr = 'medPath';
       if (mode === 'huge') attr = 'path';
+      else { throw `no such mode ${mode}`}
       img.src = chosenPart[attr];
       img.addEventListener('load', renderIfLoaded);
     }
   }
 
   getSprite(mode?: SpriteMode) {
-    this.deferRendering(mode, () => {});
+    this.deferRendering(mode || 'med', () => {});
     return 'img/placeholder.png';
   }
 
@@ -571,7 +589,10 @@ export class Idol {
   renderSprite(mode?: SpriteMode) {
     if (mode === undefined) mode = 'med';
 
-    var images = this.loadedImages[mode];
+    var images = this.loadedImages.get(mode);
+    if (!images) {
+      throw 'no images to render'
+    }
 
     var offscreenCanvasElement = document.createElement('canvas')!;
     var offscreenCanvas = offscreenCanvasElement.getContext('2d')!;
@@ -593,7 +614,7 @@ export class Idol {
     offscreenCanvas.fillStyle = gradient;
     offscreenCanvas.fillRect(0, 0, offscreenCanvas.canvas.width, offscreenCanvas.canvas.height);
 
-    var subbableImages = document.querySelectorAll('.sprite img[data-sprite-' + mode + '-id="' + this.identifier + '"]');
+    var subbableImages = document.querySelectorAll('.sprite img[data-sprite-' + mode + '-id="' + this.identifier + '"]') as NodeListOf<HTMLImageElement>;
     var dataURL = offscreenCanvasElement.toDataURL();
 
     for (var si = 0; si < subbableImages.length; si++) {
@@ -604,11 +625,11 @@ export class Idol {
       this.loadedThumbSprite = dataURL;
     }
 
-    this.loadedImages[mode] = undefined;  // free up some memory?
+    this.loadedImages.delete(mode);  // free up some memory?
   }
 
-  spriteHTML(mode) {
-    if (mode === undefined || typeof(mode) !== 'string') mode = 'med';
+  spriteHTML(mode?: SpriteMode) {
+    if (mode === undefined) mode = 'med';
     var sprite;
 
     if (mode === 'med') {
@@ -664,7 +685,8 @@ export class Idol {
 
     while (count > 0) {
       count--;
-      this[choice(STATS, Math.random())]++;
+      const statKey = choice(STATS, Math.random());
+      this.stats.set(statKey, (this.stats.get(statKey) || 0) + 1);
     }
 
     deferRerender();
@@ -791,39 +813,41 @@ export class Idol {
       }
 
       askUser('Do you want ' + self.name + ' to graduate? She will leave your agency and every other idol will get a stat bonus by attending the graduation party.', [
-        ['Graduate', function() {
+        {command: 'Graduate', action: function() {
           if (self.shiny) {
             askUser('Are you absolutely sure? This is a pretty sweet idol you have here.', [
-              ['Yes, graduate', graduate],
-              ['No, she should stay', function() {}]
+              {command: 'Yes, graduate', action: graduate},
+              {command: 'No, she should stay'},
             ]);
           } else {
             graduate();
           }
-        }],
-        ['Keep', function() {}]
+        }},
+        {command: 'Keep'},
       ]);
     });
 
-    detailElement.querySelector('.membership .input').addEventListener('click', function(e) {
+    detailElement.querySelector('.membership .input')!.addEventListener('click', function(e) {
       e.stopPropagation();
       e.preventDefault();
 
       self.toggleUnitMembership();
-      if (self.isInUnit() ^ e.currentTarget.classList.contains('active')) e.currentTarget.classList.toggle('active');
+      if (self.isInUnit() !== (e.currentTarget as Element).classList.contains('active')) {
+        (e.currentTarget as Element).classList.toggle('active');
+      }
       deferRerender();
     });
 
-    detailElement.querySelector('a.favourite').addEventListener('click', function(e) {
+    detailElement.querySelector('a.favourite')!.addEventListener('click', function(e) {
       e.stopPropagation();
       e.preventDefault();
 
       self.favourite = !self.favourite;
-      e.target.classList.toggle('selected');
+      (e.target as Element).classList.toggle('selected');
       deferRerender();
     });
   };
-  next(mod) {
+  next(mod: number = 0) {
     var sc = agency.sortedCatalog();
     return sc[sc.indexOf(this) + (mod || 1)];
   };
@@ -832,7 +856,7 @@ export class Idol {
     var self = this;
     var layerTimeout = 400;
     var currentLayer = 0;
-    var auditionLayers;
+    var auditionLayers: HTMLImageElement[];
 
     auditionSpace.innerHTML = auditionTemplate(this);
     setTimeout(function() {
@@ -853,7 +877,7 @@ export class Idol {
     }
 
     function showLayersGradually() {
-      auditionLayers = self.loadedImages.med;
+      auditionLayers = self.loadedImages.get('med')!;
       setTimeout(addLayerToAuditionPortrait, layerTimeout);
     }
 
@@ -870,25 +894,25 @@ export class Idol {
     });
   };
   dump() {
-    var idolDump = {
+    var idolDump: IdolDump = {
       a: this.recruitedAt,
       b: [],
       f: this.favourite,
       i: this.seed,
       r: this.shiny,
       s: {},
-    };
-    for(var stat in Stat) {
+    }
+    for(var stat in STATS) {
       idolDump.s[stat] = this.stats.get(stat);
     }
     return idolDump;
   };
   handleOverrides() {
     // look, we need _somewhere_ to hide our easter eggs
-    var override = SEED_OVERRIDES[this.seed];
+    var override = SEED_OVERRIDES.get(this.seed);
     if (override !== undefined) {
       override(this);
-      this.seedOverride = override.overrideName;
+      this.seedOverride = 'shadow'  // XXX this will have to change if we introduce more overrides
     }
   };
   isShadow() {
@@ -905,28 +929,28 @@ function hideIdolDetail(event: Event) {
   document.body.classList.remove('overlay');
   currentlyShowingDetail = undefined;
 }
-function showNextIdol() {
+function showNextIdol(event: Event) {
   if (!currentlyShowingDetail) return;
   var nextIdol = currentlyShowingDetail.next();
   if (nextIdol) nextIdol.showDetail();
 }
-function showPrevIdol() {
+function showPrevIdol(event: Event) {
   if (!currentlyShowingDetail) return;
   var prevIdol = currentlyShowingDetail.prev();
   if (prevIdol) prevIdol.showDetail();
 }
-var keyHandlers = {
-  ArrowLeft: showPrevIdol,
-  ArrowRight: showNextIdol,
-  Escape: hideIdolDetail
-};
+var keyHandlers = new Map([
+  ['ArrowLeft', showPrevIdol],
+  ['ArrowRight', showNextIdol],
+  ['Escape', hideIdolDetail],
+]);
 
 document.addEventListener('keydown', function(event) {
-  var handler = keyHandlers[event.key];
+  var handler = keyHandlers.get(event.key);
   if (handler) {
     event.preventDefault();
     event.stopPropagation();
-    handler();
+    handler(event);
   }
 });
 

@@ -17,7 +17,7 @@ export interface Part {
   bodyType?: string
   layer?: string
   number?: string
-  pose?: string
+  pose?: string | null
   skinColour?: string | null
   hairColour?: string | null
 }
