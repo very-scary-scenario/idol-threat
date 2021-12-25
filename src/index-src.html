@@ -106,10 +106,10 @@
         <ul id="sort-list">
           {{#each sortOrders}}
             <li>
-              {{#if isSelectedOrder}}
-                <a>{{1}} <em>(current)</em></a>
+              {{#if selected}}
+                <a>{{name}} <em>(current)</em></a>
               {{else}}
-                <a href="#" data-sort-order="{{0}}">{{1}}</a>
+                <a href="#" data-sort-order="{{key}}">{{name}}</a>
               {{/if}}
             </li>
           {{/each}}

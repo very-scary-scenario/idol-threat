@@ -41,6 +41,16 @@ interface IdolDump {
   r: boolean  // shiny
   s: StatDump
 };
+interface AgencyDump {
+  i: IdolDump[],  // recruits
+  u: number[],  // 0 or 1, whether the idol at this index is in the current unit
+  x: number,  // experience
+  p: UpgradesRecord,
+  b: number,  // story chapters beaten
+  q: number,  // quick battle ranking
+  f: number[],  // recently fired
+  o: IdolSortOrder,
+};
 
 type LayerType = keyof typeof PARTS
 var LAYERS: LayerType[] = [
@@ -155,7 +165,7 @@ var cookieSliceSize = 2000;
 var endString = 'end';
 
 var isSkipping = false;
-var unbindScriptClick: () => {};
+var unbindScriptClick: () => void;
 
 var idolSorters = {
   date: function(a: Idol, b: Idol) { return b.recruitedAt - a.recruitedAt; },
@@ -180,6 +190,11 @@ var idolSortNames = {
   unitMembership: 'Unit membership'
 };
 type IdolSortOrder = keyof typeof idolSortNames
+type SortOrder = {
+  key: IdolSortOrder
+  name: string
+  selected: boolean
+}
 
 var upgradeNames = {
   attack: {
@@ -243,10 +258,10 @@ function getStateCookie() {
   return atob(stateString);
 }
 
-var barcodeImage = document.getElementById('barcode-image')! as HTMLInputElement;
+var barcodeImage = document.getElementById('barcode-image') as HTMLInputElement;
 var scannerOverlay = document.getElementById('scanner-overlay')!;
 var cancelScanningElement = document.getElementById('cancel-scanning')!;
-var loadGame = document.getElementById('load-game')!;
+var loadGame = document.getElementById('load-game') as HTMLInputElement;
 var detailElement = document.getElementById('idol-detail')!;
 var catalogElement = document.getElementById('catalog')!;
 var unitElement = document.getElementById('unit')!;
@@ -728,7 +743,7 @@ export class Idol {
         event.stopPropagation();
         event.preventDefault();
 
-        var foodIdol = catalogWithoutSelf[parseInt(event.currentTarget!.getAttribute('data-index'), 10)] as Idol;
+        var foodIdol = catalogWithoutSelf[parseInt((event.currentTarget as HTMLElement).getAttribute('data-index')!, 10)] as Idol;
         var negativeStats = new Map<StatType, boolean>()
         var summedStats = new Map<StatType, number>()
         var diffedStats = new Map<StatType, number>()
@@ -760,8 +775,8 @@ export class Idol {
         canteenElement.querySelector('.yes')!.addEventListener('click', function(event) {
           event.stopPropagation();
           event.preventDefault();
-          for (var stat in summedStats) {
-            self[stat] = summedStats[stat];
+          for (var [stat, value] of summedStats) {
+            self.stats.set(stat, value);
           }
           agency.removeIdol(foodIdol);
           canteenElement.innerHTML = '';
@@ -860,7 +875,7 @@ export class Idol {
 
     auditionSpace.innerHTML = auditionTemplate(this);
     setTimeout(function() {
-      initSparkle(document.getElementById('sparkle-canvas')! as HTMLCanvasElement);
+      initSparkle(document.getElementById('sparkle-canvas') as HTMLCanvasElement);
     }, 1);
 
     function addLayerToAuditionPortrait() {
@@ -903,7 +918,7 @@ export class Idol {
       s: {},
     }
     for(var stat in STATS) {
-      idolDump.s[stat] = this.stats.get(stat);
+      idolDump.s[stat as StatType] = this.stats.get(stat);
     }
     return idolDump;
   };
@@ -972,6 +987,7 @@ class Agency {
   storyChaptersBeaten: number
   quickBattleRanking: number
   storySetting: string | null = null
+  storyActors: Record<string, string>
   upgrades: UpgradesRecord = {attack: 0, defense: 0, speed: 0, recruitment: 0, graduation: 0}
   sortOrder: IdolSortOrder
   upgradeFor = new Map<StatType, () => number>()
@@ -1007,15 +1023,17 @@ class Agency {
   renderCatalog() {
     var sortedCatalog = this.sortedCatalog();
 
-    var sortOrders = [];
+    var sortOrders: SortOrder[] = [];
 
     for (var key in idolSortNames) {
-      var item = [key, idolSortNames[key as IdolSortOrder]];
-      if (this.sortOrder === key) item.isSelectedOrder = true;
-      sortOrders.push(item);
+      sortOrders.push({
+        key: key as IdolSortOrder,
+        name: idolSortNames[key as IdolSortOrder],
+        selected: (this.sortOrder === key)
+      });
     }
 
-    sortOrders.sort();
+    sortOrders.sort()
 
     var upgrades = [];
 
@@ -1052,7 +1070,7 @@ class Agency {
     function setSortOrder(event: Event) {
       event.stopPropagation();
       event.preventDefault();
-      agency.sortOrder = event.currentTarget!.getAttribute('data-sort-order');
+      agency.sortOrder = (event.currentTarget as HTMLElement).getAttribute('data-sort-order')!;
       rerender();
     }
 
@@ -1082,7 +1100,7 @@ class Agency {
     function toggleMembership(event: Event) {
       event.stopPropagation();
       event.preventDefault();
-      i = parseInt(event.currentTarget!.getAttribute('data-index'), 10);
+      i = parseInt((event.currentTarget as HTMLElement).getAttribute('data-index'), 10);
       sortedCatalog[i].toggleUnitMembership();
     }
 
@@ -1101,9 +1119,9 @@ class Agency {
         return;
       }
 
-      var upgradeName = event.currentTarget!.getAttribute('data-upgrade-name') as UpgradeType;
+      var upgradeName = (event.currentTarget as HTMLElement).getAttribute('data-upgrade-name') as UpgradeType;
       agency.upgrades[upgradeName] += 1;
-      event.currentTarget!.parentElement.querySelector('.level-counter').innerText = agency.upgrades[upgradeName].toString(10);
+      ((event.currentTarget as HTMLElement).parentElement!.querySelector('.level-counter') as HTMLElement).innerText = agency.upgrades[upgradeName].toString(10);
       document.getElementById('spendable-levels')!.innerText = agency.spendableLevels().toString(10);
       if (agency.spendableLevels() === 0) document.getElementById('agency-meta')!.classList.remove('spendable-levels');
       saveGame();
@@ -1118,7 +1136,7 @@ class Agency {
     function showDetail(event: Event) {
       event.stopPropagation();
       event.preventDefault();
-      i = parseInt(event.currentTarget!.getAttribute('data-index'), 10);
+      i = parseInt((event.currentTarget as HTMLElement).getAttribute('data-index'), 10);
       sortedCatalog[i].showDetail();
     }
 
@@ -1493,15 +1511,18 @@ class Agency {
         enemyIdols.push(new BattleIdol(enemyIdol, 'ai'));
       }
 
-      var battle = new Battle(playerIdols, enemyIdols, function() {
-        for (var pi = 0; pi < this.playerIdols.length; pi++) {
-          this.playerIdols[pi].idol.giveBonus(enemyIdols.length);
+      var battle = new Battle(playerIdols, enemyIdols, function(battle: Battle) {
+        for (var pi = 0; pi < battle.playerIdols.length; pi++) {
+          battle.playerIdols[pi].idol.giveBonus(enemyIdols.length);
         }
 
         self.doStory(pageNumber + 1);
-      }, function() {
+      }, function(battle: Battle) {
         theatreElement.innerHTML = '';
         askUser('You lost the battle. Train up your unit some more and try again!');
+      }, function(battle: Battle) {
+        theatreElement.innerHTML = '';
+        askUser('You fled. Try agian when you feel ready.')
       });
 
       battle.loop();
@@ -1521,7 +1542,7 @@ class Agency {
     return CHAPTERS[chapterName];
   };
   dump() {
-    var agencyDump = {
+    var agencyDump: AgencyDump = {
       i: [],
       u: [],
       x: this.experience,
@@ -1540,7 +1561,7 @@ class Agency {
 
     return agencyDump;
   };
-  load(agencyDump) {
+  load(agencyDump: AgencyDump) {
     if (agencyDump.o !== undefined) this.sortOrder = agencyDump.o;
     this.experience = agencyDump.x || 0;
     this.storyChaptersBeaten = agencyDump.b || 0;
@@ -1557,7 +1578,7 @@ class Agency {
       idol.shiny = Boolean(idolDump.r);
 
       for(var stat in Stat) {
-        idol.stats.set(stat, idolDump.s[stat]);
+        idol.stats.set(stat, idolDump.s[stat as StatType]!);
       }
 
       this.addIdol(idol, false);
@@ -1582,6 +1603,7 @@ function recruitIdolFromBarcodeText(text: string): Idol {
   var idol = new Idol(numFromString(text));
   idol.applyRecruitmentBonuses();
   agency.addIdol(idol, true);
+  return idol
 }
 
 function getCredits() {
@@ -1638,19 +1660,20 @@ function complainAboutBadSaveFile() {
 }
 
 loadGame.addEventListener('change', function(e) {
+  if (loadGame.files === null) { return };
+
   var reader = new FileReader();
   reader.onload = function() {
     if (reader.result === null) { return };
-    var newAgency = new Agency();
 
-    newAgency.load(JSON.parse(atob(reader.result)));
-    // try {
-    //   newAgency.load(JSON.parse(atob(reader.result)));
-    // } catch (e) {
-    //   complainAboutBadSaveFile();
-    //   console.log(e);
-    //   return;
-    // }
+    var newAgency = new Agency();
+    try {
+      newAgency.load(JSON.parse(atob(reader.result as string)));
+    } catch (e) {
+      complainAboutBadSaveFile();
+      console.log(e);
+      return;
+    }
 
     askUser('Loaded save successfully!');
     agency = newAgency;
@@ -1922,6 +1945,6 @@ if (batchMatch) {
   });
 }
 
-window.executeInScope = function(thingToExecute: string) {
+(window as any).executeInScope = function(thingToExecute: string) {
   eval(thingToExecute)
 }
