@@ -19,8 +19,8 @@ import {
 } from './parts'
 import { Affinity, AffinityType, AFFINITIES, Battle, BattleIdol } from './battle'
 import { askUser, AbilityPart, Part } from './util'
-import { BrowserQRCodeReader } from '@zxing/browser'
-import { DecodeHintType } from '@zxing/library'
+import { BrowserQRCodeReader, IScannerControls } from '@zxing/browser'
+import { DecodeHintType, Result } from '@zxing/library'
 import { FastClick } from 'fastclick'
 const wordfilter = require('wordfilter')
 
@@ -327,7 +327,6 @@ var sparkleImage = new Image();
 sparkleImage.src = 'img/vendor/sparkle.png';
 
 const SparkleEmitter = require('./vendor/sparkle/sparkle.js').SparkleEmitter
-console.log(SparkleEmitter)
 
 function initSparkle(sparkleCanvas: HTMLCanvasElement) {
   var sparkleContext = sparkleCanvas.getContext('2d')!;
@@ -1706,24 +1705,28 @@ function recruit() {
 
   // try to use a live video feed
   BrowserQRCodeReader.listVideoInputDevices().then(function(devices) {
-    codeReader.decodeOnceFromVideoDevice(undefined, 'scanner-viewfinder').then(function(result) {
-      scannerOverlay.classList.add('hidden');
-      recruitIdolFromBarcodeText(result.getText());
-    }).catch(function(err) {
-      console.log(err);
-
-      // just use a static image
-      scannerOverlay.classList.add('hidden');
-
-      // this is often spurious; we should try to specifically
-      if (err.name === "NotAllowedError") {
-        CAMERA_DENIED = true;
-        askUser('Without camera access, you will need to provide a static image', [
-          {command: 'Load image', action: function() { barcodeImage.click(); }},
-          {command: 'Never mind'}
-        ]);
+    codeReader.decodeFromVideoDevice(undefined, 'scanner-viewfinder', function(result, error, controls) {
+      if (result !== undefined) {
+        console.log(result)
+        controls.stop()
+        scannerOverlay.classList.add('hidden');
+        recruitIdolFromBarcodeText(result.getText());
       }
-    });
+
+      if (error !== undefined) {
+        // this is often spurious; we should try to specifically only catch errors that are problems
+        if (error.name === "NotAllowedError") {
+          CAMERA_DENIED = true;
+          scannerOverlay.classList.add('hidden');
+          askUser('Without camera access, you will need to provide a static image', [
+            {command: 'Load image', action: function() { barcodeImage.click(); }},
+            {command: 'Never mind'}
+          ]);
+        }
+      }
+    }).then((controls) => {
+      scanningControls = controls
+    })
   });
 
   return;
@@ -1885,14 +1888,15 @@ function deferRerender() {
   rerenderTimeout = setTimeout(rerender, 50);
 }
 
+let scanningControls: IScannerControls
+
 function initGame() {
   FastClick.attach(document.body);
   document.getElementById('loading')!.innerText = '';
   parsePresetBarcodes();
 
   cancelScanningElement.addEventListener('click', function() {
-    codeReader.stopAsyncDecode();
-    codeReader.reset();
+    scanningControls.stop()
     scannerOverlay.classList.add('hidden');
   });
 
