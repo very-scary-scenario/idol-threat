@@ -3,7 +3,7 @@ import {
   ANIMATIONS,
 } from './parts'
 import { askUser } from './util'
-import { Ability, Idol } from './game'
+import { Ability, Idol, celebrate } from './game'
 
 export enum Affinity { rock, paper, scissors }
 export type AffinityType = keyof typeof Affinity
@@ -23,7 +23,7 @@ var BASIC_ABILITY_DAMAGE = 15;
 var animationDuration = 1000;
 var anims = new Map<string, HTMLImageElement>()
 
-var hoverDetailTimeout: number;
+var hoverDetailTimeout: ReturnType<typeof setTimeout>;
 
 function loadAnimations() {
   for(var i = 0; i < ANIMATIONS.length; i++) {
@@ -36,7 +36,7 @@ function loadAnimations() {
 
 loadAnimations();
 
-function effectiveness(attackAffinity: AffinityType, targetAffinity: AffinityType) {
+function effectiveness(attackAffinity: AffinityType, targetAffinity: AffinityType): number {
   var attackIndex = AFFINITIES.indexOf(attackAffinity);
   var targetIndex = AFFINITIES.indexOf(targetAffinity);
   var effectivenessIdentifier = ((attackIndex + AFFINITIES.length) - targetIndex) % 3;
@@ -44,7 +44,7 @@ function effectiveness(attackAffinity: AffinityType, targetAffinity: AffinityTyp
     0: 1,  // the attack is the same type as the defense
     1: SUPER_EFFECTIVE_ATTACK_BONUS, // the attack is strong
     2: 1/SUPER_EFFECTIVE_ATTACK_BONUS // the attack is weak
-  }[effectivenessIdentifier];
+  }[effectivenessIdentifier]!;
 }
 
 export class BattleIdol {
@@ -60,7 +60,7 @@ export class BattleIdol {
   abilities: Ability[]
   affinity: AffinityType
   battle?: Battle
-  element?: Element
+  element?: HTMLElement
 
   constructor(idol: Idol, control: 'ai' | 'player') {
     this.idol = idol
@@ -100,17 +100,17 @@ export class BattleIdol {
       this.hp = 0;
 
       setTimeout(function() {
-        self.element.classList.add('dead');
-        if (!self.playerControlled) agency.grantExperience(1);
+        self.element!.classList.add('dead');
+        if (!self.playerControlled) self.idol.agency.grantExperience(1);
       }, animationDuration);
     }
-    this.element.querySelector('.health-bar-content').style.width = this.healthPercent().toString(10) + '%';
-    this.element.querySelector('.health-bar-trail').style.width = this.healthPercent().toString(10) + '%';
+    (this.element!.querySelector('.health-bar-content') as HTMLElement).style.width = this.healthPercent().toString(10) + '%';
+    (this.element!.querySelector('.health-bar-trail') as HTMLElement).style.width = this.healthPercent().toString(10) + '%';
   };
 
   doMove(moveIndex: number, target: BattleIdol) {
     var self = this;
-    self.element.classList.add('fighting');
+    self.element!.classList.add('fighting');
 
     var ability = self.abilities[moveIndex];
 
@@ -127,11 +127,11 @@ export class BattleIdol {
     target.doDamage(abilityStrength);
     console.log(this.idol.name + ' did ' + abilityStrength.toString(10) + ' damage to ' + target.idol.name + ', bringing her HP to ' + target.hp.toString(10) + '/' + target.maxHp.toString(10));
 
-    playAnimationCanvas(self.abilities[moveIndex], target.element);
+    playAnimationCanvas(self.abilities[moveIndex], target.element!);
 
     setTimeout(function() {
-      self.element.classList.remove('fighting');
-      self.battle.nextMove();
+      self.element!.classList.remove('fighting');
+      self.battle!.nextMove();
     }, animationDuration);
   };
 
@@ -151,6 +151,7 @@ export class Battle {
   lossCallback: (arg0: Battle) => void
   fleeCallback: (arg0: Battle) => void
   turnOrder: BattleIdol[]
+  turnIndex?: number
 
   constructor(
     playerIdols: BattleIdol[],
@@ -198,7 +199,7 @@ export class Battle {
     this.hide();
 
     if (this.fleeCallback) {
-      this.fleeCallback();
+      this.fleeCallback(this);
     } else {
       askUser('You ran away.');
     }
@@ -212,7 +213,7 @@ export class Battle {
       e.stopPropagation();
       e.preventDefault();
 
-      var targetInput = document.querySelector('input[name="target"]:checked');
+      var targetInput = document.querySelector('input[name="target"]:checked') as HTMLInputElement;
       var moveInput = document.querySelector('input[name="move"]:checked');
       if ((!targetInput) || (!moveInput)) {
         askUser('You have to pick both a target and a move');
@@ -225,17 +226,17 @@ export class Battle {
       var abilityIndex = parseInt(moveInput.getAttribute('value')!, 10);
 
       abilityPromptElement.innerHTML = '';
-      idol.element.classList.remove('focussed');
+      idol.element!.classList.remove('focussed');
       targetInput.checked = false;
       abilityPromptElement.innerHTML = '';
       idol.doMove(abilityIndex, self.enemyIdols[targetIndex]);
     }
 
-    idol.element.classList.add('focussed');
+    idol.element!.classList.add('focussed');
     abilityPromptElement.innerHTML = abilityPromptTemplate(idol);
 
-    document.getElementById('battle-form').addEventListener('submit', pickMove);
-    document.getElementById('flee').addEventListener('click', function(e) {
+    document.getElementById('battle-form')!.addEventListener('submit', pickMove);
+    document.getElementById('flee')!.addEventListener('click', function(e) {
       e.stopPropagation();
       e.preventDefault();
       self.flee();
@@ -244,18 +245,18 @@ export class Battle {
     return;
   };
 
-  tookDamage(team) {
+  tookDamage(team: BattleIdol[]) {
     for (var i = 0; i < team.length; i++) {
       if (team[i].hp !== team[i].maxHp) return true;
     }
     return false;
   };
 
-  stillHasLivingMembers(team) {
+  stillHasLivingMembers(team: BattleIdol[]) {
     return this.numberOfLivingMembers(team) > 0;
   };
 
-  numberOfLivingMembers(team) {
+  numberOfLivingMembers(team: BattleIdol[]) {
     var livingMemberCount = 0;
 
     for (var i = 0; i < team.length; i++) {
@@ -321,13 +322,13 @@ export class Battle {
 
     var playerIdolElements = battleElement.querySelectorAll('#player-idols > li');
     for (var pi = 0; pi < this.playerIdols.length; pi++) {
-      this.playerIdols[pi].element = playerIdolElements[pi];
+      this.playerIdols[pi].element = playerIdolElements[pi] as HTMLElement;
       bindHoverDetail(this.playerIdols[pi], playerIdolElements[pi]);
     }
 
     var enemyIdolElements = battleElement.querySelectorAll('#enemy-idols > li');
     for (var ei = 0; ei < this.enemyIdols.length; ei++) {
-      this.enemyIdols[ei].element = enemyIdolElements[ei];
+      this.enemyIdols[ei].element = enemyIdolElements[ei] as HTMLElement;
       bindHoverDetail(this.enemyIdols[ei], enemyIdolElements[ei]);
     }
   };

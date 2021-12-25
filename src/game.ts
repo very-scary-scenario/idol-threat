@@ -308,7 +308,7 @@ function seededRandom(seed: number): (max?: number, min?: number) => number {
   return rand;
 }
 
-function celebrate(density: number = 1) {
+export function celebrate(density: number = 1) {
   confetti.setDensity(density);
   if (!confettiTimeout) {
     confetti.restart();
