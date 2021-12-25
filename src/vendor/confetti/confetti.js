@@ -2,10 +2,11 @@
 
 // modified for idol threat:
 // - don't require jquery 
+// - export stuff
 // - make particle density a publically-changeable thing
 // - placate jshint
 
-function Confetti() {
+export function Confetti() {
   // globals
   var canvas;
   var ctx;
@@ -235,4 +236,4 @@ function Confetti() {
 
   init();
 }
-var confetti = new Confetti();
+export const confetti = new Confetti();

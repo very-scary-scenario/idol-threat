@@ -1,4 +1,4 @@
-(function(window) {
+//(function(window) {
 
 /* ToDo:
  * - Smarter particle-limitation and global particle-limitation to make performance-optimization possible
@@ -11,7 +11,7 @@
 	 * @param {dom} canvas HTML Element
 	 * @returns {_L1.SparkleEmitter}
 	 */
-	var SparkleEmitter = function(canvas) {
+	 export const SparkleEmitter = function(canvas) {
 		
 		// Internal data
 		this.context = canvas.getContext('2d');
@@ -652,6 +652,6 @@
 		return this;
 	};
 
-	window.SparkleEmitter = SparkleEmitter;
+	// window.SparkleEmitter = SparkleEmitter;
 
-})(window);
+//})(window);

@@ -622,6 +622,10 @@ if __name__ == '__main__':
         for fn in ['placeholder.png', 'placeholder-flat.png', 'splash.jpg', 'vss-logo.svg']:
             shutil.copy(os.path.join(IMG, fn), os.path.join(imgdir, fn))
 
+        os.mkdir(os.path.join(imgdir, 'vendor'))
+        for fpath in [('sparkle', 'sparkle.png')]:
+            shutil.copy(os.path.join(SRC, 'vendor', *fpath), os.path.join(imgdir, 'vendor', fpath[-1]))
+
         os.symlink(os.path.join('..', '..', 'src', 'img', 'idols'), os.path.join(imgdir, 'idols'))
 
         for subdir in ['fonts']:

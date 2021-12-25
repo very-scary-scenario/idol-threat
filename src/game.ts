@@ -156,6 +156,7 @@ var NEGATIVE_STAT_EFFECT = 2;
 
 var RECENT_FIRING_MEMORY = 20;
 
+const confetti = require('./vendor/confetti/confetti.js').confetti
 var confettiTimeout: ReturnType<typeof setTimeout> | undefined;
 var letterTimeout: ReturnType<typeof setTimeout> | undefined;
 
@@ -323,10 +324,13 @@ export function celebrate(density: number = 1) {
 }
 
 var sparkleImage = new Image();
-sparkleImage.src = 'lib/sparkle/sparkle.png';
+sparkleImage.src = 'img/vendor/sparkle.png';
+
+const SparkleEmitter = require('./vendor/sparkle/sparkle.js').SparkleEmitter
+console.log(SparkleEmitter)
 
 function initSparkle(sparkleCanvas: HTMLCanvasElement) {
-  var sparkleContext = sparkleCanvas.getContext('2d');
+  var sparkleContext = sparkleCanvas.getContext('2d')!;
   var sparkleEmitter = new SparkleEmitter(sparkleCanvas);
 
   sparkleCanvas.width = sparkleCanvas.clientWidth * (window.devicePixelRatio || 1);
@@ -342,7 +346,7 @@ function initSparkle(sparkleCanvas: HTMLCanvasElement) {
 
   var size = sparkleCanvas.height/8;
 
-  sparkleEmitter.drawParticle = function(x: number, y: number, particle) {
+  sparkleEmitter.drawParticle = function(x: number, y: number, particle: any) {
     // this.context.setTransform(0, 0, 0, 0, particle.x, particle.y);
     // this.context.rotate(sparkleEmitter.getParticleAge(particle) / 100);
     this.context.globalAlpha = Math.max(particle.opacity * Math.sin(
@@ -586,8 +590,8 @@ export class Idol {
       images.push(img);
       var attr: 'thumbPath' | 'medPath' | 'path'
       if (mode === 'thumb') attr = 'thumbPath';
-      if (mode === 'med') attr = 'medPath';
-      if (mode === 'huge') attr = 'path';
+      else if (mode === 'med') attr = 'medPath';
+      else if (mode === 'huge') attr = 'path';
       else { throw `no such mode ${mode}`}
       img.src = chosenPart[attr];
       img.addEventListener('load', renderIfLoaded);
@@ -874,7 +878,9 @@ export class Idol {
     var currentLayer = 0;
     var auditionLayers: HTMLImageElement[];
 
-    auditionSpace.innerHTML = auditionTemplate(this);
+    auditionSpace.innerHTML = auditionTemplate(this, {allowedProtoMethods: {
+      isShadow: true
+    }});
     setTimeout(function() {
       initSparkle(document.getElementById('sparkle-canvas') as HTMLCanvasElement);
     }, 1);
