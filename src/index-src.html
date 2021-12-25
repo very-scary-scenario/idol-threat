@@ -360,9 +360,9 @@
             ">
               <div class="portrait">{{{thumbSpriteHTML}}}</div>
               <div class="portrait-stats">
-                <span class="{{#ifPositive attack}}positive{{else}}negative{{/ifPositive}}">{{attack}}</span>
-                <span class="{{#ifPositive defense}}positive{{else}}negative{{/ifPositive}}">{{defense}}</span>
-                <span class="{{#ifPositive speed}}positive{{else}}negative{{/ifPositive}}">{{speed}}</span>
+                <span class="{{#ifPositive stats.attack}}positive{{else}}negative{{/ifPositive}}">{{stats.attack}}</span>
+                <span class="{{#ifPositive stats.defense}}positive{{else}}negative{{/ifPositive}}">{{stats.defense}}</span>
+                <span class="{{#ifPositive stats.speed}}positive{{else}}negative{{/ifPositive}}">{{stats.speed}}</span>
               </div>
               <div data-index="{{@index}}" disabled="disabled" class="input"></div>
             </li>

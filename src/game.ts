@@ -985,7 +985,8 @@ document.addEventListener('keydown', function(event) {
 // hammerManager.on('swipeleft', showNextIdol);
 // hammerManager.on('swiperight', showPrevIdol);
 
-Handlebars.registerHelper('ifPositive', function(a, options) {
+Handlebars.registerHelper('ifPositive', function(this: Handlebars.HelperDelegate, a, options) {
+  console.log([this, a, options])
   if (a >= 0) return options.fn(this);
   else return options.inverse(this);
 });
