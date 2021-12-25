@@ -146,7 +146,7 @@ function getBoss(name: string) {
 
 var LETTER_DELAY = 20;
 var LETTER_EMPHASIS_MULTIPLIER = 4;
-var LETTER_DELAYS = {
+var LETTER_DELAYS: Record<string, number> = {
   '.': 8,
   ',': 4
 };
@@ -1070,7 +1070,7 @@ class Agency {
     function setSortOrder(event: Event) {
       event.stopPropagation();
       event.preventDefault();
-      agency.sortOrder = (event.currentTarget as HTMLElement).getAttribute('data-sort-order')!;
+      agency.sortOrder = (event.currentTarget as HTMLElement).getAttribute('data-sort-order') as IdolSortOrder;
       rerender();
     }
 
@@ -1100,7 +1100,7 @@ class Agency {
     function toggleMembership(event: Event) {
       event.stopPropagation();
       event.preventDefault();
-      i = parseInt((event.currentTarget as HTMLElement).getAttribute('data-index'), 10);
+      i = parseInt((event.currentTarget as HTMLElement).getAttribute('data-index')!, 10);
       sortedCatalog[i].toggleUnitMembership();
     }
 
@@ -1136,7 +1136,7 @@ class Agency {
     function showDetail(event: Event) {
       event.stopPropagation();
       event.preventDefault();
-      i = parseInt((event.currentTarget as HTMLElement).getAttribute('data-index'), 10);
+      i = parseInt((event.currentTarget as HTMLElement).getAttribute('data-index')!, 10);
       sortedCatalog[i].showDetail();
     }
 
@@ -1155,14 +1155,14 @@ class Agency {
     function triggerSave(event: Event) {
       event.stopPropagation();
       event.preventDefault();
-      window.open(event.currentTarget!.getAttribute('href'), 'downloadTarget');
+      window.open((event.currentTarget as HTMLElement).getAttribute('href')!, 'downloadTarget');
     }
     document.getElementById('save-backup')!.addEventListener('click', triggerSave);
     var footerLoad = document.getElementById('footer-load');
     if (footerLoad) footerLoad.addEventListener('click', triggerLoad);
 
     function toggleCredits(event: Event) {
-      if (event.target!.classList.contains('credited-homepage')) return;
+      if ((event.target as HTMLElement).classList.contains('credited-homepage')) return;
 
       event.stopPropagation();
       event.preventDefault();
@@ -1197,7 +1197,7 @@ class Agency {
     function handleUnitClick(e: Event) {
       e.stopPropagation();
       e.preventDefault();
-      self.unit[parseInt(e.currentTarget!.getAttribute('data-index'), 10)].showDetail();
+      self.unit[parseInt((e.currentTarget as HTMLElement).getAttribute('data-index')!, 10)].showDetail();
     }
 
     for (var ei = 0; ei < unitElements.length; ei++) {
@@ -1210,7 +1210,7 @@ class Agency {
       thumbSpriteHTML: true
     }});
 
-    function toggleUnitDetailDisplay(e) {
+    function toggleUnitDetailDisplay(e: Event) {
       e.stopPropagation();
       e.preventDefault();
       unitDetailElement.classList.toggle('hidden');
@@ -1350,12 +1350,12 @@ class Agency {
       skipButton.addEventListener('click', handleSkipClick);
     }
 
-    function getActorElement(actor) {
+    function getActorElement(actor: Idol) {
       var element = theatreElement.querySelector('#boards .actor[data-actor-name="' + actor.actorName + '"]');
       if (!element) {
         actor.actorName = actor.actorName;
         element = document.createElement('div');
-        element.setAttribute('data-actor-name', actor.actorName);
+        element.setAttribute('data-actor-name', actor.actorName!);
         element.classList.add('actor');
         element.innerHTML = actor.hugeSpriteHTML();
         theatreElement.querySelector('#boards')!.appendChild(element);
@@ -1380,11 +1380,11 @@ class Agency {
     var page = chapter[pageNumber];
     var actorElement: Element;
 
-    function graduallyShowScript(visibleScriptElement, invisibleScriptElement) {
+    function graduallyShowScript(visibleScriptElement: HTMLElement, invisibleScriptElement: HTMLElement) {
       function showNextLetter() {
-        var nextLetter = invisibleScriptElement.textContent[0];
+        var nextLetter = invisibleScriptElement.textContent![0];
         visibleScriptElement.textContent += nextLetter;
-        invisibleScriptElement.textContent = invisibleScriptElement.textContent.replace(/^./, '');
+        invisibleScriptElement.textContent = invisibleScriptElement.textContent!.replace(/^./, '');
         if (letterTimeout) clearTimeout(letterTimeout);
 
         if (!invisibleScriptElement.textContent) {
@@ -1409,7 +1409,7 @@ class Agency {
         } else {
           clearTimeout(letterTimeout);
           letterTimeout = undefined;
-          visibleScriptElement.textContent += invisibleScriptElement.textContent;
+          visibleScriptElement.textContent! += invisibleScriptElement.textContent!;
           invisibleScriptElement.textContent = '';
         }
       }
@@ -1442,7 +1442,8 @@ class Agency {
 
     } else if (page.kind === 'text') {
       if (!theatreElement.innerHTML) renderSetting();
-      stage = document.getElementById('stage')!.classList.remove('setpiece');
+      const stage = document.getElementById('stage')!
+      stage.classList.remove('setpiece');
       if (theatreElement.classList.contains('em') !== Boolean(page.em)) theatreElement.classList.toggle('em');
 
       var currentlySpeakingIdolElements = theatreElement.querySelectorAll('.speaking');
