@@ -735,6 +735,11 @@ export class Idol {
       canteenElement.innerHTML = canteenTemplate({
         idol: self,
         catalog: catalogWithoutSelf
+      }, {
+        allowedProtoMethods: {
+          isInUnit: true,
+          thumbSpriteHTML: true,
+        },
       });
 
       canteenElement.querySelector('.cancel')!.addEventListener('click', function(event) {
