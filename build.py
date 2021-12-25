@@ -566,6 +566,7 @@ def write_parts() -> None:
 
     with open('src/parts.ts', 'w') as p:
         p.write(
+            "import {{ ChapterPage }} from './util'\n"
             'export const PARTS = {}\nexport const POSES = {}\nexport const SKIN_COLOURS = {}\n'
             'export const HAIR_COLOURS = {}\n'
             .format(
@@ -577,8 +578,11 @@ def write_parts() -> None:
         )
 
         p.write(
-            'export const CHAPTERS = {}\nexport const INITIAL_CHAPTER_ORDER = {}\nexport const FINAL_LOOP_ORDER = {};'
-            .format(*(json.dumps(c, indent=INDENT) for c in build_campaign()))
+            'export const CHAPTERS: {} = {}\nexport const INITIAL_CHAPTER_ORDER = {}\nexport const FINAL_LOOP_ORDER = {};'
+            .format(
+                'Record<string, ChapterPage[]>',
+                *(json.dumps(c, indent=INDENT) for c in build_campaign())
+            )
         )
 
         p.write('export const BOSS_NAMES = {}\n'.format(json.dumps(build_bosses(), indent=INDENT)))

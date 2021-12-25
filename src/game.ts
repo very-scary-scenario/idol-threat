@@ -85,7 +85,6 @@ var BASE_RARITY = 300;
 var RARITY_CURVE = 0.6;
 
 var CHAPTER_DIFFICULTY_INCREASE = 50;
-type ChapterName = keyof typeof CHAPTERS
 
 var SHINY_CHANCE = 1/4096;
 
@@ -1352,8 +1351,8 @@ class Agency {
       skipButton.addEventListener('click', handleSkipClick);
     }
 
-    function getActorElement(actor: Idol) {
-      var element = theatreElement.querySelector('#boards .actor[data-actor-name="' + actor.actorName + '"]');
+    function getActorElement(actor: Idol): HTMLElement {
+      var element = theatreElement.querySelector('#boards .actor[data-actor-name="' + actor.actorName + '"]') as HTMLElement;
       if (!element) {
         actor.actorName = actor.actorName;
         element = document.createElement('div');
@@ -1373,7 +1372,7 @@ class Agency {
         if (chapter[pi].actor !== undefined) {
           console.log('hopefully preloading');
           console.log(chapter[pi]);
-          var actor = getBoss(chapter[pi].actor);
+          var actor = getBoss(chapter[pi].actor!);
           getActorElement(actor);
         }
       }
@@ -1421,7 +1420,7 @@ class Agency {
     }
 
     function goToDestination() {
-      if (page.adjectives.into) actorElement.setAttribute('data-position', page.adjectives.into);
+      if (page.adjectives!.into) actorElement.setAttribute('data-position', page.adjectives!.into);
     }
 
     function handleSetpieceClick(event: Event) {
@@ -1438,7 +1437,7 @@ class Agency {
       rerender();
 
     } else if (page.kind === 'setting') {
-      this.storySetting = page.value;
+      this.storySetting = page.value!;
       renderSetting();
       this.doStory(pageNumber + 1);
 
@@ -1456,10 +1455,10 @@ class Agency {
       } else {
         var invisibleScriptElement = document.getElementById('invisible-script')!;
         var visibleScriptElement = document.getElementById('visible-script')!;
-        for (var psi = 0; psi < page.speakers.length; psi++) {
-          theatreElement.querySelector('[data-actor-name="' + page.speakers[psi] + '"]')!.classList.add('speaking');
+        for (var psi = 0; psi < page.speakers!.length; psi++) {
+          theatreElement.querySelector('[data-actor-name="' + page.speakers![psi] + '"]')!.classList.add('speaking');
         }
-        invisibleScriptElement.textContent = page.text;
+        invisibleScriptElement.textContent = page.text!;
         visibleScriptElement.textContent = '';
         unbindScriptClick = graduallyShowScript(visibleScriptElement, invisibleScriptElement);
       }
@@ -1468,20 +1467,20 @@ class Agency {
       if (!theatreElement.innerHTML) renderSetting();
       theatreElement.addEventListener('click', handleSetpieceClick);
       document.getElementById('setpiece')!.outerHTML = document.getElementById('setpiece')!.outerHTML;
-      document.getElementById('setpiece')!.innerText = page.text;
+      document.getElementById('setpiece')!.innerText = page.text!;
 
       document.getElementById('stage')!.classList.add('setpiece');
 
     } else if (page.kind === 'direction') {
       if (page.actor !== undefined) {
-        var bossActor = getBoss(page.actor);
+        var bossActor = getBoss(page.actor!);
         actorElement = getActorElement(bossActor);
         actorElement.classList.remove('exited');
 
-        if (page.adjectives.rotated) actorElement.setAttribute('data-rotated', page.adjectives.rotated);
+        if (page.adjectives!.rotated) actorElement.setAttribute('data-rotated', page.adjectives!.rotated);
 
-        if (page.verb === 'enter' && page.adjectives.from) {
-          actorElement.setAttribute('data-position', page.adjectives.from + '-offstage');
+        if (page.verb === 'enter' && page.adjectives!.from) {
+          actorElement.setAttribute('data-position', page.adjectives!.from + '-offstage');
           setTimeout(goToDestination, 10);
         } else {
           goToDestination();
@@ -1506,8 +1505,8 @@ class Agency {
 
       var enemyIdols: BattleIdol[] = [];
 
-      for (var ei = 0; ei < page.bosses.length; ei++) {
-        var enemyIdol = getBoss(page.bosses[ei]);
+      for (var ei = 0; ei < page.bosses!.length; ei++) {
+        var enemyIdol = getBoss(page.bosses![ei]);
         for (var stat in Stat) {
           enemyIdol.stats.set(stat, enemyIdol.stats.get(stat)! + (CHAPTER_DIFFICULTY_INCREASE * this.storyChaptersBeaten));
         }
@@ -1542,7 +1541,7 @@ class Agency {
       chapterName = FINAL_LOOP_ORDER[index];
     }
 
-    return CHAPTERS[chapterName as ChapterName];
+    return CHAPTERS[chapterName];
   };
   dump() {
     var agencyDump: AgencyDump = {

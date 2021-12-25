@@ -4,6 +4,27 @@ var promptArea = document.getElementById('prompt-area')!;
 
 var promptTemplate = Handlebars.compile(document.getElementById('prompt-template')!.innerHTML);
 
+export interface ChapterPage {
+  kind: string
+  
+  // setting
+  value?: string
+
+  // stage direction
+  adjectives?: Record<string, string> | null
+  actor?: string | null
+  verb?: string
+
+  // battle
+  strength?: number
+  bosses?: string[]
+
+  // setpiece & text
+  text?: string
+  speakers?: string[]
+  em?: boolean
+}
+
 export interface AbilityPart {
   bonus: number
   healing: boolean
