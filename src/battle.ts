@@ -147,17 +147,17 @@ export class BattleIdol {
 export class Battle {
   playerIdols: BattleIdol[]
   enemyIdols: BattleIdol[]
-  victoryCallback: () => void
-  lossCallback: () => void
-  fleeCallback: () => void
+  victoryCallback: (arg0: Battle) => void
+  lossCallback: (arg0: Battle) => void
+  fleeCallback: (arg0: Battle) => void
   turnOrder: BattleIdol[]
 
   constructor(
     playerIdols: BattleIdol[],
     enemyIdols: BattleIdol[],
-    victoryCallback: () => void,
-    lossCallback: () => void,
-    fleeCallback: () => void
+    victoryCallback: (arg0: Battle) => void,
+    lossCallback: (arg0: Battle) => void,
+    fleeCallback: (arg0: Battle) => void
   ) {
     this.playerIdols = playerIdols;
     this.enemyIdols = enemyIdols;

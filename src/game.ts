@@ -243,7 +243,7 @@ function getStateCookie() {
   return atob(stateString);
 }
 
-var barcodeImage = document.getElementById('barcode-image')!;
+var barcodeImage = document.getElementById('barcode-image')! as HTMLInputElement;
 var scannerOverlay = document.getElementById('scanner-overlay')!;
 var cancelScanningElement = document.getElementById('cancel-scanning')!;
 var loadGame = document.getElementById('load-game')!;
@@ -971,6 +971,7 @@ class Agency {
   experience: number
   storyChaptersBeaten: number
   quickBattleRanking: number
+  storySetting: string | null = null
   upgrades: UpgradesRecord = {attack: 0, defense: 0, speed: 0, recruitment: 0, graduation: 0}
   sortOrder: IdolSortOrder
   upgradeFor = new Map<StatType, () => number>()
@@ -1612,20 +1613,21 @@ function getCredits() {
 }
 
 barcodeImage.addEventListener('change', function(e) {
+  if (barcodeImage.files === null) { return }
   if (agency.full()) {
     askUser(CATALOG_FULL);
     return;
   }
 
-  codeReader.decodeFromImage(null, window.URL.createObjectURL(barcodeImage.files[0])).then(function(result) {
-    recruitIdolFromBarcodeText(result.text);
+  codeReader.decodeFromImageUrl(window.URL.createObjectURL(barcodeImage.files[0])).then(function(result) {
+    recruitIdolFromBarcodeText(result.getText());
   }).catch(function(err) {
     console.log(err);
     askUser(
       "Sorry, we couldn't read a barcode in that picture, please try a clearer photo.",
       [
-        ['Try again', function() { barcodeImage.click(); }],
-        ['Cancel', null]
+        {command: 'Try again', action: function() { barcodeImage.click(); }},
+        {command: 'Cancel'}
       ]
     );
   });
@@ -1638,6 +1640,7 @@ function complainAboutBadSaveFile() {
 loadGame.addEventListener('change', function(e) {
   var reader = new FileReader();
   reader.onload = function() {
+    if (reader.result === null) { return };
     var newAgency = new Agency();
 
     newAgency.load(JSON.parse(atob(reader.result)));
@@ -1671,24 +1674,22 @@ function recruit() {
   scannerOverlay.classList.remove('hidden');
 
   // try to use a live video feed
-  codeReader.listVideoInputDevices().then(function(devices) {
-    codeReader.decodeOnceFromVideoDevice(null, 'scanner-viewfinder').then(function(result) {
-      codeReader.reset();
+  BrowserQRCodeReader.listVideoInputDevices().then(function(devices) {
+    codeReader.decodeOnceFromVideoDevice(undefined, 'scanner-viewfinder').then(function(result) {
       scannerOverlay.classList.add('hidden');
-      recruitIdolFromBarcodeText(result.text);
+      recruitIdolFromBarcodeText(result.getText());
     }).catch(function(err) {
       console.log(err);
 
       // just use a static image
       scannerOverlay.classList.add('hidden');
-      codeReader.reset();
 
       // this is often spurious; we should try to specifically
       if (err.name === "NotAllowedError") {
         CAMERA_DENIED = true;
         askUser('Without camera access, you will need to provide a static image', [
-            ['Okay', function(e) { barcodeImage.click(); }],
-            ['Never mind', null]
+          {command: 'Load image', action: function() { barcodeImage.click(); }},
+          {command: 'Never mind'}
         ]);
       }
     });
@@ -1703,7 +1704,7 @@ function rerender() {
   agency.renderCatalog();
   agency.renderUnit();
 
-  document.getElementById('recruit').addEventListener('click', function(e) {
+  document.getElementById('recruit')!.addEventListener('click', function(e) {
     e.stopPropagation();
     e.preventDefault();
 
@@ -1739,8 +1740,8 @@ function rerender() {
 
         agency.grantExperience(experienceGained);
 
-        for (var pi = 0; pi < this.playerIdols.length; pi++) {
-          this.playerIdols[pi].idol.giveBonus(enemyIdols.length);
+        for (var pi = 0; pi < playerIdols.length; pi++) {
+          battle.playerIdols[pi].idol.giveBonus(enemyIdols.length);
         }
 
         var ranksUp = battle.numberOfLivingMembers(battle.playerIdols);
@@ -1750,21 +1751,30 @@ function rerender() {
 
         rerender();
 
-        askUser('You win! The Idol Threatstival has ranked up to ' + (agency.quickBattleRanking + 1).toString(10) + '.', [['Yay!', null]]);
+        askUser(
+          'You win! The Idol Threatstival has ranked up to ' + (agency.quickBattleRanking + 1).toString(10) + '.',
+          [{command: 'Yay!' }]
+        );
       }, function() {
         var ranksDown = battle.numberOfLivingMembers(battle.enemyIdols);
-        if (!battle.tookDamage(battle.enemyIdols)) ranksDownp += 2;
+        if (!battle.tookDamage(battle.enemyIdols)) ranksDown += 2;
         agency.quickBattleRanking -= ranksDown;
-        askUser(':< You lose. The Idol Threatsival has ranked down to ' + (agency.quickBattleRanking + 1).toString(10) + '.', [['Aww, beans…', null]]);
+        askUser(
+          ':< You lose. The Idol Threatsival has ranked down to ' + (agency.quickBattleRanking + 1).toString(10) + '.',
+          [{command: 'Aww, beans…'}],
+        );
         rerender();
       }, function() { 
         var deadPlayerIdols = battle.playerIdols.length - battle.numberOfLivingMembers(battle.playerIdols);
         agency.quickBattleRanking -= deadPlayerIdols;
 
         if (deadPlayerIdols) {
-          askUser('You fled. Some of your idols died, though, so the Idol Threatsival has ranked down to ' + (agency.quickBattleRanking + 1).toString(10) + '.', [['Aww, beans…', null]]);
+          askUser(
+            'You fled. Some of your idols died, though, so the Idol Threatsival has ranked down to ' + (agency.quickBattleRanking + 1).toString(10) + '.',
+            [{command: 'Aww, beans…'}]
+          );
         } else {
-          askUser('You fled. Nobody died, so your rank does not change.', [['Aww, beans…', null]]);
+          askUser('You fled. Nobody died, so your rank does not change.', [{command: 'Aww, beans…'}]);
         }
         rerender();
       });
@@ -1783,7 +1793,7 @@ function rerender() {
 
     if (agency.unit.length > 0) {
       isSkipping = false;
-      agency.doStory();
+      agency.doStory(0);
     } else {
       askUser('You need an idol in your unit to progress in the story.');
     }
@@ -1802,9 +1812,11 @@ function rerender() {
     }
 
     var battle = new Battle(playerIdols, enemyIdols, function() {
-      askUser('You win!', [['Yay!', null]]);
+      askUser('You win!', [{command: 'Yay!'}]);
     }, function() {
-      askUser('You lose :<', [['Aww, beans…', null]]);
+      askUser('You lose :<', [{command :'Aww, beans…'}]);
+    }, function() {
+      askUser('You fled', [{command :'Yep'}]);
     });
 
     battle.loop();

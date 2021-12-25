@@ -28,7 +28,13 @@ export interface Answer {
 }
 
 export function askUser(question: string, answers?: Answer[]): void {
-  if (answers === undefined) answers = [{ command: 'Okay' }];  // XXX this cannot ever happen currently
+  let actualAnswers: Answer[]
+
+  if (answers !== undefined) {
+    actualAnswers = answers
+  } else {
+    actualAnswers = [{ command: 'Okay' }];
+  }
 
   promptArea.innerHTML = promptTemplate({
     'question': question,
@@ -38,13 +44,13 @@ export function askUser(question: string, answers?: Answer[]): void {
   function doAnswer(event: Event) {
     event.stopPropagation();
     event.preventDefault();
-    var answerIndex = parseInt(event.currentTarget.getAttribute('data-answer-index'), 10);
+    var answerIndex = parseInt((event.currentTarget! as HTMLElement).getAttribute('data-answer-index')!, 10);
     promptArea.innerHTML = '';
-    var func = answers[answerIndex].action;
+    var func = actualAnswers[answerIndex].action;
     if (func) func();
   }
 
-  for (var i = 0; i < answers.length; i++) {
+  for (var i = 0; i < actualAnswers.length; i++) {
     promptArea.querySelector('a[data-answer-index="' + i.toString() + '"]')!.addEventListener('click', doAnswer);
   }
 }
