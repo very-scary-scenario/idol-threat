@@ -5,6 +5,7 @@ import {
   BARCODES,
   BIOS,
   BOSS_NAMES,
+  CHAPTERS,
   FINAL_LOOP_ORDER,
   GRADUATION_BONUSES,
   HAIR_COLOURS,
@@ -84,6 +85,7 @@ var BASE_RARITY = 300;
 var RARITY_CURVE = 0.6;
 
 var CHAPTER_DIFFICULTY_INCREASE = 50;
+type ChapterName = keyof typeof CHAPTERS
 
 var SHINY_CHANCE = 1/4096;
 
@@ -1540,7 +1542,7 @@ class Agency {
       chapterName = FINAL_LOOP_ORDER[index];
     }
 
-    return CHAPTERS[chapterName];
+    return CHAPTERS[chapterName as ChapterName];
   };
   dump() {
     var agencyDump: AgencyDump = {
