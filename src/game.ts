@@ -159,12 +159,6 @@ const RECENT_FIRING_MEMORY = 20
 let confettiTimeout: ReturnType<typeof setTimeout> | undefined
 let letterTimeout: ReturnType<typeof setTimeout> | undefined
 
-const cookieExpiryDate = new Date()
-cookieExpiryDate.setFullYear(cookieExpiryDate.getFullYear() + 50)
-const cookieSuffix = '; SameSite=Strict; expires=' + cookieExpiryDate.toUTCString()
-const cookieSliceSize = 2000
-const endString = 'end'
-
 let isSkipping = false
 let unbindScriptClick: () => void
 
@@ -230,33 +224,7 @@ interface UpgradesRecord {
 type UpgradeType = keyof typeof upgradeNames
 
 function getStateCookie() {
-  const cookieStrings = document.cookie.split(';')
-
-  const indices: number[] = []
-  const fragments = new Map<number, string>()
-
-  for(let i = 0, n = cookieStrings.length; i < n; i++) {
-    const matches = cookieStrings[i].match(/(?:state_(\d+)+=)(.*)/)
-    if (!matches) {
-      continue
-    }
-    const index = parseInt(matches[1], 10)
-    const fragment = matches[2]
-    indices.push(index)
-    fragments.set(index, fragment)
-  }
-
-  indices.sort(function(a, b) { return a - b })
-
-  let stateString = ''
-
-  for (let f = 0; f < indices.length; f++) {
-    const thisFragment = fragments.get(indices[f])
-    if (thisFragment === endString) break
-    stateString += thisFragment
-  }
-
-  return atob(stateString)
+  return atob(window.localStorage.getItem('state') || '')
 }
 
 const barcodeImage = document.getElementById('barcode-image') as HTMLInputElement
@@ -1858,19 +1826,10 @@ function rerender() {
 
 function saveGame() {
   const fullStateString = JSON.stringify(agency.dump())
-  let stateString = btoa(fullStateString)
-  let currentIndex = 0
-
-  while (stateString) {
-    const slice = stateString.slice(0, cookieSliceSize)
-    stateString = stateString.slice(cookieSliceSize)
-    document.cookie = 'state_' + currentIndex.toString(10) + '=' + slice + cookieSuffix
-    currentIndex++
-  }
-
-  document.cookie = 'state_' + currentIndex.toString(10) + '=' + endString + cookieSuffix
+  window.localStorage.setItem('state', btoa(fullStateString))
 
   if (checkSaveTimeout) clearTimeout(checkSaveTimeout)
+
   checkSaveTimeout = setTimeout(function() {
     if (fullStateString !== getStateCookie()) {
       console.log(fullStateString)
