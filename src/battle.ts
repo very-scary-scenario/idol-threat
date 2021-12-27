@@ -1,8 +1,8 @@
 import * as Handlebars from 'handlebars'
 import * as fs from 'fs'
+import { Ability, Idol, celebrate } from './game'
 import { ANIMATIONS } from './parts'
 import { askUser } from './util'
-import { Ability, Idol, celebrate } from './game'
 
 export enum Affinity { rock, paper, scissors }
 export type AffinityType = keyof typeof Affinity

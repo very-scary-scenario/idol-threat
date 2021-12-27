@@ -18,6 +18,7 @@ module.exports = {
     'no-trailing-spaces': 'error',
     'quotes': ['error', 'single'],
     'semi': ['error', 'never'],
+    'sort-imports': 'error',
     'spaced-comment': 'error',
   },
 }

@@ -1,3 +1,4 @@
+import * as Hammer from 'hammerjs'
 import * as Handlebars from 'handlebars'
 import * as fs from 'fs'
 import {
@@ -18,14 +19,13 @@ import {
   SKIN_COLOURS,
   UNIT_NAMES,
 } from './parts'
-import * as Hammer from 'hammerjs'
-import { AffinityType, AFFINITIES, Battle, BattleIdol } from './battle'
-import { askUser, AbilityPart, Part } from './util'
+import { AFFINITIES, AffinityType, Battle, BattleIdol } from './battle'
+import { AbilityPart, Part, askUser } from './util'
 import { BrowserQRCodeReader, IScannerControls } from '@zxing/browser'
 import { DecodeHintType } from '@zxing/library'
 import { FastClick } from 'fastclick'
-import { confetti } from './vendor-ported/confetti'
 import { blacklisted } from 'wordfilter'
+import { confetti } from './vendor-ported/confetti'
 
 type BarcodeOverrideType = keyof typeof BARCODES
 
