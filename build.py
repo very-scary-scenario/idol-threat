@@ -36,13 +36,6 @@ HAIR_COLOURS: Set[str] = set()
 LAYERS: List[str] = []
 
 
-if not os.path.isdir(BUILD):
-    os.mkdir(BUILD)
-
-if not os.path.isdir(THUMBS_DIR):
-    os.mkdir(THUMBS_DIR)
-
-
 class Part(TypedDict):
     path: str
     thumbPath: str
@@ -85,6 +78,9 @@ def part(
 
 
 def build_idols() -> Tuple[Dict[str, List[Part]], List[str], List[str], List[str]]:
+    if not os.path.isdir(THUMBS_DIR):
+        os.mkdir(THUMBS_DIR)
+
     parts: Dict[str, List[Part]] = {}
 
     for d in sorted(
@@ -606,6 +602,9 @@ def write_parts() -> None:
 
 if __name__ == '__main__':
     import sys
+
+    if not os.path.isdir(BUILD):
+        os.mkdir(BUILD)
 
     if '--icon-only' not in sys.argv:
         if '--no-parts' not in sys.argv:
