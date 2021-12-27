@@ -140,7 +140,7 @@ function getBoss(name: string) {
   if (BOSS_NAMES.indexOf(name) === -1) throw name + ' is not a real boss'
   const boss = new Idol(numFromString(name))
   boss.actorName = name
-  const path = 'bosses/' + name + '.png'
+  const path = 'img/bosses/' + name + '.png'
   boss.parts = [{path: path, medPath: path, thumbPath: path}]
   return boss
 }
