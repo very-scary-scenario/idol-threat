@@ -22,6 +22,7 @@ import { askUser, AbilityPart, Part } from './util'
 import { BrowserQRCodeReader, IScannerControls } from '@zxing/browser'
 import { DecodeHintType } from '@zxing/library'
 import { FastClick } from 'fastclick'
+import { confetti } from './vendor-ported/confetti'
 import { blacklisted } from 'wordfilter'
 
 type BarcodeOverrideType = keyof typeof BARCODES
@@ -156,7 +157,6 @@ const NEGATIVE_STAT_EFFECT = 2
 
 const RECENT_FIRING_MEMORY = 20
 
-const confetti = require('./vendor/confetti/confetti.js').confetti
 let confettiTimeout: ReturnType<typeof setTimeout> | undefined
 let letterTimeout: ReturnType<typeof setTimeout> | undefined
 
