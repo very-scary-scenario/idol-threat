@@ -14,9 +14,9 @@
 @favourite-yellow: hsl(60, 0.8, 0.5);
 @vss-purple: #a43ba4;
 
-@rock: '✊';
-@paper: '✋';
-@scissors: '✌️';
+@rock: '\f255';
+@paper: '\f256';
+@scissors: '\f257';
 
 @red: hsl(0, 0.6, 0.6);
 @blue: hsl(240, 0.6, 0.6);
@@ -81,6 +81,13 @@
   font-style: normal;
   font-weight: 400;
   src: local('Rum Raisin'), local('RumRaisin-Regular'), url(fonts/rumraisin.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'fa';
+  font-style: normal;
+  font-weight: 900;
+  src: url(fonts/fa-solid-900.woff2) format('woff2');
 }
 
 @media (max-width: 25em) {
@@ -239,6 +246,7 @@ a {
 
 .affinity() {
   &::after {
+    font-family: 'fa';
     line-height: 0;
     top: -.3em;
     padding-left: .3em;
@@ -1145,6 +1153,7 @@ body.in-battle {
         padding-left: .3em;
       }
 
+      &[data-affinity="rock"]::after { font-family: 'fa' }
       &[data-affinity="rock"] { background-color: @rock-colour; &::after { content: @rock } }
       &[data-affinity="paper"] { background-color: @paper-colour; &::after { content: @paper } }
       &[data-affinity="scissors"] { background-color: @scissors-colour; &::after { content: @scissors } }
@@ -1186,6 +1195,7 @@ body.in-battle {
       }
     }
 
+    &[data-affinity] h2::after { font-family: 'fa' }
     &[data-affinity="rock"] { background-color: @rock-colour; h2::after { content: @rock } }
     &[data-affinity="paper"] { background-color: @paper-colour; h2::after { content: @paper } }
     &[data-affinity="scissors"] { background-color: @scissors-colour; h2::after { content: @scissors } }
