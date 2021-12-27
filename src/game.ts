@@ -22,8 +22,7 @@ import { askUser, AbilityPart, Part } from './util'
 import { BrowserQRCodeReader, IScannerControls } from '@zxing/browser'
 import { DecodeHintType } from '@zxing/library'
 import { FastClick } from 'fastclick'
-
-const wordfilter = require('wordfilter')
+import { blacklisted } from 'wordfilter'
 
 type BarcodeOverrideType = keyof typeof BARCODES
 
@@ -543,7 +542,7 @@ export class Idol {
       kanaCount--
     }
     name = name[0].toUpperCase() + name.slice(1)
-    if (wordfilter.blacklisted(name)) return this.generateName()
+    if (blacklisted(name)) return this.generateName()
     return name
   }
 
