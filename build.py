@@ -1,19 +1,18 @@
 #!/usr/bin/env python3
 
-from bs4 import BeautifulSoup
-
-from datetime import datetime
-import logging
 import hashlib
 import json
+import logging
 import os
 import re
 import shutil
 import subprocess
-from tempfile import mkstemp
+from datetime import datetime
 from time import sleep
 from typing import Dict, List, Optional, Set, Tuple, TypedDict
 from urllib.parse import urlparse
+
+from bs4 import BeautifulSoup
 
 
 logger = logging.getLogger(__name__)
@@ -47,13 +46,14 @@ class Part(TypedDict):
     bodyType: str
     layer: str
     number: str
-    pose: str
+    pose: Optional[str]
     skinColour: Optional[str]
     hairColour: Optional[str]
 
 
 def part(
-    path: str, thumb_path: str, med_path: str, bodytype: str, layer: str, colour: str, number: str, pose=None,
+    path: str, thumb_path: str, med_path: str, bodytype: str, layer: str, colour: str, number: str,
+    pose: Optional[str] = None,
 ) -> Part:
     LAYERS.append(layer)
     skin_colour: Optional[str] = None
@@ -268,7 +268,7 @@ class Text(ChapterEvent):
     em: bool
 
 
-def build_campaign() -> Tuple[Dict[str, List[ChapterEvent]], List[Chapter], List[Chapter]]:
+def build_campaign() -> Tuple[Dict[str, List[ChapterEvent]], List[str], List[str]]:
     chapters = []
     last_loop_referenced = 0
 
@@ -379,10 +379,10 @@ def build_campaign() -> Tuple[Dict[str, List[ChapterEvent]], List[Chapter], List
     }
     ordered_names = [chapter['name'] for chapter in chapters]
 
-    initial_chapter_order: List[Chapter] = []
-    final_loop_order: List[Chapter] = []
+    initial_chapter_order: List[str] = []
+    final_loop_order: List[str] = []
 
-    def add_loop_for_index(loop_index, chapter_order):
+    def add_loop_for_index(loop_index: int, chapter_order: List[str]) -> None:
         chapter_index = 0
 
         while True:
@@ -513,7 +513,7 @@ def build_html() -> str:
             try:
                 with open(os.path.join(BUILD, parsed.path), 'rb') as cf:
                     checksum.update(cf.read())
-            except FileNotFoundError as e:
+            except FileNotFoundError:
                 logger.warning(f'file {parsed.path} referenced in html but not present in build dir')
             else:
                 element[attr] = url_str + '?v={}'.format(checksum.hexdigest()[:8])
@@ -590,7 +590,9 @@ def write_parts(fake_thumbs: bool = False) -> None:
         )
 
         p.write(
-            'export const CHAPTERS: {} = {}\nexport const INITIAL_CHAPTER_ORDER = {}\nexport const FINAL_LOOP_ORDER = {};'
+            'export const CHAPTERS: {} = {}\n'
+            'export const INITIAL_CHAPTER_ORDER = {}\n'
+            'export const FINAL_LOOP_ORDER = {};'
             .format(
                 'Record<string, ChapterPage[]>',
                 *(json.dumps(c, indent=INDENT) for c in build_campaign())

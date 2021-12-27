@@ -10,14 +10,16 @@ are pretty good at thwarting that (which seems fair, given that this is a
 website with a paid-for API), so we have to use a real browser.
 """
 
+from typing import Set
+
 from selenium.webdriver import Chrome
 
 
-def parse_barcode_url(url):
+def parse_barcode_url(url: str) -> str:
     return [f for f in url.split('/') if f][-1]
 
 
-def get_barcodes(query):
+def get_barcodes(query: str) -> Set[str]:
     browser = Chrome()
     browser.implicitly_wait(60)  # so we can do the captcha if necessary
     browser.get(
