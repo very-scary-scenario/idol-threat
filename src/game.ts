@@ -1474,15 +1474,15 @@ class Agency {
       document.getElementById('stage')!.classList.add('setpiece')
 
     } else if (page.kind === 'direction') {
-      if (page.actor !== undefined) {
-        const bossActor = getBoss(page.actor!)
+      if (page.actor !== undefined && page.actor !== null) {
+        const bossActor = getBoss(page.actor)
         actorElement = getActorElement(bossActor)
         actorElement.classList.remove('exited')
 
-        if (page.adjectives!.rotated) actorElement.setAttribute('data-rotated', page.adjectives!.rotated)
+        if (page.adjectives && page.adjectives.rotated) actorElement.setAttribute('data-rotated', page.adjectives!.rotated)
 
-        if (page.verb === 'enter' && page.adjectives!.from) {
-          actorElement.setAttribute('data-position', page.adjectives!.from + '-offstage')
+        if (page.verb === 'enter' && page.adjectives?.from) {
+          actorElement.setAttribute('data-position', page.adjectives.from + '-offstage')
           setTimeout(goToDestination, 10)
         } else {
           goToDestination()
