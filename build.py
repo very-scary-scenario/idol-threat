@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from __future__ import annotations
+
 import hashlib
 import json
 import logging
@@ -8,11 +10,15 @@ import re
 import shutil
 import subprocess
 from datetime import datetime
+from threading import Thread
 from time import sleep
-from typing import Dict, List, Optional, Set, Tuple, TypedDict
+from typing import Dict, List, Optional, Set, TYPE_CHECKING, Tuple, TypedDict
 from urllib.parse import urlparse
 
 from bs4 import BeautifulSoup
+
+if TYPE_CHECKING:
+    from selenium.webdriver.remote.webdriver import WebDriver
 
 
 logger = logging.getLogger(__name__)
@@ -425,16 +431,37 @@ def build_campaign() -> Tuple[Dict[str, List[ChapterEvent]], List[str], List[str
     return chapter_contents_by_name, initial_chapter_order, final_loop_order
 
 
+def serve_build_dir() -> None:
+    from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+
+    with ThreadingHTTPServer(('localhost', 8000), SimpleHTTPRequestHandler) as httpd:
+        httpd.serve_forever()
+
+
+def set_viewport_size(driver: WebDriver, width: int, height: int) -> None:
+    window_size = driver.execute_script(
+        'return ['
+        'window.outerWidth - window.innerWidth + arguments[0],'
+        'window.outerHeight - window.innerHeight + arguments[1]'
+        ']', width, height)
+    driver.set_window_size(*window_size)
+
+
 def build_icon() -> None:
-    from selenium.webdriver import Chrome, ChromeOptions
-    options = ChromeOptions()
+    from selenium.webdriver import Firefox, FirefoxOptions
+
+    server_thread = Thread(target=serve_build_dir, daemon=True)
+    server_thread.start()
+
+    options = FirefoxOptions()
     options.headless = True
-    options.add_argument('--disable-web-security')  # required because we taint the canvas (i think with local files)
-    driver = Chrome(options=options)
-    driver.set_window_size(ICON_SIZE, ICON_SIZE)
-    url = 'file://{}#icon'.format(os.path.join(BUILD, 'index.html'))
-    driver.get(url)
-    sleep(3)  # really, this should detect the image being loaded
+
+    driver = Firefox(options=options, executable_path=os.path.join(HERE, 'node_modules', '.bin', 'geckodriver'))
+
+    driver.get('http://localhost:8000/build/#icon')
+    sleep(2)
+    set_viewport_size(driver, ICON_SIZE, ICON_SIZE)
+    sleep(2)
 
     driver.save_screenshot(ICON_PATH)
     subprocess.check_call(['optipng', ICON_PATH])
