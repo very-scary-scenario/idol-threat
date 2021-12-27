@@ -77,7 +77,7 @@ def part(
     )
 
 
-def build_idols() -> Tuple[Dict[str, List[Part]], List[str], List[str], List[str]]:
+def build_idols(fake_thumbs: bool = False) -> Tuple[Dict[str, List[Part]], List[str], List[str], List[str]]:
     if not os.path.isdir(THUMBS_DIR):
         os.mkdir(THUMBS_DIR)
 
@@ -118,14 +118,18 @@ def build_idols() -> Tuple[Dict[str, List[Part]], List[str], List[str], List[str
             parts_list.append(this_part)
 
             if not os.path.exists(thumb_path):
-                subprocess.check_call(
-                    ['convert', img_path, '-resize', '400x400^', thumb_path])
-                subprocess.check_call(['optipng', thumb_path])
+                if fake_thumbs:
+                    os.symlink(img_path, thumb_path)
+                else:
+                    subprocess.check_call(['convert', img_path, '-resize', '400x400^', thumb_path])
+                    subprocess.check_call(['optipng', thumb_path])
 
             if not os.path.exists(med_path):
-                subprocess.check_call(
-                    ['convert', img_path, '-resize', '1000x1000^', med_path])
-                subprocess.check_call(['optipng', med_path])
+                if fake_thumbs:
+                    os.symlink(img_path, med_path)
+                else:
+                    subprocess.check_call(['convert', img_path, '-resize', '1000x1000^', med_path])
+                    subprocess.check_call(['optipng', med_path])
 
     return parts, sorted(POSES), sorted(SKIN_COLOURS), sorted(HAIR_COLOURS)
 
@@ -555,8 +559,8 @@ def build_barcodes() -> Dict[str, List[str]]:
     return barcodes
 
 
-def write_parts() -> None:
-    parts, poses, skin_colours, hair_colours = build_idols()
+def write_parts(fake_thumbs: bool = False) -> None:
+    parts, poses, skin_colours, hair_colours = build_idols(fake_thumbs=fake_thumbs)
 
     with open('build/parts.json', 'w') as j:
         j.write(json.dumps({
@@ -608,7 +612,7 @@ if __name__ == '__main__':
 
     if '--icon-only' not in sys.argv:
         if '--no-parts' not in sys.argv:
-            write_parts()
+            write_parts(fake_thumbs='--fake-thumbs' in sys.argv)
 
         with open(os.path.join(BUILD, 'style.css'), 'wb') as c:
             c.write(subprocess.check_output(['npx', 'lessc', os.path.join(SRC, 'style.less')]))
