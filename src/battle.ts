@@ -21,7 +21,7 @@ var SUPER_EFFECTIVE_ATTACK_BONUS = 2;
 var BASIC_ABILITY_DAMAGE = 15;
 
 var animationDuration = 1000;
-var anims = new Map<string, HTMLImageElement>()
+var anims: Record<string, HTMLImageElement> = {};
 
 var hoverDetailTimeout: ReturnType<typeof setTimeout>;
 
@@ -30,7 +30,7 @@ function loadAnimations() {
     var name = ANIMATIONS[i];
     var img = new Image();
     img.src = name;
-    anims.set(name, img);
+    anims[name] = img;
   }
 }
 
@@ -79,9 +79,9 @@ export class BattleIdol {
       return Math.ceil(mod * Math.pow(statModifier, stat));
     }
 
-    this.attack = modStat(idol.effective.get('attack')!(), 100);
-    this.defense = modStat(idol.effective.get('defense')!(), 100);
-    this.speed = modStat(idol.effective.get('speed')!(), 20);
+    this.attack = modStat(idol.effective.attack(), 100);
+    this.defense = modStat(idol.effective.defense(), 100);
+    this.speed = modStat(idol.effective.speed(), 20);
 
     this.maxHp = 50;
     this.hp = this.maxHp;
@@ -392,7 +392,7 @@ function playAnimationCanvas(ability: Ability, element: Element) {
 
   var animationID = setInterval(function () {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    ctx.drawImage(anims.get(ability.animation)!, 0, (-256 * currentImage));
+    ctx.drawImage(anims[ability.animation], 0, (-256 * currentImage));
     currentImage++;
   }, (animationDuration / 14));
 

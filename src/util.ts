@@ -59,7 +59,7 @@ export function askUser(question: string, answers?: Answer[]): void {
 
   promptArea.innerHTML = promptTemplate({
     'question': question,
-    'answers': answers
+    'answers': actualAnswers 
   });
 
   function doAnswer(event: Event) {

@@ -33,7 +33,7 @@ type StatType = keyof typeof Stat;
 const STATS: StatType[] = ['attack', 'speed', 'defense'];
 type SpriteMode = 'med' | 'thumb' | 'huge'
 
-interface StatDump { attack?: number, speed?: number, defense?: number }
+interface StatDump { attack: number, speed: number, defense: number }
 interface IdolDump {
   a: number  // recruited at
   b: []  // XXX i am not sure what this is
@@ -92,30 +92,31 @@ var MAXIMUM_CATALOG_SIZE = 50;
 var CATALOG_FULL = "Your agency is full! You'll have to graduate or train with some of them before you can recruit any more.";
 
 type SeedOverrideType = keyof typeof BARCODES
-var SEED_OVERRIDE_HANDLERS: Map<SeedOverrideType, (idol: Idol) => void> = new Map()
-SEED_OVERRIDE_HANDLERS.set('shadow', function(idol: Idol) {
-  idol.firstName = 'Jack';
-  idol.lastName = 'Ryan';
-  idol.cacheName();
+var SEED_OVERRIDE_HANDLERS: Record<SeedOverrideType, (idol: Idol) => void> = {
+  shadow: function(idol: Idol) {
+    idol.firstName = 'Jack';
+    idol.lastName = 'Ryan';
+    idol.cacheName();
 
-  for (var stat in Stat) {
-    idol.stats.set(stat, 100);
+    for (var stat of STATS) {
+      idol.stats[stat] = 100;
+    }
+
+    idol.bio = "Somebody tried to kill her. She lied to her wife for three years. Didn't give them her PhD.";
+    idol.quote = "Now, talk me through your very scary scenario.";
+
+    function makeSpecialAbility(name: string, affinity: AffinityType) {
+      return new Ability(idol, [{words: [name], bonus: 3, healing: false}], choice(ANIMATIONS, idol.rand()), affinity);
+    }
+    idol.abilities = [
+      makeSpecialAbility('play rough', 'rock'),
+      makeSpecialAbility('geopolitics', 'paper'),
+      makeSpecialAbility('american directness', 'scissors'),
+      makeSpecialAbility('very scary scenario', idol.affinity)
+    ];
   }
-
-  idol.bio = "Somebody tried to kill her. She lied to her wife for three years. Didn't give them her PhD.";
-  idol.quote = "Now, talk me through your very scary scenario.";
-
-  function makeSpecialAbility(name: string, affinity: AffinityType) {
-    return new Ability(idol, [{words: [name], bonus: 3, healing: false}], choice(ANIMATIONS, idol.rand()), affinity);
-  }
-  idol.abilities = [
-    makeSpecialAbility('play rough', 'rock'),
-    makeSpecialAbility('geopolitics', 'paper'),
-    makeSpecialAbility('american directness', 'scissors'),
-    makeSpecialAbility('very scary scenario', idol.affinity)
-  ];
-});
-var SEED_OVERRIDES: Map<number, (idol: Idol) => void> = new Map()
+}
+var SEED_OVERRIDES: Record<number, (idol: Idol) => void> = {}
 
 var CAMERA_DENIED = false;
 var hints = new Map();
@@ -131,7 +132,7 @@ function parsePresetBarcodes() {
     overrideList = BARCODES[override as BarcodeOverrideType];
 
     for (var i = 0; i < overrideList.length; i++) {
-      SEED_OVERRIDES.set(numFromString(overrideList[i]), SEED_OVERRIDE_HANDLERS.get(override as BarcodeOverrideType)!);
+      SEED_OVERRIDES[numFromString(overrideList[i])] = SEED_OVERRIDE_HANDLERS[override as BarcodeOverrideType]
     }
   }
 }
@@ -162,7 +163,7 @@ var letterTimeout: ReturnType<typeof setTimeout> | undefined;
 
 var cookieExpiryDate = new Date();
 cookieExpiryDate.setFullYear(cookieExpiryDate.getFullYear() + 50);
-var cookieSuffix = '; expires=' + cookieExpiryDate.toUTCString();
+var cookieSuffix = '; SameSite=Strict; expires=' + cookieExpiryDate.toUTCString();
 var cookieSliceSize = 2000;
 var endString = 'end';
 
@@ -171,9 +172,9 @@ var unbindScriptClick: () => void;
 
 var idolSorters = {
   date: function(a: Idol, b: Idol) { return b.recruitedAt - a.recruitedAt; },
-  statSpeed: function(a: Idol, b: Idol) { return b.stats.get('speed')! - a.stats.get('speed')!; },
-  statAttack: function(a: Idol, b: Idol) { return b.stats.get('attack')! - a.stats.get('attack')!; },
-  statDefense: function(a: Idol, b: Idol) { return b.stats.get('defense')! - a.stats.get('defense')!; },
+  statSpeed: function(a: Idol, b: Idol) { return b.stats.speed - a.stats.speed; },
+  statAttack: function(a: Idol, b: Idol) { return b.stats.attack - a.stats.attack; },
+  statDefense: function(a: Idol, b: Idol) { return b.stats.defense - a.stats.defense; },
   unitMembership: function(a: Idol, b: Idol) { return (Number(b.isInUnit()) - Number(a.isInUnit())); },
   allStats: function(a: Idol, b: Idol) { return b.totalStats() - a.totalStats(); },
   affinity: function(a: Idol, b: Idol) { return (
@@ -404,9 +405,9 @@ function effectiveStatGetter(idol: Idol, stat: StatType): () => number {
   return function(): number {
     if (agency.catalog.indexOf(idol) !== -1) {
       // only grant agency bonus if this idol is in our agency
-      return idol.stats.get(stat)! + agency.upgradeFor.get(stat)!();
+      return idol.stats[stat] + agency.upgradeFor[stat]();
     } else {
-      return idol.stats.get(stat)!;
+      return idol.stats[stat];
     }
   };
 }
@@ -423,15 +424,19 @@ export class Idol {
   bio: string;
   quote: string;
   abilities: Ability[];
-  stats = new Map<string, number>();
-  effective = new Map<string, () => number>();
+  stats: Record<string, number> = {};
+  effective: Record<string, () => number> = {};
   affinity: AffinityType;
   actorName?: string;
   parts: Part[] = [];
   shiny = false;
   agency: Agency = agency;
   catalogElement?: Element;
-  loadedImages = new Map<SpriteMode, HTMLImageElement[]>();
+  loadedImages: Record<SpriteMode, HTMLImageElement[] | null> = {
+    thumb: null,
+    med: null,
+    huge: null,
+  };
   loadedThumbSprite?: string;
   seedOverride?: string;
 
@@ -444,9 +449,9 @@ export class Idol {
     this.rand = rand;
 
     // build stats
-    for(var stat in Stat) {
-      this.stats.set(stat, Math.floor(rand(-100, 100)));
-      this.effective.set(stat, effectiveStatGetter(this, stat as StatType));
+    for(var stat of STATS) {
+      this.stats[stat] = Math.floor(rand(-100, 100));
+      this.effective[stat] = effectiveStatGetter(this, stat)
     }
 
     this.abilities = [];
@@ -550,17 +555,17 @@ export class Idol {
   applyRecruitmentBonuses() {
     var multiplier = 1 + (agency.upgrades.recruitment / 10);
 
-    for (var stat in Stat) {
-      this.stats.set(stat, Math.floor(this.stats.get(stat)! * multiplier));
+    for (var stat of STATS) {
+      this.stats[stat] = Math.floor(this.stats[stat] * multiplier);
     }
 
     this.shiny = Math.random() <= SHINY_CHANCE;
   }
 
   applyQuickBattleRankingBonuses() {
-    for (var stat in Stat) {
-      var currentStat = this.stats.get(stat)!
-        this.stats.set(stat, currentStat + (10 * agency.quickBattleRanking));
+    for (var stat of STATS) {
+      var currentStat = this.stats[stat];
+      this.stats[stat] = currentStat + (10 * agency.quickBattleRanking);
     }
   }
 
@@ -568,11 +573,11 @@ export class Idol {
     var self = this;
     mode = mode || 'med';
 
-    if (this.loadedImages.get(mode) !== undefined) return;  // we're already loading
+    if (this.loadedImages[mode] !== null) return;  // we're already loading
 
     var loaded = 0;
     var images: HTMLImageElement[] = [];
-    this.loadedImages.set(mode, images);
+    this.loadedImages[mode] = images;
 
     function renderIfLoaded() {
       loaded++;
@@ -608,7 +613,7 @@ export class Idol {
   renderSprite(mode?: SpriteMode) {
     if (mode === undefined) mode = 'med';
 
-    var images = this.loadedImages.get(mode);
+    var images = this.loadedImages[mode];
     if (!images) {
       throw 'no images to render'
     }
@@ -644,7 +649,7 @@ export class Idol {
       this.loadedThumbSprite = dataURL;
     }
 
-    this.loadedImages.delete(mode);  // free up some memory?
+    this.loadedImages[mode] = null;  // free up some memory?
   }
 
   spriteHTML(mode?: SpriteMode) {
@@ -676,8 +681,8 @@ export class Idol {
   totalStats() {
     var total = 0;
 
-    for (var stat in Stat) {
-      total += this.stats.get(stat)!
+    for (var stat of STATS) {
+      total += this.stats[stat]
     }
 
     return total;
@@ -705,7 +710,7 @@ export class Idol {
     while (count > 0) {
       count--;
       const statKey = choice(STATS, Math.random());
-      this.stats.set(statKey, (this.stats.get(statKey) || 0) + 1);
+      this.stats[statKey] = (this.stats[statKey] || 0) + 1;
     }
 
     deferRerender();
@@ -753,21 +758,21 @@ export class Idol {
         event.preventDefault();
 
         var foodIdol = catalogWithoutSelf[parseInt((event.currentTarget as HTMLElement).getAttribute('data-index')!, 10)] as Idol;
-        var negativeStats = new Map<StatType, boolean>()
-        var summedStats = new Map<StatType, number>()
-        var diffedStats = new Map<StatType, number>()
+        var negativeStats: Record<StatType, boolean | null> = {attack: null, speed: null, defense: null}
+        var summedStats: Record<StatType, number | null> = {attack: null, speed: null, defense: null}
+        var diffedStats: Record<StatType, number | null> = {attack: null, speed: null, defense: null}
         var totalChange = 0;
 
-        for (var stat in Stat) {
-          var increaseBy = foodIdol.stats.get(stat)!;
+        for (var stat of STATS) {
+          var increaseBy = foodIdol.stats[stat];
           if (increaseBy < 0) {
             increaseBy /= NEGATIVE_STAT_EFFECT;
-            negativeStats.set(stat as StatType, true);
+            negativeStats[stat] = true;
           }
           var delta = Math.ceil(increaseBy)
-          diffedStats.set(stat as StatType, delta);
+          diffedStats[stat] = delta;
           totalChange += delta;
-          summedStats.set(stat as StatType, self.stats.get(stat as StatType)! + delta);
+          summedStats[stat] = self.stats[stat] + delta;
         }
 
         canteenElement.innerHTML = canteenConfirmTemplate({
@@ -784,8 +789,8 @@ export class Idol {
         canteenElement.querySelector('.yes')!.addEventListener('click', function(event) {
           event.stopPropagation();
           event.preventDefault();
-          for (var [stat, value] of summedStats) {
-            self.stats.set(stat, value);
+          for (var stat of STATS) {
+            self.stats[stat] = summedStats[stat]!;
           }
           agency.removeIdol(foodIdol);
           canteenElement.innerHTML = '';
@@ -903,7 +908,7 @@ export class Idol {
     }
 
     function showLayersGradually() {
-      auditionLayers = self.loadedImages.get('med')!;
+      auditionLayers = self.loadedImages.med!;
       setTimeout(addLayerToAuditionPortrait, layerTimeout);
     }
 
@@ -926,16 +931,17 @@ export class Idol {
       f: this.favourite,
       i: this.seed,
       r: this.shiny,
-      s: {},
-    }
-    for(var stat in STATS) {
-      idolDump.s[stat as StatType] = this.stats.get(stat);
+      s: {
+        attack: this.stats.attack,
+        speed: this.stats.speed,
+        defense: this.stats.defense,
+      },
     }
     return idolDump;
   };
   handleOverrides() {
     // look, we need _somewhere_ to hide our easter eggs
-    var override = SEED_OVERRIDES.get(this.seed);
+    var override = SEED_OVERRIDES[this.seed];
     if (override !== undefined) {
       override(this);
       this.seedOverride = 'shadow'  // XXX this will have to change if we introduce more overrides
@@ -986,7 +992,6 @@ document.addEventListener('keydown', function(event) {
 // hammerManager.on('swiperight', showPrevIdol);
 
 Handlebars.registerHelper('ifPositive', function(this: Handlebars.HelperDelegate, a, options) {
-  console.log([this, a, options])
   if (a >= 0) return options.fn(this);
   else return options.inverse(this);
 });
@@ -1002,7 +1007,7 @@ class Agency {
   storyActors: Record<string, string>
   upgrades: UpgradesRecord = {attack: 0, defense: 0, speed: 0, recruitment: 0, graduation: 0}
   sortOrder: IdolSortOrder
-  upgradeFor = new Map<StatType, () => number>()
+  upgradeFor: Record<StatType, () => number>
 
   constructor() {
     var self = this;
@@ -1024,9 +1029,11 @@ class Agency {
         return self.levelFloor() * self.upgrades[stat]!;
       };
     }
-    for (var stat in Stat) {
-      this.upgradeFor.set(stat as StatType, upgradeGetter(stat as StatType));
-    }
+    this.upgradeFor = {
+      attack: upgradeGetter('attack'),
+      speed: upgradeGetter('speed'),
+      defense: upgradeGetter('defense'),
+    };
   }
 
   full() {
@@ -1381,7 +1388,6 @@ class Agency {
       for (var pi = 0; pi < chapter.length; pi++) {
         // preload any idols
         if (chapter[pi].actor !== undefined) {
-          console.log('hopefully preloading');
           console.log(chapter[pi]);
           var actor = getBoss(chapter[pi].actor!);
           getActorElement(actor);
@@ -1518,8 +1524,8 @@ class Agency {
 
       for (var ei = 0; ei < page.bosses!.length; ei++) {
         var enemyIdol = getBoss(page.bosses![ei]);
-        for (var stat in Stat) {
-          enemyIdol.stats.set(stat, enemyIdol.stats.get(stat)! + (CHAPTER_DIFFICULTY_INCREASE * this.storyChaptersBeaten));
+        for (var stat of STATS) {
+          enemyIdol.stats[stat] = enemyIdol.stats[stat] + (CHAPTER_DIFFICULTY_INCREASE * this.storyChaptersBeaten);
         }
         enemyIdols.push(new BattleIdol(enemyIdol, 'ai'));
       }
@@ -1590,8 +1596,8 @@ class Agency {
       idol.favourite = idolDump.f;
       idol.shiny = Boolean(idolDump.r);
 
-      for(var stat in Stat) {
-        idol.stats.set(stat, idolDump.s[stat as StatType]!);
+      for(var stat of STATS) {
+        idol.stats[stat] = idolDump.s[stat]!;
       }
 
       this.addIdol(idol, false);
