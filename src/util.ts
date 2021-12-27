@@ -6,7 +6,7 @@ const promptTemplate = Handlebars.compile(document.getElementById('prompt-templa
 
 export interface ChapterPage {
   kind: string
-  
+
   // setting
   value?: string
 
@@ -59,7 +59,7 @@ export function askUser(question: string, answers?: Answer[]): void {
 
   promptArea.innerHTML = promptTemplate({
     'question': question,
-    'answers': actualAnswers 
+    'answers': actualAnswers
   })
 
   function doAnswer(event: Event) {

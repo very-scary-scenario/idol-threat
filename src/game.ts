@@ -247,7 +247,7 @@ function getStateCookie() {
     indices.push(index)
     fragments.set(index, fragment)
   }
-  
+
   indices.sort(function(a, b) { return a - b })
 
   let stateString = ''
@@ -362,7 +362,7 @@ function initSparkle(sparkleCanvas: HTMLCanvasElement) {
     sparkleEmitter.fire()
     requestAnimationFrame(drawSparkle)
   }
-  
+
   drawSparkle()
 }
 
@@ -1810,7 +1810,7 @@ function rerender() {
           [{command: 'Aww, beans…'}],
         )
         rerender()
-      }, function() { 
+      }, function() {
         const deadPlayerIdols = battle.playerIdols.length - battle.numberOfLivingMembers(battle.playerIdols)
         agency.quickBattleRanking -= deadPlayerIdols
 

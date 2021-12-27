@@ -9,6 +9,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
   ],
   rules: {
-    semi: ['error', 'never'],
+    'no-trailing-spaces': 'error',
+    'semi': ['error', 'never'],
   },
 }
