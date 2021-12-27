@@ -1,0 +1,19 @@
+<div>
+  <a id="dismiss-unit-details" href="#">
+    <h1>{{unitName}}</h1>
+  </a>
+  <ul class="unit">
+    {{#each unit}}
+      <li class="affinity-{{affinity}}">
+        <div class="meta">
+          <h2 class="affinity-{{affinity}}">{{name}}</h2>
+          <p class="bio">{{bio}}</p>
+          <blockquote>“{{quote}}”</blockquote>
+        </div>
+        <div class="portrait">
+          {{{hugeSpriteHTML}}}
+        </div>
+      </li>
+    {{/each}}
+  </ul>
+</div>

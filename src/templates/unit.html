@@ -1,0 +1,12 @@
+<a id="show-unit-details" href="#">
+  <h2>{{unitName}}</h2>
+</a>
+<ul class="unit">
+  {{#each unit}}
+    <li class="needsclick" data-index="{{@index}}">
+      <div class="portrait">
+        {{{thumbSpriteHTML}}}
+      </div>
+    </li>
+  {{/each}}
+</ul>

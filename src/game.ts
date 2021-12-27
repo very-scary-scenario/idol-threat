@@ -1,4 +1,5 @@
 import * as Handlebars from 'handlebars'
+import * as fs from 'fs'
 import {
   ABILITIES,
   ANIMATIONS,
@@ -271,15 +272,15 @@ const canteenElement = document.getElementById('canteen')!
 const theatreElement = document.getElementById('theatre')!
 const xpIndicatorsElement = document.getElementById('xp-indicators')!
 
-const spriteTemplate = Handlebars.compile(document.getElementById('sprite-template')!.innerHTML)
-const catalogTemplate = Handlebars.compile(document.getElementById('catalog-template')!.innerHTML)
-const unitTemplate = Handlebars.compile(document.getElementById('unit-template')!.innerHTML)
-const unitDetailTemplate = Handlebars.compile(document.getElementById('unit-detail-template')!.innerHTML)
-const idolDetailTemplate = Handlebars.compile(document.getElementById('idol-detail-template')!.innerHTML)
-const auditionTemplate = Handlebars.compile(document.getElementById('audition-template')!.innerHTML)
-const canteenTemplate = Handlebars.compile(document.getElementById('canteen-template')!.innerHTML)
-const canteenConfirmTemplate = Handlebars.compile(document.getElementById('canteen-confirm-template')!.innerHTML)
-const theatreTemplate = Handlebars.compile(document.getElementById('theatre-template')!.innerHTML)
+const spriteTemplate = Handlebars.compile(fs.readFileSync(`${__dirname}/templates/sprite.html`, 'utf8'))
+const catalogTemplate = Handlebars.compile(fs.readFileSync(`${__dirname}/templates/catalog.html`, 'utf8'))
+const unitTemplate = Handlebars.compile(fs.readFileSync(`${__dirname}/templates/unit.html`, 'utf8'))
+const unitDetailTemplate = Handlebars.compile(fs.readFileSync(`${__dirname}/templates/unit-detail.html`, 'utf8'))
+const idolDetailTemplate = Handlebars.compile(fs.readFileSync(`${__dirname}/templates/idol-detail.html`, 'utf8'))
+const auditionTemplate = Handlebars.compile(fs.readFileSync(`${__dirname}/templates/audition.html`, 'utf8'))
+const canteenTemplate = Handlebars.compile(fs.readFileSync(`${__dirname}/templates/canteen.html`, 'utf8'))
+const canteenConfirmTemplate = Handlebars.compile(fs.readFileSync(`${__dirname}/templates/canteen-confirm.html`, 'utf8'))
+const theatreTemplate = Handlebars.compile(fs.readFileSync(`${__dirname}/templates/theatre.html`, 'utf8'))
 
 const maxUnitSize = 3
 let rerenderTimeout: ReturnType<typeof setTimeout> | undefined
@@ -1804,7 +1805,7 @@ function rerender() {
             [{command: 'Aww, beans…'}]
           )
         } else {
-          askUser('You fled. Nobody died, so your rank does not change.', [{command: 'Aww, beans…'}])
+          askUser('You fled. Nobody died, so your rank does not change.')
         }
         rerender()
       })

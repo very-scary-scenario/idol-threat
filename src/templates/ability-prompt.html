@@ -1,0 +1,16 @@
+<p>What will {{idol.name}} do?</p>
+
+<ul>
+  {{#each abilities}}
+    <li>
+      <label class="affinity-{{affinity}}"><input type="radio" name="move" value="{{@index}}"/>{{name}}</label>
+    </li>
+  {{/each}}
+
+  <input type="hidden" name="move" value="{{@index}}"/>
+</ul>
+
+<p>Pick a target from the enemy unit.</p>
+
+<button data-affinity="{{affinity}}" type="submit">Fight!</button>
+<a href="#" id="flee">Flee</a>

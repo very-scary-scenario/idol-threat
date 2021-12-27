@@ -1,0 +1,43 @@
+<div class="portrait">
+  {{{hugeSpriteHTML}}}
+</div>
+<div class="summary">
+  <div class="nametag bubble">
+    <h2 class="name affinity-{{affinity}}">
+      <a class="favourite {{#if favourite}}selected{{/if}}" href="#"></a>
+      {{name}}
+    </h2>
+
+    <div class="membership">
+      <div data-index="{{@index}}" class="input {{#if isInUnit}}active{{/if}}"/></div>
+      <span>In unit</span>
+    </div>
+  </div>
+  <div class="stats bubble">
+    <dl>
+      <dt>Attack</dt>
+      <dd>{{attack}} +{{agency.upgradeFor.attack}}</dd>
+      <dt>Defense</dt>
+      <dd>{{defense}} +{{agency.upgradeFor.defense}}</dd>
+      <dt>Speed</dt>
+      <dd>{{speed}} +{{agency.upgradeFor.speed}}</dd>
+    </dl>
+    <p class="rarity">{{rarity}}</p>
+  </div>
+  <div class="abilities bubble">
+    <ul>
+      {{#each abilities}}<li class="affinity-{{affinity}}">{{name}}</li>{{/each}}
+    </ul>
+  </div>
+  <ul class="actions">
+    {{#if canFeed}}
+      <li><a class="feed" href="#">“Train”</a></li>
+    {{/if}}
+    <li><a class="graduate" href="#">Graduate…</a></li>
+  </ul>
+</div>
+<div class="bubble bio">
+  <p>{{bio}}</p>
+  <blockquote>“{{quote}}”</blockquote>
+</div>
+<a class="close" href="#">close</p>

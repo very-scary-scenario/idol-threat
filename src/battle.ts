@@ -1,7 +1,6 @@
 import * as Handlebars from 'handlebars'
-import {
-  ANIMATIONS,
-} from './parts'
+import * as fs from 'fs'
+import { ANIMATIONS } from './parts'
 import { askUser } from './util'
 import { Ability, Idol, celebrate } from './game'
 
@@ -11,10 +10,10 @@ export const AFFINITIES: AffinityType[] = ['rock', 'paper', 'scissors']
 
 const battleElement = document.getElementById('battle')!
 
-const abilityPromptTemplate = Handlebars.compile(document.getElementById('ability-prompt-template')!.innerHTML)
-const battleTemplate = Handlebars.compile(document.getElementById('battle-template')!.innerHTML)
-const healthBarTemplate = Handlebars.compile(document.getElementById('health-bar-template')!.innerHTML)
-const idolDeetsTemplate = Handlebars.compile(document.getElementById('idol-deets-template')!.innerHTML)
+const abilityPromptTemplate = Handlebars.compile(fs.readFileSync(`${__dirname}/templates/ability-prompt.html`, 'utf8'))
+const battleTemplate = Handlebars.compile(fs.readFileSync(`${__dirname}/templates/battle.html`, 'utf8'))
+const healthBarTemplate = Handlebars.compile(fs.readFileSync(`${__dirname}/templates/health-bar.html`, 'utf8'))
+const idolDeetsTemplate = Handlebars.compile(fs.readFileSync(`${__dirname}/templates/idol-deets.html`, 'utf8'))
 
 const SAME_TYPE_ATTACK_BONUS = 1.5
 const SUPER_EFFECTIVE_ATTACK_BONUS = 2

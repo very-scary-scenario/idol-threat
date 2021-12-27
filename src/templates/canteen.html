@@ -1,0 +1,32 @@
+<div id="buffet">
+  <a href="#" class="cancel">cancel</a>
+  <h2>Who do you want {{idol.name}} to “train with”?</h2>
+  
+  <ul class="catalog">
+    {{#each catalog}}
+      <li data-index="{{@index}}" class="
+        idol
+        {{#if isInUnit}}disabled active{{/if}}
+        {{#if favourite}}disabled favourite{{/if}}
+
+        {{#if isInUnit}}
+          disabled
+        {{else if favourite}}
+          disabled
+        {{else}}
+          enabled
+        {{/if}}
+
+        affinity-{{affinity}}
+      ">
+        <div class="portrait">{{{thumbSpriteHTML}}}</div>
+        <div class="portrait-stats">
+          <span class="{{#ifPositive stats.attack}}positive{{else}}negative{{/ifPositive}}">{{stats.attack}}</span>
+          <span class="{{#ifPositive stats.defense}}positive{{else}}negative{{/ifPositive}}">{{stats.defense}}</span>
+          <span class="{{#ifPositive stats.speed}}positive{{else}}negative{{/ifPositive}}">{{stats.speed}}</span>
+        </div>
+        <div data-index="{{@index}}" disabled="disabled" class="input"></div>
+      </li>
+    {{/each}}
+  </ul>
+</div>

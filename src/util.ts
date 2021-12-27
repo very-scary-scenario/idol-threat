@@ -1,8 +1,8 @@
 import * as Handlebars from 'handlebars'
+import * as fs from 'fs'
 
 const promptArea = document.getElementById('prompt-area')!
-
-const promptTemplate = Handlebars.compile(document.getElementById('prompt-template')!.innerHTML)
+const promptTemplate = Handlebars.compile(fs.readFileSync(__dirname + '/templates/prompt.html', 'utf8'))
 
 export interface ChapterPage {
   kind: string
