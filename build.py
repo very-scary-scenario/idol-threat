@@ -3,6 +3,7 @@
 from bs4 import BeautifulSoup
 
 from datetime import datetime
+import logging
 import hashlib
 import json
 import os
@@ -13,6 +14,9 @@ from tempfile import mkstemp
 from time import sleep
 from typing import Dict, List, Optional, Set, Tuple, TypedDict
 from urllib.parse import urlparse
+
+
+logger = logging.getLogger(__name__)
 
 
 INDENT = 2
@@ -506,12 +510,14 @@ def build_html() -> str:
 
             checksum = hashlib.sha256()
 
-            with open(os.path.join(BUILD, parsed.path), 'rb') as cf:
-                checksum.update(cf.read())
-
-            element[attr] = url_str + '?v={}'.format(checksum.hexdigest()[:8])
-
-            print(element[attr], file=mf)
+            try:
+                with open(os.path.join(BUILD, parsed.path), 'rb') as cf:
+                    checksum.update(cf.read())
+            except FileNotFoundError as e:
+                logger.warning(f'file {parsed.path} referenced in html but not present in build dir')
+            else:
+                element[attr] = url_str + '?v={}'.format(checksum.hexdigest()[:8])
+                print(element[attr], file=mf)
 
         print('NETWORK:\n/', file=mf)
 
