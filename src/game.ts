@@ -17,6 +17,7 @@ import {
   SKIN_COLOURS,
   UNIT_NAMES,
 } from './parts'
+import * as Hammer from 'hammerjs'
 import { AffinityType, AFFINITIES, Battle, BattleIdol } from './battle'
 import { askUser, AbilityPart, Part } from './util'
 import { BrowserQRCodeReader, IScannerControls } from '@zxing/browser'
@@ -820,7 +821,7 @@ export class Idol {
       }
 
       const graduate = () => {
-        hideIdolDetail(event)
+        hideIdolDetail()
         agency.removeIdol(this)
         const graduationBonus = choice(GRADUATION_BONUSES, Math.random())
         const bonus = graduationBonus.bonus + agency.upgrades.graduation
@@ -950,33 +951,25 @@ export class Idol {
   }
 }
 
-function hideIdolDetail(event: Event) {
-  if (event) {
-    event.stopPropagation()
-    event.preventDefault()
-  }
+function hideIdolDetail() {
   detailElement.classList.remove('shown')
   document.body.classList.remove('overlay')
   currentlyShowingDetail = undefined
 }
-function showNextIdol(event: Event) {
-  event.stopPropagation()
-  event.preventDefault()
+function showNextIdol() {
   if (!currentlyShowingDetail) return
   const nextIdol = currentlyShowingDetail.next()
   if (nextIdol) nextIdol.showDetail()
 }
-function showPrevIdol(event: Event) {
-  event.stopPropagation()
-  event.preventDefault()
+function showPrevIdol() {
   if (!currentlyShowingDetail) return
   const prevIdol = currentlyShowingDetail.prev()
   if (prevIdol) prevIdol.showDetail()
 }
 const keyHandlers = new Map([
-  ['ArrowLeft', showPrevIdol],
-  ['ArrowRight', showNextIdol],
-  ['Escape', hideIdolDetail],
+  ['ArrowLeft', (e: Event) => { e.preventDefault(); e.stopPropagation(); showPrevIdol() }],
+  ['ArrowRight', (e: Event) => { e.preventDefault(); e.stopPropagation(); showNextIdol() }],
+  ['Escape', (e: Event) => { e.preventDefault(); e.stopPropagation(); hideIdolDetail() }],
 ])
 
 document.addEventListener('keydown', function(event) {
@@ -988,10 +981,9 @@ document.addEventListener('keydown', function(event) {
   }
 })
 
-// XXX reinstate these gestures
-// var hammerManager = new Hammer(document.body);
-// hammerManager.on('swipeleft', showNextIdol);
-// hammerManager.on('swiperight', showPrevIdol);
+const hammerManager = new Hammer(document.body)
+hammerManager.on('swipeleft', showNextIdol)
+hammerManager.on('swiperight', showPrevIdol)
 
 Handlebars.registerHelper('ifPositive', function(this: Handlebars.HelperDelegate, a, options) {
   if (a >= 0) return options.fn(this)
