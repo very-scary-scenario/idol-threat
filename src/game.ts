@@ -966,15 +966,15 @@ function showPrevIdol() {
   const prevIdol = currentlyShowingDetail.prev()
   if (prevIdol) prevIdol.showDetail()
 }
-const keyHandlers = new Map([
-  ['ArrowLeft', (e: Event) => { e.preventDefault(); e.stopPropagation(); showPrevIdol() }],
-  ['ArrowRight', (e: Event) => { e.preventDefault(); e.stopPropagation(); showNextIdol() }],
-  ['Escape', (e: Event) => { e.preventDefault(); e.stopPropagation(); hideIdolDetail() }],
-])
+const keyHandlers: Record<string, (e: Event) => void> = {
+  ArrowLeft: (e: Event) => { e.preventDefault(); e.stopPropagation(); showPrevIdol() },
+  ArrowRight: (e: Event) => { e.preventDefault(); e.stopPropagation(); showNextIdol() },
+  Escape: (e: Event) => { e.preventDefault(); e.stopPropagation(); hideIdolDetail() },
+}
 
 document.addEventListener('keydown', function(event) {
-  const handler = keyHandlers.get(event.key)
-  if (handler) {
+  const handler = keyHandlers[event.key]
+  if (handler !== undefined) {
     event.preventDefault()
     event.stopPropagation()
     handler(event)
