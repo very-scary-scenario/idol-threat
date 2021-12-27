@@ -1,8 +1,8 @@
 import * as Handlebars from 'handlebars'
 
-var promptArea = document.getElementById('prompt-area')!;
+const promptArea = document.getElementById('prompt-area')!
 
-var promptTemplate = Handlebars.compile(document.getElementById('prompt-template')!.innerHTML);
+const promptTemplate = Handlebars.compile(document.getElementById('prompt-template')!.innerHTML)
 
 export interface ChapterPage {
   kind: string
@@ -54,24 +54,24 @@ export function askUser(question: string, answers?: Answer[]): void {
   if (answers !== undefined) {
     actualAnswers = answers
   } else {
-    actualAnswers = [{ command: 'Okay' }];
+    actualAnswers = [{ command: 'Okay' }]
   }
 
   promptArea.innerHTML = promptTemplate({
     'question': question,
     'answers': actualAnswers 
-  });
+  })
 
   function doAnswer(event: Event) {
-    event.stopPropagation();
-    event.preventDefault();
-    var answerIndex = parseInt((event.currentTarget! as HTMLElement).getAttribute('data-answer-index')!, 10);
-    promptArea.innerHTML = '';
-    var func = actualAnswers[answerIndex].action;
-    if (func) func();
+    event.stopPropagation()
+    event.preventDefault()
+    const answerIndex = parseInt((event.currentTarget! as HTMLElement).getAttribute('data-answer-index')!, 10)
+    promptArea.innerHTML = ''
+    const func = actualAnswers[answerIndex].action
+    if (func) func()
   }
 
-  for (var i = 0; i < actualAnswers.length; i++) {
-    promptArea.querySelector('a[data-answer-index="' + i.toString() + '"]')!.addEventListener('click', doAnswer);
+  for (let i = 0; i < actualAnswers.length; i++) {
+    promptArea.querySelector('a[data-answer-index="' + i.toString() + '"]')!.addEventListener('click', doAnswer)
   }
 }

@@ -7,9 +7,12 @@
   "devDependencies": {
     "@types/fastclick": "^1.0.30",
     "@types/node": "^16.11.6",
+    "@typescript-eslint/eslint-plugin": "^5.8.0",
+    "@typescript-eslint/parser": "^5.8.0",
     "@zxing/browser": "0.0.9",
     "@zxing/library": "^0.18.6",
     "browserify": "^17.0.0",
+    "eslint": "^8.5.0",
     "fastclick": "^1.0.6",
     "handlebars": "^4.7.7",
     "less": "^4.1.2",
