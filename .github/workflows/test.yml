@@ -13,3 +13,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/setup
       - run: python ./build.py --fake-thumbs
+      - uses: actions/upload-artifact@v2
+        with:
+          name: icon
+          path: build/icon.png
