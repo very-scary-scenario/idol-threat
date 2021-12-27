@@ -1668,8 +1668,17 @@ function recruit() {
 
   scannerOverlay.classList.remove('hidden')
 
+  const handleFailedCameraRead = () => {
+    CAMERA_DENIED = true
+    scannerOverlay.classList.add('hidden')
+    askUser('Without camera access, you will need to provide a static image', [
+      {command: 'Load image', action: function() { barcodeImage.click() }},
+      {command: 'Never mind'},
+    ])
+  }
+
   // try to use a live video feed
-  BrowserQRCodeReader.listVideoInputDevices().then(function() {
+  BrowserQRCodeReader.listVideoInputDevices().then(() => {
     codeReader.decodeFromVideoDevice(undefined, 'scanner-viewfinder', function(result, error, controls) {
       if (result !== undefined) {
         console.log(result)
@@ -1681,16 +1690,13 @@ function recruit() {
       if (error !== undefined) {
         // this is often spurious; we should try to specifically only catch errors that are problems
         if (error.name === 'NotAllowedError') {
-          CAMERA_DENIED = true
-          scannerOverlay.classList.add('hidden')
-          askUser('Without camera access, you will need to provide a static image', [
-            {command: 'Load image', action: function() { barcodeImage.click() }},
-            {command: 'Never mind'},
-          ])
+          handleFailedCameraRead()
         }
       }
     }).then((controls) => {
       scanningControls = controls
+    }).catch(() => {
+      handleFailedCameraRead()
     })
   })
 
