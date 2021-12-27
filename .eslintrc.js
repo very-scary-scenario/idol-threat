@@ -13,6 +13,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-var-requires': 'off',
+    'brace-style': ['error', '1tbs', { 'allowSingleLine': true }],
     'comma-dangle': ['error', 'always-multiline'],
     'indent': ['error', 2],
     'no-trailing-spaces': 'error',

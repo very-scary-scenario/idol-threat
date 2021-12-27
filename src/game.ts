@@ -169,10 +169,12 @@ const idolSorters = {
   statDefense: function(a: Idol, b: Idol) { return b.stats.defense - a.stats.defense },
   unitMembership: function(a: Idol, b: Idol) { return (Number(b.isInUnit()) - Number(a.isInUnit())) },
   allStats: function(a: Idol, b: Idol) { return b.totalStats() - a.totalStats() },
-  affinity: function(a: Idol, b: Idol) { return (
-    (AFFINITIES.indexOf(a.affinity) - AFFINITIES.indexOf(b.affinity)) +
-    (idolSorters.allStats(a, b) / 10000)
-  ) },
+  affinity: function(a: Idol, b: Idol) {
+    return (
+      (AFFINITIES.indexOf(a.affinity) - AFFINITIES.indexOf(b.affinity)) +
+      (idolSorters.allStats(a, b) / 10000)
+    )
+  },
 }
 
 const idolSortNames = {

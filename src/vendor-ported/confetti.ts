@@ -161,8 +161,8 @@ export class Confetti {
 
   CheckForReposition(particle: ConfettiParticle, index: number) {
     if ((particle.x > this.W + 20 || particle.x < -20 || particle.y > this.H) && this.confettiActive) {
-      if (index % 5 > 0 || index % 2 === 0) // 66.67% of the flakes
-      {
+      if (index % 5 > 0 || index % 2 === 0) {
+        // 66.67% of the flakes
         this.repositionParticle(particle, Math.random() * this.W, -10, Math.floor(Math.random() * 10) - 10)
       } else {
         if (Math.sin(this.angle) > 0) {
