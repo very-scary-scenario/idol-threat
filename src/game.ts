@@ -1760,7 +1760,7 @@ function rerender() {
         agency.quickBattleRanking -= ranksDown
         askUser(
           ':< You lose. The Idol Threatsival has ranked down to ' + (agency.quickBattleRanking + 1).toString(10) + '.',
-          [{command: 'Aww, beans…'}],
+          [{command: 'Aww, dang…'}],
         )
         rerender()
       }, function() {
@@ -1770,7 +1770,7 @@ function rerender() {
         if (deadPlayerIdols) {
           askUser(
             'You fled. Some of your idols died, though, so the Idol Threatsival has ranked down to ' + (agency.quickBattleRanking + 1).toString(10) + '.',
-            [{command: 'Aww, beans…'}]
+            [{command: 'Aww, dang…'}]
           )
         } else {
           askUser('You fled. Nobody died, so your rank does not change.')
@@ -1813,7 +1813,7 @@ function rerender() {
     const battle = new Battle(playerIdols, enemyIdols, function() {
       askUser('You win!', [{command: 'Yay!'}])
     }, function() {
-      askUser('You lose :<', [{command :'Aww, beans…'}])
+      askUser('You lose :<', [{command :'Aww, dang…'}])
     }, function() {
       askUser('You fled', [{command :'Yep'}])
     })
