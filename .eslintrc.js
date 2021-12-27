@@ -1,3 +1,4 @@
+/* globals module */
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
@@ -9,6 +10,9 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
   ],
   rules: {
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
     'no-trailing-spaces': 'error',
     'semi': ['error', 'never'],
   },

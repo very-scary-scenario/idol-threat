@@ -91,7 +91,6 @@ export class BattleIdol {
   }
 
   doDamage(damage: number) {
-    const self = this
     if (this.isDead) return
     this.hp = this.hp - damage
 
@@ -99,9 +98,9 @@ export class BattleIdol {
       this.isDead = true
       this.hp = 0
 
-      setTimeout(function() {
-        self.element!.classList.add('dead')
-        if (!self.playerControlled) self.idol.agency.grantExperience(1)
+      setTimeout(() => {
+        this.element!.classList.add('dead')
+        if (!this.playerControlled) this.idol.agency.grantExperience(1)
       }, animationDuration)
     }
     (this.element!.querySelector('.health-bar-content') as HTMLElement).style.width = this.healthPercent().toString(10) + '%';
@@ -109,15 +108,14 @@ export class BattleIdol {
   }
 
   doMove(moveIndex: number, target: BattleIdol) {
-    const self = this
-    self.element!.classList.add('fighting')
+    this.element!.classList.add('fighting')
 
-    const ability = self.abilities[moveIndex]
+    const ability = this.abilities[moveIndex]
 
     const baseStrength = (this.attack / target.defense) * BASIC_ABILITY_DAMAGE
     let abilityStrength = baseStrength + ((baseStrength/5) * ability.strength)
 
-    if (ability.affinity === self.affinity) {
+    if (ability.affinity === this.affinity) {
       abilityStrength = abilityStrength * SAME_TYPE_ATTACK_BONUS
     }
 
@@ -127,11 +125,11 @@ export class BattleIdol {
     target.doDamage(abilityStrength)
     console.log(this.idol.name + ' did ' + abilityStrength.toString(10) + ' damage to ' + target.idol.name + ', bringing her HP to ' + target.hp.toString(10) + '/' + target.maxHp.toString(10))
 
-    playAnimationCanvas(self.abilities[moveIndex], target.element!)
+    playAnimationCanvas(this.abilities[moveIndex], target.element!)
 
-    setTimeout(function() {
-      self.element!.classList.remove('fighting')
-      self.battle!.nextMove()
+    setTimeout(() => {
+      this.element!.classList.remove('fighting')
+      this.battle!.nextMove()
     }, animationDuration)
   }
 
@@ -206,10 +204,9 @@ export class Battle {
   }
 
   determinePlayerMove(idol: BattleIdol) {
-    const self = this
     const abilityPromptElement = document.getElementById('ability-prompt')!
 
-    function pickMove(e: Event) {
+    const pickMove = (e: Event) => {
       e.stopPropagation()
       e.preventDefault()
 
@@ -229,17 +226,17 @@ export class Battle {
       idol.element!.classList.remove('focussed')
       targetInput.checked = false
       abilityPromptElement.innerHTML = ''
-      idol.doMove(abilityIndex, self.enemyIdols[targetIndex])
+      idol.doMove(abilityIndex, this.enemyIdols[targetIndex])
     }
 
     idol.element!.classList.add('focussed')
     abilityPromptElement.innerHTML = abilityPromptTemplate(idol)
 
     document.getElementById('battle-form')!.addEventListener('submit', pickMove)
-    document.getElementById('flee')!.addEventListener('click', function(e) {
+    document.getElementById('flee')!.addEventListener('click', (e) => {
       e.stopPropagation()
       e.preventDefault()
-      self.flee()
+      this.flee()
     })
 
     return
@@ -275,8 +272,6 @@ export class Battle {
   }
 
   nextMove() {
-    const self = this
-
     if ((this.turnIndex === undefined) || (this.turnOrder[this.turnIndex] === undefined)) {
       this.turnIndex = 0
     }
@@ -284,14 +279,14 @@ export class Battle {
     const idol = this.turnOrder[this.turnIndex]
 
     if (this.playerHasWon() || this.enemyHasWon()) {
-      setTimeout(function() {
-        self.hide()
+      setTimeout(() => {
+        this.hide()
 
-        if (self.playerHasWon()) {
-          celebrate(self.numberOfLivingMembers(self.playerIdols))
-          self.victoryCallback(self)
-        } else if (self.enemyHasWon()) {
-          self.lossCallback(self)
+        if (this.playerHasWon()) {
+          celebrate(this.numberOfLivingMembers(this.playerIdols))
+          this.victoryCallback(this)
+        } else if (this.enemyHasWon()) {
+          this.lossCallback(this)
         }
 
       }, animationDuration)

@@ -17,16 +17,16 @@ import {
   SKIN_COLOURS,
   UNIT_NAMES,
 } from './parts'
-import { Affinity, AffinityType, AFFINITIES, Battle, BattleIdol } from './battle'
+import { AffinityType, AFFINITIES, Battle, BattleIdol } from './battle'
 import { askUser, AbilityPart, Part } from './util'
 import { BrowserQRCodeReader, IScannerControls } from '@zxing/browser'
-import { DecodeHintType, Result } from '@zxing/library'
+import { DecodeHintType } from '@zxing/library'
 import { FastClick } from 'fastclick'
+
 const wordfilter = require('wordfilter')
 
 type BarcodeOverrideType = keyof typeof BARCODES
 
-const VOWELS = 'aeiou'
 const N = 'n'
 enum Stat { attack, speed, defense }
 type StatType = keyof typeof Stat;
@@ -170,7 +170,7 @@ const endString = 'end'
 let isSkipping = false
 let unbindScriptClick: () => void
 
-var idolSorters = {
+const idolSorters = {
   date: function(a: Idol, b: Idol) { return b.recruitedAt - a.recruitedAt },
   statSpeed: function(a: Idol, b: Idol) { return b.stats.speed - a.stats.speed },
   statAttack: function(a: Idol, b: Idol) { return b.stats.attack - a.stats.attack },
@@ -526,7 +526,7 @@ export class Idol {
     while (kanaCount > 0) {
       const targetDepth = this.rand()
       let currentDepth = 0
-      var nextKana
+      let nextKana
 
       for (let ki = 0; ki < KANA.length; ki++) {
         const item = KANA[ki]
@@ -570,7 +570,6 @@ export class Idol {
   }
 
   deferRendering(mode: SpriteMode, callback: undefined | (() => void)) {
-    const self = this
     mode = mode || 'med'
 
     if (this.loadedImages[mode] !== null) return  // we're already loading
@@ -579,11 +578,11 @@ export class Idol {
     const images: HTMLImageElement[] = []
     this.loadedImages[mode] = images
 
-    function renderIfLoaded() {
+    const renderIfLoaded = () => {
       loaded++
-      if (loaded === self.parts.length) {
+      if (loaded === this.parts.length) {
         if (callback !== undefined) callback()
-        self.renderSprite(mode)
+        this.renderSprite(mode)
       }
     }
 
@@ -592,7 +591,7 @@ export class Idol {
       const img = new Image()
 
       images.push(img)
-      var attr: 'thumbPath' | 'medPath' | 'path'
+      let attr: 'thumbPath' | 'medPath' | 'path'
       if (mode === 'thumb') attr = 'thumbPath'
       else if (mode === 'med') attr = 'medPath'
       else if (mode === 'huge') attr = 'path'
@@ -603,7 +602,9 @@ export class Idol {
   }
 
   getSprite(mode?: SpriteMode) {
-    this.deferRendering(mode || 'med', () => {})
+    this.deferRendering(mode || 'med', () => {
+      // do nothing
+    })
     return 'img/placeholder.png'
   }
 
@@ -716,7 +717,6 @@ export class Idol {
     deferRerender()
   }
   showDetail() {
-    const self = this
     currentlyShowingDetail = this
 
     document.body.classList.add('overlay')
@@ -730,15 +730,15 @@ export class Idol {
     detailElement.classList.add('shown')
     detailElement.querySelector('.close')!.addEventListener('click', hideIdolDetail)
 
-    function showFeedingUI(event: Event) {
+    const showFeedingUI = (event: Event) => {
       event.stopPropagation()
       event.preventDefault()
 
-      const catalogWithoutSelf = self.agency.sortedCatalog()
-      catalogWithoutSelf.splice(catalogWithoutSelf.indexOf(self), 1)
+      const catalogWithoutSelf = this.agency.sortedCatalog()
+      catalogWithoutSelf.splice(catalogWithoutSelf.indexOf(this), 1)
 
       canteenElement.innerHTML = canteenTemplate({
-        idol: self,
+        idol: this,
         catalog: catalogWithoutSelf
       }, {
         allowedProtoMethods: {
@@ -753,7 +753,7 @@ export class Idol {
         canteenElement.innerHTML = ''
       })
 
-      function requestFeeding(event: Event) {
+      const requestFeeding = (event: Event) => {
         event.stopPropagation()
         event.preventDefault()
 
@@ -772,11 +772,11 @@ export class Idol {
           const delta = Math.ceil(increaseBy)
           diffedStats[stat] = delta
           totalChange += delta
-          summedStats[stat] = self.stats[stat] + delta
+          summedStats[stat] = this.stats[stat] + delta
         }
 
         canteenElement.innerHTML = canteenConfirmTemplate({
-          idol: self,
+          idol: this,
           food: foodIdol,
           diffedStats: diffedStats,
           summedStats: summedStats,
@@ -786,15 +786,15 @@ export class Idol {
         })
 
         canteenElement.querySelector('.no')!.addEventListener('click', showFeedingUI)
-        canteenElement.querySelector('.yes')!.addEventListener('click', function(event) {
+        canteenElement.querySelector('.yes')!.addEventListener('click', (event) => {
           event.stopPropagation()
           event.preventDefault()
           for (const stat of STATS) {
-            self.stats[stat] = summedStats[stat]!
+            this.stats[stat] = summedStats[stat]!
           }
           agency.removeIdol(foodIdol)
           canteenElement.innerHTML = ''
-          self.showDetail()
+          this.showDetail()
           askUser('Training complete!')
           agency.grantExperience(5)
           celebrate()
@@ -811,18 +811,18 @@ export class Idol {
     const feedElement = detailElement.querySelector('.feed')
     if (feedElement) feedElement.addEventListener('click', showFeedingUI)
 
-    detailElement.querySelector('.graduate')!.addEventListener('click', function(event) {
+    detailElement.querySelector('.graduate')!.addEventListener('click', (event) => {
       event.stopPropagation()
       event.preventDefault()
 
-      if (self.favourite) {
-        askUser('You cannot graduate ' + self.name + ' while you have her marked as a favourite idol.')
+      if (this.favourite) {
+        askUser('You cannot graduate ' + this.name + ' while you have her marked as a favourite idol.')
         return
       }
 
-      function graduate() {
+      const graduate = () => {
         hideIdolDetail(event)
-        agency.removeIdol(self)
+        agency.removeIdol(this)
         const graduationBonus = choice(GRADUATION_BONUSES, Math.random())
         const bonus = graduationBonus.bonus + agency.upgrades.graduation
         const template = graduationBonus.template
@@ -832,7 +832,7 @@ export class Idol {
         }
 
         askUser(
-          template.replace('<idol>', self.name) +
+          template.replace('<idol>', this.name) +
           ' The other idols in your agency get ' + bonus.toString(10) + ' bonus stat point' + ((bonus === 1) ? '' : 's') + ' each.'
         )
 
@@ -841,9 +841,9 @@ export class Idol {
         rerender()
       }
 
-      askUser('Do you want ' + self.name + ' to graduate? She will leave your agency and every other idol will get a stat bonus by attending the graduation party.', [
-        {command: 'Graduate', action: function() {
-          if (self.shiny) {
+      askUser('Do you want ' + this.name + ' to graduate? She will leave your agency and every other idol will get a stat bonus by attending the graduation party.', [
+        {command: 'Graduate', action: () => {
+          if (this.shiny) {
             askUser('Are you absolutely sure? This is a pretty sweet idol you have here.', [
               {command: 'Yes, graduate', action: graduate},
               {command: 'No, she should stay'},
@@ -856,22 +856,22 @@ export class Idol {
       ])
     })
 
-    detailElement.querySelector('.membership .input')!.addEventListener('click', function(e) {
+    detailElement.querySelector('.membership .input')!.addEventListener('click', (e) => {
       e.stopPropagation()
       e.preventDefault()
 
-      self.toggleUnitMembership()
-      if (self.isInUnit() !== (e.currentTarget as Element).classList.contains('active')) {
+      this.toggleUnitMembership()
+      if (this.isInUnit() !== (e.currentTarget as Element).classList.contains('active')) {
         (e.currentTarget as Element).classList.toggle('active')
       }
       deferRerender()
     })
 
-    detailElement.querySelector('a.favourite')!.addEventListener('click', function(e) {
+    detailElement.querySelector('a.favourite')!.addEventListener('click', (e) => {
       e.stopPropagation()
       e.preventDefault()
 
-      self.favourite = !self.favourite;
+      this.favourite = !this.favourite;
       (e.target as Element).classList.toggle('selected')
       deferRerender()
     })
@@ -882,7 +882,6 @@ export class Idol {
   }
   prev() { return this.next(-1) }
   audition() {
-    const self = this
     const layerTimeout = 400
     let currentLayer = 0
     let auditionLayers: HTMLImageElement[]
@@ -907,20 +906,20 @@ export class Idol {
       setTimeout(addLayerToAuditionPortrait, layerTimeout)
     }
 
-    function showLayersGradually() {
-      auditionLayers = self.loadedImages.med!
+    const showLayersGradually = () => {
+      auditionLayers = this.loadedImages.med!
       setTimeout(addLayerToAuditionPortrait, layerTimeout)
     }
 
-    setTimeout(function() {
-      self.deferRendering('med', showLayersGradually)
+    setTimeout(() => {
+      this.deferRendering('med', showLayersGradually)
     }, 1)
 
-    document.getElementById('catch-button')!.addEventListener('click', function(e) {
+    document.getElementById('catch-button')!.addEventListener('click', (e) => {
       e.stopPropagation()
       e.preventDefault()
       auditionSpace.innerHTML = ''
-      self.showDetail()
+      this.showDetail()
       agency.grantExperience(5)
     })
   }
@@ -962,11 +961,15 @@ function hideIdolDetail(event: Event) {
   currentlyShowingDetail = undefined
 }
 function showNextIdol(event: Event) {
+  event.stopPropagation()
+  event.preventDefault()
   if (!currentlyShowingDetail) return
   const nextIdol = currentlyShowingDetail.next()
   if (nextIdol) nextIdol.showDetail()
 }
 function showPrevIdol(event: Event) {
+  event.stopPropagation()
+  event.preventDefault()
   if (!currentlyShowingDetail) return
   const prevIdol = currentlyShowingDetail.prev()
   if (prevIdol) prevIdol.showDetail()
@@ -1010,7 +1013,6 @@ class Agency {
   upgradeFor: Record<StatType, () => number>
 
   constructor() {
-    const self = this
     this.catalog = []
     this.unit = []
     this.recentlyFired = []
@@ -1024,9 +1026,9 @@ class Agency {
 
     this.storyActors = {}
 
-    function upgradeGetter(stat: StatType) {
-      return function(): number {
-        return self.levelFloor() * self.upgrades[stat]!
+    const upgradeGetter = (stat: StatType) => {
+      return (): number => {
+        return this.levelFloor() * this.upgrades[stat]!
       }
     }
     this.upgradeFor = {
@@ -1112,28 +1114,26 @@ class Agency {
       if (sortElement) sortElement.addEventListener('click', setSortOrder)
     }
 
-    var agency = this
-
     const inputs = document.querySelectorAll('#catalog li.idol .input')
 
     function toggleMembership(event: Event) {
       event.stopPropagation()
       event.preventDefault()
-      i = parseInt((event.currentTarget as HTMLElement).getAttribute('data-index')!, 10)
+      const i = parseInt((event.currentTarget as HTMLElement).getAttribute('data-index')!, 10)
       sortedCatalog[i].toggleUnitMembership()
     }
 
-    for (var i = 0, n = inputs.length; i < n; i++) {
+    for (let i = 0, n = inputs.length; i < n; i++) {
       const element = inputs[i]
       element.addEventListener('click', toggleMembership)
     }
 
     const upgradeButtons = document.querySelectorAll('#upgrade-list a[data-upgrade-name]')
 
-    function upgradeAgency(event: Event) {
+    const upgradeAgency = (event: Event) => {
       event.stopPropagation()
       event.preventDefault()
-      if (agency.spendableLevels() <= 0) {
+      if (this.spendableLevels() <= 0) {
         askUser('You have no points to spend. Level up your agency some more and try again later.')
         return
       }
@@ -1155,7 +1155,7 @@ class Agency {
     function showDetail(event: Event) {
       event.stopPropagation()
       event.preventDefault()
-      i = parseInt((event.currentTarget as HTMLElement).getAttribute('data-index')!, 10)
+      const i = parseInt((event.currentTarget as HTMLElement).getAttribute('data-index')!, 10)
       sortedCatalog[i].showDetail()
     }
 
@@ -1200,7 +1200,6 @@ class Agency {
     return sortedCatalog
   }
   renderUnit() {
-    const self = this
     const content = unitTemplate(this, {allowedProtoMethods: {
       unitName: true,
       thumbSpriteHTML: true
@@ -1213,10 +1212,10 @@ class Agency {
     unitElement.innerHTML = content
     const unitElements = unitElement.querySelectorAll('.unit li')
 
-    function handleUnitClick(e: Event) {
+    const handleUnitClick = (e: Event) => {
       e.stopPropagation()
       e.preventDefault()
-      self.unit[parseInt((e.currentTarget as HTMLElement).getAttribute('data-index')!, 10)].showDetail()
+      this.unit[parseInt((e.currentTarget as HTMLElement).getAttribute('data-index')!, 10)].showDetail()
     }
 
     for (let ei = 0; ei < unitElements.length; ei++) {
@@ -1350,20 +1349,19 @@ class Agency {
     return this.catalog.length >= 2
   }
   doStory(pageNumber: number) {
-    const self = this
     const chapter = this.getStoryChapter()
 
-    function renderSetting() {
-      theatreElement.innerHTML = theatreTemplate({background: self.storySetting})
+    const renderSetting = () => {
+      theatreElement.innerHTML = theatreTemplate({background: this.storySetting})
       const skipButton = theatreElement.querySelector('#skip')!
 
-      function handleSkipClick(event: Event) {
+      const handleSkipClick = (event: Event) => {
         event.stopPropagation()
         event.preventDefault()
         isSkipping = true
         unbindScriptClick()
         skipButton.removeEventListener('click', handleSkipClick)
-        self.doStory(pageNumber + 1)
+        this.doStory(pageNumber + 1)
       }
 
       skipButton.addEventListener('click', handleSkipClick)
@@ -1372,7 +1370,6 @@ class Agency {
     function getActorElement(actor: Idol): HTMLElement {
       let element = theatreElement.querySelector('#boards .actor[data-actor-name="' + actor.actorName + '"]') as HTMLElement
       if (!element) {
-        actor.actorName = actor.actorName
         element = document.createElement('div')
         element.setAttribute('data-actor-name', actor.actorName!)
         element.classList.add('actor')
@@ -1398,8 +1395,8 @@ class Agency {
     const page = chapter[pageNumber]
     let actorElement: Element
 
-    function graduallyShowScript(visibleScriptElement: HTMLElement, invisibleScriptElement: HTMLElement) {
-      function showNextLetter() {
+    const graduallyShowScript = (visibleScriptElement: HTMLElement, invisibleScriptElement: HTMLElement) => {
+      const showNextLetter = () => {
         const nextLetter = invisibleScriptElement.textContent![0]
         visibleScriptElement.textContent += nextLetter
         invisibleScriptElement.textContent = invisibleScriptElement.textContent!.replace(/^./, '')
@@ -1417,13 +1414,13 @@ class Agency {
 
       letterTimeout = setTimeout(showNextLetter, 50)
 
-      function handleScriptClick(e: Event) {
+      const handleScriptClick = (e: Event) => {
         e.stopPropagation()
         e.preventDefault()
 
         if (letterTimeout === undefined) {
           theatreElement.removeEventListener('click', handleScriptClick)
-          self.doStory(pageNumber + 1)
+          this.doStory(pageNumber + 1)
         } else {
           clearTimeout(letterTimeout)
           letterTimeout = undefined
@@ -1432,18 +1429,17 @@ class Agency {
         }
       }
       theatreElement.addEventListener('click', handleScriptClick)
-      function unbindScriptClick() { theatreElement.removeEventListener('click', handleScriptClick) }
-      return unbindScriptClick
+      return () => { theatreElement.removeEventListener('click', handleScriptClick) }
     }
 
-    function goToDestination() {
+    const goToDestination = () => {
       if (page.adjectives!.into) actorElement.setAttribute('data-position', page.adjectives!.into)
     }
 
-    function handleSetpieceClick(event: Event) {
+    const handleSetpieceClick = (event: Event) => {
       event.stopPropagation()
       event.preventDefault()
-      self.doStory(pageNumber + 1)
+      this.doStory(pageNumber + 1)
       theatreElement.removeEventListener('click', handleSetpieceClick)
     }
 
@@ -1516,8 +1512,8 @@ class Agency {
       theatreElement.innerHTML = ''
       const playerIdols: BattleIdol[] = []
 
-      for (let pii = 0; pii < self.unit.length; pii++) {
-        playerIdols.push(new BattleIdol(self.unit[pii], 'player'))
+      for (let pii = 0; pii < this.unit.length; pii++) {
+        playerIdols.push(new BattleIdol(this.unit[pii], 'player'))
       }
 
       const enemyIdols: BattleIdol[] = []
@@ -1530,16 +1526,16 @@ class Agency {
         enemyIdols.push(new BattleIdol(enemyIdol, 'ai'))
       }
 
-      const battle = new Battle(playerIdols, enemyIdols, function(battle: Battle) {
+      const battle = new Battle(playerIdols, enemyIdols, (battle: Battle) => {
         for (let pi = 0; pi < battle.playerIdols.length; pi++) {
           battle.playerIdols[pi].idol.giveBonus(enemyIdols.length)
         }
 
-        self.doStory(pageNumber + 1)
-      }, function(battle: Battle) {
+        this.doStory(pageNumber + 1)
+      }, () => {
         theatreElement.innerHTML = ''
         askUser('You lost the battle. Train up your unit some more and try again!')
-      }, function(battle: Battle) {
+      }, () => {
         theatreElement.innerHTML = ''
         askUser('You fled. Try agian when you feel ready.')
       })
@@ -1653,7 +1649,7 @@ function getCredits() {
   return shuffledFolks
 }
 
-barcodeImage.addEventListener('change', function(e) {
+barcodeImage.addEventListener('change', function() {
   if (barcodeImage.files === null) { return }
   if (agency.full()) {
     askUser(CATALOG_FULL)
@@ -1678,7 +1674,7 @@ function complainAboutBadSaveFile() {
   askUser("We couldn't load this save file, sorry. Try another one, or perhaps send us the file and we'll see if we can help.")
 }
 
-loadGame.addEventListener('change', function(e) {
+loadGame.addEventListener('change', function() {
   if (loadGame.files === null) { return }
 
   const reader = new FileReader()
@@ -1705,7 +1701,7 @@ loadGame.addEventListener('change', function(e) {
   loadGame.value = ''
 })
 
-var agency = new Agency()
+let agency = new Agency()
 
 function recruit() {
   if (CAMERA_DENIED) {
@@ -1716,7 +1712,7 @@ function recruit() {
   scannerOverlay.classList.remove('hidden')
 
   // try to use a live video feed
-  BrowserQRCodeReader.listVideoInputDevices().then(function(devices) {
+  BrowserQRCodeReader.listVideoInputDevices().then(function() {
     codeReader.decodeFromVideoDevice(undefined, 'scanner-viewfinder', function(result, error, controls) {
       if (result !== undefined) {
         console.log(result)
@@ -1775,7 +1771,7 @@ function rerender() {
         enemyIdols.push(new BattleIdol(enemyIdol, 'ai'))
       }
 
-      var battle = new Battle(playerIdols, enemyIdols, function(battle) {
+      const battle = new Battle(playerIdols, enemyIdols, function(battle) {
         let experienceGained = 0
 
         experienceGained += 5 * (maxUnitSize - battle.playerIdols.length)
