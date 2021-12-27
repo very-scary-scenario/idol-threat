@@ -35,6 +35,10 @@ SKIN_COLOURS: Set[str] = set()
 HAIR_COLOURS: Set[str] = set()
 LAYERS: List[str] = []
 
+
+if not os.path.isdir(BUILD):
+    os.mkdir(BUILD)
+
 if not os.path.isdir(THUMBS_DIR):
     os.mkdir(THUMBS_DIR)
 
