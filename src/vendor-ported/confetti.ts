@@ -25,9 +25,9 @@ export class ConfettiParticle {
 
   constructor(color: string, confetti: Confetti) {
     this.x = Math.random() * confetti.W // x-coordinate
-    this.y = (Math.random() * confetti.H) - confetti.H //y-coordinate
-    this.r = RandomFromTo(10, 30) //radius;
-    this.d = (Math.random() * confetti.mp) + 10 //density;
+    this.y = (Math.random() * confetti.H) - confetti.H // y-coordinate
+    this.r = RandomFromTo(10, 30) // radius;
+    this.d = (Math.random() * confetti.mp) + 10 // density;
     this.color = color
     this.tilt = Math.floor(Math.random() * 10) - 10
     this.tiltAngleIncremental = (Math.random() * 0.07) + 0.05
@@ -52,7 +52,7 @@ export class Confetti {
   ctx: CanvasRenderingContext2D
   W: number
   H: number
-  mp = this.baseMp //max particles
+  mp = this.baseMp // max particles
   particles: ConfettiParticle[] = []
   angle = 0
   tiltAngle = 0
@@ -61,7 +61,7 @@ export class Confetti {
   reactivationTimerHandler?: ReturnType<typeof setTimeout>
   animationHandler?: ReturnType<typeof window.requestAnimationFrame>
   particleColors = {
-    colorOptions: ["DodgerBlue", "OliveDrab", "Gold", "pink", "SlateBlue", "lightblue", "Violet", "PaleGreen", "SteelBlue", "SandyBrown", "Chocolate", "Crimson"],
+    colorOptions: ['DodgerBlue', 'OliveDrab', 'Gold', 'pink', 'SlateBlue', 'lightblue', 'Violet', 'PaleGreen', 'SteelBlue', 'SandyBrown', 'Chocolate', 'Crimson'],
     colorIndex: 0,
     colorIncrementer: 0,
     colorThreshold: 2,
@@ -75,15 +75,15 @@ export class Confetti {
       }
       this.colorIncrementer++
       return this.colorOptions[this.colorIndex]
-    }
+    },
   }
 
   constructor() {
     const tempElement = document.createElement('div')
     document.body.appendChild(tempElement)
     tempElement.outerHTML = '<canvas id="confetti"></canvas>'
-    this.canvas = (document.getElementById("confetti") as HTMLCanvasElement)
-    this.ctx = this.canvas.getContext("2d")!
+    this.canvas = (document.getElementById('confetti') as HTMLCanvasElement)
+    this.ctx = this.canvas.getContext('2d')!
     this.W = window.innerWidth
     this.H = window.innerHeight
     this.canvas.width = this.W
@@ -161,15 +161,15 @@ export class Confetti {
 
   CheckForReposition(particle: ConfettiParticle, index: number) {
     if ((particle.x > this.W + 20 || particle.x < -20 || particle.y > this.H) && this.confettiActive) {
-      if (index % 5 > 0 || index % 2 === 0) //66.67% of the flakes
+      if (index % 5 > 0 || index % 2 === 0) // 66.67% of the flakes
       {
         this.repositionParticle(particle, Math.random() * this.W, -10, Math.floor(Math.random() * 10) - 10)
       } else {
         if (Math.sin(this.angle) > 0) {
-          //Enter from the left
+          // Enter from the left
           this.repositionParticle(particle, -5, Math.random() * this.H, Math.floor(Math.random() * 10) - 10)
         } else {
-          //Enter from the right
+          // Enter from the right
           this.repositionParticle(particle, this.W + 5, Math.random() * this.H, Math.floor(Math.random() * 10) - 10)
         }
       }

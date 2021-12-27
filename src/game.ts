@@ -68,7 +68,7 @@ const LAYERS: LayerType[] = [
   'mt',
   'ns',
   'ey',
-  'eb'
+  'eb',
 ]
 
 const RARITIES = [
@@ -80,7 +80,7 @@ const RARITIES = [
   'Rare',
   'Blue',
   'Raw',
-  'Mooing'
+  'Mooing',
 ]
 const BASE_RARITY = 300
 const RARITY_CURVE = 0.6
@@ -90,7 +90,7 @@ const CHAPTER_DIFFICULTY_INCREASE = 50
 const SHINY_CHANCE = 1/4096
 
 const MAXIMUM_CATALOG_SIZE = 50
-const CATALOG_FULL = "Your agency is full! You'll have to graduate or train with some of them before you can recruit any more."
+const CATALOG_FULL = 'Your agency is full! You\'ll have to graduate or train with some of them before you can recruit any more.'
 
 type SeedOverrideType = keyof typeof BARCODES
 const SEED_OVERRIDE_HANDLERS: Record<SeedOverrideType, (idol: Idol) => void> = {
@@ -103,8 +103,8 @@ const SEED_OVERRIDE_HANDLERS: Record<SeedOverrideType, (idol: Idol) => void> = {
       idol.stats[stat] = 100
     }
 
-    idol.bio = "Somebody tried to kill her. She lied to her wife for three years. Didn't give them her PhD."
-    idol.quote = "Now, talk me through your very scary scenario."
+    idol.bio = 'Somebody tried to kill her. She lied to her wife for three years. Didn\'t give them her PhD.'
+    idol.quote = 'Now, talk me through your very scary scenario.'
 
     function makeSpecialAbility(name: string, affinity: AffinityType) {
       return new Ability(idol, [{words: [name], bonus: 3, healing: false}], choice(ANIMATIONS, idol.rand()), affinity)
@@ -113,9 +113,9 @@ const SEED_OVERRIDE_HANDLERS: Record<SeedOverrideType, (idol: Idol) => void> = {
       makeSpecialAbility('play rough', 'rock'),
       makeSpecialAbility('geopolitics', 'paper'),
       makeSpecialAbility('american directness', 'scissors'),
-      makeSpecialAbility('very scary scenario', idol.affinity)
+      makeSpecialAbility('very scary scenario', idol.affinity),
     ]
-  }
+  },
 }
 const SEED_OVERRIDES: Record<number, (idol: Idol) => void> = {}
 
@@ -148,7 +148,7 @@ const LETTER_DELAY = 20
 const LETTER_EMPHASIS_MULTIPLIER = 4
 const LETTER_DELAYS: Record<string, number> = {
   '.': 8,
-  ',': 4
+  ',': 4,
 }
 
 const NEGATIVE_STAT_EFFECT = 2
@@ -177,7 +177,7 @@ const idolSorters = {
   affinity: function(a: Idol, b: Idol) { return (
     (AFFINITIES.indexOf(a.affinity) - AFFINITIES.indexOf(b.affinity)) +
     (idolSorters.allStats(a, b) / 10000)
-  ) }
+  ) },
 }
 
 const idolSortNames = {
@@ -187,7 +187,7 @@ const idolSortNames = {
   statDefense: 'Defense',
   allStats: 'Total of all stats',
   affinity: 'Affinity and stats',
-  unitMembership: 'Unit membership'
+  unitMembership: 'Unit membership',
 }
 type IdolSortOrder = keyof typeof idolSortNames
 type SortOrder = {
@@ -198,25 +198,25 @@ type SortOrder = {
 
 const upgradeNames = {
   attack: {
-    name: "Attack level",
-    description: "Vocal coaches will have access to better equipment, improving their ability to teach idols how to sing with impact."
+    name: 'Attack level',
+    description: 'Vocal coaches will have access to better equipment, improving their ability to teach idols how to sing with impact.',
   },
   defense: {
-    name: "Defense level",
-    description: "Designers will have access to better costume materials, improving their ability to create idol costumes that withstand enemy attacks."
+    name: 'Defense level',
+    description: 'Designers will have access to better costume materials, improving their ability to create idol costumes that withstand enemy attacks.',
   },
   speed: {
-    name: "Speed level",
-    description: "Choreographers will have access to better studios, improving their ability to teach idols faster and more complicated dances."
+    name: 'Speed level',
+    description: 'Choreographers will have access to better studios, improving their ability to teach idols faster and more complicated dances.',
   },
   recruitment: {
-    name: "Scouting level",
-    description: "Scouts will have access to better snacks, improving their ability to find stand-out idols."
+    name: 'Scouting level',
+    description: 'Scouts will have access to better snacks, improving their ability to find stand-out idols.',
   },
   graduation: {
-    name: "Graduation level",
-    description: "Managers will have access to better leaving card designs, improving their ability to send idols home with a smile on their face."
-  }
+    name: 'Graduation level',
+    description: 'Managers will have access to better leaving card designs, improving their ability to send idols home with a smile on their face.',
+  },
 }
 interface UpgradesRecord {
   attack: number
@@ -668,7 +668,7 @@ export class Idol {
       mode: mode,
       identifier: this.identifier,
       shiny: this.shiny,
-      sprite: sprite
+      sprite: sprite,
     })
   }
 
@@ -721,7 +721,7 @@ export class Idol {
       hugeSpriteHTML: true,
       isInUnit: true,
       rarity: true,
-      canFeed: true
+      canFeed: true,
     }})
     detailElement.setAttribute('data-affinity', this.affinity)
     detailElement.classList.add('shown')
@@ -736,7 +736,7 @@ export class Idol {
 
       canteenElement.innerHTML = canteenTemplate({
         idol: this,
-        catalog: catalogWithoutSelf
+        catalog: catalogWithoutSelf,
       }, {
         allowedProtoMethods: {
           isInUnit: true,
@@ -779,7 +779,7 @@ export class Idol {
           summedStats: summedStats,
           negativeStats: negativeStats,
           totalChange: totalChange,
-          changeIsBeneficial: totalChange >= 0
+          changeIsBeneficial: totalChange >= 0,
         })
 
         canteenElement.querySelector('.no')!.addEventListener('click', showFeedingUI)
@@ -884,7 +884,7 @@ export class Idol {
     let auditionLayers: HTMLImageElement[]
 
     auditionSpace.innerHTML = auditionTemplate(this, {allowedProtoMethods: {
-      isShadow: true
+      isShadow: true,
     }})
     setTimeout(function() {
       initSparkle(document.getElementById('sparkle-canvas') as HTMLCanvasElement)
@@ -1038,7 +1038,7 @@ class Agency {
       sortOrders.push({
         key: key as IdolSortOrder,
         name: idolSortNames[key as IdolSortOrder],
-        selected: (this.sortOrder === key)
+        selected: (this.sortOrder === key),
       })
     }
 
@@ -1051,7 +1051,7 @@ class Agency {
         name: upgradeName,
         verboseName: upgradeNames[upgradeName as UpgradeType].name,
         description: upgradeNames[upgradeName as UpgradeType].description,
-        currentLevel: this.upgrades[upgradeName as UpgradeType]
+        currentLevel: this.upgrades[upgradeName as UpgradeType],
       })
     }
 
@@ -1068,12 +1068,12 @@ class Agency {
       'sortOrders': sortOrders,
       'backupUrl': 'data:application/x-idol-threat-save;name=idol-threat.save;charset=utf-8,' + encodeURIComponent(btoa(JSON.stringify(this.dump()))),
       'builtAt': document.body.getAttribute('data-built-at'),
-      'credits': getCredits()
+      'credits': getCredits(),
     }, {
       allowedProtoMethods: {
         isInUnit: true,
-        thumbSpriteHTML: true
-      }
+        thumbSpriteHTML: true,
+      },
     })
 
     function setSortOrder(event: Event) {
@@ -1190,7 +1190,7 @@ class Agency {
   renderUnit() {
     const content = unitTemplate(this, {allowedProtoMethods: {
       unitName: true,
-      thumbSpriteHTML: true
+      thumbSpriteHTML: true,
     }})
 
     if ((this.unit.length === 0) !== unitElement.classList.contains('empty')) {
@@ -1213,7 +1213,7 @@ class Agency {
     unitDetailElement.innerHTML = unitDetailTemplate(this, {allowedProtoMethods: {
       unitName: true,
       hugeSpriteHTML: true,
-      thumbSpriteHTML: true
+      thumbSpriteHTML: true,
     }})
 
     function toggleUnitDetailDisplay(e: Event) {
@@ -1284,9 +1284,9 @@ class Agency {
     for(let i = 0, n = this.catalog.length; i < n; i++) {
       if (this.catalog[i].seed === idol.seed) {
         const catalogIdol = this.catalog[i]
-        askUser("You recruited this idol already; it's " + idol.name + "!", [
+        askUser('You recruited this idol already; it\'s ' + idol.name + '!', [
           {command: 'Show me', action: catalogIdol.showDetail.bind(catalogIdol)},
-          {command: 'Okay'}
+          {command: 'Okay'},
         ])
         blocked = true
         return
@@ -1296,7 +1296,7 @@ class Agency {
     if (blocked) return
 
     if (this.recentlyFired.indexOf(idol.seed) !== -1) {
-      askUser(idol.name + " recently left your agency. Try recruiting some other idols before attempting to recruit her again.")
+      askUser(idol.name + ' recently left your agency. Try recruiting some other idols before attempting to recruit her again.')
       return
     }
 
@@ -1326,7 +1326,7 @@ class Agency {
   addToUnit(idol: Idol, interactive: boolean) {
     if (this.unit.length >= maxUnitSize) {
       if (interactive) {
-        askUser("Your unit is full; you'll need to remove someone before you can add " + idol.name + ".")
+        askUser('Your unit is full; you\'ll need to remove someone before you can add ' + idol.name + '.')
       }
     } else {
       this.unit.push(idol)
@@ -1553,7 +1553,7 @@ class Agency {
       b: this.storyChaptersBeaten,
       q: this.quickBattleRanking,
       f: this.recentlyFired,
-      o: this.sortOrder
+      o: this.sortOrder,
     }
 
     for(let i = 0, n = this.catalog.length; i < n; i++) {
@@ -1618,7 +1618,7 @@ function getCredits() {
     ['DiGiKerot', 'https://twitter.com/digikerot'],
     ['Peter Shillito', 'https://twitter.com/theshillito'],
     ['William Rennerfelt', 'http://william.rennerfelt.org'],
-    ['colons', 'https://colons.co/']
+    ['colons', 'https://colons.co/'],
   ]
   const pickedFolkIndices = []
 
@@ -1630,7 +1630,7 @@ function getCredits() {
     const folk = folks[folkIndex]
     shuffledFolks.push({
       'name': folk[0],
-      'url': folk[1]
+      'url': folk[1],
     })
   }
 
@@ -1649,17 +1649,17 @@ barcodeImage.addEventListener('change', function() {
   }).catch(function(err) {
     console.log(err)
     askUser(
-      "Sorry, we couldn't read a barcode in that picture, please try a clearer photo.",
+      'Sorry, we couldn\'t read a barcode in that picture, please try a clearer photo.',
       [
         {command: 'Try again', action: function() { barcodeImage.click() }},
-        {command: 'Cancel'}
+        {command: 'Cancel'},
       ]
     )
   })
 })
 
 function complainAboutBadSaveFile() {
-  askUser("We couldn't load this save file, sorry. Try another one, or perhaps send us the file and we'll see if we can help.")
+  askUser('We couldn\'t load this save file, sorry. Try another one, or perhaps send us the file and we\'ll see if we can help.')
 }
 
 loadGame.addEventListener('change', function() {
@@ -1711,12 +1711,12 @@ function recruit() {
 
       if (error !== undefined) {
         // this is often spurious; we should try to specifically only catch errors that are problems
-        if (error.name === "NotAllowedError") {
+        if (error.name === 'NotAllowedError') {
           CAMERA_DENIED = true
           scannerOverlay.classList.add('hidden')
           askUser('Without camera access, you will need to provide a static image', [
             {command: 'Load image', action: function() { barcodeImage.click() }},
-            {command: 'Never mind'}
+            {command: 'Never mind'},
           ])
         }
       }

@@ -43,7 +43,7 @@ function effectiveness(attackAffinity: AffinityType, targetAffinity: AffinityTyp
   return {
     0: 1,  // the attack is the same type as the defense
     1: SUPER_EFFECTIVE_ATTACK_BONUS, // the attack is strong
-    2: 1/SUPER_EFFECTIVE_ATTACK_BONUS // the attack is weak
+    2: 1/SUPER_EFFECTIVE_ATTACK_BONUS, // the attack is weak
   }[effectivenessIdentifier]!
 }
 
@@ -373,11 +373,11 @@ function playAnimationCanvas(ability: Ability, element: Element) {
   let currentImage = 0
   const animationCanvas = document.createElement('Canvas') as HTMLCanvasElement
 
-  portraitDiv.setAttribute("data-ability-name", ability.name)
-  animationCanvas.style.position = "absolute"
-  animationCanvas.style.display = "inline"
-  animationCanvas.style.left = "2"
-  animationCanvas.style.zIndex = "3"
+  portraitDiv.setAttribute('data-ability-name', ability.name)
+  animationCanvas.style.position = 'absolute'
+  animationCanvas.style.display = 'inline'
+  animationCanvas.style.left = '2'
+  animationCanvas.style.zIndex = '3'
 
   const ctx = animationCanvas.getContext('2d')!
   portraitDiv.appendChild(animationCanvas)
@@ -395,6 +395,6 @@ function playAnimationCanvas(ability: Ability, element: Element) {
     clearInterval(animationID)
 
     portraitDiv.removeChild(animationCanvas)
-    portraitDiv.removeAttribute("data-ability-name")
+    portraitDiv.removeAttribute('data-ability-name')
   }, animationDuration)
 }
