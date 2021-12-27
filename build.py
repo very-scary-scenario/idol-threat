@@ -20,7 +20,7 @@ INDENT = 2
 HERE = os.path.realpath(os.path.dirname(__file__))
 SRC = os.path.join(HERE, 'src')
 BUILD = os.path.join(HERE, 'build')
-ICON_SIZE = 256
+ICON_SIZE = 512
 TEXT = os.path.join(SRC, 'text')
 IDOL_DIRNAME = 'idols'
 IMG = os.path.join(SRC, 'img')
@@ -418,13 +418,15 @@ def build_campaign() -> Tuple[Dict[str, List[ChapterEvent]], List[Chapter], List
 
 
 def build_icon() -> None:
-    from selenium.webdriver import PhantomJS
-
-    driver = PhantomJS(service_log_path=mkstemp()[1])
+    from selenium.webdriver import Chrome, ChromeOptions
+    options = ChromeOptions()
+    options.headless = True
+    options.add_argument('--disable-web-security')  # required because we taint the canvas (i think with local files)
+    driver = Chrome(options=options)
     driver.set_window_size(ICON_SIZE, ICON_SIZE)
     url = 'file://{}#icon'.format(os.path.join(BUILD, 'index.html'))
     driver.get(url)
-    sleep(3)
+    sleep(3)  # really, this should detect the image being loaded
 
     driver.save_screenshot(ICON_PATH)
     subprocess.check_call(['optipng', ICON_PATH])
