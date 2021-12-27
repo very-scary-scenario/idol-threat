@@ -120,10 +120,7 @@ const SEED_OVERRIDE_HANDLERS: Record<SeedOverrideType, (idol: Idol) => void> = {
 const SEED_OVERRIDES: Record<number, (idol: Idol) => void> = {}
 
 let CAMERA_DENIED = false
-const hints = new Map()
-hints.set(DecodeHintType.TRY_HARDER, true)
-const codeReader = new BrowserQRCodeReader()
-codeReader.hints = hints
+const codeReader = new BrowserQRCodeReader(new Map([[DecodeHintType.TRY_HARDER, true]]))
 
 function parsePresetBarcodes() {
   // cache what overrides we need to apply for a given seed
