@@ -17,6 +17,7 @@
 @rock: '\f255';
 @paper: '\f256';
 @scissors: '\f257';
+@star-of-life: '\f621';
 
 @red: hsl(0, 0.6, 0.6);
 @blue: hsl(240, 0.6, 0.6);
@@ -1252,25 +1253,28 @@ body.icon {
     }
 
     &::before {
-      content: '❋';
+      font-family: 'fa';
+      content: @star-of-life;
       position: absolute;
-      width: @icon-size*1.8;
-      height: @icon-size*2;
-      left: -@icon-size*0.8;
-      top: -@icon-size;
+
+      height: @icon-size * 2;
+      top: -@icon-size * 0.3;
+
+      width: @icon-size * 1.8;
+      left: -@icon-size * 0.4;
       box-sizing: border-box;
 
       display: block;
       overflow: hidden;
 
-      font-family: 'Zapf Dingbats';
-      font-size: @icon-size*3;
+      font-size: @icon-size * 1.8;
       z-index: -1;
+      transform: rotate(15deg);
     }
 
-    &.affinity-rock { color: @rock-colour; }
-    &.affinity-paper { color: @paper-colour; }
-    &.affinity-scissors { color: @scissors-colour; }
+    &.affinity-rock { color: @rock-colour; background-color: fade(@rock-colour, 50%) }
+    &.affinity-paper { color: @paper-colour; background-color: fade(@paper-colour, 50%)}
+    &.affinity-scissors { color: @scissors-colour; background-color: fade(@scissors-colour, 50%)}
   }
 }
 
