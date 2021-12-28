@@ -575,7 +575,9 @@ a {
         }
       }
 
-      &.affinity-rock { background-color: @rock-colour }
+      &.affinity-rock { background-color: @rock-colour; &::after {
+        transform: rotate(60deg) !important;  // 90-30
+      }}
       &.affinity-paper { background-color: @paper-colour }
       &.affinity-scissors { background-color: @scissors-colour }
 
@@ -583,7 +585,7 @@ a {
 
       &::after {
         display: block;
-        text-shadow: 0 0 0 @bg !important;
+        color: @bg !important;
         font-size: 20vh;
         opacity: .5;
         z-index: 10;
