@@ -1646,16 +1646,6 @@ const decoderConfig = {
 }
 let CAMERA_DENIED = false
 
-function handleFailedCameraRead() {
-  CAMERA_DENIED = true
-  scannerOverlay.classList.add('hidden')
-  askUser('Without camera access, you will need to provide a static image', [
-    {command: 'Load image', action: function() { barcodeImage.click() }},
-    {command: 'Never mind'},
-  ])
-}
-
-
 barcodeImage.addEventListener('change', function() {
   if (barcodeImage.files === null) { return }
   if (agency.full()) {
@@ -1682,11 +1672,30 @@ barcodeImage.addEventListener('change', function() {
   */
 })
 
-function recruit() {
-  if (CAMERA_DENIED) {
-    barcodeImage.click()
-    return
+Quagga.onProcessed(function(data) {
+  const drawingCtx = Quagga.canvas.ctx.overlay
+  const drawingCanvas = Quagga.canvas.dom.overlay
+  drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute('width')!), parseInt(drawingCanvas.getAttribute('height')!))
+
+  if (!data) { return }
+
+  if (data.boxes) {
+    data.boxes.filter(function (box) {
+      return box !== data.box
+    }).forEach(function (box) {
+      Quagga.ImageDebug.drawPath(box, {x: 0, y: 1}, drawingCtx, {color: 'green', lineWidth: 2})
+    })
   }
+  if (data.codeResult && data.codeResult.code) {
+    scannerOverlay.classList.add('hidden')
+    Quagga.stop()
+    // alert(`${data.codeResult.format}: ${data.codeResult.code}`)
+    recruitIdolFromBarcodeText(data.codeResult.code)
+  }
+})
+
+
+function startQuagga() {
   Quagga.init({
     inputStream: {
       name: 'Live',
@@ -1696,37 +1705,27 @@ function recruit() {
     decoder: decoderConfig,
   }, (error) => {
     if (error !== undefined) {
-      handleFailedCameraRead()
+      CAMERA_DENIED = true
+      scannerOverlay.classList.add('hidden')
+      askUser('Without camera access, you will need to provide a static image', [
+        {command: 'Load image', action: function() { barcodeImage.click() }},
+        {command: 'Never mind'},
+      ])
       console.log(error)
       return
     }
 
-    Quagga.onProcessed((data) => {
-      const drawingCtx = Quagga.canvas.ctx.overlay
-      const drawingCanvas = Quagga.canvas.dom.overlay
-      drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute('width')!), parseInt(drawingCanvas.getAttribute('height')!))
-
-      if (!data) { return }
-
-      if (data.boxes) {
-        data.boxes.filter(function (box) {
-          return box !== data.box
-        }).forEach(function (box) {
-          Quagga.ImageDebug.drawPath(box, {x: 0, y: 1}, drawingCtx, {color: 'green', lineWidth: 2})
-        })
-      }
-      if (data.codeResult && data.codeResult.code) {
-        scannerOverlay.classList.add('hidden')
-        Quagga.stop()
-        Quagga.offProcessed()
-        // alert(`${data.codeResult.format}: ${data.codeResult.code}`)
-        recruitIdolFromBarcodeText(data.codeResult.code)
-      }
-    })
-
     Quagga.start()
     scannerOverlay.classList.remove('hidden')
   })
+}
+
+function recruit() {
+  if (CAMERA_DENIED) {
+    barcodeImage.click()
+  } else {
+    startQuagga()
+  }
 }
 
 function rerender() {
