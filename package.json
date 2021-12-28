@@ -2,7 +2,7 @@
   "name": "idol-threat",
   "version": "0.0.0",
   "scripts": {
-    "build": "cd src; tsc; cd ../build; cp -r ../src/templates ./templates; browserify -t brfs game.js > game.bundle.js"
+    "build": "cd src && tsc && cd ../build && rm -rf ./templates && cp -r ../src/templates ./templates && browserify -t brfs game.js | npx uglifyjs > game.bundle.js"
   },
   "devDependencies": {
     "@ericblade/quagga2": "^1.4.2",
