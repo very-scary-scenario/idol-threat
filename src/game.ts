@@ -1655,6 +1655,16 @@ const decoderConfig = {
 }
 let CAMERA_DENIED = false
 
+function handleFailedCameraRead() {
+  CAMERA_DENIED = true
+  scannerOverlay.classList.add('hidden')
+  askUser('Without camera access, you will need to provide a static image', [
+    {command: 'Load image', action: function() { barcodeImage.click() }},
+    {command: 'Never mind'},
+  ])
+}
+
+
 barcodeImage.addEventListener('change', function() {
   if (barcodeImage.files === null) { return }
   if (agency.full()) {
@@ -1686,19 +1696,6 @@ function recruit() {
     barcodeImage.click()
     return
   }
-
-  scannerOverlay.classList.remove('hidden')
-
-  const handleFailedCameraRead = () => {
-    CAMERA_DENIED = true
-    scannerOverlay.classList.add('hidden')
-    askUser('Without camera access, you will need to provide a static image', [
-      {command: 'Load image', action: function() { barcodeImage.click() }},
-      {command: 'Never mind'},
-    ])
-  }
-
-  // try to use a live video feed
   Quagga.init({
     inputStream: {
       name: 'Live',
@@ -1712,14 +1709,14 @@ function recruit() {
       console.log(error)
       return
     }
-    Quagga.start()
+
     Quagga.onProcessed((data) => {
       if (!data) { return }
-      if (data.boxes) {
-        const drawingCtx = Quagga.canvas.ctx.overlay
-        const drawingCanvas = Quagga.canvas.dom.overlay
+      const drawingCtx = Quagga.canvas.ctx.overlay
+      const drawingCanvas = Quagga.canvas.dom.overlay
+      drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute('width')!), parseInt(drawingCanvas.getAttribute('height')!))
 
-        drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute('width')!), parseInt(drawingCanvas.getAttribute('height')!))
+      if (data.boxes) {
         data.boxes.filter(function (box) {
           return box !== data.box
         }).forEach(function (box) {
@@ -1727,15 +1724,16 @@ function recruit() {
         })
       }
       if (data.codeResult && data.codeResult.code) {
-        Quagga.offProcessed()
         scannerOverlay.classList.add('hidden')
         Quagga.stop()
+        Quagga.offProcessed()
         recruitIdolFromBarcodeText(data.codeResult.code)
       }
     })
-  })
 
-  return
+    Quagga.start()
+    scannerOverlay.classList.remove('hidden')
+  })
 }
 
 function rerender() {
