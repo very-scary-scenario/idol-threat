@@ -1714,16 +1714,24 @@ function recruit() {
     }
     Quagga.start()
     Quagga.onProcessed((data) => {
-      const code = data?.codeResult?.code
-      if (code === null || code === undefined) {
-        // it'd be cool to draw feedback here
-        return
+      if (!data) { return }
+      if (data.boxes) {
+        const drawingCtx = Quagga.canvas.ctx.overlay
+        const drawingCanvas = Quagga.canvas.dom.overlay
+
+        drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute('width')!), parseInt(drawingCanvas.getAttribute('height')!))
+        data.boxes.filter(function (box) {
+          return box !== data.box
+        }).forEach(function (box) {
+          Quagga.ImageDebug.drawPath(box, {x: 0, y: 1}, drawingCtx, {color: 'green', lineWidth: 2})
+        })
       }
-      Quagga.offProcessed()
-      scannerOverlay.classList.add('hidden')
-      Quagga.stop()
-      console.log(data)
-      recruitIdolFromBarcodeText(code)
+      if (data.codeResult && data.codeResult.code) {
+        Quagga.offProcessed()
+        scannerOverlay.classList.add('hidden')
+        Quagga.stop()
+        recruitIdolFromBarcodeText(data.codeResult.code)
+      }
     })
   })
 
