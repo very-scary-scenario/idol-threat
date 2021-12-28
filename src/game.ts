@@ -1,6 +1,7 @@
 import * as Hammer from 'hammerjs'
 import * as Handlebars from 'handlebars'
 import * as fs from 'fs'
+
 import {
   ABILITIES,
   ANIMATIONS,
@@ -21,9 +22,8 @@ import {
 } from './parts'
 import { AFFINITIES, AffinityType, Battle, BattleIdol } from './battle'
 import { AbilityPart, Part, askUser } from './util'
-import { BrowserQRCodeReader, IScannerControls } from '@zxing/browser'
-import { DecodeHintType } from '@zxing/library'
 import { FastClick } from 'fastclick'
+import Quagga from '@ericblade/quagga2'
 import { blacklisted } from 'wordfilter'
 import { confetti } from './vendor-ported/confetti'
 
@@ -119,9 +119,6 @@ const SEED_OVERRIDE_HANDLERS: Record<SeedOverrideType, (idol: Idol) => void> = {
   },
 }
 const SEED_OVERRIDES: Record<number, (idol: Idol) => void> = {}
-
-let CAMERA_DENIED = false
-const codeReader = new BrowserQRCodeReader(new Map([[DecodeHintType.TRY_HARDER, true]]))
 
 function parsePresetBarcodes() {
   // cache what overrides we need to apply for a given seed
@@ -1608,27 +1605,6 @@ function getCredits() {
   return shuffledFolks
 }
 
-barcodeImage.addEventListener('change', function() {
-  if (barcodeImage.files === null) { return }
-  if (agency.full()) {
-    askUser(CATALOG_FULL)
-    return
-  }
-
-  codeReader.decodeFromImageUrl(window.URL.createObjectURL(barcodeImage.files[0])).then(function(result) {
-    recruitIdolFromBarcodeText(result.getText())
-  }).catch(function(err) {
-    console.log(err)
-    askUser(
-      'Sorry, we couldn\'t read a barcode in that picture, please try a clearer photo.',
-      [
-        {command: 'Try again', action: function() { barcodeImage.click() }},
-        {command: 'Cancel'},
-      ]
-    )
-  })
-})
-
 function complainAboutBadSaveFile() {
   askUser('We couldn\'t load this save file, sorry. Try another one, or perhaps send us the file and we\'ll see if we can help.')
 }
@@ -1662,6 +1638,49 @@ loadGame.addEventListener('change', function() {
 
 let agency = new Agency()
 
+const decoderConfig = {
+  readers: [
+    '2of5_reader',
+    'codabar_reader',
+    'code_32_reader',
+    'code_39_reader',
+    'code_39_vin_reader',
+    'code_93_reader',
+    'code_128_reader',
+    'ean_reader',
+    'i2of5_reader',
+    'upc_e_reader',
+    'upc_reader',
+  ],
+}
+let CAMERA_DENIED = false
+
+barcodeImage.addEventListener('change', function() {
+  if (barcodeImage.files === null) { return }
+  if (agency.full()) {
+    askUser(CATALOG_FULL)
+    return
+  }
+
+  Quagga.decodeSingle({
+    decoder: decoderConfig,
+  })
+  /*
+  window.URL.createObjectURL(barcodeImage.files[0])).then(function(result) {
+    recruitIdolFromBarcodeText(result.getText())
+  }).catch(function(err) {
+    console.log(err)
+    askUser(
+      'Sorry, we couldn\'t read a barcode in that picture, please try a clearer photo.',
+      [
+        {command: 'Try again', action: function() { barcodeImage.click() }},
+        {command: 'Cancel'},
+      ]
+    )
+  })
+  */
+})
+
 function recruit() {
   if (CAMERA_DENIED) {
     barcodeImage.click()
@@ -1680,25 +1699,31 @@ function recruit() {
   }
 
   // try to use a live video feed
-  BrowserQRCodeReader.listVideoInputDevices().then(() => {
-    codeReader.decodeFromVideoDevice(undefined, 'scanner-viewfinder', function(result, error, controls) {
-      if (result !== undefined) {
-        console.log(result)
-        controls.stop()
-        scannerOverlay.classList.add('hidden')
-        recruitIdolFromBarcodeText(result.getText())
-      }
-
-      if (error !== undefined) {
-        // this is often spurious; we should try to specifically only catch errors that are problems
-        if (error.name === 'NotAllowedError') {
-          handleFailedCameraRead()
-        }
-      }
-    }).then((controls) => {
-      scanningControls = controls
-    }).catch(() => {
+  Quagga.init({
+    inputStream: {
+      name: 'Live',
+      type: 'LiveStream',
+      target: document.getElementById('scanner-viewfinder')!,
+    },
+    decoder: decoderConfig,
+  }, (error) => {
+    if (error !== undefined) {
       handleFailedCameraRead()
+      console.log(error)
+      return
+    }
+    Quagga.start()
+    Quagga.onProcessed((data) => {
+      const code = data?.codeResult?.code
+      if (code === null || code === undefined) {
+        // it'd be cool to draw feedback here
+        return
+      }
+      Quagga.offProcessed()
+      scannerOverlay.classList.add('hidden')
+      Quagga.stop()
+      console.log(data)
+      recruitIdolFromBarcodeText(code)
     })
   })
 
@@ -1852,15 +1877,13 @@ function deferRerender() {
   rerenderTimeout = setTimeout(rerender, 50)
 }
 
-let scanningControls: IScannerControls
-
 function initGame() {
   FastClick.attach(document.body)
   document.getElementById('loading')!.innerText = ''
   parsePresetBarcodes()
 
   cancelScanningElement.addEventListener('click', function() {
-    scanningControls.stop()
+    Quagga.stop()
     scannerOverlay.classList.add('hidden')
   })
 

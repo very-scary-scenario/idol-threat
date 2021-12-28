@@ -2,17 +2,16 @@
   "name": "idol-threat",
   "version": "0.0.0",
   "scripts": {
-    "build": "cd src; tsc; cd ../build; cp -r ../src/templates ./templates; browserify -t brfs game.js | uglifyjs > game.bundle.js"
+    "build": "cd src; tsc; cd ../build; cp -r ../src/templates ./templates; browserify -t brfs game.js > game.bundle.js"
   },
   "devDependencies": {
+    "@ericblade/quagga2": "^1.4.2",
     "@types/fastclick": "^1.0.30",
     "@types/hammerjs": "^2.0.41",
     "@types/node": "^16.11.6",
     "@types/wordfilter": "^0.2.0",
     "@typescript-eslint/eslint-plugin": "^5.8.0",
     "@typescript-eslint/parser": "^5.8.0",
-    "@zxing/browser": "0.0.9",
-    "@zxing/library": "^0.18.6",
     "brfs": "^2.0.2",
     "browserify": "^17.0.0",
     "eslint": "^8.5.0",
