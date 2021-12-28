@@ -32,20 +32,25 @@ barcodeImage.addEventListener('change', function() {
   Quagga.decodeSingle({
     decoder: decoderConfig,
   })
-  /*
-  window.URL.createObjectURL(barcodeImage.files[0])).then(function(result) {
-    recruitIdolFromBarcodeText(result.getText())
-  }).catch(function(err) {
-    console.log(err)
-    askUser(
-      'Sorry, we couldn\'t read a barcode in that picture, please try a clearer photo.',
-      [
-        {command: 'Try again', action: function() { barcodeImage.click() }},
-        {command: 'Cancel'},
-      ]
-    )
+
+  Quagga.decodeSingle({
+    decoder: decoderConfig,
+    locate: true,
+    src: window.URL.createObjectURL(barcodeImage.files[0]),
+  }, (data) => {
+    const code = data?.codeResult?.code
+    if (code) {
+      recruitIdolFromBarcodeText(code)
+    } else {
+      askUser(
+        'Sorry, we couldn\'t read a barcode in that picture, please try a clearer photo.',
+        [
+          {command: 'Try again', action: () => { barcodeImage.click() }},
+          {command: 'Cancel'},
+        ]
+      )
+    }
   })
-  */
 })
 
 Quagga.onProcessed(function(data) {
