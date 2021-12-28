@@ -7,8 +7,8 @@
       <strong class="diff {{#if negativeStats.attack}}negative{{else}}positive{{/if}}">{{diffedStats.attack}}</strong>
     </dt>
     <dd>
-      {{idol.attack}}
-      <span class="change">+ {{food.attack}}{{#if negativeStats.attack}}/2{{/if}} =</span>
+      {{idol.stats.attack}}
+      <span class="change">+ {{food.stats.attack}}{{#if negativeStats.attack}}/2{{/if}} =</span>
       <strong>{{summedStats.attack}}</strong>
     </dd>
 
@@ -17,8 +17,8 @@
       <strong class="diff {{#if negativeStats.defense}}negative{{else}}positive{{/if}}">{{diffedStats.defense}}</strong>
     </dt>
     <dd>
-      {{idol.defense}}
-      <span class="change">+ {{food.defense}}{{#if negativeStats.defense}}/2{{/if}} =</span>
+      {{idol.stats.defense}}
+      <span class="change">+ {{food.stats.defense}}{{#if negativeStats.defense}}/2{{/if}} =</span>
       <strong>{{summedStats.defense}}</strong>
     </dd>
 
@@ -27,8 +27,8 @@
       <strong class="diff {{#if negativeStats.speed}}negative{{else}}positive{{/if}}">{{diffedStats.speed}}</strong>
     </dt>
     <dd>
-      {{idol.speed}}
-      <span class="change">+ {{food.speed}}{{#if negativeStats.speed}}/2{{/if}} =</span>
+      {{idol.stats.speed}}
+      <span class="change">+ {{food.stats.speed}}{{#if negativeStats.speed}}/2{{/if}} =</span>
       <strong>{{summedStats.speed}}</strong>
     </dd>
   </dl>
