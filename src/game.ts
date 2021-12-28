@@ -21,9 +21,9 @@ import {
   UNIT_NAMES,
 } from './parts'
 import { AFFINITIES, AffinityType, Battle, BattleIdol } from './battle'
-import { AbilityPart, Part, askUser } from './util'
+import { AbilityPart, Part, askUser, numFromString } from './util'
+import { recruit, stopRecruiting } from './recruit'
 import { FastClick } from 'fastclick'
-import Quagga from '@ericblade/quagga2'
 import { blacklisted } from 'wordfilter'
 import { confetti } from './vendor-ported/confetti'
 
@@ -91,7 +91,7 @@ const CHAPTER_DIFFICULTY_INCREASE = 50
 const SHINY_CHANCE = 1/4096
 
 const MAXIMUM_CATALOG_SIZE = 50
-const CATALOG_FULL = 'Your agency is full! You\'ll have to graduate or train with some of them before you can recruit any more.'
+export const CATALOG_FULL = 'Your agency is full! You\'ll have to graduate or train with some of them before you can recruit any more.'
 
 type SeedOverrideType = keyof typeof BARCODES
 const SEED_OVERRIDE_HANDLERS: Record<SeedOverrideType, (idol: Idol) => void> = {
@@ -226,8 +226,6 @@ function getStateCookie() {
   return atob(window.localStorage.getItem('state') || '')
 }
 
-const barcodeImage = document.getElementById('barcode-image') as HTMLInputElement
-const scannerOverlay = document.getElementById('scanner-overlay')!
 const cancelScanningElement = document.getElementById('cancel-scanning')!
 const loadGame = document.getElementById('load-game') as HTMLInputElement
 const detailElement = document.getElementById('idol-detail')!
@@ -1561,22 +1559,6 @@ class Agency {
   }
 }
 
-function numFromString(str: string): number {
-  let total = 0
-  for(let i = 0, n = str.length; i < n; i++) {
-    const c = str.charCodeAt(i)
-    total += (Math.pow(255, i) * c)
-  }
-  return total
-}
-
-function recruitIdolFromBarcodeText(text: string): Idol {
-  const idol = new Idol(numFromString(text))
-  idol.applyRecruitmentBonuses()
-  agency.addIdol(idol, true)
-  return idol
-}
-
 function getCredits() {
   // please don't mock my very bad shuffle
 
@@ -1636,97 +1618,7 @@ loadGame.addEventListener('change', function() {
   loadGame.value = ''
 })
 
-let agency = new Agency()
-
-const decoderConfig = {
-  readers: [
-    'ean_reader',
-    'upc_reader',
-  ],
-}
-let CAMERA_DENIED = false
-
-barcodeImage.addEventListener('change', function() {
-  if (barcodeImage.files === null) { return }
-  if (agency.full()) {
-    askUser(CATALOG_FULL)
-    return
-  }
-
-  Quagga.decodeSingle({
-    decoder: decoderConfig,
-  })
-  /*
-  window.URL.createObjectURL(barcodeImage.files[0])).then(function(result) {
-    recruitIdolFromBarcodeText(result.getText())
-  }).catch(function(err) {
-    console.log(err)
-    askUser(
-      'Sorry, we couldn\'t read a barcode in that picture, please try a clearer photo.',
-      [
-        {command: 'Try again', action: function() { barcodeImage.click() }},
-        {command: 'Cancel'},
-      ]
-    )
-  })
-  */
-})
-
-Quagga.onProcessed(function(data) {
-  const drawingCtx = Quagga.canvas.ctx.overlay
-  const drawingCanvas = Quagga.canvas.dom.overlay
-  drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute('width')!), parseInt(drawingCanvas.getAttribute('height')!))
-
-  if (!data) { return }
-
-  if (data.boxes) {
-    data.boxes.filter(function (box) {
-      return box !== data.box
-    }).forEach(function (box) {
-      Quagga.ImageDebug.drawPath(box, {x: 0, y: 1}, drawingCtx, {color: 'green', lineWidth: 2})
-    })
-  }
-  if (data.codeResult && data.codeResult.code) {
-    scannerOverlay.classList.add('hidden')
-    Quagga.stop()
-    // alert(`${data.codeResult.format}: ${data.codeResult.code}`)
-    recruitIdolFromBarcodeText(data.codeResult.code)
-  }
-})
-
-
-function startQuagga() {
-  Quagga.init({
-    inputStream: {
-      name: 'Live',
-      type: 'LiveStream',
-      target: document.getElementById('scanner-viewfinder')!,
-    },
-    decoder: decoderConfig,
-  }, (error) => {
-    if (error !== undefined) {
-      CAMERA_DENIED = true
-      scannerOverlay.classList.add('hidden')
-      askUser('Without camera access, you will need to provide a static image', [
-        {command: 'Load image', action: function() { barcodeImage.click() }},
-        {command: 'Never mind'},
-      ])
-      console.log(error)
-      return
-    }
-
-    Quagga.start()
-    scannerOverlay.classList.remove('hidden')
-  })
-}
-
-function recruit() {
-  if (CAMERA_DENIED) {
-    barcodeImage.click()
-  } else {
-    startQuagga()
-  }
-}
+export let agency = new Agency()
 
 function rerender() {
   if (document.body.classList.contains('in-battle')) return  // there's no need to rerender when in battle
@@ -1881,8 +1773,7 @@ function initGame() {
   parsePresetBarcodes()
 
   cancelScanningElement.addEventListener('click', function() {
-    Quagga.stop()
-    scannerOverlay.classList.add('hidden')
+    stopRecruiting()
   })
 
   try {

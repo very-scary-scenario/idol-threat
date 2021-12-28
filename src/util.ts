@@ -75,3 +75,12 @@ export function askUser(question: string, answers?: Answer[]): void {
     promptArea.querySelector('a[data-answer-index="' + i.toString() + '"]')!.addEventListener('click', doAnswer)
   }
 }
+
+export function numFromString(str: string): number {
+  let total = 0
+  for(let i = 0, n = str.length; i < n; i++) {
+    const c = str.charCodeAt(i)
+    total += (Math.pow(255, i) * c)
+  }
+  return total
+}
