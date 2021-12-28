@@ -247,24 +247,29 @@ a {
 
 .affinity() {
   &::after {
+    display: inline-block;
+    width: 1.5em;
+    text-align: center;
+
     font-family: 'fa';
     line-height: 0;
     top: -.3em;
-    padding-left: .3em;
-    color: fade(@fg, 0%);
+    margin-left: .1em;
+    transform-origin: center;
   }
 
   &.affinity-rock::after {
     content: @rock;
-    text-shadow: 0 0 0 @rock-colour;
+    color: @rock-colour;
+    transform: rotate(90deg);
   }
   &.affinity-paper::after {
     content: @paper;
-    text-shadow: 0 0 0 @paper-colour;
+    color: @paper-colour;
   }
   &.affinity-scissors::after {
     content: @scissors;
-    text-shadow: 0 0 0 @scissors-colour;
+    color: @scissors-colour;
   }
 }
 
@@ -1154,8 +1159,18 @@ body.in-battle {
         padding-left: .3em;
       }
 
-      &[data-affinity]::after { font-family: 'fa' }
-      &[data-affinity="rock"] { background-color: @rock-colour; &::after { content: @rock } }
+      &[data-affinity]::after {
+        font-family: 'fa';
+        display: inline-block;
+        transform-origin: center;
+      }
+      &[data-affinity="rock"] {background-color: @rock-colour; &::after {
+        content: @rock;
+        transform: rotate(90deg);
+        position: relative;
+        top: -.1em;
+        left: .2em;
+      }}
       &[data-affinity="paper"] { background-color: @paper-colour; &::after { content: @paper } }
       &[data-affinity="scissors"] { background-color: @scissors-colour; &::after { content: @scissors } }
     }
