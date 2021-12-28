@@ -1640,16 +1640,7 @@ let agency = new Agency()
 
 const decoderConfig = {
   readers: [
-    '2of5_reader',
-    'codabar_reader',
-    'code_32_reader',
-    'code_39_reader',
-    'code_39_vin_reader',
-    'code_93_reader',
-    'code_128_reader',
     'ean_reader',
-    'i2of5_reader',
-    'upc_e_reader',
     'upc_reader',
   ],
 }
@@ -1711,10 +1702,11 @@ function recruit() {
     }
 
     Quagga.onProcessed((data) => {
-      if (!data) { return }
       const drawingCtx = Quagga.canvas.ctx.overlay
       const drawingCanvas = Quagga.canvas.dom.overlay
       drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute('width')!), parseInt(drawingCanvas.getAttribute('height')!))
+
+      if (!data) { return }
 
       if (data.boxes) {
         data.boxes.filter(function (box) {
@@ -1727,6 +1719,7 @@ function recruit() {
         scannerOverlay.classList.add('hidden')
         Quagga.stop()
         Quagga.offProcessed()
+        // alert(`${data.codeResult.format}: ${data.codeResult.code}`)
         recruitIdolFromBarcodeText(data.codeResult.code)
       }
     })
