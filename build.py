@@ -449,6 +449,7 @@ def set_viewport_size(driver: WebDriver, width: int, height: int) -> None:
 
 def build_icon() -> None:
     from selenium.webdriver import Firefox, FirefoxOptions
+    from selenium.webdriver.firefox.service import Service
 
     server_thread = Thread(target=serve_build_dir, daemon=True)
     server_thread.start()
@@ -456,7 +457,7 @@ def build_icon() -> None:
     options = FirefoxOptions()
     options.headless = True
 
-    driver = Firefox(options=options, executable_path=os.path.join(HERE, 'node_modules', '.bin', 'geckodriver'))
+    driver = Firefox(options=options, service=Service(os.path.join(HERE, 'node_modules', '.bin', 'geckodriver')))
 
     driver.get('http://localhost:8000/build/#icon')
     sleep(2)
