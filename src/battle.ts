@@ -351,6 +351,7 @@ function bindHoverDetail(idol: BattleIdol, idolElement: Element) {
   function showHoverDetailSoon() {
     clearTimeout(hoverDetailTimeout)
     hoverDetailTimeout = setTimeout(showHoverDetail, 300)
+    deetsSpace.removeAttribute('data-affinity')
   }
 
   function hideHoverDetail() {
