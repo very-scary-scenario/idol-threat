@@ -145,6 +145,13 @@ html {
   content: '★';
 }
 
+.rock-rotate() {
+  transform: rotate(90deg);
+  position: relative;
+  top: -.1em;
+  left: .2em;
+}
+
 .checkbox() {
   .button-shadow();
   display: inline-block;
@@ -1156,8 +1163,7 @@ body.in-battle {
       cursor: pointer;
 
       &::after {
-        color: fade(@bg, 0%);
-        text-shadow: 0 0 0 @bg;
+        color: @bg;
         padding-left: .3em;
       }
 
@@ -1166,13 +1172,7 @@ body.in-battle {
         display: inline-block;
         transform-origin: center;
       }
-      &[data-affinity="rock"] {background-color: @rock-colour; &::after {
-        content: @rock;
-        transform: rotate(90deg);
-        position: relative;
-        top: -.1em;
-        left: .2em;
-      }}
+      &[data-affinity="rock"] { background-color: @rock-colour; &::after { content: @rock; .rock-rotate() } }
       &[data-affinity="paper"] { background-color: @paper-colour; &::after { content: @paper } }
       &[data-affinity="scissors"] { background-color: @scissors-colour; &::after { content: @scissors } }
     }
@@ -1213,8 +1213,12 @@ body.in-battle {
       }
     }
 
-    &[data-affinity] h2::after { font-family: 'fa' }
-    &[data-affinity="rock"] { background-color: @rock-colour; h2::after { content: @rock } }
+    &[data-affinity] h2::after {
+      font-family: 'fa';
+      display: inline-block;
+      transform-origin: center;
+    }
+    &[data-affinity="rock"] { background-color: @rock-colour; h2::after { content: @rock; .rock-rotate() } }
     &[data-affinity="paper"] { background-color: @paper-colour; h2::after { content: @paper } }
     &[data-affinity="scissors"] { background-color: @scissors-colour; h2::after { content: @scissors } }
 
