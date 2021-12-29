@@ -601,7 +601,7 @@ def write_parts(fake_thumbs: bool = False) -> None:
             'poses': poses,
             'skinColours': skin_colours,
             'hairColours': hair_colours,
-        }, indent=2))
+        }, indent=INDENT))
 
     with open('src/parts.ts', 'w') as p:
         p.write(
