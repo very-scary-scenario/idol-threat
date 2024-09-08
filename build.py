@@ -131,14 +131,14 @@ def build_idols(fake_thumbs: bool = False) -> Tuple[Dict[str, List[Part]], List[
                 if fake_thumbs:
                     os.symlink(img_path, thumb_path)
                 else:
-                    subprocess.check_call(['convert', img_path, '-resize', '400x400^', thumb_path])
+                    subprocess.check_call(['magick', 'convert', img_path, '-resize', '400x400^', thumb_path])
                     subprocess.check_call(['optipng', thumb_path])
 
             if not os.path.exists(med_path):
                 if fake_thumbs:
                     os.symlink(img_path, med_path)
                 else:
-                    subprocess.check_call(['convert', img_path, '-resize', '1000x1000^', med_path])
+                    subprocess.check_call(['magick', 'convert', img_path, '-resize', '1000x1000^', med_path])
                     subprocess.check_call(['optipng', med_path])
 
     return parts, sorted(POSES), sorted(SKIN_COLOURS), sorted(HAIR_COLOURS)
