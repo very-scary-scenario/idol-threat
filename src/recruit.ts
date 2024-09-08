@@ -1,12 +1,12 @@
 import { CATALOG_FULL, Idol, agency } from './game'
+import Quagga, { QuaggaJSConfigObject } from '@ericblade/quagga2'
 import { askUser, numFromString } from './util'
 
-import Quagga from '@ericblade/quagga2'
 
 const barcodeImage = document.getElementById('barcode-image') as HTMLInputElement
 const scannerOverlay = document.getElementById('scanner-overlay')!
 
-const decoderConfig = {
+const decoderConfig: QuaggaJSConfigObject['decoder'] = {
   readers: [
     'ean_reader',
     'upc_reader',
